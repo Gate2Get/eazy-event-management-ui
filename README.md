@@ -1,0 +1,1 @@
+# eazy-event-management-ui

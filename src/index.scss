@@ -3,16 +3,16 @@ $font-stack: Helvetica, sans-serif;
 $primary-color: #333;
 //------
 body {
-	margin: 0;
-	font-family: Bogle, sans-serif !important;
-	font: 100% $font-stack;
-  	background-color: $primary-color;
+  margin: 0;
+  font-family: Bogle, sans-serif !important;
+  font: 100% $font-stack;
+  background-color: $primary-color;
 }
 
 html * {
-	font-family: Bogle !important;
+  font-family: Bogle !important;
 }
 
 .spinner__walmart-loader > svg {
-	color: #06f27b !important;
+  color: #06f27b !important;
 }

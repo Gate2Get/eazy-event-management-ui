@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.header__container {
+  .sign-in__button {
+    color: $text-color-black1;
+  }
+
+  .button__container {
+    float: right;
+    font-size: 16px;
+  }
+
+  .try-free__button {
+    border: 1px solid #00684a;
+    font-size: 16px;
+  }
+}

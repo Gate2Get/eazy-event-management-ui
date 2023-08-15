@@ -1,0 +1,16 @@
+.data__table {
+	width: 100%;
+	.ant-table-header {
+		display: flex;
+		flex-direction: row;
+		gap: 24px;
+		height: 56px;
+
+		.ant-table-cell::before {
+			display: none;
+		}
+	}
+	.ant-table-body .ant-table-row .ant-table-cell {
+		padding: 16px 12px 16px 0px !important;
+	}
+}

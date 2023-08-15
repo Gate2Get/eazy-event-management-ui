@@ -1,16 +1,19 @@
 import React from "react";
 import "./styles.scss";
-import { Button, Typography } from "antd";
+import { Button, Col, Row, Segmented, Space, Typography } from "antd";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
-import { ContactDirectoryType } from "../../types";
-import { ContactDirectory } from "./components/contactDirectory";
+import { ActionType, ContactDirectoryType } from "../../types";
+import { ViewContactDirectory } from "./components/viewContactDirectory";
+import { AddEditContactDirectory } from "./components/addEditContactDirectory";
+import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
 export const ContactManagement = () => {
   const { setLoading } = useBearStore.appStore();
-  const { setDirectoryList } = useBearStore.contactStore();
+  const { setDirectoryList, action, setAction, setIsListView, isListView } =
+    useBearStore.contactStore();
 
   React.useEffect(() => {
     getContactDirectory();
@@ -30,10 +33,44 @@ export const ContactManagement = () => {
   };
 
   return (
-    <div>
+    <Space direction="vertical" className="contact-management__container">
       <Title level={3}>Contact Management</Title>
-      <Button type="primary">Create Directory</Button>
-      <ContactDirectory />
-    </div>
+      <Row>
+        <Col flex={12}>
+          <Button
+            type="primary"
+            onClick={() => {
+              setAction("ADD");
+            }}
+          >
+            Create Directory
+          </Button>
+        </Col>
+        <Col className="list__grid-view">
+          <Segmented
+            value={isListView ? "List" : "Card"}
+            options={[
+              {
+                value: "List",
+                icon: <BarsOutlined />,
+              },
+              {
+                value: "Card",
+                icon: <AppstoreOutlined />,
+              },
+            ]}
+            onChange={(value) => {
+              setIsListView(value === "List");
+            }}
+          />
+        </Col>
+      </Row>
+      <ViewContactDirectory />
+      <AddEditContactDirectory
+        action={action as ActionType}
+        isOpen={action === "ADD" || action === "EDIT"}
+        setOpen={setAction}
+      />
+    </Space>
   );
 };

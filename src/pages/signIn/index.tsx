@@ -19,7 +19,7 @@ const prefixSelector = (
 export const SignIn = () => {
   const [form] = Form.useForm();
 
-  const [isOtpEnabled, setOtpEnabled] = React.useState(true);
+  const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isRequestOtpEnabled, setRequestOtpEnabled] = React.useState(true);
   const [countDown, setCountDown] = React.useState(0);
   const [payload, setPayload] = React.useState({

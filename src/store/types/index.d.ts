@@ -1,3 +1,4 @@
+import { ActionType } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType } from "../../types";
 
@@ -19,6 +20,10 @@ export type AppStoreType = {
 export type ContactStoreType = {
   directoryList: ContactDirectoryType[];
   selectedDirectory: ContactDirectoryType;
+  action: ActionType;
+  isListView: boolean;
+  setAction: (action: ActionType) => void;
+  setIsListView: (isListView: boolean) => void;
   setDirectoryList: (directoryList: ContactDirectoryType[]) => void;
   setSelectedDirectory: (selectedDirectory: ContactDirectoryType) => void;
 };

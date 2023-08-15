@@ -22,7 +22,6 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           style={{
             margin: "10px 10px",
             padding: 10,
-            height: height,
             background: "#FFFFFF",
           }}
         >

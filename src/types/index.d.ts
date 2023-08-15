@@ -5,3 +5,7 @@ export type ContactDirectoryType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type GenericJsonType = Record<string, any>;
+
+export type ActionType = "ADD" | "EDIT" | "";

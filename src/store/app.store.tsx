@@ -4,6 +4,10 @@ import { AppStoreType } from "./types";
 export const createAppStore = create<AppStoreType>((set) => ({
   isLoading: false,
   isError: false,
+  screen: "",
+  setScreen: (screen) => {
+    set((state) => ({ screen }));
+  },
   setError: (isError) => {
     set((state) => ({ isError }));
   },

@@ -15,7 +15,7 @@ export const ROUTES = [
     element: <SignIn />,
   },
   {
-    path: "/contact-management",
+    path: "/services/contact-management",
     element: <ContactManagement />,
   },
   {

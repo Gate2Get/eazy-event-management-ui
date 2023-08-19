@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles.scss";
-import { Button, Col, Row, Segmented, Space, Typography } from "antd";
+import { Button, Col, Divider, Row, Segmented, Space, Typography } from "antd";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
 import { ActionType, ContactDirectoryType } from "../../types";
-import { ViewContactDirectory } from "./components/viewContactDirectory";
+import { ListContactDirectory } from "./components/listContactDirectory";
 import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
@@ -33,44 +33,45 @@ export const ContactManagement = () => {
   };
 
   return (
-    <Space direction="vertical" className="contact-management__container">
+    <div className="contact-management__container">
       <Title level={3}>Contact Management</Title>
-      <Row>
-        <Col flex={12}>
-          <Button
-            type="primary"
-            onClick={() => {
-              setAction("ADD");
-            }}
-          >
-            Create Directory
-          </Button>
-        </Col>
-        <Col className="list__grid-view">
-          <Segmented
-            value={isListView ? "List" : "Card"}
-            options={[
-              {
-                value: "List",
-                icon: <BarsOutlined />,
-              },
-              {
-                value: "Card",
-                icon: <AppstoreOutlined />,
-              },
-            ]}
-            onChange={(value) => {
-              setIsListView(value === "List");
-            }}
-          />
-        </Col>
-      </Row>
-      <ViewContactDirectory />
-      <AddEditContactDirectory
-        action={action as ActionType}
-        isOpen={action === "ADD" || action === "EDIT"}
-        setOpen={setAction}
-      />
-    </Space>
+      <Divider />
+      {!action && (
+        <>
+          <Row>
+            <Col flex={12} className="create-directory__button">
+              <Button
+                type="primary"
+                onClick={() => {
+                  setAction("ADD");
+                }}
+              >
+                Create Directory
+              </Button>
+            </Col>
+            <Col className="list__grid-view">
+              <Segmented
+                value={isListView ? "List" : "Card"}
+                options={[
+                  {
+                    value: "List",
+                    icon: <BarsOutlined />,
+                  },
+                  {
+                    value: "Card",
+                    icon: <AppstoreOutlined />,
+                  },
+                ]}
+                onChange={(value) => {
+                  setIsListView(value === "List");
+                }}
+              />
+            </Col>
+          </Row>
+          <ListContactDirectory />
+        </>
+      )}
+      {action && <AddEditContactDirectory />}
+    </div>
   );
 };

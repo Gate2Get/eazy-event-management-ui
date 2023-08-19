@@ -1,5 +1,10 @@
 import { create } from "zustand";
-import { ActionType, ContactDirectoryType, GenericJsonType } from "../types";
+import {
+  ActionType,
+  ContactDirectoryType,
+  ContactListType,
+  GenericJsonType,
+} from "../types";
 import { ContactStoreType } from "./types";
 
 const initialSelectedDirectory = {
@@ -12,6 +17,7 @@ const initialSelectedDirectory = {
 
 export const createContactStore = create<ContactStoreType>((set) => ({
   directoryList: [],
+  contactList: [],
   selectedDirectory: initialSelectedDirectory,
   action: "",
   isListView: false,
@@ -29,6 +35,9 @@ export const createContactStore = create<ContactStoreType>((set) => ({
   },
   setDirectoryList: (directoryList: ContactDirectoryType[]) => {
     set((state) => ({ directoryList }));
+  },
+  setContactList: (contactList: ContactListType[]) => {
+    set((state) => ({ contactList }));
   },
   setSelectedDirectory: (selectedDirectory: ContactDirectoryType) => {
     set((state) => ({ selectedDirectory }));

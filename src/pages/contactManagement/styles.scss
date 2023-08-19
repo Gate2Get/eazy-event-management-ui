@@ -2,4 +2,21 @@
   .list__grid-view > div {
     float: right;
   }
+
+  .create-directory__button {
+    margin-bottom: 16px;
+  }
+}
+
+.add-edit-contact-Directory__container {
+  .action__button-groups {
+    > button {
+      margin-left: 5px;
+    }
+  }
+
+  .tab__header {
+    font-size: 18px;
+    font-weight: 700;
+  }
 }

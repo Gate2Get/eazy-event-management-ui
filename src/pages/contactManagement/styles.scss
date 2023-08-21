@@ -15,33 +15,37 @@
     }
   }
 
-  .header__container {
-    border: 0.1px solid #183153;
-    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
-    border-radius: 0.75rem;
+  .header__row {
+    margin-bottom: 10px;
 
-    > div {
-      padding: 10px;
-    }
+    .header__container {
+      // border: 0.1px solid #183153;
+      // box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+      // border-radius: 0.75rem;
 
-    .back-icon__container {
-      text-align: center;
-      background-color: #183153;
-      border-radius: 0.75rem 0 0 0.75rem;
-
-      .back-icon {
-        color: #fff;
-        cursor: pointer;
+      > div {
+        padding: 10px;
       }
-    }
 
-    .event-name__container {
-      // background: #fff;
+      .back-icon__container {
+        text-align: center;
+        // background-color: #183153;
+        // border-radius: 0.75rem 0 0 0.75rem;
+
+        .back-icon {
+          // color: #fff;
+          cursor: pointer;
+        }
+      }
+
+      .event-name__container {
+        // background: #fff;
+      }
     }
   }
 
   .tab__header {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
   }
 }

@@ -1,7 +1,9 @@
-import { Button, Col, Row } from "antd";
+import { Typography, Col, Row } from "antd";
 import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./styles.scss";
+
+const { Text } = Typography;
 
 type HeaderType = {
   collapsed: boolean;
@@ -13,7 +15,7 @@ export const Header = (props: HeaderType) => {
   return (
     <div className="header__container">
       <Row>
-        <Col span={12} className="">
+        <Col flex={24}>
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -23,7 +25,9 @@ export const Header = (props: HeaderType) => {
               },
             }
           )}
-          Eazy Event
+          <Text className="app__name" italic>
+            Eazy Event
+          </Text>
         </Col>
         {/* <Col span={12}>
           <Row className="button__container">

@@ -36,7 +36,6 @@ export const ContactManagement = () => {
 
   return (
     <div className="contact-management__container">
-      <Title level={3}>Contact Management</Title>
       <Divider />
       {!action && (
         <>

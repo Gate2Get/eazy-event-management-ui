@@ -16,6 +16,8 @@ export const ROUTES_MENU = {
   MY_PROFILE: "My Profile",
 };
 
+export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
+
 export const EVENT_STATUS = {
   APPROVED: "APPROVED",
   PENDING: "PENDING",

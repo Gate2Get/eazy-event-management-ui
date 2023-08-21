@@ -1,10 +1,8 @@
 import React, { Dispatch } from "react";
-import { isMobile } from "react-device-detect";
 import {
   Button,
   Col,
   Divider,
-  Form,
   Input,
   Modal,
   Row,
@@ -12,27 +10,25 @@ import {
   Space,
   Typography,
 } from "antd";
-import { AddEditContactDirectoryType } from "./types";
 import { AttachmentButton } from "../../../../components/AttachmentButton";
 import { useBearStore } from "../../../../store";
 import "../../styles.scss";
 import { DataTable } from "../../../../components/dataTable";
 import { contactListColumns, SORT_KEYS } from "./config";
 import { API } from "../../../../api";
-import { ContactDirectoryType, ContactListType } from "../../../../types";
-import { CONTACT_LIST_COLUMN_KEYS, MOBILE_VIEW_COLUMNS } from "./constants";
+import { ContactListType } from "../../../../types";
+import { CONTACT_LIST_COLUMN_KEYS } from "./constants";
 import {
   AppstoreOutlined,
-  ArrowLeftOutlined,
   BarsOutlined,
   DeleteOutlined,
-  EditOutlined,
 } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { parseXlsx } from "../../../../utils/parseXlsx.utils";
 import { ContactUserCard } from "../../../../components/contactUserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import IllustrationWebp from "../../../../assets/webp/illustration-self-service.webp";
 
 const { Title, Text, Link } = Typography;
 
@@ -221,7 +217,7 @@ export const AddEditContactDirectory = () => {
       >
         Once deleted it cannot be undo
       </Modal>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} className="header__row">
         <Col flex={12}>
           <Row className="header__container">
             <Col
@@ -239,7 +235,7 @@ export const AddEditContactDirectory = () => {
               span={screen === "MOBILE" ? 20 : 23}
               className="event-name__container"
             >
-              <Text className="tab__header" italic>
+              <Text className="tab__header">
                 {action === "VIEW"
                   ? selectedDirectory.name
                   : DIRECTORY_ACTIONS[action].header}
@@ -260,100 +256,112 @@ export const AddEditContactDirectory = () => {
           )}
         </Col>
       </Row>
-      <Space direction="vertical" style={{ width: "100%" }} size="middle">
-        {action !== "VIEW" && (
-          <>
-            <Text strong>Enter Name</Text>
-            <Input
-              value={selectedDirectory.name}
-              placeholder="Name of the directory"
-              style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
-              onChange={(event) => onChangeForm("name", event.target.value)}
-            />
-            <Text strong>Upload Directory file</Text>
-            <AttachmentButton buttonText="Upload" onAttach={handleFileUpload} />
-            <Text>
-              Template file?{" "}
-              <Link href="https://ant.design" target="_blank">
-                download here
-              </Link>
-            </Text>
-          </>
-        )}
-        {directoryContactList.length ? (
-          <>
-            <Divider />
-            <Row>
-              <Col flex={12}>
-                <Text className="tab__header">Contact List</Text>
-              </Col>
-              {selectedRowKeys.length ? (
-                <Col>
-                  <Button
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={() => {
-                      setIsDeleteConfirmation("CONTACT_LIST");
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </Col>
-              ) : action === "EDIT" ? (
-                <Button onClick={onAddContact}>Add New</Button>
-              ) : (
-                <Col className="list__grid-view">
-                  <Segmented
-                    value={isListView ? "List" : "Card"}
-                    options={[
-                      {
-                        value: "List",
-                        icon: <BarsOutlined />,
-                      },
-                      {
-                        value: "Card",
-                        icon: <AppstoreOutlined />,
-                      },
-                    ]}
-                    onChange={(value) => {
-                      setIsListView(value === "List");
-                    }}
-                  />
-                </Col>
-              )}
-            </Row>
-          </>
-        ) : null}
-        {isListView ? (
-          <DataTable
-            columns={columns}
-            data={directoryContactList}
-            sortKeys={SORT_KEYS}
-            otherProps={
-              action === "EDIT"
-                ? {
-                    rowSelection: {
-                      type: "checkbox",
-                      ...rowSelection,
-                    },
-                  }
-                : {}
-            }
-          />
-        ) : (
-          <Row gutter={[16, 16]}>
-            {directoryContactList.map((contact) => (
-              <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
-                <ContactUserCard
-                  mobile={contact.mobile}
-                  name={contact.name}
-                  id={contact.id}
+      <Row>
+        <Col flex={6}>
+          <img src={IllustrationWebp} alt="" height={500} />
+        </Col>
+        <Col flex={18}>
+          <Space direction="vertical" style={{ width: "100%" }} size="middle">
+            {action !== "VIEW" && (
+              <>
+                <Text strong>Enter Name</Text>
+                <Input
+                  required
+                  size="large"
+                  value={selectedDirectory.name}
+                  placeholder="Name of the directory"
+                  style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
+                  onChange={(event) => onChangeForm("name", event.target.value)}
                 />
-              </Col>
-            ))}
-          </Row>
-        )}
-      </Space>
+                <Text strong>Upload Directory file</Text>
+                <AttachmentButton
+                  buttonText="Upload"
+                  onAttach={handleFileUpload}
+                />
+                <Text>
+                  Template file?{" "}
+                  <Link href="https://ant.design" target="_blank">
+                    download here
+                  </Link>
+                </Text>
+              </>
+            )}
+            {directoryContactList.length ? (
+              <>
+                <Divider />
+                <Row>
+                  <Col flex={12}>
+                    <Text className="tab__header">Contact List</Text>
+                  </Col>
+                  {selectedRowKeys.length ? (
+                    <Col>
+                      <Button
+                        danger
+                        icon={<DeleteOutlined />}
+                        onClick={() => {
+                          setIsDeleteConfirmation("CONTACT_LIST");
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Col>
+                  ) : action === "EDIT" ? (
+                    <Button onClick={onAddContact}>Add New</Button>
+                  ) : (
+                    <Col className="list__grid-view">
+                      <Segmented
+                        value={isListView ? "List" : "Card"}
+                        options={[
+                          {
+                            value: "List",
+                            icon: <BarsOutlined />,
+                          },
+                          {
+                            value: "Card",
+                            icon: <AppstoreOutlined />,
+                          },
+                        ]}
+                        onChange={(value) => {
+                          setIsListView(value === "List");
+                        }}
+                      />
+                    </Col>
+                  )}
+                </Row>
+              </>
+            ) : null}
+            {isListView ? (
+              <DataTable
+                columns={columns}
+                data={directoryContactList}
+                sortKeys={SORT_KEYS}
+                otherProps={
+                  action === "EDIT"
+                    ? {
+                        rowSelection: {
+                          type: "checkbox",
+                          ...rowSelection,
+                        },
+                      }
+                    : {}
+                }
+              />
+            ) : (
+              <Row gutter={[16, 16]}>
+                {directoryContactList.map((contact) => (
+                  <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
+                    <ContactUserCard
+                      mobile={contact.mobile}
+                      name={contact.name}
+                      id={contact.id}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            )}
+          </Space>
+        </Col>
+      </Row>
     </div>
   );
 };

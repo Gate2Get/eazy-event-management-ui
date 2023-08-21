@@ -2,6 +2,7 @@ import { Menu } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getMenuItems } from "../../configs/sidebar.config";
+import { MENU_OPEN_KEYS } from "../../constants";
 
 export const SidebarTab = () => {
   const navigate = useNavigate();
@@ -16,11 +17,12 @@ export const SidebarTab = () => {
 
   return (
     <Menu
-      theme="dark"
+      // theme="dark"
       mode="inline"
       defaultSelectedKeys={["services"]}
       items={menuItems}
       selectedKeys={[selectedTab]}
+      openKeys={MENU_OPEN_KEYS}
     />
   );
 };

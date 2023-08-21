@@ -32,11 +32,7 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
   return (
     <Row gutter={[8, 8]} className="contact-directory-card__container">
       <Col span={6} className="icon__container">
-        <FontAwesomeIcon
-          icon={faAddressBook}
-          size="3x"
-          className="icon-light-color"
-        />
+        <FontAwesomeIcon icon={faAddressBook} size="3x" className="" />
       </Col>
       <Col span={menuItems ? 15 : 17}>
         <Text strong className="font-size-16">

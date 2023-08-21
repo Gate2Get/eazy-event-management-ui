@@ -1,14 +1,33 @@
-.layout__trigger-sidebar {
-  color: #ffffff;
-  font-size: 20px;
-  padding-left: 20px;
-}
+.app__layout {
+  .layout__trigger-sidebar {
+    color: #ffffff;
+    font-size: 20px;
+    padding-left: 20px;
+  }
 
-.layout__header {
-  position: sticky;
-  padding-left: 0px;
-  top: 0px;
-  z-index: 1000;
-  width: 100%;
-  // background: #6741d9;
+  .layout__header {
+    position: sticky;
+    padding-left: 0px;
+    top: 0px;
+    z-index: 1000;
+    width: 100%;
+    background: #0071dc;
+  }
+
+  .banner-text {
+    position: relative;
+  }
+  .text-on-image {
+    position: absolute;
+    top: 25%;
+    left: 5%;
+
+    > h2 {
+      color: #fff;
+    }
+  }
+
+  .sidebar__layout {
+    background-color: #fff;
+  }
 }

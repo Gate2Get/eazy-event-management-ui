@@ -18,40 +18,32 @@ export const getMenuItems = (
     icon: <DashboardOutlined />,
     label: ROUTES_MENU.DASHBOARD,
     onClick: () => {
-      navigate(ROUTES_MENU.DASHBOARD);
+      navigate(ROUTES_URL.DASHBOARD);
     },
   },
   {
-    key: ROUTES_URL.SERVICE,
-    icon: <SettingOutlined />,
-    label: ROUTES_MENU.SERVICE,
-
-    children: [
-      {
-        key: ROUTES_URL.CONTACT_MANAGEMENT,
-        label: ROUTES_MENU.CONTACT_MANAGEMENT,
-        icon: <ContactsOutlined />,
-        onClick: () => {
-          navigate(ROUTES_URL.CONTACT_MANAGEMENT);
-        },
-      },
-      {
-        key: ROUTES_URL.EVENT_MANAGEMENT,
-        label: ROUTES_MENU.EVENT_MANAGEMENT,
-        icon: <NotificationOutlined />,
-        onClick: () => {
-          navigate(ROUTES_URL.EVENT_MANAGEMENT);
-        },
-      },
-      {
-        key: ROUTES_URL.GIFT_MANAGEMENT,
-        label: ROUTES_MENU.GIFT_MANAGEMENT,
-        icon: <GiftOutlined />,
-        onClick: () => {
-          navigate(ROUTES_URL.GIFT_MANAGEMENT);
-        },
-      },
-    ],
+    key: ROUTES_URL.CONTACT_MANAGEMENT,
+    label: ROUTES_MENU.CONTACT_MANAGEMENT,
+    icon: <ContactsOutlined />,
+    onClick: () => {
+      navigate(ROUTES_URL.CONTACT_MANAGEMENT);
+    },
+  },
+  {
+    key: ROUTES_URL.EVENT_MANAGEMENT,
+    label: ROUTES_MENU.EVENT_MANAGEMENT,
+    icon: <NotificationOutlined />,
+    onClick: () => {
+      navigate(ROUTES_URL.EVENT_MANAGEMENT);
+    },
+  },
+  {
+    key: ROUTES_URL.GIFT_MANAGEMENT,
+    label: ROUTES_MENU.GIFT_MANAGEMENT,
+    icon: <GiftOutlined />,
+    onClick: () => {
+      navigate(ROUTES_URL.GIFT_MANAGEMENT);
+    },
   },
   {
     key: ROUTES_URL.MY_PROFILE,

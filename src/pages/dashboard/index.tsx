@@ -8,14 +8,13 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 import Marquee from "react-fast-marquee";
 import { RecentEvent } from "../../components/recentEvent";
 import { StatisticCard } from "../../components/StatisticCard";
 import { DASHBOARD_STATS } from "./constants";
-
-// import styles from "./style.scss";
+import { NoticeCalendar } from "../../components/noticeCalendar";
+import { useBearStore } from "../../store";
 
 const data = [
   {
@@ -80,6 +79,14 @@ const dataProps = {
 const statColSpan = 24 / DASHBOARD_STATS.length;
 
 export const Dashboard = () => {
+  const { screen } = useBearStore.appStore();
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
+
   return (
     <>
       <Alert
@@ -94,7 +101,7 @@ export const Dashboard = () => {
       />
       <br />
       <Row gutter={[16, 16]}>
-        <Col flex={18}>
+        <Col {...colOption(18)}>
           <Row gutter={[16, 16]}>
             {DASHBOARD_STATS.map((stats) => (
               <Col flex={statColSpan}>
@@ -104,30 +111,32 @@ export const Dashboard = () => {
           </Row>
           <br />
           <Row gutter={[8, 8]}>
-            <Col span={24}>
-              <BarChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </Col>
+            <Row>
+              <NoticeCalendar />
+            </Row>
+
+            <BarChart
+              width={500}
+              height={300}
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="pv" fill="#8884d8" />
+              <Bar dataKey="uv" fill="#82ca9d" />
+            </BarChart>
           </Row>
         </Col>
-        <Col flex={6}>
+        <Col {...colOption(6)}>
           <Row>
             <RecentEvent />
           </Row>

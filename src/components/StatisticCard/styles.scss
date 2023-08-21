@@ -1,0 +1,11 @@
+.statistic-card__container {
+  border-radius: 0.75rem;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+
+  .stat-icon {
+    position: relative;
+    top: 10px;
+  }
+}

@@ -1,0 +1,64 @@
+import {
+  ContactsOutlined,
+  DashboardOutlined,
+  GiftOutlined,
+  NotificationOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import { MenuProps } from "antd";
+import { NavigateFunction } from "react-router-dom";
+import { ROUTES_MENU, ROUTES_URL } from "../constants";
+
+export const getMenuItems = (
+  navigate: NavigateFunction
+): MenuProps["items"] => [
+  {
+    key: ROUTES_URL.DASHBOARD,
+    icon: <DashboardOutlined />,
+    label: ROUTES_MENU.DASHBOARD,
+    onClick: () => {
+      navigate(ROUTES_MENU.DASHBOARD);
+    },
+  },
+  {
+    key: ROUTES_URL.SERVICE,
+    icon: <SettingOutlined />,
+    label: ROUTES_MENU.SERVICE,
+
+    children: [
+      {
+        key: ROUTES_URL.CONTACT_MANAGEMENT,
+        label: ROUTES_MENU.CONTACT_MANAGEMENT,
+        icon: <ContactsOutlined />,
+        onClick: () => {
+          navigate(ROUTES_URL.CONTACT_MANAGEMENT);
+        },
+      },
+      {
+        key: ROUTES_URL.EVENT_MANAGEMENT,
+        label: ROUTES_MENU.EVENT_MANAGEMENT,
+        icon: <NotificationOutlined />,
+        onClick: () => {
+          navigate(ROUTES_URL.EVENT_MANAGEMENT);
+        },
+      },
+      {
+        key: ROUTES_URL.GIFT_MANAGEMENT,
+        label: ROUTES_MENU.GIFT_MANAGEMENT,
+        icon: <GiftOutlined />,
+        onClick: () => {
+          navigate(ROUTES_URL.GIFT_MANAGEMENT);
+        },
+      },
+    ],
+  },
+  {
+    key: ROUTES_URL.MY_PROFILE,
+    icon: <UserOutlined />,
+    label: ROUTES_MENU.MY_PROFILE,
+    onClick: () => {
+      navigate(ROUTES_URL.MY_PROFILE);
+    },
+  },
+];

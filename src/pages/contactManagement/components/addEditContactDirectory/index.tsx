@@ -31,6 +31,8 @@ import {
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { parseXlsx } from "../../../../utils/parseXlsx.utils";
 import { ContactUserCard } from "../../../../components/contactUserCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const { Title, Text, Link } = Typography;
 
@@ -221,14 +223,29 @@ export const AddEditContactDirectory = () => {
       </Modal>
       <Row gutter={[16, 16]}>
         <Col flex={12}>
-          <Space size="small">
-            <ArrowLeftOutlined onClick={onCancel} />{" "}
-            <Text className="tab__header" italic>
-              {action === "VIEW"
-                ? selectedDirectory.name
-                : DIRECTORY_ACTIONS[action].header}
-            </Text>
-          </Space>
+          <Row className="header__container">
+            <Col
+              span={screen === "MOBILE" ? 4 : 1}
+              className="back-icon__container"
+            >
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                size="2x"
+                className="back-icon"
+                onClick={onCancel}
+              />
+            </Col>
+            <Col
+              span={screen === "MOBILE" ? 20 : 23}
+              className="event-name__container"
+            >
+              <Text className="tab__header" italic>
+                {action === "VIEW"
+                  ? selectedDirectory.name
+                  : DIRECTORY_ACTIONS[action].header}
+              </Text>
+            </Col>
+          </Row>
         </Col>
         <Col className="action__button-groups">
           {DIRECTORY_ACTIONS[action].secondaryButtonText && (

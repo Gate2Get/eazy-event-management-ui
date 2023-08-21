@@ -1,0 +1,21 @@
+.event-management__container {
+  .event-management__filters {
+    background: #6741d9;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .upcoming-event__date-picker {
+    text-align: end;
+    align-self: center;
+  }
+
+  .upcoming-event__pagination {
+    text-align: end;
+    align-self: center;
+  }
+
+  .event-status__tag {
+    width: 100%;
+  }
+}

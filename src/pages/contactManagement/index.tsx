@@ -7,6 +7,8 @@ import { ActionType, ContactDirectoryType } from "../../types";
 import { ListContactDirectory } from "./components/listContactDirectory";
 import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
 
 const { Title } = Typography;
 
@@ -41,10 +43,18 @@ export const ContactManagement = () => {
           <Row>
             <Col flex={12} className="create-directory__button">
               <Button
+                size="large"
                 type="primary"
+                className="dark-color-bg"
                 onClick={() => {
                   setAction("ADD");
                 }}
+                icon={
+                  <FontAwesomeIcon
+                    icon={faAddressBook}
+                    className="padding-right-8"
+                  />
+                }
               >
                 Create Directory
               </Button>

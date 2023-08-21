@@ -36,6 +36,10 @@
   font-size: 24px;
 }
 
+.font-size-16 {
+  font-size: 16px;
+}
+
 .align-self-center {
   align-self: center;
 }
@@ -48,12 +52,32 @@
   display: flex;
 }
 
+.padding-right-8 {
+  padding-right: 8px;
+}
+
 .width-100 {
   width: 100%;
 }
 
 .padding-left-8 {
   padding-left: 8px;
+}
+
+.icon-light-color {
+  color: #b197fc;
+}
+
+.light-color-bg {
+  background-color: #b197fc;
+}
+
+.dark-color-bg {
+  background-color: #6741d9;
+}
+
+.dark-color {
+  color: #6741d9;
 }
 
 .ee__avatar-color-a,
@@ -132,4 +156,10 @@
 .ee__avatar-color-z {
   background-color: #fffa99;
   color: #e6cb00;
+}
+
+.ant-btn-primary,
+.ant-btn-primary:hover {
+  background-color: #6741d9 !important;
+  color: #fff;
 }

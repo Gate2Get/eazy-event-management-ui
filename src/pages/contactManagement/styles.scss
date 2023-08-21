@@ -15,6 +15,31 @@
     }
   }
 
+  .header__container {
+    border: 0.1px solid #183153;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    border-radius: 0.75rem;
+
+    > div {
+      padding: 10px;
+    }
+
+    .back-icon__container {
+      text-align: center;
+      background-color: #183153;
+      border-radius: 0.75rem 0 0 0.75rem;
+
+      .back-icon {
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+
+    .event-name__container {
+      // background: #fff;
+    }
+  }
+
   .tab__header {
     font-size: 18px;
     font-weight: 700;

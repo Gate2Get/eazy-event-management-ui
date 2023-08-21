@@ -4,13 +4,20 @@ import {
   Badge,
   Card,
   Col,
+  Divider,
   Dropdown,
+  Image,
   MenuProps,
   Row,
+  Tooltip,
   Typography,
 } from "antd";
 import React from "react";
 import { ContactDirectoryType } from "../../types";
+import ContactBookIcon from "../../assets/png/contact-book.png";
+import { faAddressBook } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./styles.scss";
 
 const { Title, Text } = Typography;
 
@@ -21,28 +28,30 @@ type ContactCardType = {
 
 export const ContactDirectoryCard = (props: ContactCardType) => {
   const { cardContact, menuItems } = props;
-  const avatarClassName = `ee__avatar-color-${cardContact.name
-    ?.toString()?.[0]
-    ?.toLowerCase()}`;
+
   return (
-    <Badge.Ribbon text={cardContact.noOfContacts} color="">
-      <Card>
-        <Row gutter={[8, 8]}>
-          <Col span={4}>
-            <Avatar className={avatarClassName} icon={<IdcardOutlined />} />
-          </Col>
-          <Col span={menuItems ? 18 : 20}>
-            <Text>{cardContact.name}</Text>
-          </Col>
-          {menuItems && (
-            <Col span={2}>
-              <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
-                <MoreOutlined />
-              </Dropdown>
-            </Col>
-          )}
-        </Row>
-      </Card>
-    </Badge.Ribbon>
+    <Row gutter={[8, 8]} className="contact-directory-card__container">
+      <Col span={6} className="icon__container">
+        <FontAwesomeIcon
+          icon={faAddressBook}
+          size="3x"
+          className="icon-light-color"
+        />
+      </Col>
+      <Col span={menuItems ? 15 : 17}>
+        <Text strong className="font-size-16">
+          {cardContact.name}
+        </Text>
+      </Col>
+      {menuItems && (
+        <Col span={3} className="more-item__container">
+          <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+            <Tooltip placement="top" title="More info">
+              <MoreOutlined size={64} width={100} className="more-item__icon" />
+            </Tooltip>
+          </Dropdown>
+        </Col>
+      )}
+    </Row>
   );
 };

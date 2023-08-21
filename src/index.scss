@@ -1,18 +1,14 @@
 //Demo - can remove when you develop
-$font-stack: Helvetica, sans-serif;
+$font-stack: "Bogle", sans-serif;
 $primary-color: #333;
 //------
 body {
   margin: 0;
-  font-family: Bogle, sans-serif !important;
+  font-family: "Bogle", sans-serif !important;
   font: 100% $font-stack;
   background-color: $primary-color;
 }
 
 html * {
-  font-family: Bogle !important;
-}
-
-.spinner__walmart-loader > svg {
-  color: #06f27b !important;
+  font-family: "Bogle" !important;
 }

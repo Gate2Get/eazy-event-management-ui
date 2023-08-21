@@ -1,0 +1,28 @@
+.contact-directory-card__container {
+  border: 0.1px solid #b8c3d3;
+  border-radius: 0.75rem;
+  background-color: #fff;
+
+  > div {
+    padding: 12px;
+  }
+
+  .icon__container {
+    text-align: center;
+    border-right: 0.1px solid #b8c3d3;
+  }
+
+  .more-item__container {
+    text-align: center;
+    border-left: 0.1px solid #b8c3d3;
+    border-radius: 0 0.75rem 0.75rem 0;
+    background-color: #183153;
+
+    .more-item__icon {
+      color: #fff;
+      cursor: pointer;
+      position: relative;
+      top: 10px;
+    }
+  }
+}

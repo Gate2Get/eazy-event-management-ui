@@ -1,4 +1,4 @@
-export type EventCardType = {
+export type MarriageEventCardType = {
   name: string;
   approvalStatus: "APPROVED" | "PENDING" | "REJECTED";
   progressionStatus: "COMPLETED" | "IN_PROGRESS" | "DRAFT";

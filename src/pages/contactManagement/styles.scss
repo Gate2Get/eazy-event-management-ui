@@ -15,6 +15,12 @@
     }
   }
 
+  .add-action__button {
+    > button {
+      float: right;
+    }
+  }
+
   .header__row {
     margin-bottom: 10px;
 

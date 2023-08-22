@@ -1,4 +1,4 @@
-import { Alert, Col, Row } from "antd";
+import { Alert, Col, Row, Space, Typography } from "antd";
 import React from "react";
 import {
   BarChart,
@@ -15,6 +15,8 @@ import { StatisticCard } from "../../components/StatisticCard";
 import { DASHBOARD_STATS } from "./constants";
 import { NoticeCalendar } from "../../components/noticeCalendar";
 import { useBearStore } from "../../store";
+
+const { Title } = Typography;
 
 const data = [
   {
@@ -111,29 +113,34 @@ export const Dashboard = () => {
           </Row>
           <br />
           <Row gutter={[8, 8]}>
+            <Title level={4}>My Calendar</Title>
             <Row>
               <NoticeCalendar />
             </Row>
 
-            <BarChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="pv" fill="#8884d8" />
-              <Bar dataKey="uv" fill="#82ca9d" />
-            </BarChart>
+            <Space direction="vertical">
+              <Title level={4}>My Event chart</Title>
+              <BarChart
+                title="My Event chart"
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="pv" fill="#8884d8" />
+                <Bar dataKey="uv" fill="#82ca9d" />
+              </BarChart>
+            </Space>
           </Row>
         </Col>
         <Col {...colOption(6)}>

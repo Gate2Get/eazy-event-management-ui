@@ -286,82 +286,82 @@ export const AddEditContactDirectory = () => {
                 </Text>
               </>
             )}
-            {directoryContactList.length ? (
-              <>
-                <Divider />
-                <Row>
-                  <Col flex={12}>
-                    <Text className="tab__header">Contact List</Text>
-                  </Col>
-                  {selectedRowKeys.length ? (
-                    <Col>
-                      <Button
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => {
-                          setIsDeleteConfirmation("CONTACT_LIST");
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </Col>
-                  ) : action === "EDIT" ? (
-                    <Button onClick={onAddContact}>Add New</Button>
-                  ) : (
-                    <Col className="list__grid-view">
-                      <Segmented
-                        value={isListView ? "List" : "Card"}
-                        options={[
-                          {
-                            value: "List",
-                            icon: <BarsOutlined />,
-                          },
-                          {
-                            value: "Card",
-                            icon: <AppstoreOutlined />,
-                          },
-                        ]}
-                        onChange={(value) => {
-                          setIsListView(value === "List");
-                        }}
-                      />
-                    </Col>
-                  )}
-                </Row>
-              </>
-            ) : null}
-            {isListView ? (
-              <DataTable
-                columns={columns}
-                data={directoryContactList}
-                sortKeys={SORT_KEYS}
-                otherProps={
-                  action === "EDIT"
-                    ? {
-                        rowSelection: {
-                          type: "checkbox",
-                          ...rowSelection,
-                        },
-                      }
-                    : {}
-                }
-              />
-            ) : (
-              <Row gutter={[16, 16]}>
-                {directoryContactList.map((contact) => (
-                  <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
-                    <ContactUserCard
-                      mobile={contact.mobile}
-                      name={contact.name}
-                      id={contact.id}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            )}
           </Space>
         </Col>
       </Row>
+
+      {directoryContactList.length ? (
+        <>
+          <Divider />
+          <Row gutter={[16, 8]}>
+            <Col flex={12}>
+              <Text className="tab__header">Contact List</Text>
+            </Col>
+            <Col className="list__grid-view add-action__button" flex={12}>
+              {selectedRowKeys.length ? (
+                <Button
+                  danger
+                  icon={<DeleteOutlined />}
+                  onClick={() => {
+                    setIsDeleteConfirmation("CONTACT_LIST");
+                  }}
+                >
+                  Delete
+                </Button>
+              ) : action === "EDIT" ? (
+                <Button onClick={onAddContact}>Add New</Button>
+              ) : (
+                <Segmented
+                  value={isListView ? "List" : "Card"}
+                  options={[
+                    {
+                      value: "List",
+                      icon: <BarsOutlined />,
+                    },
+                    {
+                      value: "Card",
+                      icon: <AppstoreOutlined />,
+                    },
+                  ]}
+                  onChange={(value) => {
+                    setIsListView(value === "List");
+                  }}
+                />
+              )}
+            </Col>
+          </Row>
+        </>
+      ) : null}
+      <br />
+      {isListView ? (
+        <DataTable
+          columns={columns}
+          data={directoryContactList}
+          sortKeys={SORT_KEYS}
+          otherProps={
+            action === "EDIT"
+              ? {
+                  rowSelection: {
+                    type: "checkbox",
+                    ...rowSelection,
+                  },
+                }
+              : {}
+          }
+        />
+      ) : (
+        <Row gutter={[16, 16]}>
+          {directoryContactList.map((contact) => (
+            <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
+              <ContactUserCard
+                mobile={contact.mobile}
+                name={contact.name}
+                id={contact.id}
+              />
+            </Col>
+          ))}
+        </Row>
+      )}
     </div>
   );
 };

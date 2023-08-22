@@ -1,0 +1,56 @@
+.marriage-event-card__container {
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  // background: #fff;
+
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+
+  .marriage-image {
+    background-image: url(../../assets/png/marriage-bride-groom.png);
+    background-repeat: no-repeat;
+    // background-attachment: fixed;
+    height: 170px;
+    background-size: cover;
+    background-position: center;
+
+    .bride-name,
+    .groom-name,
+    .heart-icon,
+    .event-place,
+    .event-time {
+      text-align: center;
+    }
+    .groom-name {
+      align-self: end;
+    }
+    .event-place {
+      > svg {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .more-info {
+    > span {
+      float: right;
+    }
+  }
+
+  .event-type {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #e6f1fc;
+    color: #fff;
+
+    .event-type__label {
+      // color: #fff;
+    }
+  }
+
+  .event-status {
+    > span {
+      float: right;
+    }
+  }
+}

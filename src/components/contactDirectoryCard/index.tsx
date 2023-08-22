@@ -28,11 +28,21 @@ type ContactCardType = {
 
 export const ContactDirectoryCard = (props: ContactCardType) => {
   const { cardContact, menuItems } = props;
+  const avatarClassName = `ee__avatar-color-${cardContact.name
+    ?.toString()?.[0]
+    ?.toLowerCase()}`;
 
+  const avatarIconLetter = cardContact.name
+    ?.toString()
+    .split(" ")
+    .map((item) => item?.[0])
+    .join("");
   return (
     <Row gutter={[8, 8]} className="contact-directory-card__container">
       <Col span={6} className="icon__container">
-        <FontAwesomeIcon icon={faAddressBook} size="3x" className="" />
+        <Avatar shape="square" size={40} className={avatarClassName}>
+          {avatarIconLetter}
+        </Avatar>
       </Col>
       <Col span={menuItems ? 15 : 17}>
         <Text strong className="font-size-16">

@@ -11,7 +11,8 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import React from "react";
-import { EventCard } from "../../components/eventCard";
+import { BirthdayEventCard } from "../../components/birthdayEventCard";
+import { MarriageEventCard } from "../../components/marriageEventCard";
 import {
   EVENT_DATE_FORMAT,
   EVENT_STATUS_LABEL,
@@ -99,7 +100,7 @@ export const EventManagement = () => {
       </Row>
       <Row wrap gutter={[8, 8]}>
         <Col span={12}>
-          <Title level={3}>Upcoming Events</Title>
+          <Title level={3}> Events</Title>
         </Col>
         <Col span={12} className="upcoming-event__pagination">
           <Pagination simple defaultCurrent={2} total={50} />
@@ -107,32 +108,21 @@ export const EventManagement = () => {
       </Row>
       <Row>
         <Col {...colProps}>
-          <EventCard
-            name="My first event"
-            approvalStatus="PENDING"
-            progressionStatus="IN_PROGRESS"
-            createdAt="2023-01-01"
-            eventType="MARRIAGE"
-          />
-        </Col>
-      </Row>
-
-      <Row>
-        <Col span={12}>
-          <Title level={3}>Completed Events</Title>
-        </Col>
-        <Col span={12} className="upcoming-event__pagination">
-          <Pagination simple defaultCurrent={2} total={50} />
-        </Col>
-      </Row>
-      <Row>
-        <Col {...colProps}>
-          <EventCard
+          <MarriageEventCard
             name="My first event"
             approvalStatus="APPROVED"
             progressionStatus="COMPLETED"
             createdAt="2023-01-01"
             eventType="MARRIAGE"
+          />
+        </Col>
+        <Col {...colProps}>
+          <BirthdayEventCard
+            name="My first event"
+            approvalStatus="APPROVED"
+            progressionStatus="COMPLETED"
+            createdAt="2023-01-01"
+            eventType="BIRTHDAY"
           />
         </Col>
       </Row>

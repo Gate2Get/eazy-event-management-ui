@@ -1,10 +1,14 @@
 export const ROUTES_URL = {
   DASHBOARD: "/dashboard",
   SERVICE: "service",
-  CONTACT_MANAGEMENT: "/services/contact-management",
-  EVENT_MANAGEMENT: "/services/event-management",
-  GIFT_MANAGEMENT: "/services/gift-management",
+  CONTACT_MANAGEMENT: "/contact-management",
+  EVENT_MANAGEMENT: "/event-management",
+  GIFT_MANAGEMENT: "/gift-management",
+  FEEDBACK: "/feedback",
+  REPORT_BUG: "/report-bug",
   MY_PROFILE: "/my-profile",
+  LOGIN: "/login",
+  FORBIDDEN: "/forbidden",
 };
 
 export const ROUTES_MENU = {
@@ -13,6 +17,8 @@ export const ROUTES_MENU = {
   CONTACT_MANAGEMENT: "Contact Management",
   EVENT_MANAGEMENT: "Event Management",
   GIFT_MANAGEMENT: "Gift Management",
+  FEEDBACK: "Feedback",
+  REPORT_BUG: "Report Bug",
   MY_PROFILE: "My Profile",
 };
 

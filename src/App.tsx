@@ -1,10 +1,11 @@
 import React from "react";
 import "./App.scss";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { ROUTES } from "./configs/route.config";
+import { BrowserRouter } from "react-router-dom";
+
 import { AppLayout } from "./layout";
 import { useBearStore } from "./store";
 import { useWindowSize } from "./hooks/useWindowSize";
+import { AppRoutes } from "./routes";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
@@ -22,15 +23,7 @@ function App(): React.ReactElement {
     <div>
       <BrowserRouter>
         <AppLayout>
-          <Routes>
-            {ROUTES.map((route) => (
-              <Route
-                element={route.element}
-                key={route.path}
-                path={route.path}
-              />
-            ))}
-          </Routes>
+          <AppRoutes />
         </AppLayout>
       </BrowserRouter>
     </div>

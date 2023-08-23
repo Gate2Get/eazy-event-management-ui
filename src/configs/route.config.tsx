@@ -5,8 +5,10 @@ import { ROUTES_URL } from "../constants";
 import { ContactManagement } from "../pages/contactManagement";
 import { Dashboard } from "../pages/dashboard";
 import { EventManagement } from "../pages/eventManagement";
+import { Feedback } from "../pages/feedback";
 import { Home } from "../pages/home";
 import { MyProfile } from "../pages/myProfile";
+import { ReportBug } from "../pages/reportBug";
 import { SignIn } from "../pages/signIn";
 
 export const ROUTES = [
@@ -19,7 +21,7 @@ export const ROUTES = [
     element: <Dashboard />,
   },
   {
-    path: "/login",
+    path: ROUTES_URL.LOGIN,
     element: <SignIn />,
   },
   {
@@ -35,7 +37,15 @@ export const ROUTES = [
     element: <MyProfile />,
   },
   {
-    path: "/forbidden",
+    path: ROUTES_URL.FEEDBACK,
+    element: <Feedback />,
+  },
+  {
+    path: ROUTES_URL.REPORT_BUG,
+    element: <ReportBug />,
+  },
+  {
+    path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
   },
   {

@@ -1,4 +1,6 @@
 import {
+  BugOutlined,
+  CommentOutlined,
   ContactsOutlined,
   DashboardOutlined,
   GiftOutlined,
@@ -45,6 +47,23 @@ export const getMenuItems = (
       navigate(ROUTES_URL.GIFT_MANAGEMENT);
     },
   },
+  {
+    key: ROUTES_URL.FEEDBACK,
+    icon: <CommentOutlined />,
+    label: ROUTES_MENU.FEEDBACK,
+    onClick: () => {
+      navigate(ROUTES_URL.FEEDBACK);
+    },
+  },
+  {
+    key: ROUTES_URL.REPORT_BUG,
+    icon: <BugOutlined />,
+    label: ROUTES_MENU.REPORT_BUG,
+    onClick: () => {
+      navigate(ROUTES_URL.REPORT_BUG);
+    },
+  },
+
   {
     key: ROUTES_URL.MY_PROFILE,
     icon: <UserOutlined />,

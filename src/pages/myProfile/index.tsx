@@ -17,21 +17,26 @@ export const MyProfile = () => {
             { required: true, message: "Please input your mobile number!" },
           ]}
         >
-          <Input type="number" placeholder="Mobile number" disabled />
+          <Input
+            size="large"
+            type="number"
+            placeholder="Mobile number"
+            disabled
+          />
         </Form.Item>
         <Form.Item
           label="Name"
           name="name"
           rules={[{ required: true, message: "Please input your name!" }]}
         >
-          <Input placeholder="Enter your name" />
+          <Input size="large" placeholder="Enter your name" />
         </Form.Item>
         <Form.Item
           label="Gender"
           name="gender"
           rules={[{ required: true, message: "Please choose gender!" }]}
         >
-          <Radio.Group>
+          <Radio.Group size="large">
             <Radio.Button value="M">Male</Radio.Button>
             <Radio.Button value="F">Female</Radio.Button>
             <Radio.Button value="NA">Not preferred</Radio.Button>
@@ -46,13 +51,16 @@ export const MyProfile = () => {
           ]}
         >
           <Input
+            size="large"
             type="email"
             placeholder="Your email address"
             suffix={<ExclamationCircleOutlined />}
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary">Save changes</Button>
+          <Button size="large" type="primary">
+            Save changes
+          </Button>
         </Form.Item>
       </Form>
     </div>

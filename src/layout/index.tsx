@@ -52,7 +52,12 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           trigger={null}
           width={sidebarWidth}
           className="sidebar__layout"
-          style={{ height }}
+          // style={{ height }}
+          style={{
+            overflow: "auto",
+            height,
+            position: "fixed",
+          }}
         >
           <SidebarTab />
         </Sider>
@@ -64,6 +69,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
               padding: 10,
               minHeight: height,
               background: "#FFFFFF",
+              marginLeft: collapsed ? 0 : sidebarWidth,
             }}
           >
             <div className="banner-text">

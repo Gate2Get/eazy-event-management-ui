@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { BirthdayEventCard } from "../../components/birthdayEventCard";
 import { MarriageEventCard } from "../../components/marriageEventCard";
+import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
   EVENT_DATE_FORMAT,
   EVENT_STATUS_LABEL,
@@ -57,75 +58,80 @@ export const EventManagement = () => {
 
   return (
     <div className="event-management__container">
-      <Row className="event-management__filters" gutter={[8, 8]}>
-        <Col flex={6}>
-          <Select
-            style={{ width: "100%" }}
-            allowClear
-            placeholder="Select a event"
-            optionFilterProp="children"
-            options={eventTypeOptions}
-          />
-        </Col>
-        <Col flex={6}>
-          <Select
-            style={{ width: "100%" }}
-            allowClear
-            mode="multiple"
-            placeholder="Select a status"
-            optionFilterProp="children"
-            options={eventStatusOptions}
-            tagRender={({ label }) => {
-              return (
-                <Tag
-                  color={EVENT_STATUS_LABEL_COLOR[label as string]}
-                  className="event-status__tag"
-                >
-                  {label}
-                </Tag>
-              );
-            }}
-          />
-        </Col>
-        <Col className="upcoming-event__date-picker" flex={6}>
-          <RangePicker
-            size="middle"
-            defaultValue={[
-              dayjs("2015/01/01", EVENT_DATE_FORMAT),
-              dayjs("2015/01/01", EVENT_DATE_FORMAT),
-            ]}
-            format={EVENT_DATE_FORMAT}
-          />
-        </Col>
-      </Row>
-      <Row wrap gutter={[8, 8]}>
-        <Col span={12}>
-          <Title level={3}> Events</Title>
-        </Col>
-        <Col span={12} className="upcoming-event__pagination">
-          <Pagination simple defaultCurrent={2} total={50} />
-        </Col>
-      </Row>
-      <Row>
-        <Col {...colProps}>
-          <MarriageEventCard
-            name="My first event"
-            approvalStatus="APPROVED"
-            progressionStatus="COMPLETED"
-            createdAt="2023-01-01"
-            eventType="MARRIAGE"
-          />
-        </Col>
-        <Col {...colProps}>
-          <BirthdayEventCard
-            name="My first event"
-            approvalStatus="APPROVED"
-            progressionStatus="COMPLETED"
-            createdAt="2023-01-01"
-            eventType="BIRTHDAY"
-          />
-        </Col>
-      </Row>
+      {false && (
+        <>
+          <Row className="event-management__filters" gutter={[8, 8]}>
+            <Col flex={6}>
+              <Select
+                style={{ width: "100%" }}
+                allowClear
+                placeholder="Select a event"
+                optionFilterProp="children"
+                options={eventTypeOptions}
+              />
+            </Col>
+            <Col flex={6}>
+              <Select
+                style={{ width: "100%" }}
+                allowClear
+                mode="multiple"
+                placeholder="Select a status"
+                optionFilterProp="children"
+                options={eventStatusOptions}
+                tagRender={({ label }) => {
+                  return (
+                    <Tag
+                      color={EVENT_STATUS_LABEL_COLOR[label as string]}
+                      className="event-status__tag"
+                    >
+                      {label}
+                    </Tag>
+                  );
+                }}
+              />
+            </Col>
+            <Col className="upcoming-event__date-picker" flex={6}>
+              <RangePicker
+                size="middle"
+                defaultValue={[
+                  dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                  dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                ]}
+                format={EVENT_DATE_FORMAT}
+              />
+            </Col>
+          </Row>
+          <Row wrap gutter={[8, 8]}>
+            <Col span={12}>
+              <Title level={3}> Events</Title>
+            </Col>
+            <Col span={12} className="upcoming-event__pagination">
+              <Pagination simple defaultCurrent={2} total={50} />
+            </Col>
+          </Row>
+          <Row>
+            <Col {...colProps}>
+              <MarriageEventCard
+                name="My first event"
+                approvalStatus="APPROVED"
+                progressionStatus="COMPLETED"
+                createdAt="2023-01-01"
+                eventType="MARRIAGE"
+              />
+            </Col>
+            <Col {...colProps}>
+              <BirthdayEventCard
+                name="My first event"
+                approvalStatus="APPROVED"
+                progressionStatus="COMPLETED"
+                createdAt="2023-01-01"
+                eventType="BIRTHDAY"
+              />
+            </Col>
+          </Row>
+        </>
+      )}
+      {true && <MarriageEventCreation />}
     </div>
   );
 };

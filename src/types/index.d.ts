@@ -35,3 +35,13 @@ export type EditConfigType = {
   triggerType?: ("icon" | "text")[];
   enterIcon?: React.ReactNode;
 };
+
+export type UserInfoType = {
+  mobile?: number;
+  gender?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  state?: string;
+  city?: string;
+};

@@ -3,6 +3,8 @@ import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
 import { Option } from "antd/es/mentions";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import "./styles.scss";
+import { API } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const OTP_RESEND_AFTER = 5000;
@@ -18,6 +20,7 @@ const prefixSelector = (
 
 export const SignIn = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isRequestOtpEnabled, setRequestOtpEnabled] = React.useState(true);
@@ -27,6 +30,18 @@ export const SignIn = () => {
     mobile: 0,
     otp: 0,
   });
+
+  const loginUser = (mobile: number) => {
+    API.userManagement.loginUser(mobile).then((response) => {
+      setOtpEnabled(true);
+    });
+  };
+
+  const verifyOTP = (mobile: number, otp: number) => {
+    API.userManagement.verifyOTP(mobile, otp).then((response) => {
+      navigate("/dashboard");
+    });
+  };
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -40,23 +55,24 @@ export const SignIn = () => {
 
   const onNext = (values: any) => {
     console.log("Received values of form: ", values);
-    if (!isNaN(values.phone)) {
+    if (!isNaN(values.mobile)) {
       setPayload({
         ...payload,
         countryCode: values.countryCode,
-        mobile: values.phone,
+        mobile: values.mobile,
       });
-      setOtpEnabled(true);
+      loginUser(values.mobile);
     }
   };
 
-  const onFinish = (values: any) => {
+  const onVerifyOTP = (values: any) => {
     console.log("Received values of form: ", values);
-    if (!isNaN(values.phone)) {
+    if (!isNaN(values.otp)) {
       setPayload({
         ...payload,
-        mobile: values.phone,
+        mobile: values.mobile,
       });
+      verifyOTP(payload.mobile, values.otp);
     }
   };
 
@@ -88,13 +104,13 @@ export const SignIn = () => {
                 size="large"
                 form={form}
                 name="otp"
-                onFinish={onFinish}
+                onFinish={onVerifyOTP}
                 style={{ maxWidth: 600 }}
                 scrollToFirstError
                 layout="vertical"
               >
                 <Form.Item
-                  name="OTP"
+                  name="otp"
                   label="Enter OTP"
                   rules={[
                     {
@@ -150,18 +166,18 @@ export const SignIn = () => {
               }}
             >
               <Form.Item
-                name="phone"
-                label="Phone Number"
+                name="mobile"
+                label="mobile Number"
                 rules={[
                   {
                     len: 10,
                     min: 10,
                     max: 10,
-                    message: "Enter valid phone number",
+                    message: "Enter valid mobile number",
                   },
                   {
                     required: true,
-                    message: "Please input your phone number!",
+                    message: "Please input your mobile number!",
                   },
                 ]}
               >

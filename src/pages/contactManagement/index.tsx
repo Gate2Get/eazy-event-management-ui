@@ -3,7 +3,7 @@ import "./styles.scss";
 import { Button, Col, Divider, Row, Segmented, Space, Typography } from "antd";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
-import { ActionType, ContactDirectoryType } from "../../types";
+import { ContactDirectoryType } from "../../types";
 import { ListContactDirectory } from "./components/listContactDirectory";
 import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";

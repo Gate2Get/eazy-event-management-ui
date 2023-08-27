@@ -1,3 +1,4 @@
+import { contactManagementAPI } from "./contactManagement";
 import { contactManagementMockAPI } from "./contactManagement/mock";
 import { userManagementAPI } from "./userManagement";
 
@@ -6,7 +7,7 @@ const mockAPI = {
 };
 
 const appAPI = {
-  contactManagement: contactManagementMockAPI,
+  contactManagement: contactManagementAPI,
   userManagement: userManagementAPI,
 };
 

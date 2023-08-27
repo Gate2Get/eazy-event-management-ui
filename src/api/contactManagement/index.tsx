@@ -1,22 +1,52 @@
-import contactDirectoryList from "../../data/contactDirectoryList.json";
-import contactList from "../../data/contactList.json";
+import {
+  contactManagementEndpoint,
+  instance,
+} from "../../configs/axios.config";
+import { ContactDirectoryType } from "../../types";
 
 const apiTimer = 1000;
 
-export const contactManagementMockAPI = {
-  createContactDirectory: () => {},
-  //   getContactDirectory: (): any => {
-  //     return new Promise((resolve, reject) => {
-  //       setTimeout(() => {
-  //         resolve(contactDirectoryList);
-  //       }, apiTimer);
-  //     });
-  //   },
-  //   getContactList: (): any => {
-  //     return new Promise((resolve, reject) => {
-  //       setTimeout(() => {
-  //         resolve(contactList);
-  //       }, apiTimer);
-  //     });
-  //   },
+export const contactManagementAPI = {
+  createContactDirectory: async (directory: ContactDirectoryType) => {
+    return await instance
+      .post(contactManagementEndpoint.createContactDirectory, directory)
+      .then((response) => {
+        return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  updateContactDirectory: async (directory: ContactDirectoryType) => {
+    return await instance
+      .put(contactManagementEndpoint.updateContactDirectory, directory)
+      .then((response) => {
+        return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getContactDirectory: async () => {
+    return await instance
+      .get(contactManagementEndpoint.getContactDirectory)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getContactList: async (id: string) => {
+    return await instance
+      .get(`${contactManagementEndpoint.getContactList}${id}`)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

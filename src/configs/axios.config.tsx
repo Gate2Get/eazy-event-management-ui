@@ -37,7 +37,10 @@ export const interceptors = (navigate: (url: string) => void): void => {
 };
 
 export const contactManagementEndpoint = {
-  getAssociates: "/api/nominations",
+  createContactDirectory: "/api/v1/contact/directory",
+  getContactDirectory: "/api/v1/contact/directory",
+  updateContactDirectory: "/api/v1/contact/directory",
+  getContactList: "/api/v1/contact/",
 };
 
 export const userManagementEndpoint = {

@@ -1,11 +1,3 @@
-export type ContactDirectoryType = {
-  name: string;
-  id: string;
-  noOfContacts: number;
-  createdAt: string;
-  updatedAt: string;
-};
-
 export type ContactListType = {
   key?: string;
   id: string;
@@ -44,4 +36,13 @@ export type UserInfoType = {
   email?: string;
   state?: string;
   city?: string;
+};
+
+export type ContactDirectoryType = {
+  _id?: string;
+  userId?: number;
+  name: string;
+  contacts: ContactsType[];
+  createdAt?: string;
+  updatedAt?: string;
 };

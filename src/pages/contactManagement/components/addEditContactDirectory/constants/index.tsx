@@ -21,3 +21,18 @@ export const MOBILE_VIEW_COLUMNS = [
   CONTACT_LIST_COLUMN_KEYS.MOBILE,
   CONTACT_LIST_COLUMN_KEYS.ACTION,
 ];
+
+export const DIRECTORY_ACTIONS: any = {
+  ADD: {
+    header: "Create Directory",
+    primaryButtonText: "Create",
+    secondaryButtonText: "Cancel",
+  },
+  EDIT: {
+    header: "Update Directory",
+    primaryButtonText: "Update",
+  },
+  VIEW: {
+    header: "View Directory",
+  },
+};

@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Divider,
+  Form,
   Input,
   Modal,
   Row,
@@ -16,8 +17,8 @@ import "../../styles.scss";
 import { DataTable } from "../../../../components/dataTable";
 import { contactListColumns, SORT_KEYS } from "./config";
 import { API } from "../../../../api";
-import { ContactListType } from "../../../../types";
-import { CONTACT_LIST_COLUMN_KEYS } from "./constants";
+import { ContactDirectoryType, ContactListType } from "../../../../types";
+import { CONTACT_LIST_COLUMN_KEYS, DIRECTORY_ACTIONS } from "./constants";
 import {
   AppstoreOutlined,
   BarsOutlined,
@@ -33,6 +34,7 @@ import IllustrationWebp from "../../../../assets/webp/illustration-self-service.
 const { Title, Text, Link } = Typography;
 
 export const AddEditContactDirectory = () => {
+  const [form] = Form.useForm();
   let columns = contactListColumns;
   const { setLoading, screen } = useBearStore.appStore();
   const {
@@ -53,24 +55,12 @@ export const AddEditContactDirectory = () => {
     React.useState([]);
   const [isDeleteConfirmation, setIsDeleteConfirmation] = React.useState("");
 
-  const DIRECTORY_ACTIONS: any = {
-    ADD: {
-      header: "Create Directory",
-      primaryButtonText: "Create",
-      secondaryButtonText: "Cancel",
-    },
-    EDIT: {
-      header: "Update Directory",
-      primaryButtonText: "Update",
-    },
-    VIEW: {
-      header: "View Directory",
-    },
-  };
-
   React.useEffect(() => {
     if (action === "EDIT" || action === "VIEW") {
-      getContactList();
+      const { _id, name } = selectedDirectory;
+      console.log(selectedDirectory);
+      form.setFieldValue("name", name);
+      getContactList(_id as string);
     }
   }, [action]);
 
@@ -118,24 +108,48 @@ export const AddEditContactDirectory = () => {
     setIsDeleteConfirmation("");
   };
 
-  const getContactList = (): any => {
+  const getContactList = (id: string): any => {
     setLoading(true);
     API.contactManagement
-      .getContactList()
+      .getContactList(id)
       .then((contacts: ContactListType[]) => {
+        setLoading(false);
         setContactList(contacts);
+        form.setFieldValue("contacts", contacts);
         setDirectoryContactList(
           contacts.map((contact) => ({ ...contact, key: contact.id }))
         );
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "getContactDirectory", error });
+        console.log({ location: "getContactList", error });
       });
   };
 
-  const onFinish = (values: any) => {
-    console.log({ values });
+  const createContactDirectory = (directory: ContactDirectoryType): any => {
+    setLoading(true);
+    API.contactManagement
+      .createContactDirectory(directory)
+      .then((response) => {
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "createContactDirectory", error });
+      });
+  };
+
+  const updateContactDirectory = (directory: ContactDirectoryType): any => {
+    setLoading(true);
+    API.contactManagement
+      .updateContactDirectory(directory)
+      .then((response) => {
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "updateContactDirectory", error });
+      });
   };
 
   const onChangeForm = (key: string, value: any) => {
@@ -146,8 +160,18 @@ export const AddEditContactDirectory = () => {
     setAction("");
   };
 
-  const onActionClick = () => {
-    if (action === "VIEW") {
+  const onActionClick = async () => {
+    const validation = await form.validateFields();
+    console.log({ validation });
+    const directory = form.getFieldsValue();
+
+    if (action === "ADD") {
+      createContactDirectory(directory);
+      onCancel();
+    } else if (action === "EDIT") {
+      updateContactDirectory({ id: selectedDirectory._id, ...directory });
+      onCancel();
+    } else if (action === "VIEW") {
       setAction("EDIT");
     }
   };
@@ -188,7 +212,10 @@ export const AddEditContactDirectory = () => {
   ): Promise<void> => {
     const { file } = e;
     console.log(file);
-    if (file?.size && file.size < 50000) {
+    if (file.status === "removed") {
+      setDirectoryContactList([]);
+      form.setFieldValue("contacts", undefined);
+    } else if (file?.size && file.size < 50000) {
       const { uid, name } = file;
 
       const data = await parseXlsx(file);
@@ -197,12 +224,27 @@ export const AddEditContactDirectory = () => {
         mobile: contact.Mobile,
       }));
       setDirectoryContactList(contactList);
+      form.setFieldValue("contacts", contactList);
       console.log({ data });
     } else {
     }
+    form.validateFields();
   };
 
   const onDeleteConfirm = () => {};
+
+  const onFinishDirectory = (values: any) => {
+    console.log(values);
+    createContactDirectory(values);
+  };
+
+  const normFile = (e: any) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
 
   return (
     <div className="add-edit-contact-Directory__container">
@@ -264,33 +306,65 @@ export const AddEditContactDirectory = () => {
           <Space direction="vertical" style={{ width: "100%" }} size="middle">
             {action !== "VIEW" && (
               <>
-                <Text strong>Enter Name</Text>
-                <Input
-                  required
-                  size="large"
-                  value={selectedDirectory.name}
-                  placeholder="Name of the directory"
-                  style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
-                  onChange={(event) => onChangeForm("name", event.target.value)}
-                />
-                <Text strong>Upload Directory file</Text>
-                <AttachmentButton
-                  buttonText="Upload"
-                  onAttach={handleFileUpload}
-                />
-                <Text>
-                  Template file?{" "}
-                  <Link href="https://ant.design" target="_blank">
-                    download here
-                  </Link>
-                </Text>
+                <Form
+                  layout="vertical"
+                  form={form}
+                  name="directory"
+                  scrollToFirstError
+                  onFinish={onFinishDirectory}
+                >
+                  <Form.Item
+                    label="Enter Name"
+                    name="name"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your directory name!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      required
+                      size="large"
+                      value={selectedDirectory.name}
+                      placeholder="Name of the directory"
+                      style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
+                      onChange={(event) =>
+                        onChangeForm("name", event.target.value)
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label="Upload Directory file"
+                    name="contacts"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please upload your directory file!",
+                      },
+                    ]}
+                    getValueFromEvent={normFile}
+                    valuePropName="fileList"
+                  >
+                    <AttachmentButton
+                      buttonText="Upload"
+                      onAttach={handleFileUpload}
+                    />
+                  </Form.Item>
+                  <Text>
+                    Template file?{" "}
+                    <Link href="https://ant.design" target="_blank">
+                      download here
+                    </Link>
+                  </Text>
+                </Form>
               </>
             )}
           </Space>
         </Col>
       </Row>
 
-      {directoryContactList.length ? (
+      {directoryContactList?.length ? (
         <>
           <Divider />
           <Row gutter={[16, 8]}>

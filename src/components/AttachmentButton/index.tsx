@@ -13,7 +13,7 @@ export const AttachmentButton = (
         accept={accept}
         disabled={disabled}
         progress={{ showInfo: true }}
-        showUploadList={false}
+        showUploadList={true}
         beforeUpload={(file) => {
           return false;
         }}

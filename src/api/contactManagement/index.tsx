@@ -27,6 +27,16 @@ export const contactManagementAPI = {
         throw error;
       });
   },
+  deleteContactDirectory: async (id: string) => {
+    return await instance
+      .delete(`${contactManagementEndpoint.deleteContactDirectory}${id}`)
+      .then((response) => {
+        return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
   getContactDirectory: async () => {
     return await instance
       .get(contactManagementEndpoint.getContactDirectory)

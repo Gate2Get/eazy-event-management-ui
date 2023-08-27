@@ -60,6 +60,7 @@ export const AddEditContactDirectory = () => {
       const { _id, name } = selectedDirectory;
       console.log(selectedDirectory);
       form.setFieldValue("name", name);
+      setIsListView(true);
       getContactList(_id as string);
     }
   }, [action]);
@@ -71,7 +72,7 @@ export const AddEditContactDirectory = () => {
           <Input
             value={text}
             onChange={(e) => {
-              onContactListChange(record.id, "name", e.target.value);
+              onContactListChange(record._id, "name", e.target.value);
             }}
           />
         );
@@ -81,7 +82,7 @@ export const AddEditContactDirectory = () => {
             type="number"
             value={text}
             onChange={(e) => {
-              onContactListChange(record.id, "mobile", e.target.value);
+              onContactListChange(record._id, "mobile", e.target.value);
             }}
           />
         );
@@ -117,7 +118,7 @@ export const AddEditContactDirectory = () => {
         setContactList(contacts);
         form.setFieldValue("contacts", contacts);
         setDirectoryContactList(
-          contacts.map((contact) => ({ ...contact, key: contact.id }))
+          contacts.map((contact) => ({ ...contact, key: contact._id }))
         );
       })
       .catch((error: Error) => {
@@ -149,6 +150,19 @@ export const AddEditContactDirectory = () => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "updateContactDirectory", error });
+      });
+  };
+
+  const deleteContactDirectory = (id: string) => {
+    setLoading(true);
+    API.contactManagement
+      .deleteContactDirectory(id)
+      .then((response) => {
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "deleteContactDirectory", error });
       });
   };
 
@@ -231,7 +245,11 @@ export const AddEditContactDirectory = () => {
     form.validateFields();
   };
 
-  const onDeleteConfirm = () => {};
+  const onDeleteConfirm = () => {
+    const { _id } = selectedDirectory;
+    deleteContactDirectory(_id as string);
+    closeDeleteModal();
+  };
 
   const onFinishDirectory = (values: any) => {
     console.log(values);
@@ -244,6 +262,14 @@ export const AddEditContactDirectory = () => {
       return e;
     }
     return e?.fileList;
+  };
+
+  const removeContact = () => {
+    const contactList = directoryContactList.filter(
+      (contact) => !selectedRowKeys.includes(contact._id)
+    );
+    setDirectoryContactList(contactList);
+    form.setFieldValue("contacts", contactList);
   };
 
   return (
@@ -294,6 +320,17 @@ export const AddEditContactDirectory = () => {
           {DIRECTORY_ACTIONS[action].primaryButtonText && (
             <Button type="primary" onClick={onActionClick}>
               {DIRECTORY_ACTIONS[action].primaryButtonText}
+            </Button>
+          )}
+          {DIRECTORY_ACTIONS[action].deleteButtonText && (
+            <Button
+              type="default"
+              danger
+              onClick={() => {
+                setIsDeleteConfirmation("DIRECTORY");
+              }}
+            >
+              {DIRECTORY_ACTIONS[action].deleteButtonText}
             </Button>
           )}
         </Col>
@@ -377,7 +414,7 @@ export const AddEditContactDirectory = () => {
                   danger
                   icon={<DeleteOutlined />}
                   onClick={() => {
-                    setIsDeleteConfirmation("CONTACT_LIST");
+                    removeContact();
                   }}
                 >
                   Delete
@@ -426,11 +463,11 @@ export const AddEditContactDirectory = () => {
       ) : (
         <Row gutter={[16, 16]}>
           {directoryContactList.map((contact) => (
-            <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
+            <Col span={screen === "MOBILE" ? 24 : 8} key={contact._id}>
               <ContactUserCard
                 mobile={contact.mobile}
                 name={contact.name}
-                id={contact.id}
+                id={contact._id}
               />
             </Col>
           ))}

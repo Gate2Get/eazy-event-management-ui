@@ -40,6 +40,7 @@ export const contactManagementEndpoint = {
   createContactDirectory: "/api/v1/contact/directory",
   getContactDirectory: "/api/v1/contact/directory",
   updateContactDirectory: "/api/v1/contact/directory",
+  deleteContactDirectory: "/api/v1/contact/directory/",
   getContactList: "/api/v1/contact/",
 };
 

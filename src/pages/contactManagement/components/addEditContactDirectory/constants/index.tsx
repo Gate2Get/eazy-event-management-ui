@@ -31,6 +31,7 @@ export const DIRECTORY_ACTIONS: any = {
   EDIT: {
     header: "Update Directory",
     primaryButtonText: "Update",
+    deleteButtonText: "Delete",
   },
   VIEW: {
     header: "View Directory",

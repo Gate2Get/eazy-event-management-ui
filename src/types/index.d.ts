@@ -1,6 +1,6 @@
 export type ContactListType = {
   key?: string;
-  id: string;
+  _id: string;
   name: string;
   mobile: number;
   createdAt: string;

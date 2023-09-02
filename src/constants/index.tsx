@@ -1,7 +1,14 @@
+import {
+  MessageOutlined,
+  PhoneOutlined,
+  WhatsAppOutlined,
+} from "@ant-design/icons";
+
 export const ROUTES_URL = {
   DASHBOARD: "/dashboard",
   SERVICE: "service",
   CONTACT_MANAGEMENT: "/contact-management",
+  TEMPLATE_MANAGEMENT: "/template",
   EVENT_MANAGEMENT: "/event-management",
   GIFT_MANAGEMENT: "/gift-management",
   FEEDBACK: "/feedback",
@@ -17,6 +24,7 @@ export const ROUTES_MENU = {
   CONTACT_MANAGEMENT: "Contact Management",
   EVENT_MANAGEMENT: "Event Management",
   GIFT_MANAGEMENT: "Gift Management",
+  TEMPLATE_MANAGEMENT: "Template Management",
   FEEDBACK: "Feedback",
   REPORT_BUG: "Report Bug",
   MY_PROFILE: "My Profile",
@@ -70,3 +78,30 @@ export const EVENT_TYPE_PROPS = {
 };
 
 export const EVENT_DATE_FORMAT = "YYYY/MM/DD";
+
+export const CHANNEL_OPTIONS = [
+  {
+    label: (
+      <>
+        <MessageOutlined /> SMS
+      </>
+    ),
+    value: "SMS",
+  },
+  {
+    label: (
+      <>
+        <WhatsAppOutlined /> Whatsapp
+      </>
+    ),
+    value: "WHATSAPP",
+  },
+  {
+    label: (
+      <>
+        <PhoneOutlined /> Voice call
+      </>
+    ),
+    value: "VOICE_CALL",
+  },
+];

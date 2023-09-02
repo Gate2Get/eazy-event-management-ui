@@ -1,7 +1,11 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  Button,
   Col,
   ColProps,
   DatePicker,
+  Form,
   Pagination,
   Row,
   Select,
@@ -10,17 +14,20 @@ import {
   Typography,
 } from "antd";
 import dayjs from "dayjs";
-import React from "react";
+import React, { Dispatch } from "react";
 import { BirthdayEventCard } from "../../components/birthdayEventCard";
+import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
 import { MarriageEventCard } from "../../components/marriageEventCard";
 import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
   EVENT_DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
+  EVENT_TYPES,
   EVENT_TYPE_PROPS,
 } from "../../constants";
 import { useBearStore } from "../../store";
+import { ActionType } from "../../types";
 import "./styles.scss";
 
 const { Title } = Typography;
@@ -46,8 +53,13 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
   value: event[0],
 }));
 
+console.log({ eventTypeOptions });
+
 export const EventManagement = () => {
   const { screen } = useBearStore.appStore();
+
+  const [action, setAction]: [ActionType, Dispatch<any>] = React.useState("");
+  const [eventType, setEventType] = React.useState("");
 
   const colProps: ColProps = {};
   if (screen === "MOBILE") {
@@ -56,49 +68,65 @@ export const EventManagement = () => {
     colProps.span = 8;
   }
 
+  const onCancel = () => {
+    setAction("");
+  };
+
   return (
     <div className="event-management__container">
-      {false && (
+      {!action && (
         <>
           <Row className="event-management__filters" gutter={[8, 8]}>
             <Col flex={6}>
-              <Select
-                style={{ width: "100%" }}
-                allowClear
-                placeholder="Select a event"
-                optionFilterProp="children"
-                options={eventTypeOptions}
-              />
+              <Form layout="vertical">
+                <Form.Item label="Event">
+                  <Select
+                    style={{ width: "100%" }}
+                    allowClear
+                    placeholder="Select a event"
+                    optionFilterProp="children"
+                    options={eventTypeOptions}
+                  />
+                </Form.Item>
+              </Form>
             </Col>
             <Col flex={6}>
-              <Select
-                style={{ width: "100%" }}
-                allowClear
-                mode="multiple"
-                placeholder="Select a status"
-                optionFilterProp="children"
-                options={eventStatusOptions}
-                tagRender={({ label }) => {
-                  return (
-                    <Tag
-                      color={EVENT_STATUS_LABEL_COLOR[label as string]}
-                      className="event-status__tag"
-                    >
-                      {label}
-                    </Tag>
-                  );
-                }}
-              />
+              <Form layout="vertical">
+                <Form.Item label="Status">
+                  <Select
+                    style={{ width: "100%" }}
+                    allowClear
+                    mode="multiple"
+                    placeholder="Select a status"
+                    optionFilterProp="children"
+                    options={eventStatusOptions}
+                    tagRender={({ label }) => {
+                      return (
+                        <Tag
+                          color={EVENT_STATUS_LABEL_COLOR[label as string]}
+                          className="event-status__tag"
+                        >
+                          {label}
+                        </Tag>
+                      );
+                    }}
+                  />
+                </Form.Item>
+              </Form>
             </Col>
             <Col className="upcoming-event__date-picker" flex={6}>
-              <RangePicker
-                size="middle"
-                defaultValue={[
-                  dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                  dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                ]}
-                format={EVENT_DATE_FORMAT}
-              />
+              <Form layout="vertical">
+                <Form.Item label="Event date range">
+                  <RangePicker
+                    size="middle"
+                    defaultValue={[
+                      dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                      dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                    ]}
+                    format={EVENT_DATE_FORMAT}
+                  />
+                </Form.Item>
+              </Form>
             </Col>
           </Row>
           <Row wrap gutter={[8, 8]}>
@@ -106,7 +134,15 @@ export const EventManagement = () => {
               <Title level={3}> Events</Title>
             </Col>
             <Col span={12} className="upcoming-event__pagination">
-              <Pagination simple defaultCurrent={2} total={50} />
+              <Button
+                type="primary"
+                size="large"
+                onClick={() => {
+                  setAction("ADD");
+                }}
+              >
+                Create Event
+              </Button>
             </Col>
           </Row>
           <Row>
@@ -131,7 +167,46 @@ export const EventManagement = () => {
           </Row>
         </>
       )}
-      {true && <MarriageEventCreation />}
+      {action && (
+        <Row gutter={[16, 16]} className="header__row">
+          <Col flex={12}>
+            <Row className="header__container">
+              <Col
+                span={screen === "MOBILE" ? 4 : 1}
+                className="back-icon__container"
+              >
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  size="2x"
+                  className="back-icon"
+                  onClick={onCancel}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )}
+      {action === "ADD" && (
+        <Form layout="vertical">
+          <Form.Item label="Select Event">
+            <Select
+              style={{ width: "100%" }}
+              size="large"
+              allowClear
+              placeholder="Select a event"
+              optionFilterProp="children"
+              options={eventTypeOptions}
+              onChange={(value) => setEventType(value)}
+            />
+          </Form.Item>
+        </Form>
+      )}
+      {action === "ADD" && eventType === EVENT_TYPES.MARRIAGE && (
+        <MarriageEventCreation />
+      )}
+      {action === "ADD" && eventType === EVENT_TYPES.BIRTHDAY && (
+        <BirthdayEventCreation />
+      )}
     </div>
   );
 };

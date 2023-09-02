@@ -1,5 +1,6 @@
 import { contactManagementAPI } from "./contactManagement";
 import { contactManagementMockAPI } from "./contactManagement/mock";
+import { templateManagementAPI } from "./templateManagement";
 import { userManagementAPI } from "./userManagement";
 
 const mockAPI = {
@@ -9,6 +10,7 @@ const mockAPI = {
 const appAPI = {
   contactManagement: contactManagementAPI,
   userManagement: userManagementAPI,
+  templateManagement: templateManagementAPI,
 };
 
 const IS_MOCK = true;

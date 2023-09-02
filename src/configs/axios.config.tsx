@@ -44,6 +44,13 @@ export const contactManagementEndpoint = {
   getContactList: "/api/v1/contact/",
 };
 
+export const templateManagementEndpoint = {
+  createTemplate: "/api/v1/message/template",
+  getTemplate: "/api/v1/message/template",
+  updateTemplate: "/api/v1/message/template",
+  deleteTemplate: "/api/v1/message/template/",
+};
+
 export const userManagementEndpoint = {
   loginUser: "/api/v1/login",
   verifyOTP: "/api/v1/verify-otp",

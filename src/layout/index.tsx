@@ -10,26 +10,15 @@ import { ROUTES_MENU, ROUTES_URL } from "../constants";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
-const routeUrls = Object.entries(ROUTES_URL);
-const routeMenu: any = ROUTES_MENU;
 
 export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   const [collapsed, setCollapsed] = React.useState(false);
-  const [currentPage, setCurrentPage] = React.useState("");
+
   /* A custom hook that returns the width and height of the window. */
   const { height, width } = useWindowSize();
-  const { screen } = useBearStore.appStore();
+  const { screen, currentPage, setCurrentPage } = useBearStore.appStore();
 
   const { children } = props;
-
-  React.useEffect(() => {
-    const path = window.location.pathname;
-    const route = routeUrls.find((url) => url[1] === path);
-    if (route) {
-      const menu = routeMenu[route[0]];
-      setCurrentPage(menu);
-    }
-  }, [window.location.pathname]);
 
   let sidebarWidth = width;
   if (screen === "MOBILE") {
@@ -59,7 +48,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
             position: "fixed",
           }}
         >
-          <SidebarTab />
+          <SidebarTab setCurrentPage={setCurrentPage} />
         </Sider>
 
         {screen === "DESKTOP" || (screen === "MOBILE" && collapsed) ? (

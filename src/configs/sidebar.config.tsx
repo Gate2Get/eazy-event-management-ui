@@ -3,6 +3,7 @@ import {
   CommentOutlined,
   ContactsOutlined,
   DashboardOutlined,
+  FilePptOutlined,
   GiftOutlined,
   NotificationOutlined,
   SettingOutlined,
@@ -29,6 +30,14 @@ export const getMenuItems = (
     icon: <ContactsOutlined />,
     onClick: () => {
       navigate(ROUTES_URL.CONTACT_MANAGEMENT);
+    },
+  },
+  {
+    key: ROUTES_URL.TEMPLATE_MANAGEMENT,
+    label: ROUTES_MENU.TEMPLATE_MANAGEMENT,
+    icon: <FilePptOutlined />,
+    onClick: () => {
+      navigate(ROUTES_URL.TEMPLATE_MANAGEMENT);
     },
   },
   {

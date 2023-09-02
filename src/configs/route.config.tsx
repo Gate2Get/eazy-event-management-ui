@@ -10,6 +10,7 @@ import { Home } from "../pages/home";
 import { MyProfile } from "../pages/myProfile";
 import { ReportBug } from "../pages/reportBug";
 import { SignIn } from "../pages/signIn";
+import { TemplateManagement } from "../pages/templateManagement";
 
 export const ROUTES = [
   {
@@ -27,6 +28,10 @@ export const ROUTES = [
   {
     path: ROUTES_URL.CONTACT_MANAGEMENT,
     element: <ContactManagement />,
+  },
+  {
+    path: ROUTES_URL.TEMPLATE_MANAGEMENT,
+    element: <TemplateManagement />,
   },
   {
     path: ROUTES_URL.EVENT_MANAGEMENT,

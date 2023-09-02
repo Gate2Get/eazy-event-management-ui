@@ -11,11 +11,13 @@ import {
   DatePicker,
   Select,
   Space,
+  Radio,
 } from "antd";
 import illustrationBanner from "../../assets/webp/illustration-self-service.webp";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
 import { disabledDate, disabledRangeTime } from "../../utils/datePicket.utils";
+import { CHANNEL_OPTIONS } from "../../constants";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -32,6 +34,13 @@ export const MarriageEventCreation = () => {
         <Col flex={12}>
           <Title level={3}>Create Marriage Event</Title>
           <Form layout="vertical" form={form} style={{ maxWidth: 600 }}>
+            <Form.Item
+              label="Event Name"
+              name="eventName"
+              rules={[{ required: true, message: "Please input Event name!" }]}
+            >
+              <Input size="large" placeholder="Enter your Event Name" />
+            </Form.Item>
             <Form.Item
               label="Groom Name"
               name="groomName"
@@ -66,6 +75,19 @@ export const MarriageEventCreation = () => {
                 size="large"
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%" }}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Select the channel"
+              name="channel"
+              rules={[
+                { required: true, message: "Please select event channel!" },
+              ]}
+            >
+              <Radio.Group
+                options={CHANNEL_OPTIONS}
+                optionType="button"
+                buttonStyle="solid"
               />
             </Form.Item>
             <Form.Item

@@ -1,4 +1,9 @@
-import { ActionType, ContactListType, ScreenType } from "./../../types";
+import {
+  ActionType,
+  ContactListType,
+  ScreenType,
+  TemplateType,
+} from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType } from "../../types";
 
@@ -14,6 +19,8 @@ export type AppStoreType = {
   isLoading: boolean;
   isError: boolean;
   screen: ScreenType;
+  currentPage: string;
+  setCurrentPage: (currentPage: string) => void;
   setScreen: (screen: ScreenType) => void;
   setLoading: (isLoading: boolean) => void;
   setError: (error: boolean) => void;
@@ -32,8 +39,20 @@ export type ContactStoreType = {
   setSelectedDirectory: (selectedDirectory: ContactDirectoryType) => void;
 };
 
+export type TemplateStoreType = {
+  templates: TemplateType[];
+  selectedTemplate: TemplateType;
+  action: ActionType;
+  isListView: boolean;
+  setAction: (action: ActionType) => void;
+  setIsListView: (isListView: boolean) => void;
+  setTemplates: (templates: TemplateType[]) => void;
+  setSelectedTemplate: (selectedTemplate: TemplateType) => void;
+};
+
 export type BearStoreType = {
   userStore: UseBoundStore<StoreApi<UserType>>;
   appStore: UseBoundStore<StoreApi<AppStoreType>>;
   contactStore: UseBoundStore<StoreApi<ContactStoreType>>;
+  templateStore: UseBoundStore<StoreApi<TemplateStoreType>>;
 };

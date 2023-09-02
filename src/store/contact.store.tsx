@@ -13,6 +13,7 @@ const initialSelectedDirectory = {
   name: "",
   updatedAt: "",
   noOfContacts: 0,
+  contacts: [],
 };
 
 export const createContactStore = create<ContactStoreType>((set) => ({

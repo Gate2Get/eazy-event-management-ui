@@ -46,3 +46,13 @@ export type ContactDirectoryType = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type TemplateType = {
+  id?: string;
+  userId?: number;
+  name: string;
+  type?: string;
+  message: string;
+  createdAt?: string;
+  updatedAt?: string;
+};

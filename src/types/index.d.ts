@@ -9,7 +9,7 @@ export type ContactListType = {
 
 export type GenericJsonType = Record<string, any>;
 
-export type ActionType = "VIEW" | "ADD" | "EDIT" | "";
+export type ActionType = "VIEW" | "ADD" | "EDIT" | "DELETE" | "";
 
 export type ScreenType = "MOBILE" | "TABLET" | "DESKTOP" | "";
 
@@ -48,11 +48,12 @@ export type ContactDirectoryType = {
 };
 
 export type TemplateType = {
-  id?: string;
+  _id?: string;
   userId?: number;
   name: string;
   type?: string;
   message: string;
+  channel?: string;
   createdAt?: string;
   updatedAt?: string;
 };

@@ -64,7 +64,6 @@ export const RichTextEditor = (props: SunEditorReactProps) => {
   };
   return (
     <div>
-      <p> My Other Contents </p>
       <SunEditor
         getSunEditorInstance={getSunEditorInstance}
         width="100%"

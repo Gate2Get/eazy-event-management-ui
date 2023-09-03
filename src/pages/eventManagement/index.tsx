@@ -15,6 +15,7 @@ import {
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch } from "react";
+import { API } from "../../api";
 import { BirthdayEventCard } from "../../components/birthdayEventCard";
 import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
 import { MarriageEventCard } from "../../components/marriageEventCard";
@@ -27,7 +28,7 @@ import {
   EVENT_TYPE_PROPS,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType } from "../../types";
+import { ActionType, ContactDirectoryType, TemplateType } from "../../types";
 import "./styles.scss";
 
 const { Title } = Typography;
@@ -57,9 +58,17 @@ console.log({ eventTypeOptions });
 
 export const EventManagement = () => {
   const { screen } = useBearStore.appStore();
+  const [isFetching, setIsFetching] = React.useState(false);
+  const { setDirectoryList, directoryList } = useBearStore.contactStore();
+  const { setTemplates, templates } = useBearStore.templateStore();
 
   const [action, setAction]: [ActionType, Dispatch<any>] = React.useState("");
   const [eventType, setEventType] = React.useState("");
+
+  React.useEffect(() => {
+    getContactDirectory();
+    getTemplates();
+  }, []);
 
   const colProps: ColProps = {};
   if (screen === "MOBILE") {
@@ -70,6 +79,32 @@ export const EventManagement = () => {
 
   const onCancel = () => {
     setAction("");
+  };
+
+  const getContactDirectory = (): any => {
+    setIsFetching(true);
+    API.contactManagement
+      .getContactDirectory()
+      .then((contacts: ContactDirectoryType[]) => {
+        setDirectoryList(contacts);
+      })
+      .catch((error: Error) => {
+        setIsFetching(false);
+        console.log({ location: "getContactDirectory", error });
+      });
+  };
+
+  const getTemplates = (): void => {
+    setIsFetching(true);
+    API.templateManagement
+      .getTemplate()
+      .then((templates: TemplateType[]) => {
+        setTemplates(templates);
+      })
+      .catch((error: Error) => {
+        setIsFetching(false);
+        console.log({ location: "getTemplates", error });
+      });
   };
 
   return (
@@ -202,7 +237,10 @@ export const EventManagement = () => {
         </Form>
       )}
       {action === "ADD" && eventType === EVENT_TYPES.MARRIAGE && (
-        <MarriageEventCreation />
+        <MarriageEventCreation
+          contactList={directoryList}
+          templates={templates}
+        />
       )}
       {action === "ADD" && eventType === EVENT_TYPES.BIRTHDAY && (
         <BirthdayEventCreation />

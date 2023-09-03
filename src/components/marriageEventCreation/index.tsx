@@ -18,12 +18,21 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
 import { disabledDate, disabledRangeTime } from "../../utils/datePicket.utils";
 import { CHANNEL_OPTIONS } from "../../constants";
+import { ContactDirectoryType, TemplateType } from "../../types";
+import { ContactDirectoryCard } from "../contactDirectoryCard";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 
-export const MarriageEventCreation = () => {
+type MarriageEventCreationType = {
+  contactList: ContactDirectoryType[];
+  templates: TemplateType[];
+};
+
+export const MarriageEventCreation = (props: MarriageEventCreationType) => {
+  const { contactList, templates } = props;
+
   const [form] = Form.useForm();
   return (
     <div>
@@ -100,7 +109,11 @@ export const MarriageEventCreation = () => {
               <Select
                 size="large"
                 placeholder="Select the contact directory"
-                mode="multiple"
+                allowClear
+                options={contactList?.map((contact) => ({
+                  label: contact.name,
+                  value: contact._id,
+                }))}
               />
             </Form.Item>
             <Form.Item
@@ -113,7 +126,11 @@ export const MarriageEventCreation = () => {
               <Select
                 size="large"
                 placeholder="Select the message template"
-                mode="multiple"
+                allowClear
+                options={templates?.map((template) => ({
+                  label: template.name,
+                  value: template._id,
+                }))}
               />
             </Form.Item>
             <Form.Item

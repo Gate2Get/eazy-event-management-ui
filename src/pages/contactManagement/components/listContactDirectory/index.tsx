@@ -1,25 +1,5 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ExclamationCircleOutlined,
-  EyeOutlined,
-  IdcardOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
-import {
-  Avatar,
-  Badge,
-  Card,
-  Col,
-  Dropdown,
-  MenuProps,
-  Modal,
-  Row,
-  Space,
-  Typography,
-} from "antd";
-import Meta from "antd/es/card/Meta";
-import React from "react";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Col, MenuProps, Row, Space, Typography } from "antd";
 import { ContactDirectoryCard } from "../../../../components/contactDirectoryCard";
 import { DataTable } from "../../../../components/dataTable";
 import { useBearStore } from "../../../../store";

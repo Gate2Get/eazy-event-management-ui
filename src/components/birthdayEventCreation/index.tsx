@@ -15,12 +15,19 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
 import { disabledDate, disabledRangeTime } from "../../utils/datePicket.utils";
 import { CHANNEL_OPTIONS } from "../../constants";
+import { ContactDirectoryType, TemplateType } from "../../types";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 
-export const BirthdayEventCreation = () => {
+type BirthdayEventCreationType = {
+  contactList: ContactDirectoryType[];
+  templates: TemplateType[];
+};
+
+export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
+  const { contactList, templates } = props;
   const [form] = Form.useForm();
   return (
     <div>
@@ -92,20 +99,28 @@ export const BirthdayEventCreation = () => {
               <Select
                 size="large"
                 placeholder="Select the contact directory"
-                mode="multiple"
+                allowClear
+                options={contactList?.map((contact) => ({
+                  label: contact.name,
+                  value: contact._id,
+                }))}
               />
             </Form.Item>
             <Form.Item
               label="Select message template"
               name="messageTemplate"
               rules={[
-                { required: true, message: "Please choose message template!" },
+                { required: true, message: "Please select message template!" },
               ]}
             >
               <Select
                 size="large"
                 placeholder="Select the message template"
-                mode="multiple"
+                allowClear
+                options={templates?.map((template) => ({
+                  label: template.name,
+                  value: template._id,
+                }))}
               />
             </Form.Item>
             <Form.Item

@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-// import { API_ERROR } from '../localization/en';
+import { message } from "antd";
 
 export const instance: AxiosInstance = axios.create();
 
@@ -12,6 +12,7 @@ export const interceptors = (navigate: (url: string) => void): void => {
   instance.interceptors.response.use(
     (response) => {
       const { data, config } = response;
+      message.success(data.message);
       return response;
     },
     (error) => {
@@ -26,11 +27,7 @@ export const interceptors = (navigate: (url: string) => void): void => {
       } else if (error?.response?.status === 404) {
         navigate("/404");
       } else if (error?.response?.status === 412) {
-        navigate(
-          window.location.pathname.includes("/settings")
-            ? "/settings/no-active-cycle"
-            : "/no-active-cycle"
-        );
+        navigate(window.location.pathname.includes("/settings") ? "" : "");
       }
     }
   );
@@ -56,4 +53,11 @@ export const userManagementEndpoint = {
   verifyOTP: "/api/v1/verify-otp",
   getUserInfo: "/api/v1/user/info",
   updateUserInfo: "/api/v1/user/info",
+};
+
+export const eventManagementEndpoint = {
+  createEvent: "api/v1/event/my-events",
+  getEvent: "/api/v1/event/my-events",
+  updateEvent: "/api/v1/event/my-events",
+  deleteEvent: "/api/v1/event/my-events/",
 };

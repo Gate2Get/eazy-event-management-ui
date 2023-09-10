@@ -1,58 +1,40 @@
-import { EditOutlined, EllipsisOutlined, EyeOutlined } from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import {
   Col,
   Divider,
   Dropdown,
-  MenuProps,
   Row,
   Space,
   Tag,
   Tooltip,
   Typography,
 } from "antd";
-import React from "react";
 import {
-  EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPES,
   EVENT_TYPE_PROPS,
 } from "../../constants";
-import { BirthdayEventCardType } from "./types";
-import { faMapLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
+import { EventCardType, GenericJsonType } from "../../types";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
+const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
 
-export const BirthdayEventCard = (props: BirthdayEventCardType) => {
-  const { name, createdAt, approvalStatus, progressionStatus, eventType } =
-    props;
-  let status;
-  let eventTypeLabel;
+export const BirthdayEventCard = (props: EventCardType) => {
+  const {
+    name,
+    createdAt,
+    status: progressionStatus,
+    personName,
+    type: eventType,
+    startDateTime,
+    location,
+    menuItems,
+  } = props;
 
-  if (progressionStatus === EVENT_STATUS.DRAFT) {
-    status = EVENT_STATUS_LABEL.DRAFT;
-  } else if (progressionStatus === EVENT_STATUS.COMPLETED) {
-    status = EVENT_STATUS_LABEL.COMPLETED;
-  } else if (progressionStatus === EVENT_STATUS.IN_PROGRESS) {
-    status = EVENT_STATUS_LABEL?.[approvalStatus];
-  }
-
-  const menuItems: MenuProps["items"] = [
-    {
-      label: "View",
-      key: "view",
-      // onClick: () => onViewSelect(data),
-      icon: <EyeOutlined />,
-    },
-    {
-      label: "Edit",
-      key: "edit",
-      // onClick: () => onEditSelect(data),
-      icon: <EditOutlined />,
-    },
-  ];
+  const status = eventStatusLabel[progressionStatus as string];
 
   return (
     <Space
@@ -65,15 +47,15 @@ export const BirthdayEventCard = (props: BirthdayEventCardType) => {
         <Col span={24} className="event-info">
           <Space direction="vertical">
             <Text strong italic>
-              Birthday person Name
+              {personName}
             </Text>
             <Text italic type="secondary">
-              2023-01-01, 7am to 10am
+              {startDateTime}
             </Text>
 
             <Text italic type="secondary">
               <FontAwesomeIcon icon={faMapLocationDot} color="#183153" />{" "}
-              Holiday Inn
+              {location}
             </Text>
           </Space>
         </Col>
@@ -107,7 +89,7 @@ export const BirthdayEventCard = (props: BirthdayEventCardType) => {
         </Col>
         <Col span={12}>
           <Space>
-            <Text>Holiday Inn, Chennai</Text>
+            <Text>{location}</Text>
             <FontAwesomeIcon icon={faMapLocationDot} color="#183153" />
           </Space>
         </Col>

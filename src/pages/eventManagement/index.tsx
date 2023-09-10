@@ -1,3 +1,4 @@
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,9 +10,10 @@ import {
   Pagination,
   Row,
   Select,
-  Space,
+  MenuProps,
   Tag,
   Typography,
+  Modal,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch } from "react";
@@ -28,7 +30,13 @@ import {
   EVENT_TYPE_PROPS,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType, ContactDirectoryType, TemplateType } from "../../types";
+import {
+  ActionType,
+  ContactDirectoryType,
+  Events,
+  EventType,
+  TemplateType,
+} from "../../types";
 import "./styles.scss";
 
 const { Title } = Typography;
@@ -54,21 +62,53 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
   value: event[0],
 }));
 
-console.log({ eventTypeOptions });
-
 export const EventManagement = () => {
-  const { screen } = useBearStore.appStore();
+  const { screen, setLoading } = useBearStore.appStore();
   const [isFetching, setIsFetching] = React.useState(false);
   const { setDirectoryList, directoryList } = useBearStore.contactStore();
   const { setTemplates, templates } = useBearStore.templateStore();
 
-  const [action, setAction]: [ActionType, Dispatch<any>] = React.useState("");
+  const [action, setAction]: [string, Dispatch<any>] = React.useState("");
   const [eventType, setEventType] = React.useState("");
+  const [events, setEvents]: [EventType[], Dispatch<any>] = React.useState([]);
+  const [selectedEvents, setSelectedEvents]: [EventType, Dispatch<any>] =
+    React.useState({
+      _id: "",
+      userId: 0,
+      contactDirectory: "",
+      endDateTime: "",
+      messageTemplate: "",
+      name: "",
+      startDateTime: "",
+      type: "OTHERS" as Events,
+    });
 
   React.useEffect(() => {
+    getEvents();
     getContactDirectory();
     getTemplates();
   }, []);
+
+  const getMenuItems = (data: EventType): MenuProps["items"] => [
+    {
+      label: "View",
+      key: "view",
+      // onClick: () => onViewSelect(data),
+      icon: <EyeOutlined />,
+    },
+    {
+      label: "Edit",
+      key: "edit",
+      // onClick: () => onEditSelect(data),
+      icon: <EditOutlined />,
+    },
+    {
+      label: "Delete",
+      key: "delete",
+      onClick: () => onDeleteSelect(data),
+      icon: <DeleteOutlined />,
+    },
+  ];
 
   const colProps: ColProps = {};
   if (screen === "MOBILE") {
@@ -81,12 +121,43 @@ export const EventManagement = () => {
     setAction("");
   };
 
+  const onDeleteSelect = (record: EventType) => {
+    setAction("DELETE");
+    setSelectedEvents(record);
+  };
+
+  const onDeleteConfirm = () => {
+    const { _id } = selectedEvents;
+    deleteEvent(_id as string);
+  };
+
+  const renderEvents = (): React.ReactNode => {
+    return events.map((event) => {
+      if (event.type === EVENT_TYPES.MARRIAGE) {
+        return (
+          <Col {...colProps}>
+            <MarriageEventCard {...event} menuItems={getMenuItems(event)} />
+          </Col>
+        );
+      } else if (event.type === EVENT_TYPES.BIRTHDAY) {
+        return (
+          <Col {...colProps}>
+            <BirthdayEventCard {...event} menuItems={getMenuItems(event)} />
+          </Col>
+        );
+      } else {
+        return <></>;
+      }
+    });
+  };
+
   const getContactDirectory = (): any => {
     setIsFetching(true);
     API.contactManagement
       .getContactDirectory()
       .then((contacts: ContactDirectoryType[]) => {
         setDirectoryList(contacts);
+        setLoading(false);
       })
       .catch((error: Error) => {
         setIsFetching(false);
@@ -100,6 +171,7 @@ export const EventManagement = () => {
       .getTemplate()
       .then((templates: TemplateType[]) => {
         setTemplates(templates);
+        setLoading(false);
       })
       .catch((error: Error) => {
         setIsFetching(false);
@@ -107,9 +179,63 @@ export const EventManagement = () => {
       });
   };
 
+  const createEvent = (event: EventType): void => {
+    setLoading(true);
+    API.eventManagement
+      .createEvent({ ...event, type: eventType as Events })
+      .then(() => {
+        onCancel();
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "createEvent", error });
+      });
+  };
+
+  const deleteEvent = (id: string): void => {
+    setLoading(true);
+    API.eventManagement
+      .deleteEvent(id)
+      .then(() => {
+        setLoading(false);
+        onCancel();
+        getEvents();
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "deleteEvent", error });
+      });
+  };
+
+  const getEvents = (): void => {
+    setIsFetching(true);
+    API.eventManagement
+      .getEvent()
+      .then((events: EventType[]) => {
+        setEvents(events);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setIsFetching(false);
+        console.log({ location: "getEvents", error });
+      });
+  };
+
   return (
     <div className="event-management__container">
-      {!action && (
+      <Modal
+        title={<>Delete Confirmation</>}
+        open={action === "DELETE"}
+        onOk={onDeleteConfirm}
+        onCancel={onCancel}
+        okText="Yes"
+        cancelText="No"
+        okType="danger"
+      >
+        Once deleted it cannot be undo
+      </Modal>
+      {(!action || action === "DELETE") && (
         <>
           <Row className="event-management__filters" gutter={[8, 8]}>
             <Col flex={6}>
@@ -180,29 +306,10 @@ export const EventManagement = () => {
               </Button>
             </Col>
           </Row>
-          <Row>
-            <Col {...colProps}>
-              <MarriageEventCard
-                name="My first event"
-                approvalStatus="APPROVED"
-                progressionStatus="COMPLETED"
-                createdAt="2023-01-01"
-                eventType="MARRIAGE"
-              />
-            </Col>
-            <Col {...colProps}>
-              <BirthdayEventCard
-                name="My first event"
-                approvalStatus="APPROVED"
-                progressionStatus="COMPLETED"
-                createdAt="2023-01-01"
-                eventType="BIRTHDAY"
-              />
-            </Col>
-          </Row>
+          <Row gutter={[16, 16]}>{renderEvents()}</Row>
         </>
       )}
-      {action && (
+      {action && action !== "DELETE" && (
         <Row gutter={[16, 16]} className="header__row">
           <Col flex={12}>
             <Row className="header__container">
@@ -240,10 +347,15 @@ export const EventManagement = () => {
         <MarriageEventCreation
           contactList={directoryList}
           templates={templates}
+          onHandleEvent={createEvent}
         />
       )}
       {action === "ADD" && eventType === EVENT_TYPES.BIRTHDAY && (
-        <BirthdayEventCreation />
+        <BirthdayEventCreation
+          contactList={directoryList}
+          templates={templates}
+          onHandleEvent={createEvent}
+        />
       )}
     </div>
   );

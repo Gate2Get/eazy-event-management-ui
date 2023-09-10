@@ -36,6 +36,7 @@ export const EVENT_STATUS = {
   APPROVED: "APPROVED",
   PENDING: "PENDING",
   REJECTED: "REJECTED",
+  NOT_STARTED: "NOT_STARTED",
   COMPLETED: "COMPLETED",
   IN_PROGRESS: "IN_PROGRESS",
   DRAFT: "DRAFT",
@@ -48,6 +49,7 @@ export const EVENT_STATUS_LABEL = {
   REJECTED: "Rejected",
   APPROVED: "Approved",
   COMPLETED: "Completed",
+  NOT_STARTED: "Not started",
 };
 
 export const EVENT_STATUS_LABEL_COLOR = {

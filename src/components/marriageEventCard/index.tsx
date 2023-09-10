@@ -1,4 +1,9 @@
-import { EditOutlined, EllipsisOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import {
   Col,
   Divider,
@@ -18,43 +23,29 @@ import {
   EVENT_TYPES,
   EVENT_TYPE_PROPS,
 } from "../../constants";
-import { MarriageEventCardType } from "./types";
 import { faMapLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
+import { EventCardType, GenericJsonType } from "../../types";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
-export const MarriageEventCard = (props: MarriageEventCardType) => {
-  const { name, createdAt, approvalStatus, progressionStatus, eventType } =
-    props;
-  let status;
-  let eventTypeLabel;
+const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
 
-  if (progressionStatus === EVENT_STATUS.DRAFT) {
-    status = EVENT_STATUS_LABEL.DRAFT;
-  } else if (progressionStatus === EVENT_STATUS.COMPLETED) {
-    status = EVENT_STATUS_LABEL.COMPLETED;
-  } else if (progressionStatus === EVENT_STATUS.IN_PROGRESS) {
-    status = EVENT_STATUS_LABEL?.[approvalStatus];
-  }
+export const MarriageEventCard = (props: EventCardType) => {
+  const {
+    name,
+    type: eventType,
+    status: progressionStatus,
+    createdAt,
+    groomName,
+    brideName,
+    startDateTime,
+    location,
+    menuItems,
+  } = props;
+  const status = eventStatusLabel[progressionStatus as string];
 
-  const menuItems: MenuProps["items"] = [
-    {
-      label: "View",
-      key: "view",
-      // onClick: () => onViewSelect(data),
-      icon: <EyeOutlined />,
-    },
-    {
-      label: "Edit",
-      key: "edit",
-      // onClick: () => onEditSelect(data),
-      icon: <EditOutlined />,
-    },
-  ];
-
-  // if (eventType === EVENT_TYPES.MARRIAGE)
   return (
     <Space
       className="marriage-event-card__container"
@@ -64,7 +55,7 @@ export const MarriageEventCard = (props: MarriageEventCardType) => {
       <Row className="marriage-image" gutter={[8, 8]}>
         <Col span={24} className="groom-name">
           <Text strong italic>
-            Boy Name
+            {groomName}
           </Text>
         </Col>
         <Col span={24} className="heart-icon">
@@ -72,18 +63,18 @@ export const MarriageEventCard = (props: MarriageEventCardType) => {
         </Col>
         <Col span={24} className="bride-name">
           <Text strong italic>
-            Girl Name
+            {brideName}
           </Text>
         </Col>
         <Col span={24} className="event-time">
           <Text italic type="secondary">
-            2023-01-01, 7am to 10am
+            {startDateTime}
           </Text>
         </Col>
         <Col span={24} className="event-place">
           <FontAwesomeIcon icon={faMapLocationDot} color="#183153" />
           <Text italic type="secondary">
-            Holiday Inn
+            {location}
           </Text>
         </Col>
       </Row>
@@ -115,7 +106,7 @@ export const MarriageEventCard = (props: MarriageEventCardType) => {
         </Col>
         <Col span={12}>
           <Space>
-            <Text>Holiday Inn, Chennai</Text>
+            <Text>{location}</Text>
             <FontAwesomeIcon icon={faMapLocationDot} color="#183153" />
           </Space>
         </Col>
@@ -123,7 +114,7 @@ export const MarriageEventCard = (props: MarriageEventCardType) => {
       <Row gutter={[16, 16]}>
         <Col flex={12}>
           <Text type="secondary" italic>
-            {createdAt}
+            {createdAt as string}
           </Text>
         </Col>
         <Col flex={12} className="event-status">

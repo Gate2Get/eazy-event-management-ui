@@ -5,8 +5,10 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
 import { UserInfoType } from "../../types";
+import { useBearStore } from "../../store";
 
 export const MyProfile = () => {
+  const { setLoading } = useBearStore.appStore();
   const [form] = Form.useForm();
   const [userInfo, setUserInfo]: [UserInfoType, React.Dispatch<any>] =
     React.useState({});
@@ -16,14 +18,31 @@ export const MyProfile = () => {
   }, []);
 
   const getUserInfo = () => {
-    API.userManagement.getUserInfo().then((userInfo) => {
-      setUserInfo(userInfo);
-      form.setFieldsValue(userInfo);
-    });
+    setLoading(true);
+    API.userManagement
+      .getUserInfo()
+      .then((userInfo) => {
+        setLoading(false);
+        setUserInfo(userInfo);
+        form.setFieldsValue(userInfo);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "getUserInfo", error });
+      });
   };
 
   const updateUserInfo = (userInfo: UserInfoType) => {
-    API.userManagement.updateUserInfo(userInfo).then((response) => {});
+    setLoading(true);
+    API.userManagement
+      .updateUserInfo(userInfo)
+      .then((response) => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "updateUserInfo", error });
+      });
   };
 
   return (

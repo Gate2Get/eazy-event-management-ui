@@ -27,6 +27,7 @@ export const ContactManagement = () => {
       .getContactDirectory()
       .then((contacts: ContactDirectoryType[]) => {
         setDirectoryList(contacts);
+        setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);

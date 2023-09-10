@@ -110,6 +110,7 @@ export const TemplateManagement = () => {
       .getTemplate()
       .then((templates: TemplateType[]) => {
         setTemplates(templates);
+        setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -123,6 +124,7 @@ export const TemplateManagement = () => {
       .createTemplate(template)
       .then(() => {
         onCancel();
+        setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -136,6 +138,7 @@ export const TemplateManagement = () => {
       .updateTemplate(template)
       .then(() => {
         onCancel();
+        setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -149,6 +152,7 @@ export const TemplateManagement = () => {
       .deleteTemplate(id)
       .then(() => {
         onCancel();
+        setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);

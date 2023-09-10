@@ -5,6 +5,7 @@ import { WhatsAppOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { useBearStore } from "../../store";
 
 const { Title, Text } = Typography;
 const OTP_RESEND_AFTER = 5000;
@@ -21,7 +22,7 @@ const prefixSelector = (
 export const SignIn = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-
+  const { setLoading } = useBearStore.appStore();
   const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isRequestOtpEnabled, setRequestOtpEnabled] = React.useState(true);
   const [countDown, setCountDown] = React.useState(0);
@@ -32,15 +33,31 @@ export const SignIn = () => {
   });
 
   const loginUser = (mobile: number) => {
-    API.userManagement.loginUser(mobile).then((response) => {
-      setOtpEnabled(true);
-    });
+    setLoading(true);
+    API.userManagement
+      .loginUser(mobile)
+      .then((response) => {
+        setOtpEnabled(true);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "loginUser", error });
+      });
   };
 
   const verifyOTP = (mobile: number, otp: number) => {
-    API.userManagement.verifyOTP(mobile, otp).then((response) => {
-      navigate("/dashboard");
-    });
+    setLoading(true);
+    API.userManagement
+      .verifyOTP(mobile, otp)
+      .then((response) => {
+        setLoading(false);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "verifyOTP", error });
+      });
   };
 
   React.useEffect(() => {

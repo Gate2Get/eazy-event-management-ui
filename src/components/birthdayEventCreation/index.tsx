@@ -13,9 +13,13 @@ import {
 import illustrationBanner from "../../assets/webp/illustration-self-service.webp";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
-import { disabledDate, disabledRangeTime } from "../../utils/datePicket.utils";
+import {
+  disabledDate,
+  disabledDateTime,
+  disabledRangeTime,
+} from "../../utils/datePicket.utils";
 import { CHANNEL_OPTIONS } from "../../constants";
-import { ContactDirectoryType, TemplateType } from "../../types";
+import { ContactDirectoryType, EventType, TemplateType } from "../../types";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -24,11 +28,26 @@ dayjs.extend(customParseFormat);
 type BirthdayEventCreationType = {
   contactList: ContactDirectoryType[];
   templates: TemplateType[];
+  onHandleEvent: (event: EventType) => void;
 };
 
 export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
-  const { contactList, templates } = props;
+  const { contactList, templates, onHandleEvent } = props;
   const [form] = Form.useForm();
+
+  const handleEvent = (event: any): void => {
+    const { dateTime, triggerDateTime } = event;
+    if (dateTime) {
+      event.startDateTime = dayjs(dateTime[0]).format();
+      event.endDateTime = dayjs(dateTime[1]).format();
+    }
+    if (triggerDateTime) {
+      event.triggerDateTime = dayjs(triggerDateTime).format();
+    }
+    console.log(event);
+    onHandleEvent(event);
+  };
+
   return (
     <div>
       <Row>
@@ -37,10 +56,15 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
         </Col>
         <Col flex={12}>
           <Title level={3}>Create Birthday Event</Title>
-          <Form layout="vertical" form={form} style={{ maxWidth: 600 }}>
+          <Form
+            layout="vertical"
+            form={form}
+            style={{ maxWidth: 600 }}
+            onFinish={handleEvent}
+          >
             <Form.Item
               label="Event Name"
-              name="eventName"
+              name="name"
               rules={[{ required: true, message: "Please input Event name!" }]}
             >
               <Input size="large" placeholder="Enter your Event Name" />
@@ -58,7 +82,7 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
 
             <Form.Item
               label="Select the event date"
-              name="eventDateRange"
+              name="dateTime"
               rules={[{ required: true, message: "Please select event date!" }]}
             >
               <RangePicker
@@ -148,11 +172,30 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                 placeholder="Enter the event google location url"
               />
             </Form.Item>
+            <Form.Item
+              label="Notification trigger date"
+              name="triggerDateTime"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input notification trigger date!",
+                },
+              ]}
+            >
+              <DatePicker
+                format="YYYY-MM-DD HH:mm:ss"
+                disabledDate={disabledDate}
+                disabledTime={disabledDateTime}
+                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
+                style={{ width: "100%" }}
+                size="large"
+              />
+            </Form.Item>
             <Form.Item>
               <Space>
-                <Button size="large" type="text">
+                {/* <Button size="large" type="text">
                   Save
-                </Button>
+                </Button> */}
                 <Button size="large" type="primary" htmlType="submit">
                   Preview & Send Event
                 </Button>

@@ -7,7 +7,6 @@ import {
   ColProps,
   DatePicker,
   Form,
-  Pagination,
   Row,
   Select,
   MenuProps,
@@ -31,7 +30,7 @@ import {
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
-  ActionType,
+  EventFilterType,
   ContactDirectoryType,
   Events,
   EventType,
@@ -71,6 +70,12 @@ export const EventManagement = () => {
   const [action, setAction]: [string, Dispatch<any>] = React.useState("");
   const [eventType, setEventType] = React.useState("");
   const [events, setEvents]: [EventType[], Dispatch<any>] = React.useState([]);
+  const [filters, setFilters]: [EventFilterType, Dispatch<any>] =
+    React.useState({
+      type: undefined,
+      status: undefined,
+    });
+
   const [selectedEvents, setSelectedEvents]: [EventType, Dispatch<any>] =
     React.useState({
       _id: "",
@@ -84,10 +89,13 @@ export const EventManagement = () => {
     });
 
   React.useEffect(() => {
-    getEvents();
     getContactDirectory();
     getTemplates();
   }, []);
+
+  React.useEffect(() => {
+    getEvents();
+  }, [filters]);
 
   const getMenuItems = (data: EventType): MenuProps["items"] => [
     {
@@ -152,7 +160,7 @@ export const EventManagement = () => {
   };
 
   const getContactDirectory = (): any => {
-    setIsFetching(true);
+    setLoading(true);
     API.contactManagement
       .getContactDirectory()
       .then((contacts: ContactDirectoryType[]) => {
@@ -160,13 +168,13 @@ export const EventManagement = () => {
         setLoading(false);
       })
       .catch((error: Error) => {
-        setIsFetching(false);
+        setLoading(false);
         console.log({ location: "getContactDirectory", error });
       });
   };
 
   const getTemplates = (): void => {
-    setIsFetching(true);
+    setLoading(true);
     API.templateManagement
       .getTemplate()
       .then((templates: TemplateType[]) => {
@@ -174,7 +182,7 @@ export const EventManagement = () => {
         setLoading(false);
       })
       .catch((error: Error) => {
-        setIsFetching(false);
+        setLoading(false);
         console.log({ location: "getTemplates", error });
       });
   };
@@ -209,15 +217,15 @@ export const EventManagement = () => {
   };
 
   const getEvents = (): void => {
-    setIsFetching(true);
+    setLoading(true);
     API.eventManagement
-      .getEvent()
+      .getEvent(filters)
       .then((events: EventType[]) => {
         setEvents(events);
         setLoading(false);
       })
       .catch((error: Error) => {
-        setIsFetching(false);
+        setLoading(false);
         console.log({ location: "getEvents", error });
       });
   };
@@ -247,6 +255,10 @@ export const EventManagement = () => {
                     placeholder="Select a event"
                     optionFilterProp="children"
                     options={eventTypeOptions}
+                    value={filters.type}
+                    onChange={(type) => {
+                      setFilters({ ...filters, type });
+                    }}
                   />
                 </Form.Item>
               </Form>
@@ -270,6 +282,9 @@ export const EventManagement = () => {
                           {label}
                         </Tag>
                       );
+                    }}
+                    onChange={(status) => {
+                      setFilters({ ...filters, status });
                     }}
                   />
                 </Form.Item>

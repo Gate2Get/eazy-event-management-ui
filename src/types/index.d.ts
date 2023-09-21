@@ -102,6 +102,9 @@ export type EventType = {
   notificationEndDateTime?: Date;
   createdAt?: string;
   updatedAt?: string;
+  failed?: number;
+  success?: number;
+  progress?: number;
 };
 
 export type CardType = {
@@ -109,3 +112,16 @@ export type CardType = {
 };
 
 export type EventCardType = EventType & CardType;
+
+export type EventFilterType = {
+  type?: string;
+  status?: string;
+};
+
+export type AlertType = {
+  isActive: boolean;
+  text: string;
+  props: Object;
+  createdAt?: string;
+  updatedAt?: string;
+};

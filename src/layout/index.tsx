@@ -1,12 +1,14 @@
 import React from "react";
-import { Layout, Row, Spin, Typography } from "antd";
+import { Alert, Layout, Row, Spin, Typography } from "antd";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { Header as AppHeader } from "../components/header";
 import "./styles.scss";
+import Marquee from "react-fast-marquee";
 import { useBearStore } from "../store";
 import { SidebarTab } from "../components/sidebarTab";
 import BannerPng from "../assets/png/banner-BH.4fd13869.png";
-import { ROUTES_MENU, ROUTES_URL } from "../constants";
+import { API } from "../api";
+import { AlertType } from "../types";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -16,7 +18,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
 
   /* A custom hook that returns the width and height of the window. */
   const { height, width } = useWindowSize();
-  const { screen, currentPage, setCurrentPage, isLoading } =
+  const { screen, currentPage, setCurrentPage, isLoading, setAlerts, alerts } =
     useBearStore.appStore();
 
   const { children } = props;
@@ -27,6 +29,21 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   } else {
     sidebarWidth = (width * 21) / 100;
   }
+
+  React.useEffect(() => {
+    getAlerts();
+  }, []);
+
+  const getAlerts = (): any => {
+    API.commonAPI
+      .getAlerts()
+      .then((alert: AlertType[]) => {
+        setAlerts(alert);
+      })
+      .catch((error: Error) => {
+        console.log({ location: "getAlerts", error });
+      });
+  };
 
   return (
     <Layout className="app__layout">
@@ -88,6 +105,23 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 <div className="text-on-image">
                   <Title level={2}>{currentPage}</Title>
                 </div>
+                {alerts.length
+                  ? alerts.map((alert) => (
+                      <Alert
+                        banner
+                        {...alert.props}
+                        message={
+                          <Marquee
+                            pauseOnHover
+                            gradient={false}
+                            {...alert.props}
+                          >
+                            {alert.text}
+                          </Marquee>
+                        }
+                      />
+                    ))
+                  : null}
               </div>
 
               {children}

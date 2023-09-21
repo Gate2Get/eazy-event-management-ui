@@ -1,6 +1,8 @@
 import {
   ActionType,
+  AlertType,
   ContactListType,
+  EventType,
   ScreenType,
   TemplateType,
 } from "./../../types";
@@ -20,6 +22,8 @@ export type AppStoreType = {
   isError: boolean;
   screen: ScreenType;
   currentPage: string;
+  alerts: AlertType[];
+  setAlerts: (alerts: AlertType[]) => void;
   setCurrentPage: (currentPage: string) => void;
   setScreen: (screen: ScreenType) => void;
   setLoading: (isLoading: boolean) => void;
@@ -50,9 +54,21 @@ export type TemplateStoreType = {
   setSelectedTemplate: (selectedTemplate: TemplateType) => void;
 };
 
+export type DashboardStoreType = {
+  recentEvent: EventType;
+  calendarEvents: EventType[];
+  selectedEvent: EventType;
+  chartSelectionEventId: string;
+  setChartSelectionEventId: (chartSelectionEventId: string) => void;
+  setSelectedEvent: (selectedEvent: EventType) => void;
+  setRecentEvent: (recentEvent: EventType) => void;
+  setCalendarEvents: (calendarEvents: EventType[]) => void;
+};
+
 export type BearStoreType = {
   userStore: UseBoundStore<StoreApi<UserType>>;
   appStore: UseBoundStore<StoreApi<AppStoreType>>;
   contactStore: UseBoundStore<StoreApi<ContactStoreType>>;
   templateStore: UseBoundStore<StoreApi<TemplateStoreType>>;
+  dashboardStore: UseBoundStore<StoreApi<DashboardStoreType>>;
 };

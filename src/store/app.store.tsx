@@ -6,6 +6,10 @@ export const createAppStore = create<AppStoreType>((set) => ({
   isError: false,
   screen: "",
   currentPage: "",
+  alerts: [],
+  setAlerts: (alerts) => {
+    set((state) => ({ alerts }));
+  },
   setCurrentPage: (currentPage) => {
     set((state) => ({ currentPage }));
   },

@@ -61,3 +61,11 @@ export const eventManagementEndpoint = {
   updateEvent: "/api/v1/event/my-events",
   deleteEvent: "/api/v1/event/my-events/",
 };
+
+export const dashboardEndpoint = {
+  getRecentEvent: "/api/v1/event/recent-event",
+};
+
+export const commonEndpoint = {
+  getAlerts: "/api/v1/common/alerts",
+};

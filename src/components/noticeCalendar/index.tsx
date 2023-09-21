@@ -2,37 +2,10 @@ import React from "react";
 import type { Dayjs } from "dayjs";
 import type { BadgeProps, CalendarProps } from "antd";
 import { Badge, Calendar } from "antd";
-
-const getListData = (value: Dayjs) => {
-  let listData;
-  switch (value.date()) {
-    case 8:
-      listData = [
-        { type: "warning", content: "This is warning event." },
-        { type: "success", content: "This is usual event." },
-      ];
-      break;
-    case 10:
-      listData = [
-        { type: "warning", content: "This is warning event." },
-        { type: "success", content: "This is usual event." },
-        { type: "error", content: "This is error event." },
-      ];
-      break;
-    case 15:
-      listData = [
-        { type: "warning", content: "This is warning event" },
-        { type: "success", content: "This is very long usual event......" },
-        { type: "error", content: "This is error event 1." },
-        { type: "error", content: "This is error event 2." },
-        { type: "error", content: "This is error event 3." },
-        { type: "error", content: "This is error event 4." },
-      ];
-      break;
-    default:
-  }
-  return listData || [];
-};
+import { useBearStore } from "../../store";
+import { API } from "../../api";
+import { EventType } from "../../types";
+import dayjs from "dayjs";
 
 const getMonthData = (value: Dayjs) => {
   if (value.month() === 8) {
@@ -41,6 +14,45 @@ const getMonthData = (value: Dayjs) => {
 };
 
 export const NoticeCalendar = () => {
+  const { setLoading } = useBearStore.appStore();
+  const { setCalendarEvents } = useBearStore.dashboardStore();
+  const [eventMap, setEventMap]: any = React.useState({});
+
+  React.useEffect(() => {
+    const day = dayjs().format("YYYY-MM");
+    const filter = {
+      fromDate: `${day}-01`,
+      toDate: `${day}-31`,
+    };
+    console.log({ day, fromDate: `${day}-01`, toDate: `${day}-31` });
+    getEvents(filter);
+  }, []);
+
+  const getEvents = (filter = {}): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEvent(filter)
+      .then((events: EventType[]) => {
+        setCalendarEvents(events);
+        const eventMap: any = {};
+        events.forEach((event) => {
+          const day = dayjs(event.startDateTime).format("D");
+          if (eventMap[day]) {
+            eventMap[day].push(event);
+          } else {
+            eventMap[day] = [event];
+          }
+        });
+        console.log({ eventMap });
+        setEventMap(eventMap);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEvents", error });
+      });
+  };
+
   const monthCellRender = (value: Dayjs) => {
     const num = getMonthData(value);
     return num ? (
@@ -52,14 +64,14 @@ export const NoticeCalendar = () => {
   };
 
   const dateCellRender = (value: Dayjs) => {
-    const listData = getListData(value);
+    const listData = eventMap[value.date()];
     return (
       <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
+        {listData?.map((item: any) => (
+          <li key={item._id}>
             <Badge
               status={item.type as BadgeProps["status"]}
-              text={item.content}
+              text={item.name}
             />
           </li>
         ))}
@@ -67,11 +79,23 @@ export const NoticeCalendar = () => {
     );
   };
 
+  const onDateChange = (e: any) => {
+    const day = e.format("YYYY-MM");
+    const filter = {
+      fromDate: `${day}-01`,
+      toDate: `${day}-31`,
+    };
+    console.log({ day, fromDate: `${day}-01`, toDate: `${day}-31` });
+    getEvents(filter);
+  };
+
   const cellRender: CalendarProps<Dayjs>["cellRender"] = (current, info) => {
-    if (info.type === "date") return dateCellRender(current);
+    if (info.type === "date") {
+      return dateCellRender(current);
+    }
     if (info.type === "month") return monthCellRender(current);
     return info.originNode;
   };
 
-  return <Calendar cellRender={cellRender} />;
+  return <Calendar cellRender={cellRender} onChange={onDateChange} />;
 };

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { AlertType } from "../types";
 import { type UserType } from "./types";
 
 export const createUserStore = create<UserType>((set) => ({
@@ -6,6 +7,10 @@ export const createUserStore = create<UserType>((set) => ({
   email: "",
   mobile: 0,
   isAuthorized: null,
+  alerts: [],
+  setAlerts: (alerts: AlertType[]) => {
+    set((state) => ({ alerts }));
+  },
   setUser: (user: UserType) => {
     set((state: UserType) => ({ ...user }));
   },

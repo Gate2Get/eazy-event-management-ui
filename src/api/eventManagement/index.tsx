@@ -1,5 +1,5 @@
 import { eventManagementEndpoint, instance } from "../../configs/axios.config";
-import { EventType } from "../../types";
+import { EventFilterType, EventType } from "../../types";
 
 export const eventManagementAPI = {
   createEvent: async (event: EventType) => {
@@ -32,9 +32,9 @@ export const eventManagementAPI = {
         throw error;
       });
   },
-  getEvent: async (): Promise<EventType[]> => {
+  getEvent: async (filters: EventFilterType = {}): Promise<EventType[]> => {
     return await instance
-      .get(eventManagementEndpoint.getEvent)
+      .get(eventManagementEndpoint.getEvent, { params: filters })
       .then((response) => {
         const result = response.data.result;
         return result;

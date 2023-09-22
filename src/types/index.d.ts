@@ -80,6 +80,7 @@ export enum EventStatus {
 }
 
 export type EventType = {
+  id: string;
   _id: string;
   name: string;
   userId: number;
@@ -109,6 +110,7 @@ export type EventType = {
 
 export type CardType = {
   menuItems: MenuProps["items"];
+  isEdit?: boolean;
 };
 
 export type EventCardType = EventType & CardType;

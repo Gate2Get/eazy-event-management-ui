@@ -31,13 +31,25 @@ dayjs.extend(customParseFormat);
 type MarriageEventCreationType = {
   contactList: ContactDirectoryType[];
   templates: TemplateType[];
+  event?: EventType;
   onHandleEvent: (event: EventType) => void;
+  isEdit?: boolean;
 };
 
 export const MarriageEventCreation = (props: MarriageEventCreationType) => {
-  const { contactList, templates, onHandleEvent } = props;
+  const { contactList, templates, isEdit, event, onHandleEvent } = props;
 
   const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...event,
+        dateTime: [dayjs(event?.startDateTime), dayjs(event?.endDateTime)],
+        triggerDateTime: dayjs(event?.triggerDateTime),
+      });
+    }
+  }, []);
 
   const handleEvent = (event: any): void => {
     const { dateTime, triggerDateTime } = event;
@@ -206,7 +218,7 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                   Save
                 </Button> */}
                 <Button size="large" type="primary" htmlType="submit">
-                  Preview & Send Event
+                  Preview & {isEdit ? "Update" : "Send"} Event
                 </Button>
               </Space>
             </Form.Item>

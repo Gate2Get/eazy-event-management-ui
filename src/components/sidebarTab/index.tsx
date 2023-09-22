@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getMenuItems } from "../../configs/sidebar.config";
 import { MENU_OPEN_KEYS, ROUTES_MENU, ROUTES_URL } from "../../constants";
+import { useBearStore } from "../../store";
 
 type SidebarTabProps = {
   setCurrentPage: (currentPage: string) => void;
@@ -12,6 +13,7 @@ const routeUrls = Object.entries(ROUTES_URL);
 const routeMenu: any = ROUTES_MENU;
 
 export const SidebarTab = (props: SidebarTabProps) => {
+  const { screen, setCollapsed } = useBearStore.appStore();
   const { setCurrentPage } = props;
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = React.useState("");
@@ -27,7 +29,13 @@ export const SidebarTab = (props: SidebarTabProps) => {
     }
   }, [window.location.pathname]);
 
-  const menuItems = getMenuItems(navigate);
+  const onCollapseSider = () => {
+    if (screen === "MOBILE") {
+      setCollapsed(true);
+    }
+  };
+
+  const menuItems = getMenuItems(navigate, onCollapseSider);
 
   return (
     <Menu

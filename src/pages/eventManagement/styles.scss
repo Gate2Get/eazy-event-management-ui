@@ -1,8 +1,19 @@
 .event-management__container {
   .event-management__filters {
-    background: #0071dc;
+    // background: #0071dc;
+    border: 1px solid #004484;
+    border-width: 2px 6px 2px 6px !important;
     padding: 10px;
     border-radius: 8px;
+  }
+
+  .no-events {
+    position: relative;
+    left: 35%;
+
+    > div {
+      text-align: center;
+    }
   }
 
   .upcoming-event__date-picker {
@@ -40,6 +51,9 @@
           // color: #fff;
           cursor: pointer;
         }
+      }
+      .back-text {
+        font-size: 16px;
       }
 
       .event-name__container {

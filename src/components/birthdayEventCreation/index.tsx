@@ -20,6 +20,7 @@ import {
 } from "../../utils/datePicket.utils";
 import { CHANNEL_OPTIONS } from "../../constants";
 import { ContactDirectoryType, EventType, TemplateType } from "../../types";
+import React from "react";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -28,12 +29,24 @@ dayjs.extend(customParseFormat);
 type BirthdayEventCreationType = {
   contactList: ContactDirectoryType[];
   templates: TemplateType[];
+  event?: EventType;
   onHandleEvent: (event: EventType) => void;
+  isEdit?: boolean;
 };
 
 export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
-  const { contactList, templates, onHandleEvent } = props;
+  const { contactList, templates, isEdit, event, onHandleEvent } = props;
   const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    if (isEdit) {
+      form.setFieldsValue({
+        ...event,
+        dateTime: [dayjs(event?.startDateTime), dayjs(event?.endDateTime)],
+        triggerDateTime: dayjs(event?.triggerDateTime),
+      });
+    }
+  }, []);
 
   const handleEvent = (event: any): void => {
     const { dateTime, triggerDateTime } = event;
@@ -197,7 +210,7 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                   Save
                 </Button> */}
                 <Button size="large" type="primary" htmlType="submit">
-                  Preview & Send Event
+                  Preview & {isEdit ? "Update" : "Send"} Event
                 </Button>
               </Space>
             </Form.Item>

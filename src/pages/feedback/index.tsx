@@ -43,10 +43,12 @@ export const Feedback = () => {
               label="Please provide additional feedback.(Optional)"
               name="layout"
             >
-              <TextArea />
+              <TextArea size="large" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary">Submit</Button>
+              <Button size="large" type="primary">
+                Submit
+              </Button>
             </Form.Item>
           </Form>
         </Col>

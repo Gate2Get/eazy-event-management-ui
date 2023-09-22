@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
-import { message } from "antd";
+import { message, notification } from "antd";
 
 export const instance: AxiosInstance = axios.create();
 
@@ -11,13 +11,18 @@ const snackbarAllowedMethods = ["post", "put", "delete"];
 export const interceptors = (navigate: (url: string) => void): void => {
   instance.interceptors.response.use(
     (response) => {
-      const { data, config } = response;
-      message.success(data.message);
+      const { data, config, status } = response;
+      if (status === 201) {
+        notification.success({
+          message: data.message,
+          className: "eazy__event-snackbar success",
+        });
+      }
       return response;
     },
     (error) => {
       if (error?.response?.status === 401) {
-        window.location.replace("/api/login");
+        navigate("/login");
       } else if (error?.response?.status === 403) {
         navigate(
           window.location.pathname.includes("/settings")
@@ -26,8 +31,6 @@ export const interceptors = (navigate: (url: string) => void): void => {
         );
       } else if (error?.response?.status === 404) {
         navigate("/404");
-      } else if (error?.response?.status === 412) {
-        navigate(window.location.pathname.includes("/settings") ? "" : "");
       }
     }
   );

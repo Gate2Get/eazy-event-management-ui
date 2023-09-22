@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Layout, Row, Spin, Typography } from "antd";
+import { Alert, Layout, Row, Space, Spin, Typography } from "antd";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { Header as AppHeader } from "../components/header";
 import "./styles.scss";
@@ -14,12 +14,18 @@ const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
 
 export const AppLayout: React.FC<any> = (props): React.ReactElement => {
-  const [collapsed, setCollapsed] = React.useState(false);
-
   /* A custom hook that returns the width and height of the window. */
   const { height, width } = useWindowSize();
-  const { screen, currentPage, setCurrentPage, isLoading, setAlerts, alerts } =
-    useBearStore.appStore();
+  const {
+    screen,
+    currentPage,
+    setCurrentPage,
+    isLoading,
+    setAlerts,
+    alerts,
+    collapsed,
+    setCollapsed,
+  } = useBearStore.appStore();
 
   const { children } = props;
 
@@ -60,7 +66,6 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
             trigger={null}
             width={sidebarWidth}
             className="sidebar__layout"
-            // style={{ height }}
             style={{
               overflow: "auto",
               height,
@@ -99,29 +104,31 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                     src={BannerPng}
                     alt=""
                     style={{ width: "100%" }}
-                    height={184}
+                    height={120}
                   />
                 </div>
                 <div className="text-on-image">
                   <Title level={2}>{currentPage}</Title>
                 </div>
-                {alerts.length
-                  ? alerts.map((alert) => (
-                      <Alert
-                        banner
-                        {...alert.props}
-                        message={
-                          <Marquee
-                            pauseOnHover
-                            gradient={false}
-                            {...alert.props}
-                          >
-                            {alert.text}
-                          </Marquee>
-                        }
-                      />
-                    ))
-                  : null}
+                <div className="alert-container">
+                  {alerts.length
+                    ? alerts.map((alert) => (
+                        <Alert
+                          banner
+                          {...alert.props}
+                          message={
+                            <Marquee
+                              pauseOnHover
+                              gradient={false}
+                              {...alert.props}
+                            >
+                              {alert.text}
+                            </Marquee>
+                          }
+                        />
+                      ))
+                    : null}
+                </div>
               </div>
 
               {children}

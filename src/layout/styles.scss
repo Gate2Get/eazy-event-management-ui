@@ -19,12 +19,16 @@
   }
   .text-on-image {
     position: absolute;
-    top: 25%;
+    top: 10%;
     left: 5%;
 
     > h2 {
       color: #fff;
     }
+  }
+
+  .alert-container {
+    margin: 6px 0px;
   }
 
   .sidebar__layout {

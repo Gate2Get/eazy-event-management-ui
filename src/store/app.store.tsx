@@ -7,6 +7,10 @@ export const createAppStore = create<AppStoreType>((set) => ({
   screen: "",
   currentPage: "",
   alerts: [],
+  collapsed: false,
+  setCollapsed: (collapsed) => {
+    set((state) => ({ collapsed }));
+  },
   setAlerts: (alerts) => {
     set((state) => ({ alerts }));
   },

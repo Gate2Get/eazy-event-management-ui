@@ -11,6 +11,7 @@ import {
 } from "antd";
 import React from "react";
 import { ContactDirectoryType, EditConfigType } from "../../types";
+import "./styles.scss";
 
 const { Title, Text } = Typography;
 
@@ -36,7 +37,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     .join("");
 
   return (
-    <Card>
+    <Card className="contact-user-card__container">
       <Row gutter={[8, 8]}>
         <Col span={4}>
           <Avatar size={40} className={avatarClassName}>

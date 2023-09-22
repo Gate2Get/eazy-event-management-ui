@@ -13,9 +13,10 @@ import {
   Tag,
   Typography,
   Modal,
+  Space,
 } from "antd";
 import dayjs from "dayjs";
-import React, { Dispatch } from "react";
+import React from "react";
 import { API } from "../../api";
 import { BirthdayEventCard } from "../../components/birthdayEventCard";
 import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
@@ -23,6 +24,7 @@ import { MarriageEventCard } from "../../components/marriageEventCard";
 import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
   EVENT_DATE_FORMAT,
+  EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPES,
@@ -30,15 +32,15 @@ import {
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
-  EventFilterType,
   ContactDirectoryType,
   Events,
   EventType,
   TemplateType,
 } from "../../types";
 import "./styles.scss";
+import FeedbackPrompt from "../../assets/svg/FeedbackPrompt.svg";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const eventLabel: any = EVENT_STATUS_LABEL;
@@ -66,27 +68,18 @@ export const EventManagement = () => {
   const [isFetching, setIsFetching] = React.useState(false);
   const { setDirectoryList, directoryList } = useBearStore.contactStore();
   const { setTemplates, templates } = useBearStore.templateStore();
-
-  const [action, setAction]: [string, Dispatch<any>] = React.useState("");
-  const [eventType, setEventType] = React.useState("");
-  const [events, setEvents]: [EventType[], Dispatch<any>] = React.useState([]);
-  const [filters, setFilters]: [EventFilterType, Dispatch<any>] =
-    React.useState({
-      type: undefined,
-      status: undefined,
-    });
-
-  const [selectedEvents, setSelectedEvents]: [EventType, Dispatch<any>] =
-    React.useState({
-      _id: "",
-      userId: 0,
-      contactDirectory: "",
-      endDateTime: "",
-      messageTemplate: "",
-      name: "",
-      startDateTime: "",
-      type: "OTHERS" as Events,
-    });
+  const {
+    action,
+    eventType,
+    events,
+    filters,
+    selectedEvents,
+    setAction,
+    setEventType,
+    setEvents,
+    setFilters,
+    setSelectedEvents,
+  } = useBearStore.eventStore();
 
   React.useEffect(() => {
     getContactDirectory();
@@ -94,29 +87,38 @@ export const EventManagement = () => {
   }, []);
 
   React.useEffect(() => {
-    getEvents();
-  }, [filters]);
+    if (!action) getEvents();
+  }, [filters, action]);
 
-  const getMenuItems = (data: EventType): MenuProps["items"] => [
-    {
-      label: "View",
-      key: "view",
-      // onClick: () => onViewSelect(data),
-      icon: <EyeOutlined />,
-    },
-    {
-      label: "Edit",
-      key: "edit",
-      // onClick: () => onEditSelect(data),
-      icon: <EditOutlined />,
-    },
-    {
-      label: "Delete",
-      key: "delete",
-      onClick: () => onDeleteSelect(data),
-      icon: <DeleteOutlined />,
-    },
-  ];
+  const getMenuItems = (data: EventType): MenuProps["items"] => {
+    const menu1 = [
+      {
+        label: "View",
+        key: "view",
+        // onClick: () => onViewSelect(data),
+        icon: <EyeOutlined />,
+      },
+    ];
+    const menu2 = [
+      {
+        label: "Edit",
+        key: "edit",
+        onClick: () => onEditSelect(data),
+        icon: <EditOutlined />,
+      },
+      {
+        label: "Delete",
+        key: "delete",
+        onClick: () => onDeleteSelect(data),
+        icon: <DeleteOutlined />,
+      },
+    ];
+    if (data.status === EVENT_STATUS.NOT_STARTED) {
+      return [...menu1, ...menu2];
+    } else {
+      return menu1;
+    }
+  };
 
   const colProps: ColProps = {};
   if (screen === "MOBILE") {
@@ -139,24 +141,60 @@ export const EventManagement = () => {
     deleteEvent(_id as string);
   };
 
+  const onEditSelect = (record: EventType) => {
+    setAction("EDIT");
+    setEventType(record.type);
+    setSelectedEvents(record);
+  };
+
   const renderEvents = (): React.ReactNode => {
-    return events.map((event) => {
-      if (event.type === EVENT_TYPES.MARRIAGE) {
-        return (
-          <Col {...colProps}>
-            <MarriageEventCard {...event} menuItems={getMenuItems(event)} />
-          </Col>
-        );
-      } else if (event.type === EVENT_TYPES.BIRTHDAY) {
-        return (
-          <Col {...colProps}>
-            <BirthdayEventCard {...event} menuItems={getMenuItems(event)} />
-          </Col>
-        );
-      } else {
-        return <></>;
-      }
-    });
+    return events.length ? (
+      events.map((event) => {
+        if (event.type === EVENT_TYPES.MARRIAGE) {
+          return (
+            <Col {...colProps}>
+              <MarriageEventCard {...event} menuItems={getMenuItems(event)} />
+            </Col>
+          );
+        } else if (event.type === EVENT_TYPES.BIRTHDAY) {
+          return (
+            <Col {...colProps}>
+              <BirthdayEventCard {...event} menuItems={getMenuItems(event)} />
+            </Col>
+          );
+        } else {
+          return <></>;
+        }
+      })
+    ) : (
+      <Space className="no-events" direction="vertical" size="small">
+        <div>
+          <img src={FeedbackPrompt} alt="" height={150} />
+        </div>
+        <Text type="secondary" italic>
+          No events to show
+        </Text>
+        <div>
+          <Button
+            type="primary"
+            size="middle"
+            onClick={() => {
+              setAction("ADD");
+            }}
+          >
+            Create Event
+          </Button>
+        </div>
+      </Space>
+    );
+  };
+
+  const handleSubmitEvent = (event: EventType) => {
+    if (action === "ADD") {
+      createEvent(event);
+    } else if (action === "EDIT") {
+      updateEvent({ ...selectedEvents, ...event, id: selectedEvents._id });
+    }
   };
 
   const getContactDirectory = (): any => {
@@ -198,6 +236,20 @@ export const EventManagement = () => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "createEvent", error });
+      });
+  };
+
+  const updateEvent = (event: EventType): void => {
+    setLoading(true);
+    API.eventManagement
+      .updateEvent(event)
+      .then(() => {
+        onCancel();
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "updateEvent", error });
       });
   };
 
@@ -339,6 +391,11 @@ export const EventManagement = () => {
                   onClick={onCancel}
                 />
               </Col>
+              <Col>
+                <Text strong italic className="back-text">
+                  Back
+                </Text>
+              </Col>
             </Row>
           </Col>
         </Row>
@@ -358,20 +415,26 @@ export const EventManagement = () => {
           </Form.Item>
         </Form>
       )}
-      {action === "ADD" && eventType === EVENT_TYPES.MARRIAGE && (
-        <MarriageEventCreation
-          contactList={directoryList}
-          templates={templates}
-          onHandleEvent={createEvent}
-        />
-      )}
-      {action === "ADD" && eventType === EVENT_TYPES.BIRTHDAY && (
-        <BirthdayEventCreation
-          contactList={directoryList}
-          templates={templates}
-          onHandleEvent={createEvent}
-        />
-      )}
+      {(action === "ADD" || action === "EDIT") &&
+        eventType === EVENT_TYPES.MARRIAGE && (
+          <MarriageEventCreation
+            contactList={directoryList}
+            templates={templates}
+            onHandleEvent={handleSubmitEvent}
+            isEdit={action === "EDIT"}
+            event={selectedEvents}
+          />
+        )}
+      {(action === "ADD" || action === "EDIT") &&
+        eventType === EVENT_TYPES.BIRTHDAY && (
+          <BirthdayEventCreation
+            contactList={directoryList}
+            templates={templates}
+            onHandleEvent={handleSubmitEvent}
+            isEdit={action === "EDIT"}
+            event={selectedEvents}
+          />
+        )}
     </div>
   );
 };

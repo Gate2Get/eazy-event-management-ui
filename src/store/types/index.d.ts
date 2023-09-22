@@ -2,6 +2,7 @@ import {
   ActionType,
   AlertType,
   ContactListType,
+  EventFilterType,
   EventType,
   ScreenType,
   TemplateType,
@@ -23,6 +24,8 @@ export type AppStoreType = {
   screen: ScreenType;
   currentPage: string;
   alerts: AlertType[];
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
   setAlerts: (alerts: AlertType[]) => void;
   setCurrentPage: (currentPage: string) => void;
   setScreen: (screen: ScreenType) => void;
@@ -41,6 +44,19 @@ export type ContactStoreType = {
   setIsListView: (isListView: boolean) => void;
   setDirectoryList: (directoryList: ContactDirectoryType[]) => void;
   setSelectedDirectory: (selectedDirectory: ContactDirectoryType) => void;
+};
+
+export type EventStoreType = {
+  events: EventType[];
+  filters: EventFilterType;
+  selectedEvents: EventType;
+  action: ActionType;
+  eventType: string;
+  setAction: (action: ActionType) => void;
+  setSelectedEvents: (selectedEvents: EventType) => void;
+  setEventType: (eventType: string) => void;
+  setEvents: (events: EventType[]) => void;
+  setFilters: (filters: EventFilterType) => void;
 };
 
 export type TemplateStoreType = {
@@ -71,4 +87,5 @@ export type BearStoreType = {
   contactStore: UseBoundStore<StoreApi<ContactStoreType>>;
   templateStore: UseBoundStore<StoreApi<TemplateStoreType>>;
   dashboardStore: UseBoundStore<StoreApi<DashboardStoreType>>;
+  eventStore: UseBoundStore<StoreApi<EventStoreType>>;
 };

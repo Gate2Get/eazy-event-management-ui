@@ -14,13 +14,15 @@ import { NavigateFunction } from "react-router-dom";
 import { ROUTES_MENU, ROUTES_URL } from "../constants";
 
 export const getMenuItems = (
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  otherFn?: () => void
 ): MenuProps["items"] => [
   {
     key: ROUTES_URL.DASHBOARD,
     icon: <DashboardOutlined />,
     label: ROUTES_MENU.DASHBOARD,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.DASHBOARD);
     },
   },
@@ -29,6 +31,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.CONTACT_MANAGEMENT,
     icon: <ContactsOutlined />,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.CONTACT_MANAGEMENT);
     },
   },
@@ -37,6 +40,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.TEMPLATE_MANAGEMENT,
     icon: <FilePptOutlined />,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.TEMPLATE_MANAGEMENT);
     },
   },
@@ -45,6 +49,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.EVENT_MANAGEMENT,
     icon: <NotificationOutlined />,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.EVENT_MANAGEMENT);
     },
   },
@@ -53,6 +58,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.GIFT_MANAGEMENT,
     icon: <GiftOutlined />,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.GIFT_MANAGEMENT);
     },
   },
@@ -61,6 +67,7 @@ export const getMenuItems = (
     icon: <CommentOutlined />,
     label: ROUTES_MENU.FEEDBACK,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.FEEDBACK);
     },
   },
@@ -69,6 +76,7 @@ export const getMenuItems = (
     icon: <BugOutlined />,
     label: ROUTES_MENU.REPORT_BUG,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.REPORT_BUG);
     },
   },
@@ -78,6 +86,7 @@ export const getMenuItems = (
     icon: <UserOutlined />,
     label: ROUTES_MENU.MY_PROFILE,
     onClick: () => {
+      otherFn?.();
       navigate(ROUTES_URL.MY_PROFILE);
     },
   },

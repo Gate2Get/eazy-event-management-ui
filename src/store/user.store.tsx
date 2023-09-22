@@ -7,10 +7,6 @@ export const createUserStore = create<UserType>((set) => ({
   email: "",
   mobile: 0,
   isAuthorized: null,
-  alerts: [],
-  setAlerts: (alerts: AlertType[]) => {
-    set((state) => ({ alerts }));
-  },
   setUser: (user: UserType) => {
     set((state: UserType) => ({ ...user }));
   },

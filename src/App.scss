@@ -163,3 +163,13 @@
   background-color: #0071dc !important;
   color: #fff;
 }
+
+.eazy__event-snackbar {
+  opacity: 0.9;
+  border-width: 0 0 0 6px !important;
+}
+
+.eazy__event-snackbar.success {
+  border: solid #22c55e;
+  color: #22c55e;
+}

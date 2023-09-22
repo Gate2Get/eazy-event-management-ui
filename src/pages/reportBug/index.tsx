@@ -43,8 +43,8 @@ export const ReportBug = () => {
           <Form layout="vertical" form={form} style={{ maxWidth: 600 }}>
             <Form.Item label="Select a topic." name="topic">
               <Select
-                options={topicOptions}
                 size="large"
+                options={topicOptions}
                 placeholder="Select any topic to continue"
               />
             </Form.Item>
@@ -55,7 +55,9 @@ export const ReportBug = () => {
               <TextArea size="large" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary">Submit</Button>
+              <Button size="large" type="primary">
+                Submit
+              </Button>
             </Form.Item>
           </Form>
         </Col>

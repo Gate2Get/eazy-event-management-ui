@@ -39,6 +39,7 @@ import {
 } from "../../types";
 import "./styles.scss";
 import FeedbackPrompt from "../../assets/svg/FeedbackPrompt.svg";
+import { PreviewEvent } from "../../components/previewEvent";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -65,7 +66,7 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
 
 export const EventManagement = () => {
   const { screen, setLoading } = useBearStore.appStore();
-  const [isFetching, setIsFetching] = React.useState(false);
+  const [isPreview, setIsPreview] = React.useState(false);
   const { setDirectoryList, directoryList } = useBearStore.contactStore();
   const { setTemplates, templates } = useBearStore.templateStore();
   const {
@@ -80,6 +81,11 @@ export const EventManagement = () => {
     setFilters,
     setSelectedEvents,
   } = useBearStore.eventStore();
+  const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    form.setFieldValue("eventType", eventType);
+  }, [eventType]);
 
   React.useEffect(() => {
     getContactDirectory();
@@ -95,7 +101,7 @@ export const EventManagement = () => {
       {
         label: "View",
         key: "view",
-        // onClick: () => onViewSelect(data),
+        onClick: () => onViewSelect(data),
         icon: <EyeOutlined />,
       },
     ];
@@ -127,8 +133,11 @@ export const EventManagement = () => {
     colProps.span = 8;
   }
 
-  const onCancel = () => {
-    setAction("");
+  const onCancel = (isClearAction?: boolean) => {
+    if (!isPreview || isClearAction) {
+      setAction("");
+    }
+    setIsPreview(false);
   };
 
   const onDeleteSelect = (record: EventType) => {
@@ -136,9 +145,14 @@ export const EventManagement = () => {
     setSelectedEvents(record);
   };
 
+  const onViewSelect = (record: EventType) => {
+    setAction("VIEW");
+    setSelectedEvents(record);
+  };
+
   const onDeleteConfirm = () => {
-    const { _id } = selectedEvents;
-    deleteEvent(_id as string);
+    const { id } = selectedEvents;
+    deleteEvent(id as string);
   };
 
   const onEditSelect = (record: EventType) => {
@@ -189,12 +203,17 @@ export const EventManagement = () => {
     );
   };
 
-  const handleSubmitEvent = (event: EventType) => {
+  const handleSubmitEvent = () => {
     if (action === "ADD") {
-      createEvent(event);
+      createEvent(selectedEvents);
     } else if (action === "EDIT") {
-      updateEvent({ ...selectedEvents, ...event, id: selectedEvents._id });
+      updateEvent(selectedEvents);
     }
+  };
+
+  const handleEventPreview = (event: EventType) => {
+    setSelectedEvents({ ...event, type: eventType as Events });
+    setIsPreview(true);
   };
 
   const getContactDirectory = (): any => {
@@ -230,7 +249,7 @@ export const EventManagement = () => {
     API.eventManagement
       .createEvent({ ...event, type: eventType as Events })
       .then(() => {
-        onCancel();
+        onCancel(true);
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -244,7 +263,7 @@ export const EventManagement = () => {
     API.eventManagement
       .updateEvent(event)
       .then(() => {
-        onCancel();
+        onCancel(true);
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -259,7 +278,7 @@ export const EventManagement = () => {
       .deleteEvent(id)
       .then(() => {
         setLoading(false);
-        onCancel();
+        onCancel(true);
         getEvents();
       })
       .catch((error: Error) => {
@@ -288,7 +307,7 @@ export const EventManagement = () => {
         title={<>Delete Confirmation</>}
         open={action === "DELETE"}
         onOk={onDeleteConfirm}
-        onCancel={onCancel}
+        onCancel={() => onCancel()}
         okText="Yes"
         cancelText="No"
         okType="danger"
@@ -388,7 +407,7 @@ export const EventManagement = () => {
                   icon={faArrowLeft}
                   size="2x"
                   className="back-icon"
-                  onClick={onCancel}
+                  onClick={() => onCancel()}
                 />
               </Col>
               <Col>
@@ -400,9 +419,9 @@ export const EventManagement = () => {
           </Col>
         </Row>
       )}
-      {action === "ADD" && (
-        <Form layout="vertical">
-          <Form.Item label="Select Event">
+      {action === "ADD" && !isPreview && (
+        <Form layout="vertical" form={form}>
+          <Form.Item label="Select Event" name="eventType">
             <Select
               style={{ width: "100%" }}
               size="large"
@@ -416,25 +435,31 @@ export const EventManagement = () => {
         </Form>
       )}
       {(action === "ADD" || action === "EDIT") &&
+        !isPreview &&
         eventType === EVENT_TYPES.MARRIAGE && (
           <MarriageEventCreation
             contactList={directoryList}
             templates={templates}
-            onHandleEvent={handleSubmitEvent}
-            isEdit={action === "EDIT"}
+            onHandleEvent={handleEventPreview}
+            isEdit={action === "EDIT" || action === "ADD"}
             event={selectedEvents}
           />
         )}
       {(action === "ADD" || action === "EDIT") &&
+        !isPreview &&
         eventType === EVENT_TYPES.BIRTHDAY && (
           <BirthdayEventCreation
             contactList={directoryList}
             templates={templates}
-            onHandleEvent={handleSubmitEvent}
-            isEdit={action === "EDIT"}
+            onHandleEvent={handleEventPreview}
+            isEdit={action === "EDIT" || action === "ADD"}
             event={selectedEvents}
           />
         )}
+      {(action === "VIEW" ||
+        ((action === "ADD" || action === "EDIT") && isPreview)) && (
+        <PreviewEvent onSubmit={handleSubmitEvent} />
+      )}
     </div>
   );
 };

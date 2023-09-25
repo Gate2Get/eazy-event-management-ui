@@ -1,4 +1,8 @@
-import { IdcardOutlined, MoreOutlined } from "@ant-design/icons";
+import {
+  ContactsOutlined,
+  IdcardOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
 import {
   Avatar,
   Badge,
@@ -9,6 +13,8 @@ import {
   Image,
   MenuProps,
   Row,
+  Space,
+  Tag,
   Tooltip,
   Typography,
 } from "antd";
@@ -40,14 +46,23 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
   return (
     <Row gutter={[8, 8]} className="contact-directory-card__container">
       <Col span={6} className="icon__container">
-        <Avatar shape="square" size={40} className={avatarClassName}>
+        <Avatar shape="square" size={50} className={avatarClassName}>
           {avatarIconLetter}
         </Avatar>
       </Col>
       <Col span={menuItems ? 15 : 17}>
-        <Text strong className="font-size-16">
-          {cardContact.name}
-        </Text>
+        <Space direction="vertical">
+          <Text strong className="font-size-16">
+            {cardContact.name}
+          </Text>
+          <Tag
+            icon={<ContactsOutlined />}
+            color="#d0e1fd"
+            className="contact-tag"
+          >
+            {cardContact.noOfContacts} contact's
+          </Tag>
+        </Space>
       </Col>
       {menuItems && (
         <Col span={3} className="more-item__container">

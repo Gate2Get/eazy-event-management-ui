@@ -57,11 +57,11 @@ export const AddEditContactDirectory = () => {
 
   React.useEffect(() => {
     if (action === "EDIT" || action === "VIEW") {
-      const { _id, name } = selectedDirectory;
+      const { id, name } = selectedDirectory;
       console.log(selectedDirectory);
       form.setFieldValue("name", name);
       setIsListView(true);
-      getContactList(_id as string);
+      getContactList(id as string);
     }
   }, [action]);
 
@@ -72,7 +72,7 @@ export const AddEditContactDirectory = () => {
           <Input
             value={text}
             onChange={(e) => {
-              onContactListChange(record._id, "name", e.target.value);
+              onContactListChange(record.id, "name", e.target.value);
             }}
           />
         );
@@ -82,7 +82,7 @@ export const AddEditContactDirectory = () => {
             type="number"
             value={text}
             onChange={(e) => {
-              onContactListChange(record._id, "mobile", e.target.value);
+              onContactListChange(record.id, "mobile", e.target.value);
             }}
           />
         );
@@ -118,7 +118,7 @@ export const AddEditContactDirectory = () => {
         setContactList(contacts);
         form.setFieldValue("contacts", contacts);
         setDirectoryContactList(
-          contacts.map((contact) => ({ ...contact, key: contact._id }))
+          contacts.map((contact) => ({ ...contact, key: contact.id }))
         );
       })
       .catch((error: Error) => {
@@ -183,7 +183,7 @@ export const AddEditContactDirectory = () => {
       createContactDirectory(directory);
       onCancel();
     } else if (action === "EDIT") {
-      updateContactDirectory({ id: selectedDirectory._id, ...directory });
+      updateContactDirectory({ id: selectedDirectory.id, ...directory });
       onCancel();
     } else if (action === "VIEW") {
       setAction("EDIT");
@@ -246,8 +246,8 @@ export const AddEditContactDirectory = () => {
   };
 
   const onDeleteConfirm = () => {
-    const { _id } = selectedDirectory;
-    deleteContactDirectory(_id as string);
+    const { id } = selectedDirectory;
+    deleteContactDirectory(id as string);
     closeDeleteModal();
   };
 
@@ -266,7 +266,7 @@ export const AddEditContactDirectory = () => {
 
   const removeContact = () => {
     const contactList = directoryContactList.filter(
-      (contact) => !selectedRowKeys.includes(contact._id)
+      (contact) => !selectedRowKeys.includes(contact.id)
     );
     setDirectoryContactList(contactList);
     form.setFieldValue("contacts", contactList);
@@ -463,11 +463,11 @@ export const AddEditContactDirectory = () => {
       ) : (
         <Row gutter={[16, 16]}>
           {directoryContactList.map((contact) => (
-            <Col span={screen === "MOBILE" ? 24 : 8} key={contact._id}>
+            <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
               <ContactUserCard
                 mobile={contact.mobile}
                 name={contact.name}
-                id={contact._id}
+                id={contact.id}
               />
             </Col>
           ))}

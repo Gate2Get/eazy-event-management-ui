@@ -170,8 +170,8 @@ export const TemplateManagement = () => {
   };
 
   const onDeleteConfirm = () => {
-    const { _id } = selectedTemplate;
-    deleteTemplate(_id as string);
+    const { id } = selectedTemplate;
+    deleteTemplate(id as string);
   };
 
   const handleFormChange = (key: string, value: any) => {
@@ -235,7 +235,7 @@ export const TemplateManagement = () => {
       {(!action || action === "DELETE") && (
         <Row gutter={[16, 16]}>
           {templates.map((template) => (
-            <Col span={screen === "MOBILE" ? 24 : 8} key={template._id}>
+            <Col span={screen === "MOBILE" ? 24 : 8} key={template.id}>
               <TemplateCard
                 template={template}
                 menuItems={getMenuItems(template)}

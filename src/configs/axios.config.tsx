@@ -47,6 +47,7 @@ export const contactManagementEndpoint = {
 export const templateManagementEndpoint = {
   createTemplate: "/api/v1/message/template",
   getTemplate: "/api/v1/message/template",
+  getTemplateById: "/api/v1/message/template/",
   updateTemplate: "/api/v1/message/template",
   deleteTemplate: "/api/v1/message/template/",
 };
@@ -63,6 +64,7 @@ export const eventManagementEndpoint = {
   getEvent: "/api/v1/event/my-events",
   updateEvent: "/api/v1/event/my-events",
   deleteEvent: "/api/v1/event/my-events/",
+  getEventContact: "/api/v1/event",
 };
 
 export const dashboardEndpoint = {
@@ -71,4 +73,5 @@ export const dashboardEndpoint = {
 
 export const commonEndpoint = {
   getAlerts: "/api/v1/common/alerts",
+  createBug: "/api/v1/common/report-bug",
 };

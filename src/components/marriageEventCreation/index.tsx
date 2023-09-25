@@ -23,6 +23,7 @@ import {
 } from "../../utils/datePicket.utils";
 import { CHANNEL_OPTIONS } from "../../constants";
 import { ContactDirectoryType, EventType, TemplateType } from "../../types";
+import { removeEmptyProp } from "../../utils/common.utils";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -43,11 +44,18 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
 
   React.useEffect(() => {
     if (isEdit) {
-      form.setFieldsValue({
-        ...event,
-        dateTime: [dayjs(event?.startDateTime), dayjs(event?.endDateTime)],
-        triggerDateTime: dayjs(event?.triggerDateTime),
-      });
+      const formValues = removeEmptyProp(event);
+      if (event?.startDateTime && event?.endDateTime) {
+        formValues.dateTime = [
+          dayjs(event?.startDateTime),
+          dayjs(event?.endDateTime),
+        ];
+      }
+      if (event?.triggerDateTime) {
+        formValues.triggerDateTime = dayjs(event?.triggerDateTime);
+      }
+
+      form.setFieldsValue(formValues);
     }
   }, []);
 
@@ -147,7 +155,7 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                 allowClear
                 options={contactList?.map((contact) => ({
                   label: contact.name,
-                  value: contact._id,
+                  value: contact.id,
                 }))}
               />
             </Form.Item>
@@ -164,7 +172,7 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                 allowClear
                 options={templates?.map((template) => ({
                   label: template.name,
-                  value: template._id,
+                  value: template.id,
                 }))}
               />
             </Form.Item>

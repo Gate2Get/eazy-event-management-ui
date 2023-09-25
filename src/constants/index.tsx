@@ -107,3 +107,17 @@ export const CHANNEL_OPTIONS = [
     value: "VOICE_CALL",
   },
 ];
+
+export const EVENT_SEND_STATUS_MAP: Record<string, string> = {
+  "1": "Progress",
+  "2": "Success",
+  "3": "Failed",
+  "4": "Not started",
+};
+
+export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
+  "1": "#609af8",
+  "2": "#4cd07d",
+  "3": "#ff6259",
+  "4": "#BDBDBD",
+};

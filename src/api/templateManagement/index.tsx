@@ -18,13 +18,13 @@ export const templateManagementAPI = {
       });
   },
   updateTemplate: async (template: TemplateType) => {
-    const { message, name, type, channel, _id } = template;
+    const { message, name, type, channel, id } = template;
     const toUpdate = {
       message,
       name,
       type,
       channel,
-      id: _id,
+      id: id,
     };
     return await instance
       .put(templateManagementEndpoint.updateTemplate, toUpdate)
@@ -48,6 +48,17 @@ export const templateManagementAPI = {
   getTemplate: async () => {
     return await instance
       .get(templateManagementEndpoint.getTemplate)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getTemplateById: async (id: string) => {
+    return await instance
+      .get(`${templateManagementEndpoint.getTemplateById}${id}`)
       .then((response) => {
         const result = response.data.result;
         return result;

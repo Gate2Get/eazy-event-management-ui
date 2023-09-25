@@ -70,7 +70,7 @@ export const ListContactDirectory = () => {
         ) : (
           directoryList.map((directory) => {
             return (
-              <Col span={screen === "MOBILE" ? 24 : 8} key={directory._id}>
+              <Col span={screen === "MOBILE" ? 24 : 8} key={directory.id}>
                 <ContactDirectoryCard
                   cardContact={directory}
                   menuItems={getMenuItems(directory)}

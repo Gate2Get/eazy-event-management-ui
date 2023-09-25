@@ -2,11 +2,12 @@ import { MenuProps } from "antd";
 
 export type ContactListType = {
   key?: string;
-  _id: string;
+  id: string;
   name: string;
   mobile: number;
-  createdAt: string;
-  updatedAt: string;
+  status?: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type GenericJsonType = Record<string, any>;
@@ -41,16 +42,17 @@ export type UserInfoType = {
 };
 
 export type ContactDirectoryType = {
-  _id?: string;
+  id?: string;
   userId?: number;
   name: string;
+  noOfContacts?: number;
   contacts: ContactsType[];
   createdAt?: string;
   updatedAt?: string;
 };
 
 export type TemplateType = {
-  _id?: string;
+  id?: string;
   userId?: number;
   name: string;
   type?: string;
@@ -81,7 +83,7 @@ export enum EventStatus {
 
 export type EventType = {
   id: string;
-  _id: string;
+  id: string;
   name: string;
   userId: number;
   type: Events;
@@ -109,7 +111,7 @@ export type EventType = {
 };
 
 export type CardType = {
-  menuItems: MenuProps["items"];
+  menuItems?: MenuProps["items"];
   isEdit?: boolean;
 };
 
@@ -126,4 +128,17 @@ export type AlertType = {
   props: Object;
   createdAt?: string;
   updatedAt?: string;
+};
+
+export type ReportBugsType = {
+  id?: number;
+  userId: number;
+  topic: string;
+  information: string;
+  attachment?: string;
+  resolutionNotes?: string;
+  status?: string;
+  isActive?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };

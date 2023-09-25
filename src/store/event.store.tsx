@@ -9,7 +9,7 @@ import {
 import { ContactStoreType, EventStoreType } from "./types";
 
 const initialSelectedEvent = {
-  _id: "",
+  id: "",
   userId: 0,
   contactDirectory: "",
   endDateTime: "",

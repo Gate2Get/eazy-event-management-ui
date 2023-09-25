@@ -86,17 +86,19 @@ export const MarriageEventCard = (props: EventCardType) => {
           </Text>
         </Col>
 
-        <Col flex={4} className="more-info">
-          <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
-            <Tooltip placement="top" title="More info">
-              <EllipsisOutlined
-                size={64}
-                width={100}
-                className="more-item__icon"
-              />
-            </Tooltip>
-          </Dropdown>
-        </Col>
+        {menuItems && (
+          <Col flex={4} className="more-info">
+            <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
+              <Tooltip placement="top" title="More info">
+                <EllipsisOutlined
+                  size={64}
+                  width={100}
+                  className="more-item__icon"
+                />
+              </Tooltip>
+            </Dropdown>
+          </Col>
+        )}
       </Row>
       <Row className="event-type">
         <Col span={12}>

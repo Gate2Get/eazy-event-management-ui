@@ -5,7 +5,7 @@ import { DashboardStoreType } from "./types";
 
 export const createDashboardStore = create<DashboardStoreType>((set) => ({
   recentEvent: {
-    _id: "",
+    id: "",
     contactDirectory: "",
     endDateTime: "",
     messageTemplate: "",
@@ -15,7 +15,7 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     userId: 0,
   },
   selectedEvent: {
-    _id: "",
+    id: "",
     contactDirectory: "",
     endDateTime: "",
     messageTemplate: "",

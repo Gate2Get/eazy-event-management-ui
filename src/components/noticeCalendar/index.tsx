@@ -68,7 +68,7 @@ export const NoticeCalendar = () => {
     return (
       <ul className="events">
         {listData?.map((item: any) => (
-          <li key={item._id}>
+          <li key={item.id}>
             <Badge
               status={item.type as BadgeProps["status"]}
               text={item.name}

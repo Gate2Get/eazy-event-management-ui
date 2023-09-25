@@ -1,6 +1,9 @@
 .contact-user-card__container {
   border-radius: 0.75rem;
-  // background-color: #e6f1fc;
-  border: 1px solid #004484;
-  border-width: 2px 6px 2px 6px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03), 0 0 2px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.12) !important;
+}
+
+.contact-card__no-status .ant-ribbon-corner {
+  border: none;
 }

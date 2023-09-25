@@ -78,7 +78,7 @@ export const Dashboard = () => {
 
   const chartSelectionOptions = calendarEvents.map((item) => ({
     label: item.name,
-    value: item._id,
+    value: item.id,
   }));
 
   if (selectedEvent) {

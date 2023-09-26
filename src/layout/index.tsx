@@ -9,6 +9,7 @@ import { SidebarTab } from "../components/sidebarTab";
 import BannerPng from "../assets/png/banner-BH.4fd13869.png";
 import { API } from "../api";
 import { AlertType } from "../types";
+import { ServiceRoutes } from "../routes";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -131,7 +132,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 </div>
               </div>
 
-              {children}
+              <ServiceRoutes />
             </Content>
           ) : null}
         </Layout>

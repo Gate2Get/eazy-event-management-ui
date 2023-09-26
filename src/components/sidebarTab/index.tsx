@@ -20,11 +20,13 @@ export const SidebarTab = (props: SidebarTabProps) => {
 
   React.useEffect(() => {
     const paths = window.location.pathname;
-    setSelectedTab(paths);
-    const route = routeUrls.find((url) => url[1] === paths);
-    console.log({ route });
+    const route = routeUrls.find(
+      (url) => `${ROUTES_URL.EE}/${url[1]}` === paths
+    );
+    console.log({ route, paths, routeUrls, x: paths });
     if (route) {
       const menu = routeMenu[route[0]];
+      setSelectedTab(route[1]);
       setCurrentPage(menu);
     }
   }, [window.location.pathname]);

@@ -2,6 +2,7 @@ import React from "react";
 import { App403 } from "../components/403";
 import { App404 } from "../components/404";
 import { ROUTES_URL } from "../constants";
+import { AppLayout } from "../layout";
 import { ContactManagement } from "../pages/contactManagement";
 import { Dashboard } from "../pages/dashboard";
 import { EventManagement } from "../pages/eventManagement";
@@ -12,7 +13,25 @@ import { ReportBug } from "../pages/reportBug";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
 
-export const ROUTES = [
+
+export const APP_ROUTES = [
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: `${ROUTES_URL.EE}/*`,
+    element: (
+      <AppLayout/>
+    ),
+  },
+  {
+    path: ROUTES_URL.LOGIN,
+    element: <SignIn />,
+  },
+];
+
+export const SERVICE_ROUTES = [
   {
     path: "/",
     element: <Home />,
@@ -20,10 +39,6 @@ export const ROUTES = [
   {
     path: ROUTES_URL.DASHBOARD,
     element: <Dashboard />,
-  },
-  {
-    path: ROUTES_URL.LOGIN,
-    element: <SignIn />,
   },
   {
     path: ROUTES_URL.CONTACT_MANAGEMENT,
@@ -53,8 +68,8 @@ export const ROUTES = [
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
   },
-  {
-    path: "*",
-    element: <App404 />,
-  },
+  // {
+  //   path: "*",
+  //   element: <App404 />,
+  // },
 ];

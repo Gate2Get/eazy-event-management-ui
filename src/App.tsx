@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.scss";
-import { useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { AppLayout } from "./layout";
 import { useBearStore } from "./store";
 import { useWindowSize } from "./hooks/useWindowSize";
@@ -27,9 +27,7 @@ function App(): React.ReactElement {
 
   return (
     <div>
-      <AppLayout>
-        <AppRoutes />
-      </AppLayout>
+      <AppRoutes/>
     </div>
   );
 }

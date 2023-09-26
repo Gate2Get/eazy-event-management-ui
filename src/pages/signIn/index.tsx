@@ -1,11 +1,13 @@
 import React from "react";
-import { Button, Col, Form, Input, Row, Select, Typography } from "antd";
+import { Button, Col, ColProps, Form, Input, Row, Select, Typography } from "antd";
 import { Option } from "antd/es/mentions";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useBearStore } from "../../store";
+import { ROUTES_URL } from "../../constants";
+import LoginSvg from '../../assets/svg/login.svg'
 
 const { Title, Text } = Typography;
 const OTP_RESEND_AFTER = 5000;
@@ -22,7 +24,7 @@ const prefixSelector = (
 export const SignIn = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { setLoading } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
   const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isRequestOtpEnabled, setRequestOtpEnabled] = React.useState(true);
   const [countDown, setCountDown] = React.useState(0);
@@ -52,7 +54,7 @@ export const SignIn = () => {
       .verifyOTP(mobile, otp)
       .then((response) => {
         setLoading(false);
-        navigate("/dashboard");
+        navigate(ROUTES_URL.DASHBOARD);
       })
       .catch((error) => {
         setLoading(false);
@@ -99,10 +101,20 @@ export const SignIn = () => {
     setCountDown(counterInSeconds);
   };
 
+  const colProps: ColProps = {};
+  if (screen === "MOBILE") {
+    colProps.flex = 12;
+  } else {
+    colProps.span = 12;
+  }
+
   return (
     <div className="sign-in__container">
       <Row>
-        <Col flex={8}>
+        <Col {...colProps}>
+          <img src={LoginSvg} alt="" width={"70%"} />
+        </Col>
+        <Col {...colProps}>
           <Title level={2} className="login__text">
             Log in to your account
           </Title>
@@ -184,7 +196,7 @@ export const SignIn = () => {
             >
               <Form.Item
                 name="mobile"
-                label="mobile Number"
+                label="Mobile Number"
                 rules={[
                   {
                     len: 10,
@@ -212,7 +224,6 @@ export const SignIn = () => {
             </Form>
           )}
         </Col>
-        <Col flex={16}></Col>
       </Row>
     </div>
   );

@@ -5,17 +5,18 @@ import {
 } from "@ant-design/icons";
 
 export const ROUTES_URL = {
-  DASHBOARD: "/dashboard",
+  DASHBOARD: "dashboard",
   SERVICE: "service",
-  CONTACT_MANAGEMENT: "/contact-management",
-  TEMPLATE_MANAGEMENT: "/template",
-  EVENT_MANAGEMENT: "/event-management",
-  GIFT_MANAGEMENT: "/gift-management",
-  FEEDBACK: "/feedback",
-  REPORT_BUG: "/report-bug",
-  MY_PROFILE: "/my-profile",
+  EE: '/ee',
+  CONTACT_MANAGEMENT: "contact-management",
+  TEMPLATE_MANAGEMENT: "template-management",
+  EVENT_MANAGEMENT: "event-management",
+  GIFT_MANAGEMENT: "gift-management",
+  FEEDBACK: "feedback",
+  REPORT_BUG: "report-bug",
+  MY_PROFILE: "my-profile",
   LOGIN: "/login",
-  FORBIDDEN: "/forbidden",
+  FORBIDDEN: "forbidden",
 };
 
 export const ROUTES_MENU = {

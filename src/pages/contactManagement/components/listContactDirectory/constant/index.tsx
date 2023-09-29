@@ -11,7 +11,7 @@ export const CONTACT_DIRECTORY_COLUMN_NAME = {
   ID: "id",
   NAME: "Name",
   NO_OF_CONTACTS: "No of contacts",
-  CREATED_AT: "Creation",
-  UPDATED_AT: "Updated",
+  CREATED_AT: "Creation at",
+  UPDATED_AT: "Updated at",
   ACTION: "Action",
 };

@@ -30,8 +30,12 @@ import { ContactUserCard } from "../../../../components/contactUserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import IllustrationWebp from "../../../../assets/webp/illustration-self-service.webp";
+import { searchGrid } from "../../../../utils/searchGrid.utils";
+import { saveAs } from "file-saver";
+import { eventManagementEndpoint } from "../../../../configs/axios.config";
 
 const { Title, Text, Link } = Typography;
+const { Search } = Input;
 
 export const AddEditContactDirectory = () => {
   const [form] = Form.useForm();
@@ -54,6 +58,8 @@ export const AddEditContactDirectory = () => {
   const [selectedRowKeys, setSelectedRowKeys]: [string[], Dispatch<any>] =
     React.useState([]);
   const [isDeleteConfirmation, setIsDeleteConfirmation] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
+  let filteredGrid: any[] = [];
 
   React.useEffect(() => {
     if (action === "EDIT" || action === "VIEW") {
@@ -272,6 +278,14 @@ export const AddEditContactDirectory = () => {
     form.setFieldValue("contacts", contactList);
   };
 
+  const onSearch = (searchValue: string) => {
+    setSearchValue(searchValue);
+  };
+
+  if (searchValue) {
+    filteredGrid = searchGrid(searchValue, directoryContactList);
+  }
+
   return (
     <div className="add-edit-contact-Directory__container">
       <Modal
@@ -335,71 +349,67 @@ export const AddEditContactDirectory = () => {
           )}
         </Col>
       </Row>
-      <Row>
-        <Col flex={6}>
-          <img src={IllustrationWebp} alt="" height={500} />
-        </Col>
-        <Col flex={18}>
-          <Space direction="vertical" style={{ width: "100%" }} size="middle">
-            {action !== "VIEW" && (
-              <>
-                <Form
-                  layout="vertical"
-                  form={form}
-                  name="directory"
-                  scrollToFirstError
-                  onFinish={onFinishDirectory}
-                >
-                  <Form.Item
-                    label="Enter Name"
-                    name="name"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your directory name!",
-                      },
-                    ]}
-                  >
-                    <Input
-                      required
-                      size="large"
-                      value={selectedDirectory.name}
-                      placeholder="Name of the directory"
-                      style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
-                      onChange={(event) =>
-                        onChangeForm("name", event.target.value)
-                      }
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    label="Upload Directory file"
-                    name="contacts"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please upload your directory file!",
-                      },
-                    ]}
-                    getValueFromEvent={normFile}
-                    valuePropName="fileList"
-                  >
-                    <AttachmentButton
-                      buttonText="Upload"
-                      onAttach={handleFileUpload}
-                    />
-                  </Form.Item>
-                  <Text>
-                    Template file?{" "}
-                    <Link href="https://ant.design" target="_blank">
-                      download here
-                    </Link>
-                  </Text>
-                </Form>
-              </>
-            )}
-          </Space>
-        </Col>
-      </Row>
+
+      {action !== "VIEW" && (
+        <>
+          <Form
+            layout="vertical"
+            form={form}
+            name="directory"
+            scrollToFirstError
+            onFinish={onFinishDirectory}
+          >
+            <Form.Item
+              label="Enter Name"
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your directory name!",
+                },
+              ]}
+            >
+              <Input
+                required
+                size="large"
+                value={selectedDirectory.name}
+                placeholder="Name of the directory"
+                style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
+                onChange={(event) => onChangeForm("name", event.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Upload Directory file"
+              name="contacts"
+              rules={[
+                {
+                  required: true,
+                  message: "Please upload your directory file!",
+                },
+              ]}
+              getValueFromEvent={normFile}
+              valuePropName="fileList"
+            >
+              <AttachmentButton
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                buttonText="Upload"
+                onAttach={handleFileUpload}
+              />
+            </Form.Item>
+            <Text>
+              Template file?{" "}
+              <Link
+                href="#"
+                onClick={() =>
+                  saveAs(`${eventManagementEndpoint.exportContact}/template`)
+                }
+              >
+                download here
+              </Link>
+            </Text>
+          </Form>
+        </>
+      )}
 
       {directoryContactList?.length ? (
         <>
@@ -444,10 +454,21 @@ export const AddEditContactDirectory = () => {
         </>
       ) : null}
       <br />
+      {directoryContactList.length ? (
+        <Search
+          placeholder="Search here"
+          onSearch={onSearch}
+          style={{ width: screen === "MOBILE" ? "100%" : "40%" }}
+          size="large"
+          allowClear
+        />
+      ) : null}
+      <br />
+      <br />
       {isListView ? (
         <DataTable
           columns={columns}
-          data={directoryContactList}
+          data={searchValue ? filteredGrid : directoryContactList}
           sortKeys={SORT_KEYS}
           otherProps={
             action === "EDIT"
@@ -462,15 +483,17 @@ export const AddEditContactDirectory = () => {
         />
       ) : (
         <Row gutter={[16, 16]}>
-          {directoryContactList.map((contact) => (
-            <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
-              <ContactUserCard
-                mobile={contact.mobile}
-                name={contact.name}
-                id={contact.id}
-              />
-            </Col>
-          ))}
+          {(searchValue ? filteredGrid : directoryContactList).map(
+            (contact) => (
+              <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
+                <ContactUserCard
+                  mobile={contact.mobile}
+                  name={contact.name}
+                  id={contact.id}
+                />
+              </Col>
+            )
+          )}
         </Row>
       )}
     </div>

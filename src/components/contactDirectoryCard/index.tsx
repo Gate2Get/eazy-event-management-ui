@@ -44,7 +44,7 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
     .map((item) => item?.[0])
     .join("");
   return (
-    <Row gutter={[8, 8]} className="contact-directory-card__container">
+    <Row gutter={[-8, 16]} className="contact-directory-card__container">
       <Col span={6} className="icon__container">
         <Avatar shape="square" size={50} className={avatarClassName}>
           {avatarIconLetter}
@@ -55,13 +55,13 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
           <Text strong className="font-size-16">
             {cardContact.name}
           </Text>
-          <Tag
+          {/* <Tag
             icon={<ContactsOutlined />}
-            color="#d0e1fd"
+            // color="#d0e1fd"
             className="contact-tag"
-          >
-            {cardContact.noOfContacts} contact's
-          </Tag>
+          > */}
+          <Text italic>{cardContact.noOfContacts} contact's</Text>
+          {/* </Tag> */}
         </Space>
       </Col>
       {menuItems && (

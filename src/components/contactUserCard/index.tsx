@@ -48,13 +48,13 @@ export const ContactUserCard = (props: ContactUserCardType) => {
       color={EVENT_SEND_STATUS_LABEL_MAP[status?.toString() as string]}
     >
       <Card className="contact-user-card__container">
-        <Row gutter={[8, 8]}>
-          <Col span={4}>
-            <Avatar size={40} className={avatarClassName}>
+        <Row gutter={[-8, 16]}>
+          <Col span={6}>
+            <Avatar shape="square" size={50} className={avatarClassName}>
               {avatarIconLetter}
             </Avatar>
           </Col>
-          <Col span={menuItems ? 18 : 20}>
+          <Col span={menuItems ? 15 : 17}>
             <div>
               <Text strong ellipsis editable={editable}>
                 {name}

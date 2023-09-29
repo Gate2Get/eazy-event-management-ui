@@ -1,5 +1,14 @@
 import React from "react";
-import { Button, Col, ColProps, Form, Input, Row, Select, Typography } from "antd";
+import {
+  Button,
+  Col,
+  ColProps,
+  Form,
+  Input,
+  Row,
+  Select,
+  Typography,
+} from "antd";
 import { Option } from "antd/es/mentions";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import "./styles.scss";
@@ -7,10 +16,10 @@ import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { useBearStore } from "../../store";
 import { ROUTES_URL } from "../../constants";
-import LoginSvg from '../../assets/svg/login.svg'
+import LoginSvg from "../../assets/svg/login-form.svg";
 
 const { Title, Text } = Typography;
-const OTP_RESEND_AFTER = 5000;
+const OTP_RESEND_AFTER = 30000;
 const counterInSeconds = OTP_RESEND_AFTER / 1000;
 
 const prefixSelector = (
@@ -54,7 +63,7 @@ export const SignIn = () => {
       .verifyOTP(mobile, otp)
       .then((response) => {
         setLoading(false);
-        navigate(ROUTES_URL.DASHBOARD);
+        navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
       })
       .catch((error) => {
         setLoading(false);
@@ -96,6 +105,7 @@ export const SignIn = () => {
   };
 
   const onRequestOtp = () => {
+    loginUser(payload.mobile);
     setRequestOtpEnabled(false);
     setTimeout(() => setRequestOtpEnabled(true), OTP_RESEND_AFTER);
     setCountDown(counterInSeconds);
@@ -103,18 +113,18 @@ export const SignIn = () => {
 
   const colProps: ColProps = {};
   if (screen === "MOBILE") {
-    colProps.flex = 12;
+    colProps.flex = 24;
   } else {
-    colProps.span = 12;
+    colProps.span = 24;
   }
 
   return (
     <div className="sign-in__container">
-      <Row>
-        <Col {...colProps}>
-          <img src={LoginSvg} alt="" width={"70%"} />
-        </Col>
-        <Col {...colProps}>
+      <Row
+        className="login-form"
+        style={screen !== "MOBILE" ? { width: "30rem" } : {}}
+      >
+        <Col span={24}>
           <Title level={2} className="login__text">
             Log in to your account
           </Title>
@@ -225,6 +235,11 @@ export const SignIn = () => {
           )}
         </Col>
       </Row>
+      {screen !== "MOBILE" && (
+        <Row>
+          <img src={LoginSvg} alt="" className="login-form-svg" />
+        </Row>
+      )}
     </div>
   );
 };

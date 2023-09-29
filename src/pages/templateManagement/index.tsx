@@ -45,7 +45,14 @@ export const TemplateManagement = () => {
   } = useBearStore.templateStore();
 
   React.useEffect(() => {
-    if (!action) getTemplates();
+    if (!action) {
+      getTemplates();
+      setSelectedTemplate({
+        message: "",
+        name: "",
+      });
+      form.resetFields();
+    }
   }, [action, form]);
 
   const handleFileUpload = async (
@@ -324,7 +331,7 @@ export const TemplateManagement = () => {
               name="contacts"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please upload your voice file!",
                 },
               ]}

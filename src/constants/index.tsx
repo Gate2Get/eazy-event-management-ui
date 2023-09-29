@@ -7,7 +7,7 @@ import {
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
   SERVICE: "service",
-  EE: '/ee',
+  EE: "/ee",
   CONTACT_MANAGEMENT: "contact-management",
   TEMPLATE_MANAGEMENT: "template-management",
   EVENT_MANAGEMENT: "event-management",
@@ -15,7 +15,9 @@ export const ROUTES_URL = {
   FEEDBACK: "feedback",
   REPORT_BUG: "report-bug",
   MY_PROFILE: "my-profile",
-  LOGIN: "/login",
+  LOGIN: "/account/login",
+  AUTHORIZER: "/account/auth-verify",
+  PRIVACY_POLICY: "/privacy-policy",
   FORBIDDEN: "forbidden",
 };
 
@@ -30,6 +32,18 @@ export const ROUTES_MENU = {
   REPORT_BUG: "Report Bug",
   MY_PROFILE: "My Profile",
 };
+
+export const SERVICE_MENU = [
+  ROUTES_MENU.DASHBOARD,
+  ROUTES_MENU.SERVICE,
+  ROUTES_MENU.CONTACT_MANAGEMENT,
+  ROUTES_MENU.EVENT_MANAGEMENT,
+  ROUTES_MENU.GIFT_MANAGEMENT,
+  ROUTES_MENU.TEMPLATE_MANAGEMENT,
+  ROUTES_MENU.FEEDBACK,
+  ROUTES_MENU.REPORT_BUG,
+  ROUTES_MENU.MY_PROFILE,
+];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
 
@@ -122,3 +136,5 @@ export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
   "3": "#ff6259",
   "4": "#BDBDBD",
 };
+
+export const DATE_FORMAT = "DD-MM-YYYY";

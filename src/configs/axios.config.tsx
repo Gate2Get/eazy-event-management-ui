@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { message, notification } from "antd";
+import { ROUTES_URL } from "../constants";
 
 export const instance: AxiosInstance = axios.create();
 
@@ -22,7 +23,7 @@ export const interceptors = (navigate: (url: string) => void): void => {
     },
     (error) => {
       if (error?.response?.status === 401) {
-        navigate("/login");
+        navigate(ROUTES_URL.LOGIN);
       } else if (error?.response?.status === 403) {
         navigate(
           window.location.pathname.includes("/settings")
@@ -53,8 +54,9 @@ export const templateManagementEndpoint = {
 };
 
 export const userManagementEndpoint = {
-  loginUser: "/api/v1/login",
-  verifyOTP: "/api/v1/verify-otp",
+  loginUser: "/api/v1/auth/login",
+  verifyOTP: "/api/v1/auth/verify-otp",
+  verifyAuth: "/api/v1/auth/verify-auth",
   getUserInfo: "/api/v1/user/info",
   updateUserInfo: "/api/v1/user/info",
 };
@@ -65,6 +67,7 @@ export const eventManagementEndpoint = {
   updateEvent: "/api/v1/event/my-events",
   deleteEvent: "/api/v1/event/my-events/",
   getEventContact: "/api/v1/event",
+  exportContact: "/api/v1/contact/export/",
 };
 
 export const dashboardEndpoint = {

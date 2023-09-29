@@ -173,3 +173,31 @@
   border: solid #22c55e;
   color: #22c55e;
 }
+
+.ant-btn-primary {
+  color: #fff;
+  border-color: #0565ff !important;
+}
+
+.__account__login {
+  .ant-layout-content {
+    background-color: #fff;
+  }
+
+  .header-home__container {
+    .get-started__button {
+      display: none;
+    }
+  }
+}
+
+.__account__auth-verify {
+  .ant-layout-content {
+    background-color: #fff;
+  }
+  .header-home__container {
+    .get-started__button {
+      display: none;
+    }
+  }
+}

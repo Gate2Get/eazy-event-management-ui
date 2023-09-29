@@ -1,4 +1,5 @@
 import React from "react";
+import { Authorizer } from "../authorizer";
 import { App403 } from "../components/403";
 import { App404 } from "../components/404";
 import { ROUTES_URL } from "../constants";
@@ -9,10 +10,10 @@ import { EventManagement } from "../pages/eventManagement";
 import { Feedback } from "../pages/feedback";
 import { Home } from "../pages/home";
 import { MyProfile } from "../pages/myProfile";
+import { PrivacyPolicy } from "../pages/privacyPolicy";
 import { ReportBug } from "../pages/reportBug";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
-
 
 export const APP_ROUTES = [
   {
@@ -21,13 +22,19 @@ export const APP_ROUTES = [
   },
   {
     path: `${ROUTES_URL.EE}/*`,
-    element: (
-      <AppLayout/>
-    ),
+    element: <AppLayout />,
+  },
+  {
+    path: ROUTES_URL.AUTHORIZER,
+    element: <Authorizer />,
   },
   {
     path: ROUTES_URL.LOGIN,
     element: <SignIn />,
+  },
+  {
+    path: ROUTES_URL.PRIVACY_POLICY,
+    element: <PrivacyPolicy />,
   },
 ];
 

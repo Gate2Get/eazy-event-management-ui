@@ -18,7 +18,15 @@ export const ContactManagement = () => {
     useBearStore.contactStore();
 
   React.useEffect(() => {
-    getContactDirectory();
+    if (!action) getContactDirectory();
+  }, [action]);
+
+  React.useEffect(() => {
+    return () => {
+      setAction("");
+      setDirectoryList([]);
+      setIsListView(false);
+    };
   }, []);
 
   const getContactDirectory = (): any => {
@@ -37,7 +45,7 @@ export const ContactManagement = () => {
 
   return (
     <div className="contact-management__container">
-      <Divider />
+      {/* <Divider /> */}
       {!action && (
         <>
           <Row>

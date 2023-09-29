@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, Layout, Row, Space, Spin, Typography } from "antd";
+import { Alert, Divider, Layout, Row, Space, Spin, Typography } from "antd";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { Header as AppHeader } from "../components/header";
 import "./styles.scss";
@@ -7,12 +7,14 @@ import Marquee from "react-fast-marquee";
 import { useBearStore } from "../store";
 import { SidebarTab } from "../components/sidebarTab";
 import BannerPng from "../assets/png/banner-BH.4fd13869.png";
+import BannerPngAlt from "../assets/webp/form-bg-1.webp";
 import { API } from "../api";
 import { AlertType } from "../types";
 import { ServiceRoutes } from "../routes";
+import { DashboardOutlined } from "@ant-design/icons";
 
 const { Header, Content, Sider } = Layout;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   /* A custom hook that returns the width and height of the window. */
@@ -26,7 +28,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     alerts,
     collapsed,
     setCollapsed,
+    setLoading,
   } = useBearStore.appStore();
+  const { setUser } = useBearStore.userStore();
 
   const { children } = props;
 
@@ -38,6 +42,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   }
 
   React.useEffect(() => {
+    getUserInfo();
     getAlerts();
   }, []);
 
@@ -49,6 +54,20 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       })
       .catch((error: Error) => {
         console.log({ location: "getAlerts", error });
+      });
+  };
+
+  const getUserInfo = () => {
+    setLoading(true);
+    API.userManagement
+      .getUserInfo()
+      .then((userInfo) => {
+        setLoading(false);
+        setUser(userInfo);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "getUserInfo", error });
       });
   };
 
@@ -79,7 +98,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           {screen === "DESKTOP" || (screen === "MOBILE" && collapsed) ? (
             <Content
               style={{
-                margin: "10px 10px",
+                margin: "0px 10px 10px 10px",
                 padding: 10,
                 minHeight: height,
                 background: "#FFFFFF",
@@ -98,37 +117,38 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 </div>
               </div>
             )} */}
-
+              <div className="alert-container">
+                {alerts.length
+                  ? alerts.map((alert) => (
+                      <Alert
+                        banner
+                        {...alert.props}
+                        message={
+                          <Marquee
+                            pauseOnHover
+                            gradient={false}
+                            {...alert.props}
+                          >
+                            {alert.text}
+                          </Marquee>
+                        }
+                      />
+                    ))
+                  : null}
+                {/* <Divider /> */}
+              </div>
               <div className="banner-text">
-                <div className="banner-image">
+                {/* <div className="banner-image">
                   <img
-                    src={BannerPng}
+                    src={BannerPngAlt}
                     alt=""
                     style={{ width: "100%" }}
                     height={120}
                   />
-                </div>
+                </div> */}
                 <div className="text-on-image">
-                  <Title level={2}>{currentPage}</Title>
-                </div>
-                <div className="alert-container">
-                  {alerts.length
-                    ? alerts.map((alert) => (
-                        <Alert
-                          banner
-                          {...alert.props}
-                          message={
-                            <Marquee
-                              pauseOnHover
-                              gradient={false}
-                              {...alert.props}
-                            >
-                              {alert.text}
-                            </Marquee>
-                          }
-                        />
-                      ))
-                    : null}
+                  <Text>{currentPage}</Text>
+                  <Divider />
                 </div>
               </div>
 

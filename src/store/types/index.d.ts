@@ -6,16 +6,15 @@ import {
   EventType,
   ScreenType,
   TemplateType,
+  UserInfoType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType } from "../../types";
 
 export type UserType = {
-  name: string;
-  email: string;
-  mobile: number;
+  user: UserInfoType;
   isAuthorized: boolean | null | undefined;
-  setUser: (user: UserType) => void;
+  setUser: (user: UserInfoType) => void;
 };
 
 export type AppStoreType = {

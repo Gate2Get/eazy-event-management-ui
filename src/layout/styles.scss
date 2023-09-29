@@ -1,6 +1,6 @@
 .app__layout {
   .layout__trigger-sidebar {
-    color: #ffffff;
+    // color: #ffffff;
     font-size: 20px;
     padding-left: 20px;
   }
@@ -11,19 +11,38 @@
     top: 0px;
     z-index: 1000;
     width: 100%;
-    background: linear-gradient(#002242, #004484);
+    background: #fff;
+    box-shadow: 0 100px 80px rgba(0, 0, 0, 0.01),
+      0 64.8148px 46.8519px rgba(0, 0, 0, 0.00759259),
+      0 38.5185px 25.4815px rgba(0, 0, 0, 0.00607407),
+      0 20px 13px rgba(0, 0, 0, 0.005),
+      0 8.14815px 6.51852px rgba(0, 0, 0, 0.00392593),
+      0 1.85185px 3.14815px rgba(0, 0, 0, 0.00240741);
+    // background: linear-gradient(#002242, #004484);
   }
 
   .banner-text {
     position: relative;
   }
   .text-on-image {
-    position: absolute;
-    top: 10%;
-    left: 5%;
+    // position: absolute;
+    // top: 10%;
+    // left: 5%;
 
+    > span {
+      font-size: 22px;
+      font-weight: 400;
+    }
     > h2 {
-      color: #fff;
+      background: linear-gradient(
+        to right,
+        #004484 20%,
+        #004484 40%,
+        #d341a5 60%,
+        #004484 80%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 
@@ -33,5 +52,13 @@
 
   .sidebar__layout {
     background-color: #fff;
+
+    .ant-menu-item-icon {
+      font-size: 18px;
+    }
+
+    .ant-menu-title-content {
+      font-size: 14px;
+    }
   }
 }

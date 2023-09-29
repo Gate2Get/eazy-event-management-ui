@@ -45,4 +45,17 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  verifyAuth: async () => {
+    return await instance
+      .get(userManagementEndpoint.verifyAuth)
+      .then((response) => {
+        console.log(response.data);
+        const isAuthenticated = response.data.status;
+        return isAuthenticated;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

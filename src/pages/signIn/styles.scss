@@ -1,8 +1,32 @@
 @import "../../variables.scss";
 
 .sign-in__container {
+  background-color: #fff;
   padding: 12px;
   .login__text {
     color: #004484;
+  }
+
+  .login-form {
+    background-color: #fff;
+    border: 1px solid #f0f3f7;
+    border-radius: 8px;
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
+    margin-block: auto;
+    margin-inline: auto;
+    padding: 4rem;
+    // width: 30rem;
+  }
+
+  .login-form-svg {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    height: auto;
+    inset-block-end: 0;
+    position: fixed;
+    width: 100%;
   }
 }

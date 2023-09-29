@@ -3,11 +3,9 @@ import { AlertType } from "../types";
 import { type UserType } from "./types";
 
 export const createUserStore = create<UserType>((set) => ({
-  name: "",
-  email: "",
-  mobile: 0,
+  user: {},
   isAuthorized: null,
-  setUser: (user: UserType) => {
-    set((state: UserType) => ({ ...user }));
+  setUser: (user) => {
+    set((state) => ({ user }));
   },
 }));

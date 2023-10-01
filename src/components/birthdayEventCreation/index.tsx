@@ -72,15 +72,15 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
   return (
     <div>
       <Row>
-        <Col flex={8}>
+        {/* <Col flex={8}>
           <img src={illustrationBanner} alt="" height={500} />
-        </Col>
-        <Col flex={12}>
+        </Col> */}
+        <Col flex={24}>
           <Title level={3}>Create Birthday Event</Title>
           <Form
             layout="vertical"
             form={form}
-            style={{ maxWidth: 600 }}
+            // style={{ maxWidth: 600 }}
             onFinish={handleEvent}
           >
             <Form.Item

@@ -2,6 +2,7 @@ import { Col, Row, Tag, Typography } from "antd";
 import React from "react";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useBearStore } from "../../store";
+import "./styles.scss";
 
 const { Title, Text } = Typography;
 
@@ -25,9 +26,13 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
         }
       : { span: count };
   return (
-    <div>
+    <div className="home-how-is-it-works__container">
       <Row gutter={[64, 64]} className="content-row">
-        <Col {...colOption(14)} order={!isOdd && screen !== "MOBILE" ? 2 : 1}>
+        <Col
+          {...colOption(14)}
+          order={!isOdd && screen !== "MOBILE" ? 2 : 1}
+          className="how-is-it-works__image"
+        >
           <img
             src={image}
             alt=""

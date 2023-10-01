@@ -64,6 +64,17 @@ export const TemplateManagement = () => {
       form.setFieldValue("contacts", undefined);
     } else if (file?.size && file.size < 50000) {
       const { uid, name } = file;
+      setLoading(true);
+      API.commonAPI
+        .uploadFile(file, "audio")
+        .then((blobId: string) => {
+          setLoading(false);
+          console.log(blobId);
+        })
+        .catch((error: Error) => {
+          setLoading(false);
+          console.log({ location: "handleFileUpload", error });
+        });
     } else {
     }
     form.validateFields();

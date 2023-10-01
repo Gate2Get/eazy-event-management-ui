@@ -25,4 +25,20 @@ export const commonAPI = {
         throw error;
       });
   },
+
+  uploadFile: async (file: any, type: string): Promise<string> => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("name", file.name);
+    return await instance
+      .post(`${commonEndpoint.uploadFile}/${type}`, data)
+      .then((response) => {
+        const data = response.data;
+        const url = data.payload;
+        return url;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

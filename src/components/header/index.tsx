@@ -7,11 +7,12 @@ const { Text } = Typography;
 
 type HeaderType = {
   collapsed: boolean;
+  currentPage: string;
   setCollapsed: (collapsed: boolean) => void;
 };
 
 export const Header = (props: HeaderType) => {
-  const { setCollapsed, collapsed } = props;
+  const { setCollapsed, collapsed, currentPage } = props;
   return (
     <div className="header__container">
       <Row>
@@ -25,8 +26,8 @@ export const Header = (props: HeaderType) => {
               },
             }
           )}
-          <Text className="app__name" italic>
-            Eazy Event
+          <Text className="app__name">
+            Eazy Event <Text italic>({currentPage})</Text>
           </Text>
         </Col>
         {/* <Col span={12}>

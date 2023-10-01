@@ -22,6 +22,7 @@ import { CONTACT_LIST_COLUMN_KEYS, DIRECTORY_ACTIONS } from "./constants";
 import {
   AppstoreOutlined,
   BarsOutlined,
+  CloudDownloadOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
@@ -432,22 +433,32 @@ export const AddEditContactDirectory = () => {
               ) : action === "EDIT" ? (
                 <Button onClick={onAddContact}>Add New</Button>
               ) : (
-                <Segmented
-                  value={isListView ? "List" : "Card"}
-                  options={[
-                    {
-                      value: "List",
-                      icon: <BarsOutlined />,
-                    },
-                    {
-                      value: "Card",
-                      icon: <AppstoreOutlined />,
-                    },
-                  ]}
-                  onChange={(value) => {
-                    setIsListView(value === "List");
-                  }}
-                />
+                <>
+                  <Segmented
+                    value={isListView ? "List" : "Card"}
+                    options={[
+                      {
+                        value: "List",
+                        icon: <BarsOutlined />,
+                      },
+                      {
+                        value: "Card",
+                        icon: <AppstoreOutlined />,
+                      },
+                    ]}
+                    onChange={(value) => {
+                      setIsListView(value === "List");
+                    }}
+                  />
+                  <CloudDownloadOutlined
+                    size={50}
+                    onClick={() => {
+                      saveAs(
+                        `${eventManagementEndpoint.exportContact}/${selectedDirectory.id}`
+                      );
+                    }}
+                  />
+                </>
               )}
             </Col>
           </Row>

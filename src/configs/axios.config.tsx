@@ -62,7 +62,7 @@ export const userManagementEndpoint = {
 };
 
 export const eventManagementEndpoint = {
-  createEvent: "api/v1/event/my-events",
+  createEvent: "/api/v1/event/my-events",
   getEvent: "/api/v1/event/my-events",
   updateEvent: "/api/v1/event/my-events",
   deleteEvent: "/api/v1/event/my-events/",
@@ -77,4 +77,5 @@ export const dashboardEndpoint = {
 export const commonEndpoint = {
   getAlerts: "/api/v1/common/alerts",
   createBug: "/api/v1/common/report-bug",
+  uploadFile: "/api/v1/file/upload",
 };

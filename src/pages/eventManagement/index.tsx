@@ -84,12 +84,19 @@ export const EventManagement = () => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
-    form.setFieldValue("eventType", eventType);
+    form.setFieldValue("eventType", eventType || undefined);
   }, [eventType]);
 
   React.useEffect(() => {
     getContactDirectory();
     getTemplates();
+
+    return () => {
+      setFilters({});
+      setEventType("");
+      form.resetFields();
+      setAction("");
+    };
   }, []);
 
   React.useEffect(() => {
@@ -419,43 +426,50 @@ export const EventManagement = () => {
           </Col>
         </Row>
       )}
-      {action === "ADD" && !isPreview && (
-        <Form layout="vertical" form={form}>
-          <Form.Item label="Select Event" name="eventType">
-            <Select
-              style={{ width: "100%" }}
-              size="large"
-              allowClear
-              placeholder="Select a event"
-              optionFilterProp="children"
-              options={eventTypeOptions}
-              onChange={(value) => setEventType(value)}
+      <div
+        className={
+          screen === "MOBILE" ? "creation-form-mobile" : "creation-form"
+        }
+      >
+        {action === "ADD" && !isPreview && (
+          <Form layout="vertical" form={form}>
+            <Form.Item label="Select Event" name="eventType">
+              <Select
+                style={{ width: "100%" }}
+                size="large"
+                allowClear
+                placeholder="Select a event"
+                optionFilterProp="children"
+                options={eventTypeOptions}
+                onChange={(value) => setEventType(value)}
+              />
+            </Form.Item>
+          </Form>
+        )}
+
+        {(action === "ADD" || action === "EDIT") &&
+          !isPreview &&
+          eventType === EVENT_TYPES.MARRIAGE && (
+            <MarriageEventCreation
+              contactList={directoryList}
+              templates={templates}
+              onHandleEvent={handleEventPreview}
+              isEdit={action === "EDIT" || action === "ADD"}
+              event={selectedEvents}
             />
-          </Form.Item>
-        </Form>
-      )}
-      {(action === "ADD" || action === "EDIT") &&
-        !isPreview &&
-        eventType === EVENT_TYPES.MARRIAGE && (
-          <MarriageEventCreation
-            contactList={directoryList}
-            templates={templates}
-            onHandleEvent={handleEventPreview}
-            isEdit={action === "EDIT" || action === "ADD"}
-            event={selectedEvents}
-          />
-        )}
-      {(action === "ADD" || action === "EDIT") &&
-        !isPreview &&
-        eventType === EVENT_TYPES.BIRTHDAY && (
-          <BirthdayEventCreation
-            contactList={directoryList}
-            templates={templates}
-            onHandleEvent={handleEventPreview}
-            isEdit={action === "EDIT" || action === "ADD"}
-            event={selectedEvents}
-          />
-        )}
+          )}
+        {(action === "ADD" || action === "EDIT") &&
+          !isPreview &&
+          eventType === EVENT_TYPES.BIRTHDAY && (
+            <BirthdayEventCreation
+              contactList={directoryList}
+              templates={templates}
+              onHandleEvent={handleEventPreview}
+              isEdit={action === "EDIT" || action === "ADD"}
+              event={selectedEvents}
+            />
+          )}
+      </div>
       {(action === "VIEW" ||
         ((action === "ADD" || action === "EDIT") && isPreview)) && (
         <PreviewEvent onSubmit={handleSubmitEvent} />

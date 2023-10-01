@@ -74,7 +74,11 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   return (
     <Layout className="app__layout">
       <Header className="layout__header">
-        <AppHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+        <AppHeader
+          collapsed={collapsed}
+          setCollapsed={setCollapsed}
+          currentPage={currentPage}
+        />
       </Header>
       <Spin tip="Loading..." spinning={isLoading}>
         <Layout hasSider>
@@ -146,10 +150,10 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                     height={120}
                   />
                 </div> */}
-                <div className="text-on-image">
+                {/* <div className="text-on-image">
                   <Text>{currentPage}</Text>
                   <Divider />
-                </div>
+                </div> */}
               </div>
 
               <ServiceRoutes />

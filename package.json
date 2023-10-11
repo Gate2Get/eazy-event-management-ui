@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build && pnpm run copy-nginx-config",
+    "build": "tsc && vite build",
     "copy-nginx-config": "cp nginx.conf dist && cp fetch_env.js dist",
     "start": "vite preview",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",

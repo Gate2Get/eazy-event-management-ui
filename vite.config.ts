@@ -13,6 +13,16 @@ if (!process.env.REACT_APP_ENV) {
     },
   };
 }
+else if (process.env.REACT_APP_ENV === 'Dev') {
+  serverConfig.proxy = {
+    "/api": {
+      target: "http://eazy-event-dev-api.ap-south-1.elasticbeanstalk.com",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({

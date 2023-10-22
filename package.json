@@ -7,10 +7,10 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "copy-nginx-config": "cp nginx.conf dist && cp fetch_env.js dist",
-    "start": "vite preview",
+    "prestart": "npm i",
+    "start": "vite preview --port 8080",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",
-    "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix",
-    "prepare": "husky install"
+    "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",

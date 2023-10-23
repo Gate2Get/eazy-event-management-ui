@@ -6,10 +6,18 @@ import { type AttachmentButtonType } from "./types";
 export const AttachmentButton = (
   props: AttachmentButtonType
 ): React.ReactElement => {
-  const { onAttach, disabled, hoverText, buttonText, accept = "*" } = props;
+  const {
+    onAttach,
+    disabled,
+    hoverText,
+    buttonText,
+    accept = "*",
+    otherProps,
+  } = props;
   return (
     <div>
       <Upload
+        {...otherProps}
         accept={accept}
         disabled={disabled}
         progress={{ showInfo: true }}

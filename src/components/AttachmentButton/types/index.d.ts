@@ -6,4 +6,5 @@ type AttachmentButtonType = {
   accept?: string;
   hoverText?: React.ReactNode;
   buttonText: React.ReactNode;
+  otherProps?: any;
 };

@@ -18,13 +18,14 @@ export const templateManagementAPI = {
       });
   },
   updateTemplate: async (template: TemplateType) => {
-    const { message, name, type, channel, id } = template;
+    const { message, name, type, channel, id, blob } = template;
     const toUpdate = {
       message,
       name,
       type,
       channel,
       id: id,
+      blob,
     };
     return await instance
       .put(templateManagementEndpoint.updateTemplate, toUpdate)

@@ -57,6 +57,7 @@ export type TemplateType = {
   name: string;
   type?: string;
   message: string;
+  blob?: string;
   channel?: string;
   createdAt?: string;
   updatedAt?: string;

@@ -44,6 +44,8 @@ export const TemplateManagement = () => {
     templates,
   } = useBearStore.templateStore();
 
+  const [fileList, setFileList]: [any[], Dispatch<any>] = React.useState([]);
+
   React.useEffect(() => {
     if (!action) {
       getTemplates();
@@ -59,10 +61,11 @@ export const TemplateManagement = () => {
     e: UploadChangeParam<UploadFile<any>>
   ): Promise<void> => {
     const { file } = e;
-    console.log(file);
+    console.log(file, form.getFieldValue("blob"));
     if (file.status === "removed") {
-      form.setFieldValue("contacts", undefined);
-    } else if (file?.size && file.size < 50000) {
+      form.setFieldValue("blob", undefined);
+      setFile("");
+    } else if (file?.size && file.size < 5000000) {
       const { uid, name } = file;
       setLoading(true);
       API.commonAPI
@@ -70,14 +73,20 @@ export const TemplateManagement = () => {
         .then((blobId: string) => {
           setLoading(false);
           console.log(blobId);
+          const urlObject = new URL(blobId);
+          const pathname = urlObject.pathname;
+          form.setFieldValue("blob", pathname);
+          setFile(blobId);
         })
         .catch((error: Error) => {
           setLoading(false);
           console.log({ location: "handleFileUpload", error });
         });
     } else {
+      console.error("Upload file error", file);
     }
     form.validateFields();
+    console.log(file, form.getFieldValue("blob"));
   };
 
   const onCancel = () => {
@@ -109,12 +118,14 @@ export const TemplateManagement = () => {
     setAction("VIEW");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
+    setFile(record.blob);
   };
 
   const onEditSelect = (record: TemplateType) => {
     setAction("EDIT");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
+    setFile(record.blob);
   };
 
   const onDeleteSelect = (record: TemplateType) => {
@@ -204,6 +215,28 @@ export const TemplateManagement = () => {
     richTextProps.setContents = selectedTemplate.message;
     richTextProps.hideToolbar = action === "VIEW";
   }
+
+  const setFile = (file?: string) => {
+    let fileList: any[] = [];
+    if (file) {
+      const urlObject = new URL(file);
+      console.log({ urlObject });
+      const pathname = urlObject.pathname;
+      const filePath = pathname.substring(pathname.lastIndexOf("/") + 1);
+      const fileName = filePath.split("_");
+      fileName.shift();
+      fileList = [
+        {
+          uid: "1",
+          name: fileName.join("_"),
+          status: "done",
+          url: file,
+        },
+      ];
+    }
+    setFileList(fileList);
+    console.log({ fileList, file });
+  };
 
   return (
     <div className="template-management__container">
@@ -339,7 +372,7 @@ export const TemplateManagement = () => {
           {form.getFieldValue("channel") === "VOICE_CALL" && (
             <Form.Item
               label="Upload voice file"
-              name="contacts"
+              name="blob"
               rules={[
                 {
                   required: false,
@@ -349,6 +382,7 @@ export const TemplateManagement = () => {
               valuePropName="fileList"
             >
               <AttachmentButton
+                otherProps={{ maxCount: 1, fileList }}
                 disabled={action === "VIEW"}
                 buttonText="Upload"
                 onAttach={handleFileUpload}

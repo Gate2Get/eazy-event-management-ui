@@ -34,7 +34,7 @@ export const commonAPI = {
       .post(`${commonEndpoint.uploadFile}/${type}`, data)
       .then((response) => {
         const data = response.data;
-        const url = data.payload;
+        const url = data.url;
         return url;
       })
       .catch((error) => {

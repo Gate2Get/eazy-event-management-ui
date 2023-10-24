@@ -49,7 +49,7 @@ export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
 
 export const EVENT_STATUS = {
   APPROVED: "APPROVED",
-  PENDING: "PENDING",
+  PENDING_APPROVAL: "PENDING_APPROVAL",
   REJECTED: "REJECTED",
   NOT_STARTED: "NOT_STARTED",
   COMPLETED: "COMPLETED",
@@ -60,7 +60,7 @@ export const EVENT_STATUS = {
 export const EVENT_STATUS_LABEL = {
   DRAFT: "Draft",
   IN_PROGRESS: "In progress",
-  PENDING: "Pending approval",
+  PENDING_APPROVAL: "Pending approval",
   REJECTED: "Rejected",
   APPROVED: "Approved",
   COMPLETED: "Completed",
@@ -70,7 +70,7 @@ export const EVENT_STATUS_LABEL = {
 export const EVENT_STATUS_LABEL_COLOR = {
   [EVENT_STATUS_LABEL.DRAFT]: "default",
   [EVENT_STATUS_LABEL.IN_PROGRESS]: "processing",
-  [EVENT_STATUS_LABEL.PENDING]: "processing",
+  [EVENT_STATUS_LABEL.PENDING_APPROVAL]: "processing",
   [EVENT_STATUS_LABEL.REJECTED]: "error",
   [EVENT_STATUS_LABEL.APPROVED]: "success",
   [EVENT_STATUS_LABEL.COMPLETED]: "success",

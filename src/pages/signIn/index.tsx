@@ -131,7 +131,7 @@ export const SignIn = () => {
           {isOtpEnabled ? (
             <>
               <Title level={4}>
-                Receive One-Time Password via Whatsapp{" "}
+                Receive One-Time Password via SMS{" "}
                 <WhatsAppOutlined size={64} color="#25D366" />
               </Title>
 

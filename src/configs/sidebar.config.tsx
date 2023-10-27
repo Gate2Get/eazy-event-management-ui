@@ -53,15 +53,15 @@ export const getMenuItems = (
       navigate(ROUTES_URL.EVENT_MANAGEMENT);
     },
   },
-  {
-    key: ROUTES_URL.GIFT_MANAGEMENT,
-    label: ROUTES_MENU.GIFT_MANAGEMENT,
-    icon: <GiftOutlined />,
-    onClick: () => {
-      otherFn?.();
-      navigate(ROUTES_URL.GIFT_MANAGEMENT);
-    },
-  },
+  // {
+  //   key: ROUTES_URL.GIFT_MANAGEMENT,
+  //   label: ROUTES_MENU.GIFT_MANAGEMENT,
+  //   icon: <GiftOutlined />,
+  //   onClick: () => {
+  //     otherFn?.();
+  //     navigate(ROUTES_URL.GIFT_MANAGEMENT);
+  //   },
+  // },
   {
     key: ROUTES_URL.FEEDBACK,
     icon: <CommentOutlined />,

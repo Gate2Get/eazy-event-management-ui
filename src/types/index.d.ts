@@ -39,6 +39,8 @@ export type UserInfoType = {
   email?: string;
   state?: string;
   city?: string;
+  isEmailVerified?: boolean;
+  profileImage?: string;
 };
 
 export type ContactDirectoryType = {

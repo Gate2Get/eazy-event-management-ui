@@ -1,7 +1,13 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  Alert,
   Button,
   Col,
   Form,
@@ -11,6 +17,8 @@ import {
   Radio,
   Row,
   Select,
+  Space,
+  Typography,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
@@ -22,6 +30,7 @@ import { RichTextEditor } from "../../components/richTextEditor";
 import { CHANNEL_OPTIONS, EVENT_TYPE_PROPS } from "../../constants";
 import { useBearStore } from "../../store";
 import { ActionType, TemplateType } from "../../types";
+import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
 
@@ -29,6 +38,8 @@ const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   label: EVENT_TYPE_PROPS[event].label,
   value: event,
 }));
+
+const { Title } = Typography;
 
 export const TemplateManagement = () => {
   const [form] = Form.useForm();
@@ -44,7 +55,9 @@ export const TemplateManagement = () => {
     templates,
   } = useBearStore.templateStore();
 
-  const [fileList, setFileList]: [any[], Dispatch<any>] = React.useState([]);
+  const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
+  const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
+  const [messageError, setMessageError] = React.useState("");
 
   React.useEffect(() => {
     if (!action) {
@@ -57,14 +70,21 @@ export const TemplateManagement = () => {
     }
   }, [action, form]);
 
+  React.useEffect(() => {
+    return () => {
+      setAction("");
+      setMessageError("");
+      setIsError(false);
+    };
+  }, []);
+
   const handleFileUpload = async (
+    id: string,
     e: UploadChangeParam<UploadFile<any>>
   ): Promise<void> => {
     const { file } = e;
-    console.log(file, form.getFieldValue("blob"));
     if (file.status === "removed") {
-      form.setFieldValue("blob", undefined);
-      setFile("");
+      handleOnChangeFieldVoice(id, "");
     } else if (file?.size && file.size < 5000000) {
       const { uid, name } = file;
       setLoading(true);
@@ -75,8 +95,7 @@ export const TemplateManagement = () => {
           console.log(blobId);
           const urlObject = new URL(blobId);
           const pathname = urlObject.pathname;
-          form.setFieldValue("blob", pathname);
-          setFile(blobId);
+          handleOnChangeFieldVoice(id, blobId);
         })
         .catch((error: Error) => {
           setLoading(false);
@@ -85,8 +104,6 @@ export const TemplateManagement = () => {
     } else {
       console.error("Upload file error", file);
     }
-    form.validateFields();
-    console.log(file, form.getFieldValue("blob"));
   };
 
   const onCancel = () => {
@@ -118,14 +135,14 @@ export const TemplateManagement = () => {
     setAction("VIEW");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
-    setFile(record.blob);
+    setMessages(JSON.parse(record.message));
   };
 
   const onEditSelect = (record: TemplateType) => {
     setAction("EDIT");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
-    setFile(record.blob);
+    setMessages(JSON.parse(record.message));
   };
 
   const onDeleteSelect = (record: TemplateType) => {
@@ -190,11 +207,24 @@ export const TemplateManagement = () => {
   };
 
   const onSubmit = (values: any) => {
-    console.log("Received values", values);
+    if (!Object.values(messages).length) {
+      setMessageError("Please add message!");
+      return;
+    }
+    if (Object.values(messages).find((item: any) => !item.value)) {
+      setIsError(true);
+      return;
+    }
+    setMessageError("");
+    setIsError(false);
     if (action === "ADD") {
-      createTemplates(values);
+      createTemplates({ ...values, message: JSON.stringify(messages) });
     } else if (action === "EDIT") {
-      updateTemplate({ ...selectedTemplate, ...values });
+      updateTemplate({
+        ...selectedTemplate,
+        ...values,
+        message: JSON.stringify(messages),
+      });
     }
   };
 
@@ -216,7 +246,7 @@ export const TemplateManagement = () => {
     richTextProps.hideToolbar = action === "VIEW";
   }
 
-  const setFile = (file?: string) => {
+  const getFileList = (file?: string) => {
     let fileList: any[] = [];
     if (file) {
       const urlObject = new URL(file);
@@ -234,8 +264,64 @@ export const TemplateManagement = () => {
         },
       ];
     }
-    setFileList(fileList);
     console.log({ fileList, file });
+    return fileList;
+  };
+
+  const renderVoiceMessage = (message: any) => {
+    if (message.type === "TEXT") {
+      return (
+        <TextArea
+          size="large"
+          style={{ minHeight: "40vh", width: "100%" }}
+          disabled={action === "VIEW"}
+          autoSize={{ minRows: 1, maxRows: 20 }}
+          value={message.value}
+          status={isError && !message.value ? "error" : ""}
+          onChange={(e) => {
+            handleOnChangeFieldVoice(message.id, e.target.value);
+          }}
+        />
+      );
+    } else if (message.type === "AUDIO") {
+      return (
+        <AttachmentButton
+          otherProps={{ maxCount: 1, fileList: getFileList(message.value) }}
+          disabled={action === "VIEW"}
+          buttonText="Upload"
+          onAttach={(e) => handleFileUpload(message.id, e)}
+        />
+      );
+    }
+  };
+
+  const handleAddFieldVoice = (type: string) => {
+    const id = uuidv4();
+    setMessages({
+      ...messages,
+      [id]: {
+        type,
+        value: "",
+        id,
+      },
+    });
+  };
+
+  const handleOnChangeFieldVoice = (id: string, value: string) => {
+    setMessages({
+      ...messages,
+      [id]: {
+        type: messages[id].type,
+        value,
+        id,
+      },
+    });
+  };
+
+  const handleRemoveFieldVoice = (id: string) => {
+    const _messages = { ...messages };
+    delete _messages[id];
+    setMessages(_messages);
   };
 
   return (
@@ -356,8 +442,56 @@ export const TemplateManagement = () => {
               <RichTextEditor disable={action === "VIEW"} {...richTextProps} />
             </Form.Item>
           )}
-          {form.getFieldValue("channel") === "SMS" ||
-          form.getFieldValue("channel") === "VOICE_CALL" ? (
+          {form.getFieldValue("channel") === "VOICE_CALL" && (
+            <>
+              <Title level={5}>Message</Title>
+              {messageError && (
+                <Alert message={messageError} type="error" showIcon />
+              )}
+              {Object.values(messages).map((message: any) => (
+                <div style={{ padding: "8px 0px" }} key={message?.id}>
+                  <Row gutter={[8, 8]}>
+                    <Col span={22}>{renderVoiceMessage(message)}</Col>
+                    <Col>
+                      <Button
+                        onClick={() => {
+                          handleRemoveFieldVoice(message.id);
+                        }}
+                        danger
+                        size="large"
+                        icon={<DeleteOutlined />}
+                      ></Button>
+                    </Col>
+                  </Row>
+                </div>
+              ))}
+              <Space
+                className="site-button-ghost-wrapper"
+                style={{ padding: "10px 0px" }}
+                wrap
+              >
+                <Button
+                  type="default"
+                  onClick={() => {
+                    handleAddFieldVoice("TEXT");
+                  }}
+                >
+                  Add Text
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => {
+                    handleAddFieldVoice("AUDIO");
+                  }}
+                  icon={<UploadOutlined />}
+                >
+                  Add Audio
+                </Button>
+              </Space>
+            </>
+          )}
+
+          {form.getFieldValue("channel") === "SMS" ? (
             <Form.Item
               label="Enter message"
               name="message"
@@ -369,7 +503,7 @@ export const TemplateManagement = () => {
               />
             </Form.Item>
           ) : null}
-          {form.getFieldValue("channel") === "VOICE_CALL" && (
+          {/* {form.getFieldValue("channel") === "VOICE_CALL" && (
             <Form.Item
               label="Upload voice file"
               name="blob"
@@ -388,7 +522,7 @@ export const TemplateManagement = () => {
                 onAttach={handleFileUpload}
               />
             </Form.Item>
-          )}
+          )} */}
           {(action === "ADD" || action === "EDIT") && (
             <Form.Item>
               <Button type="primary" htmlType="submit" size="large">

@@ -6,6 +6,7 @@ import { howIsItWorksContent } from "../../configs/home.config";
 import { HomeHowIsItWorks } from "../../components/homeHowIsItWorks";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
+import { AnimatedText } from "../../components/animatedText";
 
 const { Title, Text } = Typography;
 
@@ -27,6 +28,7 @@ export const Home = () => {
   return (
     <>
       <div style={{ minHeight: 380 }} className="body-content">
+        {/* <AnimatedText /> */}
         <Title className="headline">
           Delivering Joyful Event Notifications
         </Title>

@@ -1,21 +1,49 @@
 import React from "react";
-import { Avatar, Button, Form, Image, Input, Radio, Row, Select } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Form,
+  Image,
+  Input,
+  Popover,
+  Radio,
+  Row,
+  Select,
+  Tooltip,
+} from "antd";
 import UserIcon from "../../assets/png/user.png";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
 import { UserInfoType } from "../../types";
 import { useBearStore } from "../../store";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 export const MyProfile = () => {
-  const { setLoading } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
   const [form] = Form.useForm();
   const [userInfo, setUserInfo]: [UserInfoType, React.Dispatch<any>] =
     React.useState({});
+  const [isEdit, setIsEdit] = React.useState(false);
+  const [isLogout, setIsLogout] = React.useState(false);
 
   React.useEffect(() => {
     getUserInfo();
   }, []);
+
+  const hideLogout = () => {
+    setIsLogout(false);
+  };
+
+  const handleLogoutOpenChange = (newOpen: boolean) => {
+    setIsLogout(newOpen);
+  };
 
   const getUserInfo = () => {
     setLoading(true);
@@ -38,6 +66,7 @@ export const MyProfile = () => {
       .updateUserInfo(userInfo)
       .then((response) => {
         setLoading(false);
+        setIsEdit(!isEdit);
       })
       .catch((error) => {
         setLoading(false);
@@ -45,8 +74,15 @@ export const MyProfile = () => {
       });
   };
 
-  return (
-    <div className="my-profile__container">
+  let cardStyle = {};
+  if (screen === "DESKTOP") {
+    cardStyle = {
+      margin: "2% 30%",
+    };
+  }
+
+  return isEdit ? (
+    <div className="my-profile__container" style={cardStyle}>
       <Image width={96} src={UserIcon} rootClassName="user-icon" />
       <Form
         layout="vertical"
@@ -131,8 +167,94 @@ export const MyProfile = () => {
           <Button size="large" type="primary" htmlType="submit">
             Save changes
           </Button>
+          <Button
+            size="large"
+            type="default"
+            onClick={() => {
+              setIsEdit(!isEdit);
+            }}
+            style={{ marginLeft: "12px" }}
+          >
+            Cancel
+          </Button>
         </Form.Item>
       </Form>
+    </div>
+  ) : (
+    <div className="my-profile__container">
+      <Card
+        style={cardStyle}
+        cover={
+          <Image
+            src={UserIcon}
+            preview={false}
+            rootClassName="user-icon-view"
+          />
+        }
+        actions={[
+          <EditOutlined
+            key="edit"
+            onClick={() => {
+              setIsEdit(!isEdit);
+            }}
+          />,
+          <Popover
+            content={
+              <>
+                <Button type="link">Yes</Button>{" "}
+                <Button type="text" onClick={hideLogout}>
+                  No
+                </Button>
+              </>
+            }
+            title="Logout"
+            trigger="click"
+            open={isLogout}
+            onOpenChange={handleLogoutOpenChange}
+          >
+            <LogoutOutlined />
+          </Popover>,
+        ]}
+      >
+        <Card.Meta
+          title={`${userInfo.firstName || ""} ${userInfo.lastName || ""}`}
+          description={
+            <div>
+              <p>
+                <strong>State:</strong> {userInfo.state}
+              </p>
+              <p>
+                <strong>Email:</strong> {userInfo.email}{" "}
+                {userInfo.email ? (
+                  <Tooltip
+                    placement="rightTop"
+                    title={
+                      userInfo.isEmailVerified ? "Verified" : "Not verified"
+                    }
+                  >
+                    {userInfo.isEmailVerified ? (
+                      <CheckCircleOutlined color="#22C55E" />
+                    ) : (
+                      <ExclamationCircleOutlined color="#EF4444" />
+                    )}
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
+              </p>
+              <p>
+                <strong>Mobile:</strong> {userInfo.mobile}
+              </p>
+              <p>
+                <strong>City:</strong> {userInfo.city}
+              </p>
+              <p>
+                <strong>Gender:</strong> {userInfo.gender}
+              </p>
+            </div>
+          }
+        />
+      </Card>
     </div>
   );
 };

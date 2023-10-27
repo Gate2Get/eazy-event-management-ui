@@ -67,7 +67,7 @@ export const AddEditContactDirectory = () => {
       const { id, name } = selectedDirectory;
       console.log(selectedDirectory);
       form.setFieldValue("name", name);
-      setIsListView(true);
+      if (action === "EDIT") setIsListView(true);
       getContactList(id as string);
     }
   }, [action]);

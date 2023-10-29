@@ -29,10 +29,13 @@ import { TemplateCard } from "../../components/templateCard";
 import { RichTextEditor } from "../../components/richTextEditor";
 import { CHANNEL_OPTIONS, EVENT_TYPE_PROPS } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType, TemplateType } from "../../types";
+import { ActionType, Channels, TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
+import { PreviewTemplate } from "../../components/previewTemplate";
+import { getFormattedMessage } from "../../utils/common.utils";
+import { AttachmentDragger } from "../../components/AttachmentDragger";
 
 const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   label: EVENT_TYPE_PROPS[event].label,
@@ -135,14 +138,18 @@ export const TemplateManagement = () => {
     setAction("VIEW");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
-    setMessages(JSON.parse(record.message));
+    if (record.channel === "VOICE_CALL") {
+      setMessages(JSON.parse(record.message));
+    }
   };
 
   const onEditSelect = (record: TemplateType) => {
     setAction("EDIT");
     form.setFieldsValue(record);
     setSelectedTemplate(record);
-    setMessages(JSON.parse(record.message));
+    if (record.channel === "VOICE_CALL") {
+      setMessages(JSON.parse(record.message));
+    }
   };
 
   const onDeleteSelect = (record: TemplateType) => {
@@ -218,12 +225,15 @@ export const TemplateManagement = () => {
     setMessageError("");
     setIsError(false);
     if (action === "ADD") {
-      createTemplates({ ...values, message: JSON.stringify(messages) });
+      createTemplates({
+        ...values,
+        message: getFormattedMessage(JSON.stringify(messages), values.channel),
+      });
     } else if (action === "EDIT") {
       updateTemplate({
         ...selectedTemplate,
         ...values,
-        message: JSON.stringify(messages),
+        message: getFormattedMessage(JSON.stringify(messages), values.channel),
       });
     }
   };
@@ -285,7 +295,7 @@ export const TemplateManagement = () => {
       );
     } else if (message.type === "AUDIO") {
       return (
-        <AttachmentButton
+        <AttachmentDragger
           otherProps={{ maxCount: 1, fileList: getFileList(message.value) }}
           disabled={action === "VIEW"}
           buttonText="Upload"
@@ -322,6 +332,20 @@ export const TemplateManagement = () => {
     const _messages = { ...messages };
     delete _messages[id];
     setMessages(_messages);
+  };
+
+  const onDragOver = (event: any) => {
+    event.preventDefault();
+    console.log("event onDragOver", event);
+  };
+  const onDrop = (event: any) => {
+    // const { completedTasks, draggedTask, todos } = this.state;
+    // this.setState({
+    //   completedTasks: [...completedTasks, draggedTask],
+    //   todos: todos.filter((task) => task.taskID !== draggedTask.taskID),
+    //   draggedTask: {},
+    // });
+    console.log("event onDrop", event);
   };
 
   return (
@@ -381,7 +405,7 @@ export const TemplateManagement = () => {
           ))}
         </Row>
       )}
-      {action && action !== "DELETE" && (
+      {(action === "ADD" || action === "EDIT") && (
         <Form
           layout="vertical"
           onFinish={onSubmit}
@@ -397,7 +421,6 @@ export const TemplateManagement = () => {
             ]}
           >
             <Radio.Group
-              disabled={action === "VIEW"}
               options={CHANNEL_OPTIONS}
               optionType="button"
               buttonStyle="solid"
@@ -408,7 +431,11 @@ export const TemplateManagement = () => {
           </Form.Item>
 
           {form.getFieldValue("channel") && (
-            <Form.Item label="Select Event" name="type">
+            <Form.Item
+              label="Select Event"
+              name="type"
+              rules={[{ required: true, message: "Please select event!" }]}
+            >
               <Select
                 style={{ width: "100%" }}
                 size="large"
@@ -416,7 +443,6 @@ export const TemplateManagement = () => {
                 placeholder="Select a event"
                 optionFilterProp="children"
                 options={eventTypeOptions}
-                disabled={action === "VIEW"}
               />
             </Form.Item>
           )}
@@ -429,7 +455,7 @@ export const TemplateManagement = () => {
                 { required: true, message: "Please input your template name" },
               ]}
             >
-              <Input size="large" disabled={action === "VIEW"} />
+              <Input size="large" />
             </Form.Item>
           )}
 
@@ -439,7 +465,7 @@ export const TemplateManagement = () => {
               name="message"
               rules={[{ required: true, message: "Please input your message" }]}
             >
-              <RichTextEditor disable={action === "VIEW"} {...richTextProps} />
+              <RichTextEditor {...richTextProps} />
             </Form.Item>
           )}
           {form.getFieldValue("channel") === "VOICE_CALL" && (
@@ -449,7 +475,12 @@ export const TemplateManagement = () => {
                 <Alert message={messageError} type="error" showIcon />
               )}
               {Object.values(messages).map((message: any) => (
-                <div style={{ padding: "8px 0px" }} key={message?.id}>
+                <div
+                  style={{ padding: "8px 0px" }}
+                  key={message?.id}
+                  onDrop={(event) => onDrop(event)}
+                  onDragOver={(event) => onDragOver(event)}
+                >
                   <Row gutter={[8, 8]}>
                     <Col span={22}>{renderVoiceMessage(message)}</Col>
                     <Col>
@@ -467,7 +498,7 @@ export const TemplateManagement = () => {
               ))}
               <Space
                 className="site-button-ghost-wrapper"
-                style={{ padding: "10px 0px" }}
+                style={{ padding: "30px 0px" }}
                 wrap
               >
                 <Button
@@ -499,7 +530,7 @@ export const TemplateManagement = () => {
             >
               <TextArea
                 style={{ minHeight: "40vh" }}
-                disabled={action === "VIEW"}
+                // disabled={action === "VIEW"}
               />
             </Form.Item>
           ) : null}
@@ -532,6 +563,7 @@ export const TemplateManagement = () => {
           )}
         </Form>
       )}
+      {action === "VIEW" && <PreviewTemplate {...selectedTemplate} />}
     </div>
   );
 };

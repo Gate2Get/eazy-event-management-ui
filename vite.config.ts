@@ -1,5 +1,5 @@
-import { CommonServerOptions, defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { CommonServerOptions, defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
 const serverConfig: CommonServerOptions = {};
 
@@ -12,11 +12,19 @@ if (!process.env.REACT_APP_ENV) {
       ws: true,
     },
   };
-}
-else if (process.env.REACT_APP_ENV === 'Dev') {
+} else if (process.env.REACT_APP_ENV === "Dev") {
   serverConfig.proxy = {
     "/api": {
       target: "http://eazy-event-dev-api.ap-south-1.elasticbeanstalk.com",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+    },
+  };
+} else if (process.env.REACT_APP_ENV === "Prod") {
+  serverConfig.proxy = {
+    "/api": {
+      target: "http://eazy-event.ap-south-1.elasticbeanstalk.com",
       changeOrigin: true,
       secure: false,
       ws: true,

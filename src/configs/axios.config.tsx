@@ -59,6 +59,7 @@ export const userManagementEndpoint = {
   verifyAuth: "/api/v1/auth/verify-auth",
   getUserInfo: "/api/v1/user/info",
   updateUserInfo: "/api/v1/user/info",
+  logout: "/api/v1/auth/logout",
 };
 
 export const eventManagementEndpoint = {

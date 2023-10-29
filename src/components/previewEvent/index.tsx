@@ -8,6 +8,8 @@ import { ContactUserCard } from "../contactUserCard";
 import { API } from "../../api";
 import { ContactListType, TemplateType } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { OtherEventCard } from "../otherEventCard";
+import { PreviewTemplate } from "../previewTemplate";
 
 const steps = [
   {
@@ -74,14 +76,15 @@ export const PreviewEvent = (props: PreviewEventType) => {
           return <MarriageEventCard {...selectedEvents} />;
         else if (selectedEvents.type === EVENT_TYPES.BIRTHDAY)
           return <BirthdayEventCard {...selectedEvents} />;
+        else if (selectedEvents.type === EVENT_TYPES.OTHERS)
+          return <OtherEventCard {...selectedEvents} />;
       }
       case 2: {
         return (
-          <>
-            <div
-              dangerouslySetInnerHTML={{ __html: selectedTemplate.message }}
-            />
-          </>
+          <PreviewTemplate
+            {...selectedTemplate}
+            channel={selectedEvents.channel}
+          />
         );
       }
       case 3: {

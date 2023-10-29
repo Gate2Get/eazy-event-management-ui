@@ -58,4 +58,17 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  logout: async () => {
+    return await instance
+      .post(userManagementEndpoint.logout)
+      .then((response) => {
+        console.log(response.data);
+        const isLoggedOut = response.data.status;
+        return isLoggedOut;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

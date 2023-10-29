@@ -40,6 +40,7 @@ import {
 import "./styles.scss";
 import FeedbackPrompt from "../../assets/svg/FeedbackPrompt.svg";
 import { PreviewEvent } from "../../components/previewEvent";
+import { OtherEventCreation } from "../../components/otherEventCreation";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -462,6 +463,17 @@ export const EventManagement = () => {
           !isPreview &&
           eventType === EVENT_TYPES.BIRTHDAY && (
             <BirthdayEventCreation
+              contactList={directoryList}
+              templates={templates}
+              onHandleEvent={handleEventPreview}
+              isEdit={action === "EDIT" || action === "ADD"}
+              event={selectedEvents}
+            />
+          )}
+        {(action === "ADD" || action === "EDIT") &&
+          !isPreview &&
+          eventType === EVENT_TYPES.OTHERS && (
+            <OtherEventCreation
               contactList={directoryList}
               templates={templates}
               onHandleEvent={handleEventPreview}

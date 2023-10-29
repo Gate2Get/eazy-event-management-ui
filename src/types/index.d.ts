@@ -145,3 +145,9 @@ export type ReportBugsType = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type VoiceMessageTemplateType = {
+  id: string;
+  type: string;
+  value: string;
+};

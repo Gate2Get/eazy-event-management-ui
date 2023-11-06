@@ -26,14 +26,18 @@ export const DIRECTORY_ACTIONS: any = {
   ADD: {
     header: "Create Directory",
     primaryButtonText: "Create",
+    primaryButtonAction: "ADD",
     secondaryButtonText: "Cancel",
   },
   EDIT: {
     header: "Update Directory",
     primaryButtonText: "Update",
+    primaryButtonAction: "EDIT",
     deleteButtonText: "Delete",
   },
   VIEW: {
     header: "View Directory",
+    primaryButtonText: "Edit",
+    primaryButtonAction: "VIEW",
   },
 };

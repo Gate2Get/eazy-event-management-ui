@@ -1,5 +1,6 @@
 import React, { Dispatch } from "react";
 import {
+  Alert,
   Button,
   Col,
   Divider,
@@ -34,6 +35,8 @@ import IllustrationWebp from "../../../../assets/webp/illustration-self-service.
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
+import { phoneNumberParser } from "../../../../utils/common.utils";
+import { contactValidator } from "../../../../utils/validation.utils";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -41,7 +44,7 @@ const { Search } = Input;
 export const AddEditContactDirectory = () => {
   const [form] = Form.useForm();
   let columns = contactListColumns;
-  const { setLoading, screen } = useBearStore.appStore();
+  const { setLoading, screen, isError, setError } = useBearStore.appStore();
   const {
     action,
     setAction,
@@ -62,21 +65,30 @@ export const AddEditContactDirectory = () => {
   const [searchValue, setSearchValue] = React.useState("");
   let filteredGrid: any[] = [];
 
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
+
   React.useEffect(() => {
     if (action === "EDIT" || action === "VIEW") {
       const { id, name } = selectedDirectory;
       console.log(selectedDirectory);
       form.setFieldValue("name", name);
-      if (action === "EDIT") setIsListView(true);
+      // if (action === "EDIT") setIsListView(true);
       getContactList(id as string);
     }
   }, [action]);
 
-  if (action === "EDIT") {
+  if (action === "EDIT" || action === "ADD") {
     columns.forEach((column) => {
       if (column.key === CONTACT_LIST_COLUMN_KEYS.NAME) {
         column.render = (text, record) => (
           <Input
+            placeholder="Input user name"
+            status={isError && !text ? "error" : ""}
             value={text}
             onChange={(e) => {
               onContactListChange(record.id, "name", e.target.value);
@@ -86,6 +98,9 @@ export const AddEditContactDirectory = () => {
       } else if (column.key === CONTACT_LIST_COLUMN_KEYS.MOBILE) {
         column.render = (text, record) => (
           <Input
+            placeholder="Input user mobile"
+            status={isError && !text ? "error" : ""}
+            max={10}
             type="number"
             value={text}
             onChange={(e) => {
@@ -107,7 +122,7 @@ export const AddEditContactDirectory = () => {
 
   const onAddContact = () => {
     setDirectoryContactList([
-      { name: "", mobile: "" },
+      { name: "", mobile: "", image: "" },
       ...directoryContactList,
     ]);
   };
@@ -166,6 +181,7 @@ export const AddEditContactDirectory = () => {
       .deleteContactDirectory(id)
       .then((response) => {
         setLoading(false);
+        setAction("");
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -185,6 +201,13 @@ export const AddEditContactDirectory = () => {
     const validation = await form.validateFields();
     console.log({ validation });
     const directory = form.getFieldsValue();
+    if (action === "ADD" || action === "EDIT") {
+      const isError = contactValidator(directory);
+      setError(isError);
+      if (isError) {
+        return;
+      }
+    }
 
     if (action === "ADD") {
       createContactDirectory(directory);
@@ -240,10 +263,26 @@ export const AddEditContactDirectory = () => {
       const { uid, name } = file;
 
       const data = await parseXlsx(file);
-      const contactList = data.map((contact: any) => ({
-        name: contact.Name,
-        mobile: contact.Mobile,
-      }));
+      const contactList: ContactListType[] = [];
+      data.forEach((contact: any, index: number) => {
+        const _contact = {
+          id: (index + 1).toString(),
+          name: contact.Name?.trim(),
+          mobile: (
+            contact.Mobile ||
+            contact["Phone 1 - Value"] ||
+            contact["Phone 2 - Value"]
+          )
+            ?.toString()
+            ?.trim(),
+          image: contact.Photo?.trim(),
+        };
+        if (_contact.name && _contact.mobile) {
+          _contact.mobile = phoneNumberParser(_contact.mobile);
+          contactList.push(_contact);
+        }
+      });
+      console.log({ contactList });
       setDirectoryContactList(contactList);
       form.setFieldValue("contacts", contactList);
       console.log({ data });
@@ -276,6 +315,7 @@ export const AddEditContactDirectory = () => {
       (contact) => !selectedRowKeys.includes(contact.id)
     );
     setDirectoryContactList(contactList);
+    setSelectedRowKeys([]);
     form.setFieldValue("contacts", contactList);
   };
 
@@ -350,7 +390,14 @@ export const AddEditContactDirectory = () => {
           )}
         </Col>
       </Row>
-
+      {isError && (
+        <Alert
+          message="One or more mandatory field are not filled"
+          type="error"
+          showIcon
+          style={{ marginBottom: "5px" }}
+        />
+      )}
       {action !== "VIEW" && (
         <>
           <Form
@@ -380,11 +427,11 @@ export const AddEditContactDirectory = () => {
               />
             </Form.Item>
             <Form.Item
-              label="Upload Directory file"
+              label="Bulk upload Directory file"
               name="contacts"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please upload your directory file!",
                 },
               ]}
@@ -392,8 +439,9 @@ export const AddEditContactDirectory = () => {
               valuePropName="fileList"
             >
               <AttachmentButton
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                accept=".xlsx, .csv"
                 buttonText="Upload"
+                otherProps={{ maxCount: 1 }}
                 onAttach={handleFileUpload}
               />
             </Form.Item>
@@ -412,68 +460,88 @@ export const AddEditContactDirectory = () => {
         </>
       )}
 
-      {directoryContactList?.length ? (
-        <>
-          <Divider />
-          <Row gutter={[16, 8]}>
-            <Col flex={12}>
-              <Text className="tab__header">Contact List</Text>
-            </Col>
-            <Col className="list__grid-view add-action__button" flex={12}>
-              {selectedRowKeys.length ? (
-                <Button
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => {
-                    removeContact();
-                  }}
-                >
-                  Delete
+      <>
+        <Divider />
+        <Row gutter={[16, 8]}>
+          <Col flex={12}>
+            <Text className="tab__header">Contact List</Text>
+          </Col>
+          <Col className="list__grid-view add-action__button" flex={12}>
+            {selectedRowKeys.length ? (
+              <Button
+                danger
+                icon={<DeleteOutlined />}
+                onClick={() => {
+                  removeContact();
+                }}
+              >
+                Delete
+              </Button>
+            ) : null}
+
+            <>
+              {(action === "EDIT" || action === "ADD") && (
+                <Button onClick={onAddContact} style={{ marginTop: "9px" }}>
+                  Add New
                 </Button>
-              ) : action === "EDIT" ? (
-                <Button onClick={onAddContact}>Add New</Button>
-              ) : (
-                <>
-                  <Segmented
-                    value={isListView ? "List" : "Card"}
-                    options={[
-                      {
-                        value: "List",
-                        icon: <BarsOutlined />,
-                      },
-                      {
-                        value: "Card",
-                        icon: <AppstoreOutlined />,
-                      },
-                    ]}
-                    onChange={(value) => {
-                      setIsListView(value === "List");
-                    }}
-                  />
-                  <CloudDownloadOutlined
-                    size={50}
-                    onClick={() => {
-                      saveAs(
-                        `${eventManagementEndpoint.exportContact}/${selectedDirectory.id}`
-                      );
-                    }}
-                  />
-                </>
               )}
-            </Col>
-          </Row>
-        </>
-      ) : null}
+              <Segmented
+                value={isListView ? "List" : "Card"}
+                options={[
+                  {
+                    value: "List",
+                    icon: <BarsOutlined />,
+                  },
+                  {
+                    value: "Card",
+                    icon: <AppstoreOutlined />,
+                  },
+                ]}
+                onChange={(value) => {
+                  setIsListView(value === "List");
+                }}
+              />
+              <CloudDownloadOutlined
+                size={50}
+                onClick={() => {
+                  saveAs(
+                    `${eventManagementEndpoint.exportContact}/${selectedDirectory.id}`
+                  );
+                }}
+              />
+            </>
+          </Col>
+        </Row>
+      </>
+
       <br />
-      {directoryContactList.length ? (
-        <Search
-          placeholder="Search here"
-          onSearch={onSearch}
-          style={{ width: screen === "MOBILE" ? "100%" : "40%" }}
-          size="large"
-          allowClear
-        />
-      ) : null}
+      <Row gutter={[8, 8]}>
+        <Col {...colOption(12)}>
+          {directoryContactList.length ? (
+            <Search
+              placeholder="Search here"
+              onSearch={onSearch}
+              style={{ width: "100%" }}
+              size="large"
+              allowClear
+            />
+          ) : null}
+        </Col>
+        <Col {...colOption(12)}>
+          {searchValue ? (
+            <Text italic className="float-right">
+              Showing <Text strong>{filteredGrid.length}</Text> of
+              <Text strong>{directoryContactList.length}</Text> contact's
+            </Text>
+          ) : (
+            <Text italic className="float-right">
+              Showing total <Text strong>{directoryContactList.length} </Text>
+              contact's
+            </Text>
+          )}
+        </Col>
+      </Row>
+
       <br />
       <br />
       {isListView ? (
@@ -498,6 +566,10 @@ export const AddEditContactDirectory = () => {
             (contact) => (
               <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
                 <ContactUserCard
+                  isError={isError}
+                  editable={action === "ADD" || action === "EDIT"}
+                  onContactChange={onContactListChange}
+                  image={contact.image}
                   mobile={contact.mobile}
                   name={contact.name}
                   id={contact.id}

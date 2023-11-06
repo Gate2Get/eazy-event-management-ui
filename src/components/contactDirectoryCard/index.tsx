@@ -38,11 +38,15 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
     ?.toString()?.[0]
     ?.toLowerCase()}`;
 
-  const avatarIconLetter = cardContact.name
-    ?.toString()
-    .split(" ")
-    .map((item) => item?.[0])
-    .join("");
+  const avatarIconLetter = cardContact.image ? (
+    <img src={cardContact.image} alt="" />
+  ) : (
+    cardContact.name
+      ?.toString()
+      .split(" ")
+      .map((item) => item?.[0])
+      .join("")
+  );
   return (
     <Row gutter={[-8, 16]} className="contact-directory-card__container">
       <Col span={6} className="icon__container">

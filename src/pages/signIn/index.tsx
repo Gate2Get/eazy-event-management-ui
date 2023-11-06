@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 import { Option } from "antd/es/mentions";
-import { WhatsAppOutlined } from "@ant-design/icons";
+import { MessageOutlined, WhatsAppOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
@@ -96,10 +96,10 @@ export const SignIn = () => {
   const onVerifyOTP = (values: any) => {
     console.log("Received values of form: ", values);
     if (!isNaN(values.otp)) {
-      setPayload({
-        ...payload,
-        mobile: values.mobile,
-      });
+      // setPayload({
+      //   ...payload,
+      //   mobile: values.mobile,
+      // });
       verifyOTP(payload.mobile, values.otp);
     }
   };
@@ -132,7 +132,7 @@ export const SignIn = () => {
             <>
               <Title level={4}>
                 Receive One-Time Password via SMS{" "}
-                <WhatsAppOutlined size={64} color="#25D366" />
+                <MessageOutlined size={64} color="#25D366" />
               </Title>
 
               <Text type="secondary">

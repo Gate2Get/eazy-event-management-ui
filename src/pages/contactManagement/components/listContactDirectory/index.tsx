@@ -77,15 +77,41 @@ export const ListContactDirectory = () => {
     console.log({ filteredGrid });
   }
 
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
+
   return (
     <div className="list-contact-directory__container">
-      <Search
-        placeholder="Search here"
-        onSearch={onSearch}
-        style={{ width: screen === "MOBILE" ? "100%" : "40%" }}
-        size="large"
-        allowClear
-      />
+      <Row gutter={[8, 8]} className="margin-bottom-16">
+        <Col {...colOption(12)}>
+          {directoryList.length ? (
+            <Search
+              placeholder="Search here"
+              onSearch={onSearch}
+              style={{ width: "100%" }}
+              size="large"
+              allowClear
+            />
+          ) : null}
+        </Col>
+        <Col {...colOption(12)}>
+          {searchValue ? (
+            <Text italic className="float-right">
+              Showing <Text strong>{filteredGrid.length}</Text> of
+              <Text strong>{directoryList.length}</Text> directories
+            </Text>
+          ) : (
+            <Text italic className="float-right">
+              Showing total <Text strong>{directoryList.length} </Text>
+              directories
+            </Text>
+          )}
+        </Col>
+      </Row>
       <Row gutter={[16, 16]}>
         {isListView ? (
           <DataTable

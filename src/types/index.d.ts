@@ -5,6 +5,7 @@ export type ContactListType = {
   id: string;
   name: string;
   mobile: number;
+  image?: string;
   status?: number;
   createdAt?: string;
   updatedAt?: string;
@@ -47,6 +48,7 @@ export type ContactDirectoryType = {
   id?: string;
   userId?: number;
   name: string;
+  image?: string;
   noOfContacts?: number;
   contacts: ContactsType[];
   createdAt?: string;

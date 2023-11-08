@@ -153,3 +153,7 @@ export type VoiceMessageTemplateType = {
   type: string;
   value: string;
 };
+
+export type DebounceFnType = {
+  cancel?: () => void;
+};

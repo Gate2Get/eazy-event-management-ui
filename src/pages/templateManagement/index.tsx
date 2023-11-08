@@ -78,6 +78,7 @@ export const TemplateManagement = () => {
       setAction("");
       setMessageError("");
       setIsError(false);
+      setTemplates([]);
     };
   }, []);
 

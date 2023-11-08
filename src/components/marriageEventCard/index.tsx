@@ -1,36 +1,34 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import {
   Col,
   Divider,
   Dropdown,
-  MenuProps,
   Row,
   Space,
   Tag,
   Tooltip,
   Typography,
 } from "antd";
-import React from "react";
 import {
-  EVENT_STATUS,
+  DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPES,
   EVENT_TYPE_PROPS,
 } from "../../constants";
 import { faMapLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
 import { EventCardType, GenericJsonType } from "../../types";
+import dayjs from "dayjs";
 
 const { Text } = Typography;
 
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
+
+const imageUrl = new URL(
+  "../../assets/jpeg/marriage-card-1.jpg",
+  import.meta.url
+);
 
 export const MarriageEventCard = (props: EventCardType) => {
   const {
@@ -53,29 +51,22 @@ export const MarriageEventCard = (props: EventCardType) => {
       direction="vertical"
     >
       <Row className="marriage-image" gutter={[8, 8]}>
-        <Col span={24} className="groom-name">
-          <Text strong italic>
-            {groomName}
-          </Text>
+        <Col span={12} className="">
+          <img src={imageUrl as any} width={"100%"} alt="" />
         </Col>
-        <Col span={24} className="heart-icon">
-          <FontAwesomeIcon icon={faHeart} color="#e31b23" />
-        </Col>
-        <Col span={24} className="bride-name">
-          <Text strong italic>
-            {brideName}
-          </Text>
-        </Col>
-        <Col span={24} className="event-time">
-          <Text italic type="secondary">
-            {startDateTime}
-          </Text>
-        </Col>
-        <Col span={24} className="event-place">
-          <FontAwesomeIcon icon={faMapLocationDot} color="#183153" />
-          <Text italic type="secondary">
-            {location}
-          </Text>
+        <Col span={12} className="marriage-content">
+          <Space direction="vertical">
+            <Text strong italic>
+              {groomName}
+            </Text>
+            <FontAwesomeIcon icon={faHeart} color="#e31b23" />
+            <Text strong italic>
+              {brideName}
+            </Text>
+            <Text italic type="secondary">
+              {dayjs(startDateTime).format(DATE_FORMAT)}
+            </Text>
+          </Space>
         </Col>
       </Row>
       <Divider />
@@ -116,7 +107,7 @@ export const MarriageEventCard = (props: EventCardType) => {
       <Row gutter={[16, 16]}>
         <Col flex={12}>
           <Text type="secondary" italic>
-            {createdAt as string}
+            {dayjs(createdAt).format(DATE_FORMAT)}
           </Text>
         </Col>
         <Col flex={12} className="event-status">

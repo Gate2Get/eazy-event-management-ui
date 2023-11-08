@@ -10,6 +10,7 @@ import {
   Typography,
 } from "antd";
 import {
+  DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
@@ -18,9 +19,15 @@ import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
 import { EventCardType, GenericJsonType } from "../../types";
+import dayjs from "dayjs";
 
 const { Text } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
+
+const imageUrl = new URL(
+  "../../assets/jpeg/birthday-card-3.jpg",
+  import.meta.url
+);
 
 export const BirthdayEventCard = (props: EventCardType) => {
   const {
@@ -42,15 +49,18 @@ export const BirthdayEventCard = (props: EventCardType) => {
       size="small"
       direction="vertical"
     >
-      <Row className="birthday-image" gutter={[8, 8]}>
-        <Col span={24} className=""></Col>
-        <Col span={24} className="event-info">
+      <Row gutter={[8, 8]}>
+        <Col span={12} className="">
+          <img src={imageUrl as any} width={"100%"} alt="" />
+        </Col>
+
+        <Col span={12} className="event-info">
           <Space direction="vertical">
             <Text strong italic>
               {personName}
             </Text>
             <Text italic type="secondary">
-              {startDateTime}
+              {dayjs(startDateTime).format(DATE_FORMAT)}
             </Text>
 
             <Text italic type="secondary">
@@ -99,7 +109,7 @@ export const BirthdayEventCard = (props: EventCardType) => {
       <Row gutter={[16, 16]}>
         <Col flex={12}>
           <Text type="secondary" italic>
-            {createdAt}
+            {dayjs(createdAt).format(DATE_FORMAT)}
           </Text>
         </Col>
         <Col flex={12} className="event-status">

@@ -3,6 +3,9 @@ import {
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
+import { faMessage } from "@fortawesome/free-regular-svg-icons";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
@@ -100,7 +103,7 @@ export const CHANNEL_OPTIONS = [
   {
     label: (
       <>
-        <MessageOutlined /> SMS
+        <FontAwesomeIcon icon={faMessage} /> SMS
       </>
     ),
     value: "SMS",
@@ -116,7 +119,7 @@ export const CHANNEL_OPTIONS = [
   {
     label: (
       <>
-        <PhoneOutlined /> Voice call
+        <FontAwesomeIcon icon={faPhone} /> Voice call
       </>
     ),
     value: "VOICE_CALL",

@@ -16,7 +16,7 @@ import {
   Space,
 } from "antd";
 import dayjs from "dayjs";
-import React from "react";
+import React, { Dispatch, useState } from "react";
 import { API } from "../../api";
 import { BirthdayEventCard } from "../../components/birthdayEventCard";
 import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
@@ -33,6 +33,7 @@ import {
 import { useBearStore } from "../../store";
 import {
   ContactDirectoryType,
+  DebounceFnType,
   Events,
   EventType,
   TemplateType,
@@ -41,6 +42,8 @@ import "./styles.scss";
 import FeedbackPrompt from "../../assets/svg/FeedbackPrompt.svg";
 import { PreviewEvent } from "../../components/previewEvent";
 import { OtherEventCreation } from "../../components/otherEventCreation";
+import { debounce } from "lodash";
+import { removeEmptyProp } from "../../utils/common.utils";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -83,6 +86,31 @@ export const EventManagement = () => {
     setSelectedEvents,
   } = useBearStore.eventStore();
   const [form] = Form.useForm();
+  const [searchTemplate, setSearchTemplate] = useState("");
+  const [isTemplateFetching, setIsTemplateFetching] = useState(false);
+  const [searchContact, setSearchContact] = useState("");
+  const [isContactFetching, setIsContactFetching] = useState(false);
+  const [templateSearchQuery, setTemplateSearchQuery]: [
+    DebounceFnType,
+    Dispatch<any>
+  ] = React.useState({});
+  const [contactSearchQuery, setContactSearchQuery]: [
+    DebounceFnType,
+    Dispatch<any>
+  ] = React.useState({});
+
+  const channel = Form.useWatch("channel", { form, preserve: true });
+  const messageTemplate = Form.useWatch("messageTemplate", {
+    form,
+    preserve: true,
+  });
+  console.log({ messageTemplate });
+
+  React.useEffect(() => {
+    console.log({ channel });
+    form.setFieldValue("messageTemplate", undefined);
+    getTemplates({ channel });
+  }, [channel]);
 
   React.useEffect(() => {
     form.setFieldValue("eventType", eventType || undefined);
@@ -90,9 +118,8 @@ export const EventManagement = () => {
 
   React.useEffect(() => {
     getContactDirectory();
-    getTemplates();
-
     return () => {
+      console.log("unmounting");
       setFilters({});
       setEventType("");
       form.resetFields();
@@ -101,8 +128,69 @@ export const EventManagement = () => {
   }, []);
 
   React.useEffect(() => {
+    console.log({ searchTemplate });
+    if (searchTemplate) {
+      const search = debounce(getTemplates, 1000);
+      setTemplateSearchQuery((prevSearch: DebounceFnType) => {
+        if (prevSearch.cancel) {
+          prevSearch.cancel();
+        }
+        return search;
+      });
+      search({ name: searchTemplate, type: eventType });
+    }
+  }, [searchTemplate]);
+
+  React.useEffect(() => {
+    console.log({ searchContact });
+    if (searchContact) {
+      const search = debounce(getContactDirectory, 1000);
+      setContactSearchQuery((prevSearch: DebounceFnType) => {
+        if (prevSearch.cancel) {
+          prevSearch.cancel();
+        }
+        return search;
+      });
+      search({ name: searchContact });
+    }
+  }, [searchContact]);
+
+  React.useEffect(() => {
     if (!action) getEvents();
   }, [filters, action]);
+
+  React.useEffect(() => {
+    const isEdit = action === "EDIT" || action === "ADD";
+
+    if (isEdit) {
+      const event = selectedEvents;
+      const formValues = removeEmptyProp(event);
+      if (event?.startDateTime && event?.endDateTime) {
+        formValues.dateTime = [
+          dayjs(event?.startDateTime),
+          dayjs(event?.endDateTime),
+        ];
+      }
+      if (event?.triggerDateTime) {
+        formValues.triggerDateTime = dayjs(event?.triggerDateTime);
+      }
+
+      form.setFieldsValue(formValues);
+    }
+  }, []);
+
+  const handleEvent = (event: any): void => {
+    const { dateTime, triggerDateTime } = event;
+    if (dateTime) {
+      event.startDateTime = dayjs(dateTime[0]).format();
+      event.endDateTime = dayjs(dateTime[1]).format();
+    }
+    if (triggerDateTime) {
+      event.triggerDateTime = dayjs(triggerDateTime).format();
+    }
+    console.log(event);
+    handleEventPreview(event);
+  };
 
   const getMenuItems = (data: EventType): MenuProps["items"] => {
     const menu1 = [
@@ -224,30 +312,30 @@ export const EventManagement = () => {
     setIsPreview(true);
   };
 
-  const getContactDirectory = (): any => {
-    setLoading(true);
+  const getContactDirectory = (filters = {}): any => {
+    setIsContactFetching(true);
     API.contactManagement
-      .getContactDirectory()
+      .getContactDirectory(filters)
       .then((contacts: ContactDirectoryType[]) => {
         setDirectoryList(contacts);
-        setLoading(false);
+        setIsContactFetching(false);
       })
       .catch((error: Error) => {
-        setLoading(false);
+        setIsContactFetching(false);
         console.log({ location: "getContactDirectory", error });
       });
   };
 
-  const getTemplates = (): void => {
-    setLoading(true);
+  const getTemplates = (filters = {}): void => {
+    setIsTemplateFetching(true);
     API.templateManagement
-      .getTemplate()
+      .getTemplate(filters)
       .then((templates: TemplateType[]) => {
         setTemplates(templates);
-        setLoading(false);
+        setIsTemplateFetching(false);
       })
       .catch((error: Error) => {
-        setLoading(false);
+        setIsTemplateFetching(false);
         console.log({ location: "getTemplates", error });
       });
   };
@@ -454,9 +542,13 @@ export const EventManagement = () => {
             <MarriageEventCreation
               contactList={directoryList}
               templates={templates}
-              onHandleEvent={handleEventPreview}
+              form={form}
+              isTemplateFetching={isTemplateFetching}
+              onSearchTemplate={(value) => setSearchTemplate(value)}
+              onHandleEvent={handleEvent}
+              isContactFetching={isContactFetching}
+              onSearchContact={(value) => setSearchContact(value)}
               isEdit={action === "EDIT" || action === "ADD"}
-              event={selectedEvents}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -465,9 +557,13 @@ export const EventManagement = () => {
             <BirthdayEventCreation
               contactList={directoryList}
               templates={templates}
-              onHandleEvent={handleEventPreview}
+              isTemplateFetching={isTemplateFetching}
+              form={form}
+              onSearchTemplate={(value) => setSearchTemplate(value)}
+              onHandleEvent={handleEvent}
+              isContactFetching={isContactFetching}
+              onSearchContact={(value) => setSearchContact(value)}
               isEdit={action === "EDIT" || action === "ADD"}
-              event={selectedEvents}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -476,9 +572,13 @@ export const EventManagement = () => {
             <OtherEventCreation
               contactList={directoryList}
               templates={templates}
-              onHandleEvent={handleEventPreview}
+              form={form}
+              isTemplateFetching={isTemplateFetching}
+              onSearchTemplate={(value) => setSearchTemplate(value)}
+              isContactFetching={isContactFetching}
+              onSearchContact={(value) => setSearchContact(value)}
+              onHandleEvent={handleEvent}
               isEdit={action === "EDIT" || action === "ADD"}
-              event={selectedEvents}
             />
           )}
       </div>

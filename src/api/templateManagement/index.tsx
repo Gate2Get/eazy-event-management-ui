@@ -46,9 +46,10 @@ export const templateManagementAPI = {
         throw error;
       });
   },
-  getTemplate: async () => {
+  getTemplate: async (filters = {}) => {
+    console.log({ filters });
     return await instance
-      .get(templateManagementEndpoint.getTemplate)
+      .get(templateManagementEndpoint.getTemplate, { params: filters })
       .then((response) => {
         const result = response.data.result;
         return result;

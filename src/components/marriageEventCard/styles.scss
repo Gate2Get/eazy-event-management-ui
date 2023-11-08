@@ -7,26 +7,12 @@
   width: 100%;
 
   .marriage-image {
-    background-image: url(../../assets/png/marriage-bride-groom.png);
-    background-repeat: no-repeat;
-    // background-attachment: fixed;
-    height: 170px;
-    background-size: cover;
-    background-position: center;
+    .marriage-content {
+      position: relative;
+      top: 10px;
 
-    .bride-name,
-    .groom-name,
-    .heart-icon,
-    .event-place,
-    .event-time {
-      text-align: center;
-    }
-    .groom-name {
-      align-self: end;
-    }
-    .event-place {
-      > svg {
-        margin-right: 10px;
+      .ant-space-item {
+        text-align: center;
       }
     }
   }

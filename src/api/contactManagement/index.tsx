@@ -37,9 +37,9 @@ export const contactManagementAPI = {
         throw error;
       });
   },
-  getContactDirectory: async () => {
+  getContactDirectory: async (filters = {}) => {
     return await instance
-      .get(contactManagementEndpoint.getContactDirectory)
+      .get(contactManagementEndpoint.getContactDirectory, { params: filters })
       .then((response) => {
         const result = response.data.result;
         return result;

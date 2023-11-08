@@ -6,25 +6,6 @@
   border-radius: 8px;
   width: 100%;
 
-  .birthday-image {
-    background-image: url(../../assets/png/birthday-banner.png);
-    background-repeat: no-repeat;
-    // background-attachment: fixed;
-    height: 170px;
-    background-size: contain;
-    background-position: center;
-
-    .event-info {
-      align-self: center;
-      text-align: center;
-    }
-    .event-place {
-      > svg {
-        margin-right: 10px;
-      }
-    }
-  }
-
   .more-info {
     > span {
       float: right;

@@ -7,7 +7,6 @@
   width: 100%;
 
   .birthday-image {
-    background-image: url(../../assets/png/birthday-banner.png);
     background-repeat: no-repeat;
     // background-attachment: fixed;
     height: 170px;
@@ -17,6 +16,9 @@
     .event-info {
       align-self: center;
       text-align: center;
+      .ant-space-item {
+        text-align: center;
+      }
     }
     .event-place {
       > svg {

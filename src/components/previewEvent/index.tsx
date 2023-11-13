@@ -161,12 +161,12 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   const contentStyle: React.CSSProperties = {
     // lineHeight: "260px",
-    height: height - 300,
+    // height: height - 300,
     textAlign: "center",
     color: token.colorTextTertiary,
-    backgroundColor: token.colorFillAlter,
+    // backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
-    border: `1px solid ${token.colorBorder}`,
+    // border: `1px solid ${token.colorBorder}`,
     marginTop: 16,
   };
 
@@ -179,7 +179,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
         responsive
       />
       <div style={contentStyle}>{renderComponent(current)}</div>
-      <div style={{ marginTop: 24 }}>
+      <div style={{ marginTop: 16 }}>
         {current > 1 && (
           <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
             Previous

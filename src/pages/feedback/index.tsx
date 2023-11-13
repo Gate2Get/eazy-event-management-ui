@@ -4,6 +4,7 @@ import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
 import feedbackBanner from "../../assets/svg/feedback-banner.svg";
 import { FEEDBACK_DETAILS } from "./constant";
 import TextArea from "antd/es/input/TextArea";
+import { useBearStore } from "../../store";
 
 const { Title, Text } = Typography;
 
@@ -17,13 +18,22 @@ const customIcons: Record<number, React.ReactNode> = {
 
 export const Feedback = () => {
   const [form] = Form.useForm();
+  const { screen } = useBearStore.appStore();
+
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
+
   return (
     <div>
-      <Row>
-        <Col flex={8}>
+      <Row gutter={[16, 16]}>
+        <Col {...colOption(10)}>
           <img src={feedbackBanner} alt="" />
         </Col>
-        <Col flex={12}>
+        <Col {...colOption(14)}>
           <Title level={3}>We value your feedback!</Title>
           <Text>Help us make your Eazy Event experience better.</Text>
           <Divider />

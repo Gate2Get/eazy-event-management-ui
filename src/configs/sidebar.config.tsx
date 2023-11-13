@@ -19,7 +19,9 @@ export const getMenuItems = (
 ): MenuProps["items"] => [
   {
     key: ROUTES_URL.DASHBOARD,
-    icon: <DashboardOutlined />,
+    icon: (
+      <DashboardOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+    ),
     label: ROUTES_MENU.DASHBOARD,
     onClick: () => {
       otherFn?.();
@@ -29,7 +31,9 @@ export const getMenuItems = (
   {
     key: ROUTES_URL.CONTACT_MANAGEMENT,
     label: ROUTES_MENU.CONTACT_MANAGEMENT,
-    icon: <ContactsOutlined />,
+    icon: (
+      <ContactsOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+    ),
     onClick: () => {
       otherFn?.();
       navigate(ROUTES_URL.CONTACT_MANAGEMENT);
@@ -38,7 +42,9 @@ export const getMenuItems = (
   {
     key: ROUTES_URL.TEMPLATE_MANAGEMENT,
     label: ROUTES_MENU.TEMPLATE_MANAGEMENT,
-    icon: <FilePptOutlined />,
+    icon: (
+      <FilePptOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+    ),
     onClick: () => {
       otherFn?.();
       navigate(ROUTES_URL.TEMPLATE_MANAGEMENT);
@@ -47,7 +53,11 @@ export const getMenuItems = (
   {
     key: ROUTES_URL.EVENT_MANAGEMENT,
     label: ROUTES_MENU.EVENT_MANAGEMENT,
-    icon: <NotificationOutlined />,
+    icon: (
+      <NotificationOutlined
+        style={{ fontSize: "20px", fontWeight: "bolder" }}
+      />
+    ),
     onClick: () => {
       otherFn?.();
       navigate(ROUTES_URL.EVENT_MANAGEMENT);
@@ -64,7 +74,9 @@ export const getMenuItems = (
   // },
   {
     key: ROUTES_URL.FEEDBACK,
-    icon: <CommentOutlined />,
+    icon: (
+      <CommentOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+    ),
     label: ROUTES_MENU.FEEDBACK,
     onClick: () => {
       otherFn?.();
@@ -73,7 +85,7 @@ export const getMenuItems = (
   },
   {
     key: ROUTES_URL.REPORT_BUG,
-    icon: <BugOutlined />,
+    icon: <BugOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />,
     label: ROUTES_MENU.REPORT_BUG,
     onClick: () => {
       otherFn?.();
@@ -83,7 +95,7 @@ export const getMenuItems = (
 
   {
     key: ROUTES_URL.MY_PROFILE,
-    icon: <UserOutlined />,
+    icon: <UserOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />,
     label: ROUTES_MENU.MY_PROFILE,
     onClick: () => {
       otherFn?.();

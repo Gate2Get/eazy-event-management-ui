@@ -9,7 +9,6 @@ import {
   Button,
   Select,
 } from "antd";
-import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
 import bugBanner from "../../assets/svg/bug-banner.svg";
 import { TOPIC_OPTIONS } from "./constant";
 import TextArea from "antd/es/input/TextArea";
@@ -17,6 +16,7 @@ import { AttachmentButton } from "../../components/AttachmentButton";
 import { ReportBugsType } from "../../types";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
+import { AttachmentDragger } from "../../components/AttachmentDragger";
 
 const { Title, Text } = Typography;
 const topicOptions = TOPIC_OPTIONS.map((topic) => ({
@@ -26,7 +26,14 @@ const topicOptions = TOPIC_OPTIONS.map((topic) => ({
 
 export const ReportBug = () => {
   const [form] = Form.useForm();
-  const { setLoading } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
+
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
 
   const handleSubmit = (bugs: ReportBugsType) => {
     setLoading(true);
@@ -43,11 +50,11 @@ export const ReportBug = () => {
 
   return (
     <div>
-      <Row>
-        <Col flex={8} style={{ textAlign: "center" }}>
+      <Row gutter={[16, 16]}>
+        <Col {...colOption(10)} style={{ textAlign: "center" }}>
           <img src={bugBanner} alt="" />
         </Col>
-        <Col flex={12}>
+        <Col {...colOption(14)}>
           <Title level={3}>Report a bug</Title>
 
           <Divider />
@@ -86,7 +93,7 @@ export const ReportBug = () => {
               <TextArea size="large" />
             </Form.Item>
             <Form.Item label="Attachment" name="attachment">
-              <AttachmentButton buttonText="Upload Attachment" />
+              <AttachmentDragger buttonText="Upload Attachment" />
             </Form.Item>
             <Form.Item>
               <Button size="large" type="primary" htmlType="submit">

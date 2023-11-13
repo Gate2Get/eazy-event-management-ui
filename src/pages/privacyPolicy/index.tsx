@@ -8,7 +8,7 @@ const { Title, Paragraph } = Typography;
 
 export const PrivacyPolicy = () => {
   const { screen } = useBearStore.appStore();
-  console.log({ screen });
+
   return (
     <div
       className="privacy-policy"

@@ -7,17 +7,21 @@ import { HomeHowIsItWorks } from "../../components/homeHowIsItWorks";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
 import { AnimatedText } from "../../components/animatedText";
+import EmailCampaign from "../../assets/svg/email-campaign.svg";
+import MailBro from "../../assets/svg/mail-bro.svg";
 
 const { Title, Text } = Typography;
 
 export const Home = () => {
   const { screen } = useBearStore.appStore();
+  const { isAuthorized } = useBearStore.userStore();
   const navigate = useNavigate();
 
-  const colOption = (count: number) =>
+  const colOption = (count: number, flexOption = {}) =>
     screen === "MOBILE"
       ? {
           flex: count,
+          ...flexOption,
         }
       : { span: count };
 
@@ -32,6 +36,13 @@ export const Home = () => {
         <Title className="headline">
           Delivering Joyful Event Notifications
         </Title>
+        <div>
+          <img
+            src={EmailCampaign}
+            alt=""
+            width={screen === "MOBILE" ? "50%" : "25%"}
+          />
+        </div>
         <Button type="primary" size="large" onClick={verifyAuth}>
           Get Started
         </Button>
@@ -58,9 +69,17 @@ export const Home = () => {
           />
         ))}
       </div>
+
       <div className="cta-outer-row">
-        <Row className="cta-inner-row">
-          <Col {...colOption(20)}>
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={MailBro}
+            alt=""
+            width={screen === "MOBILE" ? "50%" : "25%"}
+          />
+        </div>
+        <Row className="cta-inner-row" gutter={[0, 8]}>
+          <Col {...colOption(16, { order: 2 })}>
             <Title level={2} className="content-title">
               Sign up today and experience the power of seamless event
               management and communication with Eazy Event.
@@ -70,17 +89,24 @@ export const Home = () => {
               moments!
             </Text>
           </Col>
-          <Col
-            {...colOption(4)}
-            className="content-btn"
-            style={
-              screen !== "MOBILE" ? { position: "relative", top: "50px" } : {}
-            }
-          >
-            <Button type="primary" size="large" onClick={verifyAuth}>
-              Get Started
-            </Button>
+          <Col {...colOption(4, { order: 1 })}>
+            <div style={{ textAlign: "center" }}>
+              <img src={MailBro} alt="" width={"100%"} />
+            </div>
           </Col>
+          {!isAuthorized && (
+            <Col
+              {...colOption(4, { order: 3 })}
+              className="content-btn"
+              style={
+                screen !== "MOBILE" ? { position: "relative", top: "50px" } : {}
+              }
+            >
+              <Button type="primary" size="large" onClick={verifyAuth}>
+                Get Started
+              </Button>
+            </Col>
+          )}
         </Row>
       </div>
     </>

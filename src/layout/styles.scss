@@ -60,5 +60,14 @@
     .ant-menu-title-content {
       font-size: 14px;
     }
+
+    .ant-menu-item-selected {
+      border-left: 5px solid rgb(22, 119, 255);
+      border-bottom: 1px solid rgb(22, 119, 255);
+
+      .ant-menu-title-content {
+        font-weight: 700;
+      }
+    }
   }
 }

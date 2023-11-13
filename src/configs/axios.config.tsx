@@ -25,11 +25,7 @@ export const interceptors = (navigate: (url: string) => void): void => {
       if (error?.response?.status === 401) {
         navigate(ROUTES_URL.LOGIN);
       } else if (error?.response?.status === 403) {
-        navigate(
-          window.location.pathname.includes("/settings")
-            ? "/settings/forbidden"
-            : "/forbidden"
-        );
+        navigate(ROUTES_URL.FORBIDDEN);
       } else if (error?.response?.status === 404) {
         navigate("/404");
       }

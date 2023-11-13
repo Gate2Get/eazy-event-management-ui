@@ -10,13 +10,14 @@ import { HomeLayout } from "./homeLayout";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
-  const { screen, setScreen } = useBearStore.appStore();
+  const { screen, setScreen, setCollapsed } = useBearStore.appStore();
 
   const navigate = useNavigate();
   console.log({ width });
   React.useEffect(() => {
     if (width < 650) {
       setScreen("MOBILE");
+      setCollapsed(true);
     } else {
       setScreen("DESKTOP");
     }

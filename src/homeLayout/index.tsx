@@ -3,8 +3,7 @@ import { Layout, theme } from "antd";
 import { HeaderHome } from "../components/headerHome";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { useBearStore } from "../store";
-import { useNavigate } from "react-router-dom";
-import { ROUTES_URL, SERVICE_MENU } from "../constants";
+import { SERVICE_MENU } from "../constants";
 
 const { Header, Content, Footer } = Layout;
 
@@ -13,17 +12,13 @@ type HomeLayoutType = {
 };
 
 export const HomeLayout = (props: HomeLayoutType) => {
-  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const { height } = useWindowSize();
   const { currentPage } = useBearStore.appStore();
+  const { isAuthorized } = useBearStore.userStore();
   const { children } = props;
-
-  const verifyAuth = () => {
-    navigate(ROUTES_URL.AUTHORIZER);
-  };
 
   return (
     <Layout
@@ -45,7 +40,7 @@ export const HomeLayout = (props: HomeLayoutType) => {
           }}
         >
           <div>
-            <HeaderHome onLoginHandle={verifyAuth} />
+            <HeaderHome isAuthorized={isAuthorized} />
           </div>
         </Header>
       )}

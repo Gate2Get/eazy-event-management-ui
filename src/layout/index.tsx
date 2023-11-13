@@ -12,6 +12,8 @@ import { API } from "../api";
 import { AlertType } from "../types";
 import { ServiceRoutes } from "../routes";
 import { DashboardOutlined } from "@ant-design/icons";
+import { ROUTES_URL } from "../constants";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 const { Title, Text } = Typography;
@@ -30,7 +32,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     setCollapsed,
     setLoading,
   } = useBearStore.appStore();
-  const { setUser } = useBearStore.userStore();
+  const { setUser, isAuthorized } = useBearStore.userStore();
+  const navigate = useNavigate();
+  let [searchParams, setSearchParams] = useSearchParams();
 
   const { children } = props;
 
@@ -42,6 +46,20 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   }
 
   React.useEffect(() => {
+    if (!isAuthorized) {
+      let returnTo;
+      if (searchParams.get("returnTo")) {
+        returnTo = searchParams.get("returnTo");
+      } else if (window.location.pathname === ROUTES_URL.AUTHORIZER) {
+        returnTo = `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
+      } else {
+        returnTo =
+          window.location.pathname === "/"
+            ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
+            : window.location.pathname;
+      }
+      navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${returnTo}`);
+    }
     getUserInfo();
     getAlerts();
   }, []);

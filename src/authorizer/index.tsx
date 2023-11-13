@@ -1,8 +1,8 @@
 import { Typography } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { API } from "../api";
-import { ROUTES_URL } from "../constants";
+import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../constants";
 import { useBearStore } from "../store";
 import "./styles.scss";
 
@@ -11,9 +11,13 @@ const { Text } = Typography;
 export const Authorizer = () => {
   const { setLoading } = useBearStore.appStore();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   React.useEffect(() => {
-    verifyAuth();
+    console.log("window.location.pathname", window.location.pathname);
+    if (!NON_PROTECTED_ROUTES.includes(window.location.pathname)) {
+      verifyAuth();
+    }
   }, []);
 
   const verifyAuth = () => {
@@ -23,7 +27,11 @@ export const Authorizer = () => {
       .then((isAuthenticated) => {
         setLoading(false);
         if (isAuthenticated) {
-          navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
+          const url =
+            searchParams.get("returnTo") ||
+            `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
+          console.log({ url });
+          navigate(url);
         } else {
           navigate(ROUTES_URL.LOGIN);
         }

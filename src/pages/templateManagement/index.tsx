@@ -36,16 +36,28 @@ import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactPr
 import { PreviewTemplate } from "../../components/previewTemplate";
 import { getFormattedMessage } from "../../utils/common.utils";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
+import { createStyles, useTheme } from "antd-style";
+import {
+  modalClassNames,
+  modalStyles,
+  useModalStyle,
+} from "../../configs/antd.config";
+import { EmptyData } from "../../components/EmptyData";
+import NoTemplate from "../../assets/svg/no-template.svg";
+
+const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
 const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   label: EVENT_TYPE_PROPS[event].label,
   value: event,
 }));
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export const TemplateManagement = () => {
   const [form] = Form.useForm();
+  const { styles } = useModalStyle();
+  const token = useTheme();
   const { setLoading, screen } = useBearStore.appStore();
   const {
     setTemplates,
@@ -352,15 +364,20 @@ export const TemplateManagement = () => {
   return (
     <div className="template-management__container">
       <Modal
-        title={<>Delete Confirmation</>}
+        title={<Title level={5}>Delete Confirmation</Title>}
         open={action === "DELETE"}
         onOk={onDeleteConfirm}
         onCancel={onCancel}
         okText="Yes"
         cancelText="No"
         okType="danger"
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(token)}
       >
-        Once deleted it cannot be undo
+        <img src={imageUrl as any} width={"100%"} alt="" />
+        <Text italic style={{ textAlign: "center" }}>
+          Once deleted it cannot be undo
+        </Text>
       </Modal>
       <Row gutter={[16, 16]} className="header__row">
         <Col flex={12}>
@@ -396,14 +413,25 @@ export const TemplateManagement = () => {
 
       {(!action || action === "DELETE") && (
         <Row gutter={[16, 16]}>
-          {templates.map((template) => (
-            <Col span={screen === "MOBILE" ? 24 : 8} key={template.id}>
-              <TemplateCard
-                template={template}
-                menuItems={getMenuItems(template)}
-              />
-            </Col>
-          ))}
+          {templates.length ? (
+            templates.map((template) => (
+              <Col span={screen === "MOBILE" ? 24 : 8} key={template.id}>
+                <TemplateCard
+                  template={template}
+                  menuItems={getMenuItems(template)}
+                />
+              </Col>
+            ))
+          ) : (
+            <EmptyData
+              onClickAction={() => {
+                setAction("ADD");
+              }}
+              image={NoTemplate}
+              description="No template to show"
+              buttonText="Create Template"
+            />
+          )}
         </Row>
       )}
       {(action === "ADD" || action === "EDIT") && (
@@ -535,26 +563,6 @@ export const TemplateManagement = () => {
               />
             </Form.Item>
           ) : null}
-          {/* {form.getFieldValue("channel") === "VOICE_CALL" && (
-            <Form.Item
-              label="Upload voice file"
-              name="blob"
-              rules={[
-                {
-                  required: false,
-                  message: "Please upload your voice file!",
-                },
-              ]}
-              valuePropName="fileList"
-            >
-              <AttachmentButton
-                otherProps={{ maxCount: 1, fileList }}
-                disabled={action === "VIEW"}
-                buttonText="Upload"
-                onAttach={handleFileUpload}
-              />
-            </Form.Item>
-          )} */}
           {(action === "ADD" || action === "EDIT") && (
             <Form.Item>
               <Button type="primary" htmlType="submit" size="large">

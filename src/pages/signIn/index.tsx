@@ -94,7 +94,7 @@ export const SignIn = () => {
   };
 
   const onVerifyOTP = (values: any) => {
-    console.log("Received values of form: ", values);
+    console.log("Received values of form: ", values, payload);
     if (!isNaN(values.otp)) {
       // setPayload({
       //   ...payload,

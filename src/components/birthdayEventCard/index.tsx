@@ -14,6 +14,7 @@ import {
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
+  ILLUSTRATION_ASSETS,
 } from "../../constants";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,11 +24,6 @@ import dayjs from "dayjs";
 
 const { Text } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
-
-const imageUrl = new URL(
-  "../../assets/jpeg/birthday-card-3.jpg",
-  import.meta.url
-);
 
 export const BirthdayEventCard = (props: EventCardType) => {
   const {
@@ -42,6 +38,14 @@ export const BirthdayEventCard = (props: EventCardType) => {
   } = props;
 
   const status = eventStatusLabel[progressionStatus as string];
+  const randomIndex = Math.ceil(
+    Math.random() * (ILLUSTRATION_ASSETS.birthday - 1)
+  );
+  const imageUrl = new URL(
+    `../../assets/svg/birthday/card-${randomIndex}.svg`,
+    import.meta.url
+  );
+  console.log({ randomIndex });
 
   return (
     <Space
@@ -51,7 +55,7 @@ export const BirthdayEventCard = (props: EventCardType) => {
     >
       <Row gutter={[8, 8]}>
         <Col span={12} className="">
-          <img src={imageUrl as any} width={"100%"} alt="" />
+          <img src={imageUrl as any} width={"100%"} alt="" height={180} />
         </Col>
 
         <Col span={12} className="event-info">

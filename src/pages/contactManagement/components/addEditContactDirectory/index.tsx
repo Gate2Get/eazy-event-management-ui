@@ -25,6 +25,7 @@ import {
   BarsOutlined,
   CloudDownloadOutlined,
   DeleteOutlined,
+  GoogleOutlined,
 } from "@ant-design/icons";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { parseXlsx } from "../../../../utils/parseXlsx.utils";
@@ -37,6 +38,7 @@ import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
 import { phoneNumberParser } from "../../../../utils/common.utils";
 import { contactValidator } from "../../../../utils/validation.utils";
+import { ROUTES_URL } from "../../../../constants";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -445,17 +447,28 @@ export const AddEditContactDirectory = () => {
                 onAttach={handleFileUpload}
               />
             </Form.Item>
-            <Text>
-              Template file?{" "}
-              <Link
-                href="#"
-                onClick={() =>
-                  saveAs(`${eventManagementEndpoint.exportContact}/template`)
-                }
-              >
-                download here
-              </Link>
-            </Text>
+            <Space direction="vertical">
+              <Text italic>
+                Want to export <GoogleOutlined /> google contact?{" "}
+                <Link
+                  href={ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC}
+                  target="_blank"
+                >
+                  Click here
+                </Link>
+              </Text>
+              <Text italic>
+                Template file?{" "}
+                <Link
+                  href="#"
+                  onClick={() =>
+                    saveAs(`${eventManagementEndpoint.exportContact}/template`)
+                  }
+                >
+                  download here
+                </Link>
+              </Text>
+            </Space>
           </Form>
         </>
       )}

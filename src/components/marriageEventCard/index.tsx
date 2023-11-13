@@ -14,6 +14,7 @@ import {
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
+  ILLUSTRATION_ASSETS,
 } from "../../constants";
 import { faMapLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,11 +25,6 @@ import dayjs from "dayjs";
 const { Text } = Typography;
 
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
-
-const imageUrl = new URL(
-  "../../assets/jpeg/marriage-card-1.jpg",
-  import.meta.url
-);
 
 export const MarriageEventCard = (props: EventCardType) => {
   const {
@@ -43,6 +39,13 @@ export const MarriageEventCard = (props: EventCardType) => {
     menuItems,
   } = props;
   const status = eventStatusLabel[progressionStatus as string];
+  const randomIndex = Math.ceil(
+    Math.random() * (ILLUSTRATION_ASSETS.marriage - 1)
+  );
+  const imageUrl = new URL(
+    `../../assets/svg/marriage/card-${randomIndex}.svg`,
+    import.meta.url
+  );
 
   return (
     <Space
@@ -52,7 +55,7 @@ export const MarriageEventCard = (props: EventCardType) => {
     >
       <Row className="marriage-image" gutter={[8, 8]}>
         <Col span={12} className="">
-          <img src={imageUrl as any} width={"100%"} alt="" />
+          <img src={imageUrl as any} width={"100%"} alt="" height={180} />
         </Col>
         <Col span={12} className="marriage-content">
           <Space direction="vertical">

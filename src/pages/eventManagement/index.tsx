@@ -23,6 +23,7 @@ import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
 import { MarriageEventCard } from "../../components/marriageEventCard";
 import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
+  EDITABLE_EVENT_STATUS,
   EVENT_DATE_FORMAT,
   EVENT_STATUS,
   EVENT_STATUS_LABEL,
@@ -39,11 +40,21 @@ import {
   TemplateType,
 } from "../../types";
 import "./styles.scss";
-import FeedbackPrompt from "../../assets/svg/FeedbackPrompt.svg";
+import NoEvents from "../../assets/svg/no-events.svg";
 import { PreviewEvent } from "../../components/previewEvent";
 import { OtherEventCreation } from "../../components/otherEventCreation";
 import { debounce } from "lodash";
 import { removeEmptyProp } from "../../utils/common.utils";
+import { OtherEventCard } from "../../components/otherEventCard";
+import { EmptyData } from "../../components/EmptyData";
+import {
+  modalClassNames,
+  modalStyles,
+  useModalStyle,
+} from "../../configs/antd.config";
+import { createStyles, useTheme } from "antd-style";
+
+const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -69,6 +80,8 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
 }));
 
 export const EventManagement = () => {
+  const { styles } = useModalStyle();
+  const token = useTheme();
   const { screen, setLoading } = useBearStore.appStore();
   const [isPreview, setIsPreview] = React.useState(false);
   const { setDirectoryList, directoryList } = useBearStore.contactStore();
@@ -215,7 +228,7 @@ export const EventManagement = () => {
         icon: <DeleteOutlined />,
       },
     ];
-    if (data.status === EVENT_STATUS.NOT_STARTED) {
+    if (EDITABLE_EVENT_STATUS.includes(data.status as string)) {
       return [...menu1, ...menu2];
     } else {
       return menu1;
@@ -272,30 +285,25 @@ export const EventManagement = () => {
               <BirthdayEventCard {...event} menuItems={getMenuItems(event)} />
             </Col>
           );
+        } else if (event.type === EVENT_TYPES.OTHERS) {
+          return (
+            <Col {...colProps}>
+              <OtherEventCard {...event} menuItems={getMenuItems(event)} />
+            </Col>
+          );
         } else {
           return <></>;
         }
       })
     ) : (
-      <Space className="no-events" direction="vertical" size="small">
-        <div>
-          <img src={FeedbackPrompt} alt="" height={150} />
-        </div>
-        <Text type="secondary" italic>
-          No events to show
-        </Text>
-        <div>
-          <Button
-            type="primary"
-            size="middle"
-            onClick={() => {
-              setAction("ADD");
-            }}
-          >
-            Create Event
-          </Button>
-        </div>
-      </Space>
+      <EmptyData
+        onClickAction={() => {
+          setAction("ADD");
+        }}
+        image={NoEvents}
+        description="No events to show"
+        buttonText="Create Event"
+      />
     );
   };
 
@@ -407,8 +415,13 @@ export const EventManagement = () => {
         okText="Yes"
         cancelText="No"
         okType="danger"
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(token)}
       >
-        Once deleted it cannot be undo
+        <img src={imageUrl as any} width={"100%"} alt="" />
+        <Text italic style={{ textAlign: "center" }}>
+          Once deleted it cannot be undo
+        </Text>
       </Modal>
       {(!action || action === "DELETE") && (
         <>
@@ -462,10 +475,10 @@ export const EventManagement = () => {
                 <Form.Item label="Event date range">
                   <RangePicker
                     size="middle"
-                    defaultValue={[
-                      dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                      dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                    ]}
+                    // defaultValue={[
+                    //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                    //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
+                    // ]}
                     format={EVENT_DATE_FORMAT}
                   />
                 </Form.Item>

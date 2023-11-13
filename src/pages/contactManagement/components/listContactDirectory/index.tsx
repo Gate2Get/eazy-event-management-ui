@@ -3,13 +3,15 @@ import { Col, Input, MenuProps, Row, Space, Typography } from "antd";
 import React from "react";
 import { ContactDirectoryCard } from "../../../../components/contactDirectoryCard";
 import { DataTable } from "../../../../components/dataTable";
+import { EmptyData } from "../../../../components/EmptyData";
 import { useBearStore } from "../../../../store";
 import { ContactDirectoryType } from "../../../../types";
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { contactDirectoryColumns } from "./config";
 import { CONTACT_DIRECTORY_COLUMN_KEYS } from "./constant";
+import NoContact from "../../../../assets/svg/no-contact.svg";
 
-const { Title, Text } = Typography;
+const { Link, Text } = Typography;
 const { Search } = Input;
 
 export const ListContactDirectory = () => {
@@ -91,6 +93,7 @@ export const ListContactDirectory = () => {
           {directoryList.length ? (
             <Search
               placeholder="Search here"
+              value={searchValue}
               onSearch={onSearch}
               style={{ width: "100%" }}
               size="large"
@@ -112,25 +115,52 @@ export const ListContactDirectory = () => {
           )}
         </Col>
       </Row>
-      <Row gutter={[16, 16]}>
-        {isListView ? (
-          <DataTable
-            columns={contactDirectoryColumns}
-            data={searchValue ? filteredGrid : directoryList}
-          />
-        ) : (
-          (searchValue ? filteredGrid : directoryList).map((directory) => {
-            return (
-              <Col span={screen === "MOBILE" ? 24 : 8} key={directory.id}>
-                <ContactDirectoryCard
-                  cardContact={directory}
-                  menuItems={getMenuItems(directory)}
-                />
-              </Col>
-            );
-          })
-        )}
-      </Row>
+      {(searchValue ? filteredGrid : directoryList)?.length ? (
+        <Row gutter={[16, 16]}>
+          {isListView ? (
+            <DataTable
+              columns={contactDirectoryColumns}
+              data={searchValue ? filteredGrid : directoryList}
+            />
+          ) : (
+            (searchValue ? filteredGrid : directoryList).map((directory) => {
+              return (
+                <Col span={screen === "MOBILE" ? 24 : 8} key={directory.id}>
+                  <ContactDirectoryCard
+                    cardContact={directory}
+                    menuItems={getMenuItems(directory)}
+                  />
+                </Col>
+              );
+            })
+          )}
+        </Row>
+      ) : (
+        <EmptyData
+          onClickAction={() => {
+            setAction("ADD");
+          }}
+          image={NoContact}
+          description={
+            searchValue ? (
+              <>
+                No contact to show for the selected filter,{" "}
+                <Link
+                  href="#"
+                  onClick={() => {
+                    onSearch("");
+                  }}
+                >
+                  Clear filter
+                </Link>
+              </>
+            ) : (
+              "No contact to show"
+            )
+          }
+          buttonText="Create Contact"
+        />
+      )}
     </div>
   );
 };

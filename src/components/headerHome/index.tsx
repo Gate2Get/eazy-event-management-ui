@@ -3,29 +3,33 @@ import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
+import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../../constants";
 
 const { Text } = Typography;
 
 type HeaderHomeType = {
-  onLoginHandle?: () => void;
+  isAuthorized?: boolean | null;
 };
 
 export const HeaderHome = (props: HeaderHomeType) => {
-  const { onLoginHandle } = props;
+  const { isAuthorized } = props;
   const navigate = useNavigate();
 
   const verifyAuth = () => {
     navigate(ROUTES_URL.AUTHORIZER);
   };
-
+  console.log(
+    { pa: window.location.pathname },
+    isAuthorized,
+    NON_PROTECTED_ROUTES.includes(window.location.pathname)
+  );
   return (
     <div className="header-home__container">
       <Text className="app__name" italic>
         Eazy Event
       </Text>
       <div className="get-started__button">
-        {onLoginHandle && (
+        {!NON_PROTECTED_ROUTES.includes(window.location.pathname) && (
           <Button type="primary" onClick={verifyAuth}>
             Get Started
           </Button>

@@ -2,6 +2,7 @@ import React from "react";
 import { Authorizer } from "../authorizer";
 import { App403 } from "../components/403";
 import { App404 } from "../components/404";
+import { GoogleContactDoc } from "../components/googleContactDoc";
 import { ROUTES_URL } from "../constants";
 import { AppLayout } from "../layout";
 import { ContactManagement } from "../pages/contactManagement";
@@ -35,6 +36,14 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.PRIVACY_POLICY,
     element: <PrivacyPolicy />,
+  },
+  {
+    path: ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC,
+    element: <GoogleContactDoc />,
+  },
+  {
+    path: "*",
+    element: <App404 />,
   },
 ];
 
@@ -75,8 +84,8 @@ export const SERVICE_ROUTES = [
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
   },
-  // {
-  //   path: "*",
-  //   element: <App404 />,
-  // },
+  {
+    path: "*",
+    element: <App404 />,
+  },
 ];

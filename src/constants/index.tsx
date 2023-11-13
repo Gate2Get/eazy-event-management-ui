@@ -1,8 +1,4 @@
-import {
-  MessageOutlined,
-  PhoneOutlined,
-  WhatsAppOutlined,
-} from "@ant-design/icons";
+import { WhatsAppOutlined } from "@ant-design/icons";
 import { faMessage } from "@fortawesome/free-regular-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
   SERVICE: "service",
-  EE: "/ee",
+  EE: "/console",
   CONTACT_MANAGEMENT: "contact-management",
   TEMPLATE_MANAGEMENT: "template-management",
   EVENT_MANAGEMENT: "event-management",
@@ -22,6 +18,7 @@ export const ROUTES_URL = {
   AUTHORIZER: "/account/auth-verify",
   PRIVACY_POLICY: "/privacy-policy",
   FORBIDDEN: "forbidden",
+  CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
 };
 
 export const ROUTES_MENU = {
@@ -59,6 +56,11 @@ export const EVENT_STATUS = {
   IN_PROGRESS: "IN_PROGRESS",
   DRAFT: "DRAFT",
 };
+
+export const EDITABLE_EVENT_STATUS = [
+  EVENT_STATUS.PENDING_APPROVAL,
+  EVENT_STATUS.NOT_STARTED,
+];
 
 export const EVENT_STATUS_LABEL = {
   DRAFT: "Draft",
@@ -98,6 +100,12 @@ export const EVENT_TYPE_PROPS = {
 };
 
 export const EVENT_DATE_FORMAT = "YYYY/MM/DD";
+
+export const NON_PROTECTED_ROUTES = [
+  ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC,
+  `/${ROUTES_URL.FORBIDDEN}`,
+  `${ROUTES_URL.EE}/${ROUTES_URL.FORBIDDEN}`,
+];
 
 export const CHANNEL_OPTIONS = [
   {
@@ -141,3 +149,9 @@ export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
 };
 
 export const DATE_FORMAT = "DD-MM-YYYY";
+
+export const ILLUSTRATION_ASSETS = {
+  marriage: 9,
+  birthday: 16,
+  others: 10,
+};

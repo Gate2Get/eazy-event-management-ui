@@ -10,10 +10,17 @@
     float: right;
   }
 
+  .menu-icon {
+    float: right;
+    padding-top: 1.5rem;
+    font-size: 20px;
+  }
+
   .app__name {
-    margin-left: 10px;
-    // color: #fff;
+    margin-left: 1px;
+    color: #0565ff;
     font-size: 20px;
     font-weight: 700;
+    cursor: pointer;
   }
 }

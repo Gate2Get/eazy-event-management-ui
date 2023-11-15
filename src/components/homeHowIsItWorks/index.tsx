@@ -45,7 +45,9 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
               {moduleName}
             </Text>
           </Tag>
-          <Title className="content-title">{title}</Title>
+          <Title className="content-title" level={screen === "MOBILE" ? 2 : 1}>
+            {title}
+          </Title>
           <Text className="content-text">{text}</Text>
         </Col>
       </Row>

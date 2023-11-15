@@ -1,14 +1,15 @@
 import React from "react";
-import { Button, Col, Row, theme, Typography } from "antd";
+import { Button, Card, Col, Row, Statistic, theme, Typography } from "antd";
 import "./styles.scss";
 import { useBearStore } from "../../store";
 import { howIsItWorksContent } from "../../configs/home.config";
 import { HomeHowIsItWorks } from "../../components/homeHowIsItWorks";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
+import { HOME_STAT, ROUTES_URL } from "../../constants";
 import { AnimatedText } from "../../components/animatedText";
 import EmailCampaign from "../../assets/svg/email-campaign.svg";
 import MailBro from "../../assets/svg/mail-bro.svg";
+import { StatisticCard } from "../../components/StatisticCard";
 
 const { Title, Text } = Typography;
 
@@ -33,7 +34,7 @@ export const Home = () => {
     <>
       <div style={{ minHeight: 380 }} className="body-content">
         {/* <AnimatedText /> */}
-        <Title className="headline">
+        <Title className="headline" level={screen === "MOBILE" ? 2 : 1}>
           Delivering Joyful Event Notifications
         </Title>
         <div>
@@ -46,7 +47,7 @@ export const Home = () => {
         <Button type="primary" size="large" onClick={verifyAuth}>
           Get Started
         </Button>
-        <Title level={2} className="sub-heading">
+        <Title level={screen === "MOBILE" ? 4 : 2} className="sub-heading">
           Make every event memorable with our voice call, SMS, and WhatsApp
           notification service.
         </Title>
@@ -55,10 +56,10 @@ export const Home = () => {
         className="how-is-it-works"
         style={{ padding: screen === "MOBILE" ? "2rem 2rem" : "2rem 6rem" }}
       >
-        <Title className="notes">
+        <Title className="notes" level={screen === "MOBILE" ? 3 : 1}>
           Sending event notifications has never been easier!
         </Title>
-        <Title className="steps">
+        <Title className="steps" level={screen === "MOBILE" ? 3 : 1}>
           Just follow these simple steps to spread happiness.
         </Title>
         {howIsItWorksContent.map((content, index) => (
@@ -71,16 +72,12 @@ export const Home = () => {
       </div>
 
       <div className="cta-outer-row">
-        <div style={{ textAlign: "center" }}>
-          <img
-            src={MailBro}
-            alt=""
-            width={screen === "MOBILE" ? "50%" : "25%"}
-          />
-        </div>
         <Row className="cta-inner-row" gutter={[0, 8]}>
           <Col {...colOption(16, { order: 2 })}>
-            <Title level={2} className="content-title">
+            <Title
+              level={screen === "MOBILE" ? 3 : 2}
+              className="content-title"
+            >
               Sign up today and experience the power of seamless event
               management and communication with Eazy Event.
             </Title>

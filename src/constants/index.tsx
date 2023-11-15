@@ -1,7 +1,8 @@
 import { WhatsAppOutlined } from "@ant-design/icons";
-import { faMessage } from "@fortawesome/free-regular-svg-icons";
+import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Avatar } from "antd";
 
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
@@ -18,6 +19,7 @@ export const ROUTES_URL = {
   AUTHORIZER: "/account/auth-verify",
   PRIVACY_POLICY: "/privacy-policy",
   FORBIDDEN: "forbidden",
+  PRICING: "pricing",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
 };
 
@@ -155,3 +157,65 @@ export const ILLUSTRATION_ASSETS = {
   birthday: 16,
   others: 10,
 };
+
+export const HOME_STAT = [
+  {
+    prefix: <FontAwesomeIcon icon={faUser} />,
+    value: 1000,
+    title: "Users",
+  },
+];
+
+export const PRICING_CARDS = [
+  {
+    icon: (
+      <Avatar
+        size={48}
+        style={{ background: "#0071dc", textAlign: "center" }}
+        icon={<FontAwesomeIcon icon={faPhone} />}
+      />
+    ),
+    title: "Voice Call Plan",
+    price: "$0.10/Voice Call",
+    info: [
+      "Making one voice call notification to each recipient.",
+      "Basic notification content customization.",
+      "Standard delivery speed.",
+      "Admin review and approval.",
+    ],
+  },
+  {
+    icon: (
+      <Avatar
+        size={48}
+        style={{ background: "#0071dc", textAlign: "center" }}
+        icon={<FontAwesomeIcon icon={faMessage} />}
+      />
+    ),
+    title: "SMS Plan",
+    price: "$0.05 per SMS",
+    info: [
+      "Sending one SMS notification to each recipient.",
+      "Basic notification content customization.",
+      "Standard delivery speed.",
+      "Admin review and approval.",
+    ],
+  },
+  {
+    icon: (
+      <Avatar
+        size={48}
+        style={{ background: "#0071dc", textAlign: "center" }}
+        icon={<WhatsAppOutlined />}
+      />
+    ),
+    title: "WhatsApp Plan",
+    price: "$0.08 per WhatsApp Message",
+    info: [
+      "Sending one WhatsApp notification to each recipient.",
+      "Advanced notification content customization with rich media.",
+      "Standard delivery speed.",
+      "Admin review and approval.",
+    ],
+  },
+];

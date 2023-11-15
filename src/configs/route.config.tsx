@@ -11,6 +11,7 @@ import { EventManagement } from "../pages/eventManagement";
 import { Feedback } from "../pages/feedback";
 import { Home } from "../pages/home";
 import { MyProfile } from "../pages/myProfile";
+import { Pricing } from "../pages/pricing";
 import { PrivacyPolicy } from "../pages/privacyPolicy";
 import { ReportBug } from "../pages/reportBug";
 import { SignIn } from "../pages/signIn";
@@ -40,6 +41,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC,
     element: <GoogleContactDoc />,
+  },
+  {
+    path: ROUTES_URL.PRICING,
+    element: <Pricing />,
   },
   {
     path: "*",

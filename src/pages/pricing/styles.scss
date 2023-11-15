@@ -1,0 +1,41 @@
+.pricing__container {
+  position: relative;
+  padding: 1% 6% 6% 6%;
+
+  .pricing-title {
+    text-align: center;
+    padding-bottom: 2rem !important;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: shine 3s linear infinite;
+    animation: shine 3s linear infinite;
+    background: linear-gradient(
+      270deg,
+      #0565ff 20%,
+      #d341a5 40%,
+      #d341a5 60%,
+      #0565ff 80%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-size: 200% auto;
+    color: #0565ff;
+  }
+
+  .pricing-card {
+    background: #fff;
+    border: 0.986111px solid #a5b2bd;
+    border-radius: 24px;
+    box-shadow: 0 2px 4px -2px #f1f3f5, 0 4px 23px -2px #f1f3f5;
+    padding: 32px 40px;
+    text-align: center;
+  }
+
+  .info {
+    text-align: left;
+
+    li {
+      font-size: 1.1rem;
+      color: #121010;
+    }
+  }
+}

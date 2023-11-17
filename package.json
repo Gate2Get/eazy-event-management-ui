@@ -4,11 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "prestart": "npm i",
     "dev": "vite --host",
     "build": "tsc && vite build",
     "copy-nginx-config": "cp nginx.conf dist && cp fetch_env.js dist",
-    "start": "vite preview --port 3000",
+    "start": "vite preview --port 3000 --host",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",
     "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix"
   },

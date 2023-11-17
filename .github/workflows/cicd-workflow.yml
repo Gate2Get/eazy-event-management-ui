@@ -24,11 +24,11 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: [eazy-event-management-ui]
+    runs-on: [aws-ec2]
     steps:
       - name: Pull image from docker hub
         run: docker pull eazyevent/eazy-event-management-ui:latest
       - name: Delete old containers
         run: docker rm -f eazy-event-management-container
       - name: Run docker container
-        run: docker run -d -p 3000:3000 -name eazy-event-management-container eazyevent/eazy-event-management-ui
+        run: docker run -d -p 3000:3000 --name eazy-event-management-container eazyevent/eazy-event-management-ui

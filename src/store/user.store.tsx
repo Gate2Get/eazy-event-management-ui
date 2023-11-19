@@ -8,4 +8,7 @@ export const createUserStore = create<UserType>((set) => ({
   setUser: (user) => {
     set((state) => ({ user }));
   },
+  setIsAuthorized: (isAuthorized) => {
+    set((state) => ({ isAuthorized }));
+  },
 }));

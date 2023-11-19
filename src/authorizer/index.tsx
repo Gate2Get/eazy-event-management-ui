@@ -10,6 +10,7 @@ const { Text } = Typography;
 
 export const Authorizer = () => {
   const { setLoading } = useBearStore.appStore();
+  const { setIsAuthorized } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -26,6 +27,7 @@ export const Authorizer = () => {
       .verifyAuth()
       .then((isAuthenticated) => {
         setLoading(false);
+        setIsAuthorized(isAuthenticated);
         if (isAuthenticated) {
           const url =
             searchParams.get("returnTo") ||

@@ -15,6 +15,7 @@ export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
   setUser: (user: UserInfoType) => void;
+  setIsAuthorized: (isAuthorized: boolean) => void;
 };
 
 export type AppStoreType = {

@@ -34,6 +34,7 @@ export const SignIn = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const { setLoading, screen } = useBearStore.appStore();
+  const { setIsAuthorized } = useBearStore.userStore();
   const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isRequestOtpEnabled, setRequestOtpEnabled] = React.useState(true);
   const [countDown, setCountDown] = React.useState(0);
@@ -63,6 +64,7 @@ export const SignIn = () => {
       .verifyOTP(mobile, otp)
       .then((response) => {
         setLoading(false);
+        setIsAuthorized(true);
         navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
       })
       .catch((error) => {

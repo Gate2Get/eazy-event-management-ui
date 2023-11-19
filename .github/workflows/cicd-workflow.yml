@@ -35,3 +35,5 @@ jobs:
           docker run -d -p 80:80 --name eazy-event-management-ui-container \
           -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
           eazyevent/eazy-event-management-ui
+      - name: Remove unused image from ec2
+        run: docker image prune -af

@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "copy-nginx-config": "cp nginx.conf dist && cp fetch_env.js dist",
     "start": "vite preview --port 80 --host",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",
     "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix"

@@ -24,7 +24,7 @@ if (!process.env.REACT_APP_ENV) {
 } else if (process.env.REACT_APP_ENV === "Prod") {
   serverConfig.proxy = {
     "/api": {
-      target: "http://eazy-event.ap-south-1.elasticbeanstalk.com",
+      target: "http://65.2.3.93:8080",
       changeOrigin: true,
       secure: false,
       ws: true,

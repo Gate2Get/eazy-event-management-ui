@@ -31,4 +31,7 @@ jobs:
       - name: Delete old containers
         run: docker rm -f eazy-event-management-ui-container
       - name: Run docker container
-        run: docker run -d -p 80:80 --name eazy-event-management-ui-container eazyevent/eazy-event-management-ui
+        run: |
+          docker run -d -p 80:80 --name eazy-event-management-ui-container \
+          -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
+          eazyevent/eazy-event-management-ui

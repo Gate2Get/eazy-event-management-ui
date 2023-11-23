@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host",
     "build": "tsc && vite build",
-    "start": "vite preview --port 80 --host",
+    "start": "vite preview --port 443 --host",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",
     "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix"
   },

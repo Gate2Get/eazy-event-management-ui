@@ -32,7 +32,7 @@ jobs:
         run: docker rm -f eazy-event-management-ui-container
       - name: Run docker container
         run: |
-          docker run -d -p 80:80 --name eazy-event-management-ui-container \
+          docker run -d -p 443:443 --name eazy-event-management-ui-container \
           -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
           eazyevent/eazy-event-management-ui
       - name: Remove unused image from ec2

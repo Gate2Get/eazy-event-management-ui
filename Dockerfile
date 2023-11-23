@@ -20,7 +20,7 @@ COPY . .
 RUN pnpm run build
 
 # Expose the port that your Vite application will run on
-EXPOSE 443
+EXPOSE 80
 
 # Command to start the application
 CMD ["pnpm", "run", "start"]

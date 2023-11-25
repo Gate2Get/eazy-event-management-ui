@@ -2,9 +2,9 @@ import { instance, userManagementEndpoint } from "../../configs/axios.config";
 import { UserInfoType } from "../../types";
 
 export const userManagementAPI = {
-  loginUser: async (mobile: number): Promise<any> => {
+  requestOtp: async (): Promise<any> => {
     return await instance
-      .post(userManagementEndpoint.loginUser, { mobile })
+      .get(userManagementEndpoint.requestOtp)
       .then((response) => {
         return true;
       })
@@ -12,9 +12,29 @@ export const userManagementAPI = {
         throw error;
       });
   },
-  verifyOTP: async (mobile: number, otp: number) => {
+  loginEmailUser: async (email: string): Promise<any> => {
     return await instance
-      .post(userManagementEndpoint.verifyOTP, { mobile, otp })
+      .post(userManagementEndpoint.loginEmailUser, { email })
+      .then((response) => {
+        return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  verifyOTP: async (otp: number) => {
+    return await instance
+      .post(userManagementEndpoint.verifyOTP, { otp })
+      .then((response) => {
+        return response.data?.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  verifyEmailOTP: async (otp: number) => {
+    return await instance
+      .post(userManagementEndpoint.verifyEmailOTP, { otp })
       .then((response) => {
         return true;
       })

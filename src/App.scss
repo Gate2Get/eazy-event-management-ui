@@ -211,3 +211,11 @@ form {
     font-weight: 700;
   }
 }
+
+.link-text {
+  color: #1677ff;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}

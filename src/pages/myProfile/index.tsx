@@ -46,6 +46,10 @@ export const MyProfile = () => {
     getUserInfo();
   }, []);
 
+  React.useEffect(() => {
+    form.setFieldsValue({ ...userInfo, mobile: userInfo.mobile?.toString() });
+  }, [userInfo]);
+
   const hideLogout = () => {
     setIsLogout(false);
   };
@@ -61,7 +65,6 @@ export const MyProfile = () => {
       .then((userInfo) => {
         setLoading(false);
         setUserInfo(userInfo);
-        form.setFieldsValue(userInfo);
       })
       .catch((error) => {
         setLoading(false);
@@ -127,7 +130,11 @@ export const MyProfile = () => {
       </Row>
       {isEdit ? (
         <div className="my-profile__container" style={cardStyle}>
-          <Image width={96} src={UserIcon} rootClassName="user-icon" />
+          <Image
+            width={96}
+            src={userInfo.picture || UserIcon}
+            rootClassName="user-icon"
+          />
           <Form
             layout="vertical"
             form={form}
@@ -136,11 +143,41 @@ export const MyProfile = () => {
             onFinish={updateUserInfo}
           >
             <Form.Item
+              label="Email address"
+              name="email"
+              rules={[
+                {
+                  required: false,
+                  message: "Please input your email address!",
+                },
+              ]}
+            >
+              <Input
+                size="large"
+                type="email"
+                placeholder="Your email address"
+                suffix={
+                  userInfo.isEmailVerified ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <WarningOutlined />
+                  )
+                }
+                disabled
+              />
+            </Form.Item>
+            <Form.Item
               label="Mobile Number"
               name="mobile"
               rules={[
                 {
-                  required: false,
+                  len: 10,
+                  min: 10,
+                  max: 10,
+                  message: "Enter valid mobile number",
+                },
+                {
+                  required: true,
                   message: "Please input your mobile number!",
                 },
               ]}
@@ -149,7 +186,13 @@ export const MyProfile = () => {
                 size="large"
                 type="number"
                 placeholder="Mobile number"
-                disabled
+                suffix={
+                  userInfo.isMobileVerified ? (
+                    <CheckCircleOutlined />
+                  ) : (
+                    <WarningOutlined />
+                  )
+                }
               />
             </Form.Item>
             <Form.Item
@@ -198,24 +241,6 @@ export const MyProfile = () => {
               rules={[{ required: false, message: "Please select your city!" }]}
             >
               <Select size="large" placeholder="Your city" />
-            </Form.Item>
-
-            <Form.Item
-              label="Email address"
-              name="email"
-              rules={[
-                {
-                  required: false,
-                  message: "Please input your email address!",
-                },
-              ]}
-            >
-              <Input
-                size="large"
-                type="email"
-                placeholder="Your email address"
-                suffix={<ExclamationCircleOutlined />}
-              />
             </Form.Item>
             <Form.Item>
               <Button size="large" type="primary" htmlType="submit">
@@ -285,7 +310,7 @@ export const MyProfile = () => {
                   <p>
                     <Title level={5}>Full name</Title>
                     <Text italic>{`${userInfo.firstName || ""} ${
-                      userInfo.lastName || ""
+                      userInfo.lastName || "NA"
                     }`}</Text>
                   </p>
                   <p>
@@ -316,7 +341,27 @@ export const MyProfile = () => {
                   </p>
                   <p>
                     <Title level={5}>Mobile Number</Title>
-                    <Text italic>{userInfo.mobile}</Text>
+                    <Space>
+                      <Text italic>{userInfo.mobile || "NA"}</Text>
+                      {userInfo.mobile ? (
+                        <Tag
+                          icon={
+                            userInfo.isMobileVerified ? (
+                              <CheckCircleOutlined />
+                            ) : (
+                              <WarningOutlined />
+                            )
+                          }
+                          color={
+                            userInfo.isMobileVerified ? "success" : "error"
+                          }
+                        >
+                          {userInfo.isMobileVerified
+                            ? "Verified"
+                            : "Not verified"}
+                        </Tag>
+                      ) : null}
+                    </Space>
                   </p>
                   <p>
                     <Title level={5}>City</Title>

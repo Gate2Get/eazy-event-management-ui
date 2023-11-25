@@ -34,45 +34,48 @@ export const interceptors = (navigate: (url: string) => void): void => {
 };
 
 export const contactManagementEndpoint = {
-  createContactDirectory: "/api/v1/contact/directory",
-  getContactDirectory: "/api/v1/contact/directory",
-  updateContactDirectory: "/api/v1/contact/directory",
-  deleteContactDirectory: "/api/v1/contact/directory/",
-  getContactList: "/api/v1/contact/",
+  createContactDirectory: "/api/v1/app/contact/directory",
+  getContactDirectory: "/api/v1/app/contact/directory",
+  updateContactDirectory: "/api/v1/app/contact/directory",
+  deleteContactDirectory: "/api/v1/app/contact/directory/",
+  getContactList: "/api/v1/app/contact/",
 };
 
 export const templateManagementEndpoint = {
-  createTemplate: "/api/v1/message/template",
-  getTemplate: "/api/v1/message/template",
-  getTemplateById: "/api/v1/message/template/",
-  updateTemplate: "/api/v1/message/template",
-  deleteTemplate: "/api/v1/message/template/",
+  createTemplate: "/api/v1/app/message/template",
+  getTemplate: "/api/v1/app/message/template",
+  getTemplateById: "/api/v1/app/message/template/",
+  updateTemplate: "/api/v1/app/message/template",
+  deleteTemplate: "/api/v1/app/message/template/",
 };
 
 export const userManagementEndpoint = {
-  loginUser: "/api/v1/auth/login",
-  verifyOTP: "/api/v1/auth/verify-otp",
-  verifyAuth: "/api/v1/auth/verify-auth",
-  getUserInfo: "/api/v1/user/info",
-  updateUserInfo: "/api/v1/user/info",
-  logout: "/api/v1/auth/logout",
+  loginEmailUser: "/api/v1/app/auth/login-email",
+  loginGoogleUser: "/api/v1/app/auth/google",
+  verifyEmailOTP: "/api/v1/app/auth/verify-email-otp",
+  verifyOTP: "/api/v1/app/user/verify-otp",
+  verifyAuth: "/api/v1/app/auth/verify-auth",
+  getUserInfo: "/api/v1/app/user/info",
+  requestOtp: "/api/v1/app/user/request-otp",
+  updateUserInfo: "/api/v1/app/user/info",
+  logout: "/api/v1/app/auth/logout",
 };
 
 export const eventManagementEndpoint = {
-  createEvent: "/api/v1/event/my-events",
-  getEvent: "/api/v1/event/my-events",
-  updateEvent: "/api/v1/event/my-events",
-  deleteEvent: "/api/v1/event/my-events/",
-  getEventContact: "/api/v1/event",
-  exportContact: "/api/v1/contact/export/",
+  createEvent: "/api/v1/app/event/my-events",
+  getEvent: "/api/v1/app/event/my-events",
+  updateEvent: "/api/v1/app/event/my-events",
+  deleteEvent: "/api/v1/app/event/my-events/",
+  getEventContact: "/api/v1/app/event",
+  exportContact: "/api/v1/app/contact/export/",
 };
 
 export const dashboardEndpoint = {
-  getRecentEvent: "/api/v1/event/recent-event",
+  getRecentEvent: "/api/v1/app/event/recent-event",
 };
 
 export const commonEndpoint = {
-  getAlerts: "/api/v1/common/alerts",
-  createBug: "/api/v1/common/report-bug",
-  uploadFile: "/api/v1/file/upload",
+  getAlerts: "/api/v1/app/common/alerts",
+  createBug: "/api/v1/app/common/report-bug",
+  uploadFile: "/api/v1/app/file/upload",
 };

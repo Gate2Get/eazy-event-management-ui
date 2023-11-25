@@ -1,10 +1,14 @@
 @import "../../variables.scss";
 
-.sign-in__container {
+.profile-verification__container {
   background-color: #fff;
   padding: 12px;
   .login__text {
     color: #004484;
+  }
+
+  .next__container {
+    text-align: left;
   }
 
   .login-form {
@@ -16,7 +20,7 @@
     height: max-content;
     margin-block: auto;
     margin-inline: auto;
-    padding: 4rem;
+    padding: 1rem;
     // width: 30rem;
   }
 

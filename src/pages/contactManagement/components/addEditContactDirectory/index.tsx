@@ -203,8 +203,12 @@ export const AddEditContactDirectory = () => {
     const validation = await form.validateFields();
     console.log({ validation });
     const directory = form.getFieldsValue();
+    const directoryList = {
+      ...directory,
+      contacts: directoryContactList,
+    };
     if (action === "ADD" || action === "EDIT") {
-      const isError = contactValidator(directory);
+      const isError = contactValidator(directoryList);
       setError(isError);
       if (isError) {
         return;
@@ -212,10 +216,10 @@ export const AddEditContactDirectory = () => {
     }
 
     if (action === "ADD") {
-      createContactDirectory(directory);
+      createContactDirectory(directoryList);
       onCancel();
     } else if (action === "EDIT") {
-      updateContactDirectory({ id: selectedDirectory.id, ...directory });
+      updateContactDirectory({ id: selectedDirectory.id, ...directoryList });
       onCancel();
     } else if (action === "VIEW") {
       setAction("EDIT");

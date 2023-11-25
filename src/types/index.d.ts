@@ -40,7 +40,9 @@ export type UserInfoType = {
   email?: string;
   state?: string;
   city?: string;
+  picture?: string;
   isEmailVerified?: boolean;
+  isMobileVerified?: boolean;
   profileImage?: string;
 };
 

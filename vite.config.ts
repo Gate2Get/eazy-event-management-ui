@@ -5,8 +5,15 @@ const serverConfig: CommonServerOptions = {};
 
 if (!process.env.REACT_APP_ENV) {
   serverConfig.proxy = {
-    "/api": {
+    "/api/v1/app": {
       target: "http://localhost:8080",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
+    },
+    "/api/v1/service": {
+      target: "http://localhost:5001",
       changeOrigin: true,
       secure: false,
       ws: true,
@@ -23,7 +30,7 @@ if (!process.env.REACT_APP_ENV) {
   };
 } else if (process.env.REACT_APP_ENV === "Prod") {
   serverConfig.proxy = {
-    "/api": {
+    "/api/v1/app": {
       target: "http://65.2.3.93:8080",
       changeOrigin: true,
       secure: false,

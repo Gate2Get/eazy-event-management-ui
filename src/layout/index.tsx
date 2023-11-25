@@ -1,19 +1,17 @@
 import React from "react";
-import { Alert, Divider, Layout, Row, Space, Spin, Typography } from "antd";
+import { Alert, Layout, Spin, Typography } from "antd";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { Header as AppHeader } from "../components/header";
 import "./styles.scss";
 import Marquee from "react-fast-marquee";
 import { useBearStore } from "../store";
 import { SidebarTab } from "../components/sidebarTab";
-import BannerPng from "../assets/png/banner-BH.4fd13869.png";
-import BannerPngAlt from "../assets/webp/form-bg-1.webp";
 import { API } from "../api";
 import { AlertType } from "../types";
 import { ServiceRoutes } from "../routes";
-import { DashboardOutlined } from "@ant-design/icons";
 import { ROUTES_URL } from "../constants";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ProfileVerification } from "../components/profileVerification";
 
 const { Header, Content, Sider } = Layout;
 const { Title, Text } = Typography;
@@ -32,9 +30,10 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     setCollapsed,
     setLoading,
   } = useBearStore.appStore();
-  const { setUser, isAuthorized } = useBearStore.userStore();
+  const { setUser, isAuthorized, user } = useBearStore.userStore();
   const navigate = useNavigate();
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const { children } = props;
 
@@ -89,8 +88,41 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       });
   };
 
+  const onCloseVerification = () => {
+    setIsOpen(false);
+    getUserInfo();
+  };
+
+  const renderAccountWarning = () => {
+    if (!user.mobile) {
+      return (
+        <>
+          <Text className="link-text" onClick={() => setIsOpen(true)}>
+            Click here
+          </Text>
+          <Text> to complete the profile to start events.</Text>
+        </>
+      );
+    } else if (!user.isMobileVerified) {
+      return (
+        <>
+          <Text className="link-text" onClick={() => setIsOpen(true)}>
+            Click here
+          </Text>
+          <Text> to verify the mobile.</Text>
+        </>
+      );
+    }
+  };
+
   return (
     <Layout className="app__layout">
+      <ProfileVerification
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        userInfo={user}
+        onCloseVerification={onCloseVerification}
+      />
       <Header className="layout__header">
         <AppHeader
           collapsed={collapsed}
@@ -127,18 +159,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 marginLeft: collapsed ? 0 : sidebarWidth,
               }}
             >
-              {/* {isLoading && (
-              <div className="overlay-loader">
-                <div className="spinner__container-walmart" style={{ height }}>
-                  <Spinner
-                    className="spinner__walmart-loader"
-                    color="gray"
-                    size="large"
-                    title="Loading"
-                  />
-                </div>
-              </div>
-            )} */}
+              {!user.mobile || !user.isMobileVerified ? (
+                <Alert message={renderAccountWarning()} type="warning" />
+              ) : null}
               <div className="alert-container">
                 {alerts.length
                   ? alerts.map((alert) => (
@@ -157,22 +180,8 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                       />
                     ))
                   : null}
-                {/* <Divider /> */}
               </div>
-              <div className="banner-text">
-                {/* <div className="banner-image">
-                  <img
-                    src={BannerPngAlt}
-                    alt=""
-                    style={{ width: "100%" }}
-                    height={120}
-                  />
-                </div> */}
-                {/* <div className="text-on-image">
-                  <Text>{currentPage}</Text>
-                  <Divider />
-                </div> */}
-              </div>
+              <div className="banner-text"></div>
 
               <ServiceRoutes />
             </Content>

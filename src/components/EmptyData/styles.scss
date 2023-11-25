@@ -1,6 +1,24 @@
-.empty-data__container {
+.empty-data__container.DESKTOP {
   position: relative;
   left: 35%;
+
+  > div {
+    text-align: center;
+  }
+}
+
+.empty-data__container.TABLET {
+  position: relative;
+  left: 30%;
+
+  > div {
+    text-align: center;
+  }
+}
+
+.empty-data__container.MOBILE {
+  position: relative;
+  left: 20%;
 
   > div {
     text-align: center;

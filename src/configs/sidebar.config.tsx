@@ -25,7 +25,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.DASHBOARD,
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.DASHBOARD);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
     },
   },
   {
@@ -36,7 +36,7 @@ export const getMenuItems = (
     ),
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.CONTACT_MANAGEMENT);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.CONTACT_MANAGEMENT}`);
     },
   },
   {
@@ -47,7 +47,7 @@ export const getMenuItems = (
     ),
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.TEMPLATE_MANAGEMENT);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.TEMPLATE_MANAGEMENT}`);
     },
   },
   {
@@ -60,7 +60,7 @@ export const getMenuItems = (
     ),
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.EVENT_MANAGEMENT);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}`);
     },
   },
   // {
@@ -80,7 +80,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.FEEDBACK,
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.FEEDBACK);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.FEEDBACK}`);
     },
   },
   {
@@ -89,7 +89,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.REPORT_BUG,
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.REPORT_BUG);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.REPORT_BUG}`);
     },
   },
 
@@ -99,7 +99,7 @@ export const getMenuItems = (
     label: ROUTES_MENU.MY_PROFILE,
     onClick: () => {
       otherFn?.();
-      navigate(ROUTES_URL.MY_PROFILE);
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`);
     },
   },
 ];

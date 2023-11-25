@@ -20,6 +20,7 @@ function App(): React.ReactElement {
       setCollapsed(true);
     } else {
       setScreen("DESKTOP");
+      setCollapsed(false);
     }
   }, [width]);
 

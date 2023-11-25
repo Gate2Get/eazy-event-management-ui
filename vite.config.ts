@@ -17,6 +17,7 @@ if (!process.env.REACT_APP_ENV) {
       changeOrigin: true,
       secure: false,
       ws: true,
+      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
     },
   };
 } else if (process.env.REACT_APP_ENV === "Dev") {
@@ -26,6 +27,7 @@ if (!process.env.REACT_APP_ENV) {
       changeOrigin: true,
       secure: false,
       ws: true,
+      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
     },
   };
 } else if (process.env.REACT_APP_ENV === "Prod") {
@@ -35,6 +37,14 @@ if (!process.env.REACT_APP_ENV) {
       changeOrigin: true,
       secure: false,
       ws: true,
+      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
+    },
+    "/api/v1/service": {
+      target: "http://65.2.3.93:5000",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
     },
   };
 }

@@ -91,4 +91,27 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  getUserSession: async () => {
+    return await instance
+      .get(userManagementEndpoint.getUserSession)
+      .then((response) => {
+        const userInfo = response.data.result;
+        return userInfo;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  deleteUserSession: async (sessionId: string) => {
+    return await instance
+      .post(userManagementEndpoint.deleteUserSession, { sessionId })
+      .then((response) => {
+        return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

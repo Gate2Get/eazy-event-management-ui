@@ -353,14 +353,20 @@ export const AddEditContactDirectory = () => {
               span={screen === "MOBILE" ? 4 : 1}
               className="back-icon__container"
             >
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                size="2x"
-                className="back-icon"
+              <Button
+                size="large"
+                type="text"
                 onClick={onCancel}
-              />
+                icon={
+                  <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
+                }
+              >
+                {action === "VIEW"
+                  ? selectedDirectory.name
+                  : DIRECTORY_ACTIONS[action].header}
+              </Button>
             </Col>
-            <Col
+            {/* <Col
               span={screen === "MOBILE" ? 20 : 23}
               className="event-name__container"
             >
@@ -369,7 +375,7 @@ export const AddEditContactDirectory = () => {
                   ? selectedDirectory.name
                   : DIRECTORY_ACTIONS[action].header}
               </Text>
-            </Col>
+            </Col> */}
           </Row>
         </Col>
         <Col className="action__button-groups">

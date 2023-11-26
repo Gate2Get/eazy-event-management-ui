@@ -512,12 +512,18 @@ export const EventManagement = () => {
                 span={screen === "MOBILE" ? 4 : 1}
                 className="back-icon__container"
               >
-                <FontAwesomeIcon
-                  icon={faArrowLeft}
-                  size="2x"
-                  className="back-icon"
-                  onClick={() => onCancel()}
-                />
+                <Button
+                  size="large"
+                  type="text"
+                  onClick={() => {
+                    onCancel;
+                  }}
+                  icon={
+                    <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
+                  }
+                >
+                  back
+                </Button>
               </Col>
               <Col>
                 <Text strong italic className="back-text">

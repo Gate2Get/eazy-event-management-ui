@@ -9,13 +9,15 @@ import {
   UserInfoType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
-import { ContactDirectoryType } from "../../types";
+import { ContactDirectoryType, GenericJsonType } from "../../types";
 
 export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
   setUser: (user: UserInfoType) => void;
   setIsAuthorized: (isAuthorized: boolean) => void;
+  sessions: SessionType[];
+  setSession: (sessions: SessionType[]) => void;
 };
 
 export type AppStoreType = {
@@ -75,6 +77,8 @@ export type DashboardStoreType = {
   calendarEvents: EventType[];
   selectedEvent: EventType;
   chartSelectionEventId: string;
+  statistics: GenericJsonType;
+  setStatistics: (statistics: GenericJsonType) => void;
   setChartSelectionEventId: (chartSelectionEventId: string) => void;
   setSelectedEvent: (selectedEvent: EventType) => void;
   setRecentEvent: (recentEvent: EventType) => void;

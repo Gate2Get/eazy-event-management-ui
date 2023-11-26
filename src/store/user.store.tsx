@@ -11,4 +11,8 @@ export const createUserStore = create<UserType>((set) => ({
   setIsAuthorized: (isAuthorized) => {
     set((state) => ({ isAuthorized }));
   },
+  sessions: [],
+  setSession: (sessions) => {
+    set((state) => ({ sessions }));
+  },
 }));

@@ -20,6 +20,7 @@ export const ROUTES_URL = {
   PRIVACY_POLICY: "/privacy-policy",
   FORBIDDEN: "forbidden",
   PRICING: "pricing",
+  HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
 };
 
@@ -176,7 +177,7 @@ export const PRICING_CARDS = [
       />
     ),
     title: "Voice Call Plan",
-    price: "$0.10/Voice Call",
+    price: "₹5 per Minutes per Voice Call",
     info: [
       "Making one voice call notification to each recipient.",
       "Basic notification content customization.",
@@ -193,7 +194,7 @@ export const PRICING_CARDS = [
       />
     ),
     title: "SMS Plan",
-    price: "$0.05 per SMS",
+    price: "₹5 per SMS",
     info: [
       "Sending one SMS notification to each recipient.",
       "Basic notification content customization.",
@@ -210,7 +211,7 @@ export const PRICING_CARDS = [
       />
     ),
     title: "WhatsApp Plan",
-    price: "$0.08 per WhatsApp Message",
+    price: "₹1 per WhatsApp Message",
     info: [
       "Sending one WhatsApp notification to each recipient.",
       "Advanced notification content customization with rich media.",

@@ -54,6 +54,8 @@ export const userManagementEndpoint = {
   loginGoogleUser: "/api/v1/app/auth/google",
   verifyEmailOTP: "/api/v1/app/auth/verify-email-otp",
   verifyOTP: "/api/v1/app/user/verify-otp",
+  getUserSession: "/api/v1/app/user/session",
+  deleteUserSession: "/api/v1/app/user/session",
   verifyAuth: "/api/v1/app/auth/verify-auth",
   getUserInfo: "/api/v1/app/user/info",
   requestOtp: "/api/v1/app/user/request-otp",
@@ -72,6 +74,7 @@ export const eventManagementEndpoint = {
 
 export const dashboardEndpoint = {
   getRecentEvent: "/api/v1/app/event/recent-event",
+  getEventStatistics: "/api/v1/app/event/statistic",
 };
 
 export const commonEndpoint = {

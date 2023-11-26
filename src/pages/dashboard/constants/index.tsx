@@ -7,16 +7,19 @@ export const DASHBOARD_STATS = [
     icon: (
       <FontAwesomeIcon icon={faCalendarDays} className="dark-color" size="1x" />
     ),
-    stats: 10,
+    stats: 0,
+    key: "TOTAL",
   },
   {
-    title: "Total Notifications",
+    title: "Completed Events",
     icon: <FontAwesomeIcon icon={faMessage} className="dark-color" size="1x" />,
-    stats: 1000,
+    stats: 0,
+    key: "COMPLETED",
   },
   {
-    title: "Total Notifications Remaining",
+    title: "Inprogress Events",
     icon: <FontAwesomeIcon icon={faMessage} className="dark-color" size="1x" />,
-    stats: 10,
+    stats: 0,
+    key: "INPROGRESS",
   },
 ];

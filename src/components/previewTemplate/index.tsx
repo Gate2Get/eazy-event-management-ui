@@ -29,7 +29,7 @@ export const PreviewTemplate = (props: TemplateType) => {
             if (msg.type === "TEXT") {
               return (
                 <Paragraph
-                  ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
+                // ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
                 >
                   <Card>{msg.value}</Card>
                 </Paragraph>

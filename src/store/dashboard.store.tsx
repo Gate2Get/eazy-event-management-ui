@@ -24,7 +24,11 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     type: EVENT_TYPES.OTHERS as Events,
     userId: 0,
   },
+  statistics: {},
   chartSelectionEventId: "",
+  setStatistics: (statistics) => {
+    set((state) => ({ statistics }));
+  },
   setChartSelectionEventId: (chartSelectionEventId) => {
     set((state) => ({ chartSelectionEventId }));
   },

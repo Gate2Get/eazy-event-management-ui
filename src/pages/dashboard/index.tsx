@@ -32,6 +32,8 @@ export const Dashboard = () => {
     chartSelectionEventId,
     calendarEvents,
     setChartSelectionEventId,
+    statistics,
+    setStatistics,
   } = useBearStore.dashboardStore();
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -42,13 +44,14 @@ export const Dashboard = () => {
 
   React.useEffect(() => {
     getRecentEvent();
+    getEventStatistics();
   }, []);
 
   React.useEffect(() => {
     getSelectedEvent(chartSelectionEventId);
   }, [chartSelectionEventId]);
 
-  const getRecentEvent = (): any => {
+  const getRecentEvent = (): void => {
     setLoading(true);
     API.dashboardAPI
       .getRecentEvent()
@@ -62,13 +65,27 @@ export const Dashboard = () => {
       });
   };
 
-  const getSelectedEvent = (id: string): any => {
+  const getSelectedEvent = (id: string): void => {
     setLoading(true);
     API.dashboardAPI
       .getRecentEvent(id)
       .then((event: EventType) => {
         setSelectedEvent(event);
         setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getSelectedEvent", error });
+      });
+  };
+
+  const getEventStatistics = (): void => {
+    setLoading(true);
+    API.dashboardAPI
+      .getEventStatistics()
+      .then((stats) => {
+        setLoading(false);
+        setStatistics(stats);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -92,13 +109,31 @@ export const Dashboard = () => {
     ];
   }
 
+  const renderStatistics = () => {
+    let total = 0;
+    Object.values(statistics).forEach((stats) => {
+      total += stats;
+    });
+    return DASHBOARD_STATS.map((stats) => {
+      if (stats.key === "TOTAL") {
+        stats.stats = total;
+      } else if (stats.key === "INPROGRESS") {
+        stats.stats =
+          (statistics["IN_PROGRESS"] || 0) + (statistics["NOT_STARTED"] || 0);
+      } else {
+        stats.stats = statistics[stats.key] || 0;
+      }
+      return stats;
+    });
+  };
+
   return (
     <>
       <br />
       <Row gutter={[16, 16]}>
         <Col {...colOption(18)}>
           <Row gutter={[16, 16]}>
-            {DASHBOARD_STATS.map((stats) => (
+            {renderStatistics().map((stats) => (
               <Col flex={statColSpan} key={stats.title}>
                 <StatisticCard {...stats} />
               </Col>

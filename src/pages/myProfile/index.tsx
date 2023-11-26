@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Button,
   Card,
   Col,
@@ -14,7 +13,6 @@ import {
   Select,
   Space,
   Tag,
-  Tooltip,
   Typography,
 } from "antd";
 import UserIcon from "../../assets/png/user.png";
@@ -22,7 +20,6 @@ import UserProfileIcon from "../../assets/png/user-profile.png";
 import {
   CheckCircleOutlined,
   EditOutlined,
-  ExclamationCircleOutlined,
   LogoutOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
@@ -30,20 +27,25 @@ import "./styles.scss";
 import { API } from "../../api";
 import { UserInfoType } from "../../types";
 import { useBearStore } from "../../store";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { ROUTES_URL } from "../../constants";
+import { useNavigate } from "react-router-dom";
+import { SessionCard } from "../../components/sessionCard";
 
 const { Title, Text } = Typography;
 
 export const MyProfile = () => {
   const { setLoading, screen } = useBearStore.appStore();
+  const { setIsAuthorized, sessions, setSession } = useBearStore.userStore();
   const [form] = Form.useForm();
   const [userInfo, setUserInfo]: [UserInfoType, React.Dispatch<any>] =
     React.useState({});
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLogout, setIsLogout] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getUserInfo();
+    getUserSession();
   }, []);
 
   React.useEffect(() => {
@@ -72,6 +74,34 @@ export const MyProfile = () => {
       });
   };
 
+  const getUserSession = () => {
+    setLoading(true);
+    API.userManagement
+      .getUserSession()
+      .then((session) => {
+        setLoading(false);
+        setSession(session);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "getUserSession", error });
+      });
+  };
+
+  const deleteUserSession = (sessionId: string) => {
+    setLoading(true);
+    API.userManagement
+      .deleteUserSession(sessionId)
+      .then((session) => {
+        setLoading(false);
+        getUserSession();
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "getUserInfo", error });
+      });
+  };
+
   const logout = () => {
     setLoading(true);
     API.userManagement
@@ -79,6 +109,8 @@ export const MyProfile = () => {
       .then((isLoggedOut) => {
         setLoading(false);
         setIsLogout(false);
+        setIsAuthorized(false);
+        navigate(ROUTES_URL.HOME);
       })
       .catch((error) => {
         setLoading(false);
@@ -114,8 +146,8 @@ export const MyProfile = () => {
           <Col>
             <Image
               preview={false}
-              width={200}
-              src={UserProfileIcon}
+              width={180}
+              src={userInfo.picture || UserIcon}
               style={{ padding: "20px" }}
             />
           </Col>
@@ -263,13 +295,6 @@ export const MyProfile = () => {
         <div className="my-profile__container">
           <Card
             style={cardStyle}
-            // cover={
-            //   <Image
-            //     src={UserIcon}
-            //     preview={false}
-            //     rootClassName="user-icon-view"
-            //   />
-            // }
             actions={[
               <Button
                 type="text"
@@ -307,6 +332,13 @@ export const MyProfile = () => {
               description={
                 <div>
                   <Divider />
+                  {screen === "MOBILE" && (
+                    <Image
+                      width={96}
+                      src={userInfo.picture || UserIcon}
+                      rootClassName="user-icon"
+                    />
+                  )}
                   <p>
                     <Title level={5}>Full name</Title>
                     <Text italic>{`${userInfo.firstName || ""} ${
@@ -371,6 +403,24 @@ export const MyProfile = () => {
                     <Title level={5}>Gender</Title>
                     <Text italic>{userInfo.gender || "NA"}</Text>
                   </p>
+                </div>
+              }
+            />
+          </Card>
+          <Card style={cardStyle}>
+            <Card.Meta
+              title={<Title level={2}>User Session's</Title>}
+              description={
+                <div>
+                  <Divider />
+                  {sessions.map((session) => (
+                    <SessionCard
+                      {...session}
+                      onLogout={() => {
+                        deleteUserSession(session.sessionId);
+                      }}
+                    />
+                  ))}
                 </div>
               }
             />

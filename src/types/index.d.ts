@@ -159,3 +159,12 @@ export type VoiceMessageTemplateType = {
 export type DebounceFnType = {
   cancel?: () => void;
 };
+
+export type SessionType = {
+  userId?: String;
+  sessionId?: String;
+  metaData?: String;
+  createdAt?: Date;
+  expiryAt?: Date;
+  isCurrent?: boolean;
+};

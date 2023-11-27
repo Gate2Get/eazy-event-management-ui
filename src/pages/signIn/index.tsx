@@ -62,7 +62,7 @@ export const SignIn = () => {
   const verifyOTP = (otp: number) => {
     setLoading(true);
     API.userManagement
-      .verifyEmailOTP(otp)
+      .verifyEmailOTP(otp.toString())
       .then((response) => {
         setLoading(false);
         setIsAuthorized(true);

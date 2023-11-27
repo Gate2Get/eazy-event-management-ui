@@ -32,7 +32,7 @@ export const userManagementAPI = {
         throw error;
       });
   },
-  verifyEmailOTP: async (otp: number) => {
+  verifyEmailOTP: async (otp: string) => {
     return await instance
       .post(userManagementEndpoint.verifyEmailOTP, { otp })
       .then((response) => {

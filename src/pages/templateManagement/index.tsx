@@ -24,19 +24,18 @@ import TextArea from "antd/es/input/TextArea";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { Dispatch } from "react";
 import { API } from "../../api";
-import { AttachmentButton } from "../../components/AttachmentButton";
 import { TemplateCard } from "../../components/templateCard";
 import { RichTextEditor } from "../../components/richTextEditor";
 import { CHANNEL_OPTIONS, EVENT_TYPE_PROPS } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType, Channels, TemplateType } from "../../types";
+import { TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
 import { PreviewTemplate } from "../../components/previewTemplate";
 import { getFormattedMessage } from "../../utils/common.utils";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
-import { createStyles, useTheme } from "antd-style";
+import { useTheme } from "antd-style";
 import {
   modalClassNames,
   modalStyles,
@@ -227,12 +226,14 @@ export const TemplateManagement = () => {
   };
 
   const onSubmit = (values: any) => {
-    if (!Object.values(messages).length) {
+    if (values.channel === "VOICE_CALL" && !Object.values(messages).length) {
       setMessageError("Please add message!");
+      console.log({ messages });
       return;
     }
     if (Object.values(messages).find((item: any) => !item.value)) {
       setIsError(true);
+      console.log({ messages: true });
       return;
     }
     setMessageError("");

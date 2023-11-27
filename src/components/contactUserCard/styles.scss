@@ -4,6 +4,10 @@
     0 2px 6px rgba(0, 0, 0, 0.12) !important;
 }
 
+.contact-user-card__container.selected {
+  background: #e6f4ff;
+}
+
 .contact-card__no-status .ant-ribbon-corner {
   border: none;
 }

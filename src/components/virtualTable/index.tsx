@@ -3,7 +3,6 @@ import type { TableProps } from "antd";
 import { Table, theme } from "antd";
 import { type ColumnType } from "antd/es/table";
 import classNames from "classnames";
-import ResizeObserver from "rc-resize-observer";
 import React, { useEffect, useRef, useState } from "react";
 import {
   type GridOnItemsRenderedProps,
@@ -159,18 +158,12 @@ export const VirtualTable = <RecordType extends object>(
   }
 
   return (
-    <ResizeObserver
-      onResize={({ width }) => {
-        setTableWidth(width);
-      }}
-    >
-      <Table
-        {...props}
-        className={`virtual-table ${className}`}
-        columns={mergedColumns}
-        pagination={false}
-        {...virtualizationProps}
-      />
-    </ResizeObserver>
+    <Table
+      {...props}
+      className={`virtual-table ${className}`}
+      columns={mergedColumns}
+      pagination={false}
+      {...virtualizationProps}
+    />
   );
 };

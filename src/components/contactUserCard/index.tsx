@@ -3,6 +3,7 @@ import {
   Avatar,
   Badge,
   Card,
+  Checkbox,
   Col,
   Dropdown,
   Input,
@@ -29,7 +30,9 @@ type ContactUserCardType = {
   menuItems?: MenuProps["items"];
   editable?: boolean | EditConfigType;
   isError?: boolean;
+  isSelected?: boolean;
   onContactChange?: (id: string, name: string, value: string) => void;
+  onSelectCard?: (id: string, checked: boolean) => void;
 };
 
 export const ContactUserCard = (props: ContactUserCardType) => {
@@ -42,7 +45,9 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     status,
     image,
     isError,
+    isSelected,
     onContactChange,
+    onSelectCard,
   } = props;
 
   const avatarClassName = image
@@ -67,7 +72,12 @@ export const ContactUserCard = (props: ContactUserCardType) => {
       text={EVENT_SEND_STATUS_MAP[status?.toString() as string]}
       color={EVENT_SEND_STATUS_LABEL_MAP[status?.toString() as string]}
     >
-      <Card className="contact-user-card__container">
+      <Card
+        className={`contact-user-card__container ${isSelected && "selected"}`}
+        onClick={() => {
+          if (editable) onSelectCard?.(id, !isSelected);
+        }}
+      >
         <Row gutter={[-8, 16]}>
           <Col span={6}>{userAvatar}</Col>
           <Col span={menuItems ? 15 : 17}>

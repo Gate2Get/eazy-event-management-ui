@@ -39,6 +39,7 @@ import { eventManagementEndpoint } from "../../../../configs/axios.config";
 import { phoneNumberParser } from "../../../../utils/common.utils";
 import { contactValidator } from "../../../../utils/validation.utils";
 import { ROUTES_URL } from "../../../../constants";
+import { v4 as uuidv4 } from "uuid";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -123,8 +124,9 @@ export const AddEditContactDirectory = () => {
   }
 
   const onAddContact = () => {
+    const id = uuidv4();
     setDirectoryContactList([
-      { name: "", mobile: "", image: "" },
+      { name: "", mobile: "", image: "", id },
       ...directoryContactList,
     ]);
   };
@@ -235,6 +237,17 @@ export const AddEditContactDirectory = () => {
         return contact;
       })
     );
+  };
+
+  const onSelectCard = (id: string, isChecked: boolean) => {
+    let _selectedRowKeys = [...selectedRowKeys];
+    if (isChecked) {
+      _selectedRowKeys.push(id);
+    } else {
+      _selectedRowKeys = selectedRowKeys.filter((item) => item !== id);
+    }
+    console.log({ _selectedRowKeys });
+    setSelectedRowKeys(_selectedRowKeys);
   };
 
   // rowSelection object indicates the need for row selection
@@ -494,6 +507,7 @@ export const AddEditContactDirectory = () => {
               <Button
                 danger
                 icon={<DeleteOutlined />}
+                style={{ marginTop: "9px", marginLeft: ".4rem" }}
                 onClick={() => {
                   removeContact();
                 }}
@@ -573,11 +587,12 @@ export const AddEditContactDirectory = () => {
           data={searchValue ? filteredGrid : directoryContactList}
           sortKeys={SORT_KEYS}
           otherProps={
-            action === "EDIT"
+            action === "EDIT" || action === "ADD"
               ? {
                   rowSelection: {
                     type: "checkbox",
                     ...rowSelection,
+                    selectedRowKeys,
                   },
                 }
               : {}
@@ -596,6 +611,8 @@ export const AddEditContactDirectory = () => {
                   mobile={contact.mobile}
                   name={contact.name}
                   id={contact.id}
+                  isSelected={selectedRowKeys.includes(contact.id)}
+                  onSelectCard={onSelectCard}
                 />
               </Col>
             )

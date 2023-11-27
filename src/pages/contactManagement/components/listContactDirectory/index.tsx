@@ -52,6 +52,17 @@ export const ListContactDirectory = () => {
           />
         </Space>
       );
+    } else if (column.key === CONTACT_DIRECTORY_COLUMN_KEYS.NAME) {
+      column.render = (text, record) => (
+        <Text
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            onViewSelect(record);
+          }}
+        >
+          {record.name}
+        </Text>
+      );
     }
   });
 
@@ -125,7 +136,14 @@ export const ListContactDirectory = () => {
           ) : (
             (searchValue ? filteredGrid : directoryList).map((directory) => {
               return (
-                <Col span={screen === "MOBILE" ? 24 : 8} key={directory.id}>
+                <Col
+                  span={screen === "MOBILE" ? 24 : 8}
+                  key={directory.id}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    onViewSelect(directory);
+                  }}
+                >
                   <ContactDirectoryCard
                     cardContact={directory}
                     menuItems={getMenuItems(directory)}

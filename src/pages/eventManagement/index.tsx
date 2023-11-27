@@ -516,7 +516,7 @@ export const EventManagement = () => {
                   size="large"
                   type="text"
                   onClick={() => {
-                    onCancel;
+                    onCancel();
                   }}
                   icon={
                     <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
@@ -524,11 +524,6 @@ export const EventManagement = () => {
                 >
                   back
                 </Button>
-              </Col>
-              <Col>
-                <Text strong italic className="back-text">
-                  Back
-                </Text>
               </Col>
             </Row>
           </Col>
@@ -603,7 +598,9 @@ export const EventManagement = () => {
       </div>
       {(action === "VIEW" ||
         ((action === "ADD" || action === "EDIT") && isPreview)) && (
-        <PreviewEvent onSubmit={handleSubmitEvent} />
+        <PreviewEvent
+          onSubmit={action !== "VIEW" ? handleSubmitEvent : undefined}
+        />
       )}
     </div>
   );

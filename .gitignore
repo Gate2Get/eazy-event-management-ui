@@ -131,3 +131,5 @@ dist
 
 # AWS Code upload file
 *.zip
+*.pem
+.DS_Store

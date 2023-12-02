@@ -54,17 +54,17 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
 
   const [payload, setPayload] = React.useState({
     countryCode: 0,
-    senderId: 0,
+    mobile: 0,
     otp: 0,
   });
 
   React.useEffect(() => {
     setPayload({
       ...payload,
-      senderId: userInfo.senderId as number,
+      mobile: userInfo.mobile as number,
     });
-    form.setFieldValue("senderId", userInfo.senderId);
-    if (!userInfo.senderId) {
+    form.setFieldValue("mobile", userInfo.mobile);
+    if (!userInfo.mobile) {
       setIsEdit(true);
     }
 
@@ -124,13 +124,13 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
     console.log("Received values of form: ", values);
 
     if (isEdit) {
-      if (!isNaN(values.senderId)) {
+      if (!isNaN(values.mobile)) {
         setPayload({
           ...payload,
           countryCode: values.countryCode,
-          senderId: values.senderId,
+          mobile: values.mobile,
         });
-        updateUserInfo({ senderId: values.senderId }, requestOtp);
+        updateUserInfo({ mobile: values.mobile }, requestOtp);
       }
     } else {
       requestOtp();
@@ -182,7 +182,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
 
                 <Text type="secondary">
                   We have sent 6-digit OTP to +{payload.countryCode}{" "}
-                  {payload.senderId}. Please enter the code below to continue
+                  {payload.mobile}. Please enter the code below to continue
                 </Text>
                 <Form
                   size="large"
@@ -244,18 +244,18 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
                 >
                   {isEdit ? (
                     <Form.Item
-                      name="senderId"
+                      name="mobile"
                       label="Mobile Number"
                       rules={[
                         {
                           len: 10,
                           min: 10,
                           max: 10,
-                          message: "Enter valid senderId number",
+                          message: "Enter valid mobile number",
                         },
                         {
                           required: true,
-                          message: "Please input your senderId number!",
+                          message: "Please input your mobile number!",
                         },
                       ]}
                     >
@@ -268,7 +268,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
                     <Text>
                       <Text italic>Verify this is you</Text>
                       <Title level={4} italic>
-                        +91 {payload.senderId}
+                        +91 {payload.mobile}
                       </Title>
                       <Button
                         type="link"

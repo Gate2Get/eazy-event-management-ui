@@ -12,7 +12,7 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     name: "",
     startDateTime: "",
     type: EVENT_TYPES.OTHERS as Events,
-    userId: 0,
+    userId: "",
   },
   selectedEvent: {
     id: "",
@@ -22,7 +22,7 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     name: "",
     startDateTime: "",
     type: EVENT_TYPES.OTHERS as Events,
-    userId: 0,
+    userId: "",
   },
   statistics: {},
   chartSelectionEventId: "",

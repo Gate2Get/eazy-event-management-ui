@@ -7,9 +7,9 @@ const { Text } = Typography;
 
 type EmptyDataType = {
   image: string;
-  onClickAction: () => void;
+  onClickAction?: () => void;
   description: React.ReactNode;
-  buttonText: string;
+  buttonText?: string;
 };
 
 export const EmptyData = (props: EmptyDataType) => {
@@ -28,11 +28,13 @@ export const EmptyData = (props: EmptyDataType) => {
       <Text type="secondary" italic>
         {description}
       </Text>
-      <div>
-        <Button type="primary" size="middle" onClick={onClickAction}>
-          {buttonText}
-        </Button>
-      </div>
+      {buttonText && (
+        <div>
+          <Button type="primary" size="middle" onClick={onClickAction}>
+            {buttonText}
+          </Button>
+        </div>
+      )}
     </Space>
   );
 };

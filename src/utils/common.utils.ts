@@ -1,4 +1,6 @@
-import { VoiceMessageTemplateType } from "../types";
+import { SetURLSearchParams } from "react-router-dom";
+import { PAGE_ACTION, PAGE_QUERY_ACTIONS } from "../constants";
+import { ActionType, VoiceMessageTemplateType } from "../types";
 
 //  "+91 77777 77777";
 const mobileRegex = /^\+91\s\d{5}\s\d{5}/;
@@ -65,5 +67,28 @@ export const phoneNumberParser = (text: string) => {
   } catch (error) {
     console.error({ location: "phoneNumberParser", error, text });
     return null;
+  }
+};
+
+export const urlhandler = (
+  searchParams: URLSearchParams,
+  setAction: React.Dispatch<any>,
+  apiCallFilter: (id: string) => void,
+  apiCallAll: () => void
+) => {
+  const id = searchParams.get("id");
+  const actionType = searchParams.get("action");
+  console.log({ actionType, id });
+  if (actionType) {
+    if (id) {
+      apiCallFilter(id);
+    }
+    const action = PAGE_QUERY_ACTIONS.includes(actionType)
+      ? actionType
+      : PAGE_ACTION.VIEW;
+    setAction(action as ActionType);
+  } else {
+    setAction("");
+    apiCallAll();
   }
 };

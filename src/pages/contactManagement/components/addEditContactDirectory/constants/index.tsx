@@ -1,7 +1,7 @@
 export const CONTACT_LIST_COLUMN_KEYS = {
   ID: "id",
   NAME: "name",
-  MOBILE: "mobile",
+  MOBILE: "senderId",
   CREATED_AT: "createdAt",
   UPDATED_AT: "updatedAt",
   ACTION: "action",

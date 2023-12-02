@@ -1,53 +1,60 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import { Button, Col, message, Row, Steps, Tabs, theme } from "antd";
 import { useBearStore } from "../../store";
-import {
-  EVENT_TYPES,
-  EVENT_STATUS,
-  EDITABLE_EVENT_STATUS,
-} from "../../constants";
+import { EVENT_TYPES, EVENT_STATUS } from "../../constants";
 import { MarriageEventCard } from "../marriageEventCard";
 import { BirthdayEventCard } from "../birthdayEventCard";
 import { ContactUserCard } from "../contactUserCard";
 import { API } from "../../api";
-import { ContactListType, TemplateType } from "../../types";
+import { ContactListType, TemplateType, UserInfoType } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { OtherEventCard } from "../otherEventCard";
 import { PreviewTemplate } from "../previewTemplate";
+import { UserCard } from "../userCard";
 
-type PreviewEventType = {
-  onSubmit?: () => void;
-  isEditable?: boolean;
-};
-
-const STEPS_EDITABLE = [
+const steps = [
   {
     title: "Event Information",
-    content: "First-content",
+    content: "Event-content",
+  },
+  {
+    title: "User Information",
+    content: "User-content",
   },
   {
     title: "Message",
-    content: "Second-content",
+    content: "Message-content",
   },
   {
     title: "Contacts",
-    content: "Last-content",
+    content: "Contacts-content",
   },
 ];
 
-export const PreviewEvent = (props: PreviewEventType) => {
-  const { onSubmit, isEditable } = props;
+type PreviewEventType = {
+  onSubmit?: () => void;
+};
+
+export const EventAdminPreview = (props: PreviewEventType) => {
+  const { onSubmit } = props;
   const { selectedEvents } = useBearStore.eventStore();
   const { selectedTemplate, setSelectedTemplate } =
     useBearStore.templateStore();
   const { contactList, setContactList } = useBearStore.contactStore();
   const { screen, setLoading } = useBearStore.appStore();
+  const [user, setUser]: [UserInfoType, Dispatch<any>] = React.useState({});
   const { token } = theme.useToken();
   const [current, setCurrent] = React.useState(1);
+  const { height } = useWindowSize();
 
   React.useEffect(() => {
     if (selectedEvents.name) {
-      getTemplatesById();
+      if (selectedEvents.messageTemplate) {
+        getTemplatesById();
+      }
+      if (selectedEvents.userId) {
+        getUserInfo();
+      }
       if (
         !selectedEvents.status ||
         selectedEvents.status === EVENT_STATUS.NOT_STARTED
@@ -59,21 +66,12 @@ export const PreviewEvent = (props: PreviewEventType) => {
     }
   }, [selectedEvents]);
 
-  const next = () => {
-    setCurrent(current + 1);
-  };
-
-  const prev = () => {
-    setCurrent(current - 1);
-  };
-
-  const onChange = (value: number) => {
+  const onChange = (value: string) => {
     console.log("onChange:", value);
-    setCurrent(value);
+    setCurrent(Number(value));
   };
 
   const renderComponent = (current: number) => {
-    console.log({ current, selectedEvents });
     switch (current) {
       case 1: {
         if (selectedEvents.type === EVENT_TYPES.MARRIAGE)
@@ -84,6 +82,9 @@ export const PreviewEvent = (props: PreviewEventType) => {
           return <OtherEventCard {...selectedEvents} />;
       }
       case 2: {
+        return <UserCard userInfo={user} />;
+      }
+      case 3: {
         return (
           <PreviewTemplate
             {...selectedTemplate}
@@ -91,7 +92,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
           />
         );
       }
-      case 3: {
+      case 4: {
         return (
           <Row gutter={[16, 16]}>
             {contactList.map((contact) => (
@@ -115,8 +116,8 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   const getTemplatesById = (): void => {
     setLoading(true);
-    API.templateManagement
-      .getTemplateById(selectedEvents.messageTemplate)
+    API.adminAPI
+      .getEventTemplate(selectedEvents.id)
       .then((template: TemplateType) => {
         setSelectedTemplate(template);
         setLoading(false);
@@ -129,7 +130,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   const getEventContacts = (): void => {
     setLoading(true);
-    API.eventManagement
+    API.adminAPI
       .getEventContacts(selectedEvents.id)
       .then((contact) => {
         setContactList(contact);
@@ -143,8 +144,8 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   const getContactList = (id: string): any => {
     setLoading(true);
-    API.contactManagement
-      .getContactList(id)
+    API.adminAPI
+      .getEventContacts(id)
       .then((contacts: ContactListType[]) => {
         setLoading(false);
         setContactList(
@@ -161,20 +162,29 @@ export const PreviewEvent = (props: PreviewEventType) => {
       });
   };
 
-  console.log({ selectedEvents });
-  const steps = [...STEPS_EDITABLE];
-  // const items = steps.map((item) => ({ key: item.title, title: item.title }));
+  const getUserInfo = (): any => {
+    setLoading(true);
+    API.adminAPI
+      .getUser(selectedEvents.userId)
+      .then((userInfo: UserInfoType) => {
+        setUser(userInfo);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getUserInfo", error });
+      });
+  };
 
   const items = steps.map((item, index) => ({
     key: `${index + 1}`,
     label: item.title,
-    title: item.title,
   }));
 
   const contentStyle: React.CSSProperties = {
     // lineHeight: "260px",
     // height: height - 300,
-    textAlign: "center",
+    // textAlign: "center",
     color: token.colorTextTertiary,
     // backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
@@ -184,42 +194,9 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   return (
     <>
-      {isEditable ? (
-        <Steps
-          current={current - 1}
-          items={items}
-          onChange={onChange}
-          responsive
-        />
-      ) : (
-        <Tabs
-          onChange={(value) => {
-            onChange(Number(value));
-          }}
-          type="card"
-          items={items}
-        />
-      )}
+      <Tabs onChange={onChange} type="card" items={items} />
+
       <div style={contentStyle}>{renderComponent(current)}</div>
-      {isEditable && (
-        <div style={{ marginTop: 16 }}>
-          {current > 1 && (
-            <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
-              Previous
-            </Button>
-          )}
-          {current < steps.length && (
-            <Button type="primary" onClick={() => next()}>
-              Next
-            </Button>
-          )}
-          {current === steps.length && onSubmit && (
-            <Button type="primary" onClick={onSubmit}>
-              Submit
-            </Button>
-          )}
-        </div>
-      )}
     </>
   );
 };

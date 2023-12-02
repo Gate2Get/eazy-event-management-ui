@@ -19,10 +19,11 @@ const { Title, Text } = Typography;
 type TemplateCardType = {
   template: TemplateType;
   menuItems?: MenuProps["items"];
+  onClick?: () => void;
 };
 
 export const TemplateCard = (props: TemplateCardType) => {
-  const { template, menuItems } = props;
+  const { template, menuItems, onClick } = props;
   const avatarClassName = `ee__avatar-color-${template.name
     ?.toString()?.[0]
     ?.toLowerCase()}`;
@@ -41,15 +42,31 @@ export const TemplateCard = (props: TemplateCardType) => {
     <Row gutter={[8, 8]} className="template-card__container">
       <Col span={24}>
         <Row gutter={[8, 8]}>
-          <Col span={6} className="icon__container">
-            <Avatar shape="square" size={40} className={avatarClassName}>
+          <Col
+            span={6}
+            className="icon__container"
+            onClick={() => {
+              onClick?.();
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <Avatar shape="square" size={50} className={avatarClassName}>
               {avatarIconLetter}
             </Avatar>
           </Col>
-          <Col span={menuItems ? 15 : 17}>
-            <Text strong className="font-size-16">
-              {template.name}
-            </Text>
+          <Col
+            span={menuItems ? 15 : 17}
+            onClick={() => {
+              onClick?.();
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            <Space direction="vertical" size="small">
+              <Text strong className="font-size-16">
+                {template.name}
+              </Text>
+              <Text>{channelComp?.label as React.ReactNode}</Text>
+            </Space>
           </Col>
           {menuItems && (
             <Col span={3} className="more-item__container">
@@ -64,16 +81,6 @@ export const TemplateCard = (props: TemplateCardType) => {
               </Dropdown>
             </Col>
           )}
-        </Row>
-        <Row className="event-type">
-          <Col span={12}>
-            <Text italic strong className="event-type__label">
-              {EVENT_TYPE_PROPS[template.type as string].label}
-            </Text>
-          </Col>
-          <Col span={12} className="event-channel__label">
-            {channelComp?.label as React.ReactNode}
-          </Col>
         </Row>
       </Col>
     </Row>

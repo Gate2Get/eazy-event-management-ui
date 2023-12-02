@@ -1,3 +1,4 @@
+import React, { Dispatch } from "react";
 import { EllipsisOutlined } from "@ant-design/icons";
 import {
   Col,
@@ -37,15 +38,19 @@ export const MarriageEventCard = (props: EventCardType) => {
     startDateTime,
     location,
     menuItems,
+    onSelect,
   } = props;
   const status = eventStatusLabel[progressionStatus as string];
   const randomIndex = Math.ceil(
     Math.random() * (ILLUSTRATION_ASSETS.marriage - 1)
   );
-  const imageUrl = new URL(
-    `../../assets/svg/marriage/card-${randomIndex}.svg`,
-    import.meta.url
-  );
+
+  const imageUrl = React.useMemo(() => {
+    return new URL(
+      `../../assets/svg/marriage/card-${randomIndex}.svg`,
+      import.meta.url
+    );
+  }, []);
 
   return (
     <Space
@@ -53,7 +58,7 @@ export const MarriageEventCard = (props: EventCardType) => {
       size="small"
       direction="vertical"
     >
-      <Row className="marriage-image" gutter={[8, 8]}>
+      <Row className="marriage-image" onClick={onSelect}>
         <Col span={12} className="">
           <img src={imageUrl as any} width={"100%"} alt="" height={180} />
         </Col>

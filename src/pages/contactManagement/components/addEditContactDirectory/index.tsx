@@ -38,20 +38,23 @@ import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
 import { phoneNumberParser } from "../../../../utils/common.utils";
 import { contactValidator } from "../../../../utils/validation.utils";
-import { ROUTES_URL } from "../../../../constants";
+import { PAGE_ACTION, ROUTES_URL } from "../../../../constants";
 import { v4 as uuidv4 } from "uuid";
+import { useSearchParams } from "react-router-dom";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
 
 export const AddEditContactDirectory = () => {
   const [form] = Form.useForm();
+  const [searchParams, setSearchParams] = useSearchParams();
   let columns = contactListColumns;
   const { setLoading, screen, isError, setError } = useBearStore.appStore();
   const {
     action,
     setAction,
     setContactList,
+    contactList,
     selectedDirectory,
     setSelectedDirectory,
     setIsListView,
@@ -78,12 +81,16 @@ export const AddEditContactDirectory = () => {
   React.useEffect(() => {
     if (action === "EDIT" || action === "VIEW") {
       const { id, name } = selectedDirectory;
-      console.log(selectedDirectory);
+      console.log({ selectedDirectory });
       form.setFieldValue("name", name);
       // if (action === "EDIT") setIsListView(true);
-      getContactList(id as string);
+      // getContactList(id as string);
+      form.setFieldValue("contacts", contactList);
+      setDirectoryContactList(
+        contactList.map((contact) => ({ ...contact, key: contact.id }))
+      );
     }
-  }, [action]);
+  }, [selectedDirectory]);
 
   if (action === "EDIT" || action === "ADD") {
     columns.forEach((column) => {
@@ -101,13 +108,13 @@ export const AddEditContactDirectory = () => {
       } else if (column.key === CONTACT_LIST_COLUMN_KEYS.MOBILE) {
         column.render = (text, record) => (
           <Input
-            placeholder="Input user mobile"
+            placeholder="Input user senderId"
             status={isError && !text ? "error" : ""}
             max={10}
             type="number"
             value={text}
             onChange={(e) => {
-              onContactListChange(record.id, "mobile", e.target.value);
+              onContactListChange(record.id, "senderId", e.target.value);
             }}
           />
         );
@@ -126,7 +133,7 @@ export const AddEditContactDirectory = () => {
   const onAddContact = () => {
     const id = uuidv4();
     setDirectoryContactList([
-      { name: "", mobile: "", image: "", id },
+      { name: "", senderId: "", image: "", id },
       ...directoryContactList,
     ]);
   };
@@ -135,23 +142,23 @@ export const AddEditContactDirectory = () => {
     setIsDeleteConfirmation("");
   };
 
-  const getContactList = (id: string): any => {
-    setLoading(true);
-    API.contactManagement
-      .getContactList(id)
-      .then((contacts: ContactListType[]) => {
-        setLoading(false);
-        setContactList(contacts);
-        form.setFieldValue("contacts", contacts);
-        setDirectoryContactList(
-          contacts.map((contact) => ({ ...contact, key: contact.id }))
-        );
-      })
-      .catch((error: Error) => {
-        setLoading(false);
-        console.log({ location: "getContactList", error });
-      });
-  };
+  // const getContactList = (id: string): any => {
+  //   setLoading(true);
+  //   API.contactManagement
+  //     .getContactList(id)
+  //     .then((contacts: ContactListType[]) => {
+  //       setLoading(false);
+  //       setContactList(contacts);
+  //       form.setFieldValue("contacts", contacts);
+  //       setDirectoryContactList(
+  //         contacts.map((contact) => ({ ...contact, key: contact.id }))
+  //       );
+  //     })
+  //     .catch((error: Error) => {
+  //       setLoading(false);
+  //       console.log({ location: "getContactList", error });
+  //     });
+  // };
 
   const createContactDirectory = (directory: ContactDirectoryType): any => {
     setLoading(true);
@@ -185,7 +192,7 @@ export const AddEditContactDirectory = () => {
       .deleteContactDirectory(id)
       .then((response) => {
         setLoading(false);
-        setAction("");
+        setSearchParams({});
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -198,7 +205,7 @@ export const AddEditContactDirectory = () => {
   };
 
   const onCancel = () => {
-    setAction("");
+    setSearchParams({});
   };
 
   const onActionClick = async () => {
@@ -224,7 +231,10 @@ export const AddEditContactDirectory = () => {
       updateContactDirectory({ id: selectedDirectory.id, ...directoryList });
       onCancel();
     } else if (action === "VIEW") {
-      setAction("EDIT");
+      setSearchParams({
+        id: selectedDirectory.id as string,
+        action: PAGE_ACTION.EDIT,
+      });
     }
   };
 
@@ -287,7 +297,7 @@ export const AddEditContactDirectory = () => {
         const _contact = {
           id: (index + 1).toString(),
           name: contact.Name?.trim(),
-          mobile: (
+          senderId: (
             contact.Mobile ||
             contact["Phone 1 - Value"] ||
             contact["Phone 2 - Value"]
@@ -296,8 +306,8 @@ export const AddEditContactDirectory = () => {
             ?.trim(),
           image: contact.Photo?.trim(),
         };
-        if (_contact.name && _contact.mobile) {
-          _contact.mobile = phoneNumberParser(_contact.mobile);
+        if (_contact.name && _contact.senderId) {
+          _contact.senderId = phoneNumberParser(_contact.senderId);
           contactList.push(_contact);
         }
       });
@@ -608,7 +618,7 @@ export const AddEditContactDirectory = () => {
                   editable={action === "ADD" || action === "EDIT"}
                   onContactChange={onContactListChange}
                   image={contact.image}
-                  mobile={contact.mobile}
+                  senderId={contact.senderId}
                   name={contact.name}
                   id={contact.id}
                   isSelected={selectedRowKeys.includes(contact.id)}

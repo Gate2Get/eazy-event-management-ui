@@ -3,23 +3,34 @@ import "./styles.scss";
 import { Button, Col, Divider, Row, Segmented, Space, Typography } from "antd";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
-import { ContactDirectoryType } from "../../types";
+import { ContactDirectoryType, ContactListType } from "../../types";
 import { ListContactDirectory } from "./components/listContactDirectory";
 import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
+import { urlhandler } from "../../utils/common.utils";
+import { useSearchParams } from "react-router-dom";
+import { PAGE_ACTION } from "../../constants";
 
 const { Title } = Typography;
 
 export const ContactManagement = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setLoading } = useBearStore.appStore();
-  const { setDirectoryList, action, setAction, setIsListView, isListView } =
-    useBearStore.contactStore();
+  const {
+    setDirectoryList,
+    action,
+    setAction,
+    setIsListView,
+    isListView,
+    setSelectedDirectory,
+    setContactList,
+  } = useBearStore.contactStore();
 
-  React.useEffect(() => {
-    if (!action) getContactDirectory();
-  }, [action]);
+  // React.useEffect(() => {
+  //   if (!action) getContactDirectory();
+  // }, [action]);
 
   React.useEffect(() => {
     return () => {
@@ -29,17 +40,39 @@ export const ContactManagement = () => {
     };
   }, []);
 
+  React.useEffect(() => {
+    urlhandler(searchParams, setAction, getContactList, getContactDirectory);
+  }, [searchParams]);
+
   const getContactDirectory = (): any => {
     setLoading(true);
     API.contactManagement
       .getContactDirectory()
-      .then((contacts: ContactDirectoryType[]) => {
-        setDirectoryList(contacts);
+      .then((directoryList: ContactDirectoryType[]) => {
+        setDirectoryList(directoryList);
         setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "getContactDirectory", error });
+      });
+  };
+
+  const getContactList = (id: string): any => {
+    setLoading(true);
+    API.contactManagement
+      .getContactList(id)
+      .then((directory: ContactDirectoryType) => {
+        setLoading(false);
+        setSelectedDirectory({
+          id: directory.id,
+          name: directory.name,
+        });
+        setContactList(directory.contacts as ContactListType[]);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getContactList", error });
       });
   };
 
@@ -51,11 +84,12 @@ export const ContactManagement = () => {
           <Row>
             <Col flex={12} className="create-directory__button">
               <Button
-                size="large"
                 type="primary"
                 className="dark-color-bg"
                 onClick={() => {
-                  setAction("ADD");
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
                 }}
                 icon={
                   <FontAwesomeIcon

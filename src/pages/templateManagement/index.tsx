@@ -26,14 +26,19 @@ import React, { Dispatch } from "react";
 import { API } from "../../api";
 import { TemplateCard } from "../../components/templateCard";
 import { RichTextEditor } from "../../components/richTextEditor";
-import { CHANNEL_OPTIONS, EVENT_TYPE_PROPS } from "../../constants";
+import {
+  CHANNEL_OPTIONS,
+  EVENT_TYPE_PROPS,
+  PAGE_ACTION,
+  PAGE_QUERY_ACTIONS,
+} from "../../constants";
 import { useBearStore } from "../../store";
-import { TemplateType } from "../../types";
+import { ActionType, TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
 import { PreviewTemplate } from "../../components/previewTemplate";
-import { getFormattedMessage } from "../../utils/common.utils";
+import { getFormattedMessage, urlhandler } from "../../utils/common.utils";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
 import { useTheme } from "antd-style";
 import {
@@ -43,6 +48,7 @@ import {
 } from "../../configs/antd.config";
 import { EmptyData } from "../../components/EmptyData";
 import NoTemplate from "../../assets/svg/no-template.svg";
+import { useSearchParams } from "react-router-dom";
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -57,6 +63,7 @@ export const TemplateManagement = () => {
   const [form] = Form.useForm();
   const { styles } = useModalStyle();
   const token = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setLoading, screen } = useBearStore.appStore();
   const {
     setTemplates,
@@ -73,9 +80,15 @@ export const TemplateManagement = () => {
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
   const [messageError, setMessageError] = React.useState("");
 
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
+
   React.useEffect(() => {
     if (!action) {
-      getTemplates();
       setSelectedTemplate({
         message: "",
         name: "",
@@ -83,6 +96,10 @@ export const TemplateManagement = () => {
       form.resetFields();
     }
   }, [action, form]);
+
+  React.useEffect(() => {
+    urlhandler(searchParams, setAction, getTemplatesById, getTemplates);
+  }, [searchParams]);
 
   React.useEffect(() => {
     return () => {
@@ -122,7 +139,7 @@ export const TemplateManagement = () => {
   };
 
   const onCancel = () => {
-    setAction("");
+    setSearchParams({});
   };
 
   const getMenuItems = (data: TemplateType): MenuProps["items"] => [
@@ -147,26 +164,34 @@ export const TemplateManagement = () => {
   ];
 
   const onViewSelect = (record: TemplateType) => {
-    setAction("VIEW");
-    form.setFieldsValue(record);
-    setSelectedTemplate(record);
-    if (record.channel === "VOICE_CALL") {
-      setMessages(JSON.parse(record.message));
-    }
+    setSearchParams({ id: record.id as string, action: PAGE_ACTION.VIEW });
   };
 
   const onEditSelect = (record: TemplateType) => {
-    setAction("EDIT");
-    form.setFieldsValue(record);
-    setSelectedTemplate(record);
-    if (record.channel === "VOICE_CALL") {
-      setMessages(JSON.parse(record.message));
-    }
+    setSearchParams({ id: record.id as string, action: PAGE_ACTION.EDIT });
   };
 
   const onDeleteSelect = (record: TemplateType) => {
     setAction("DELETE");
     setSelectedTemplate(record);
+  };
+
+  const getTemplatesById = (id: string): void => {
+    setLoading(true);
+    API.templateManagement
+      .getTemplateById(id)
+      .then((template: TemplateType) => {
+        setSelectedTemplate(template);
+        form.setFieldsValue(template);
+        if (template.channel === "VOICE_CALL") {
+          setMessages(JSON.parse(template.message));
+        }
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getTemplatesById", error });
+      });
   };
 
   const getTemplates = (): void => {
@@ -226,6 +251,7 @@ export const TemplateManagement = () => {
   };
 
   const onSubmit = (values: any) => {
+    console.log(values);
     if (values.channel === "VOICE_CALL" && !Object.values(messages).length) {
       setMessageError("Please add message!");
       console.log({ messages });
@@ -238,16 +264,21 @@ export const TemplateManagement = () => {
     }
     setMessageError("");
     setIsError(false);
+    let message = values.message;
+    if (values.channel === "VOICE_CALL") {
+      message = getFormattedMessage(JSON.stringify(messages), values.channel);
+    }
+
     if (action === "ADD") {
       createTemplates({
         ...values,
-        message: getFormattedMessage(JSON.stringify(messages), values.channel),
+        message,
       });
     } else if (action === "EDIT") {
       updateTemplate({
         ...selectedTemplate,
         ...values,
-        message: getFormattedMessage(JSON.stringify(messages), values.channel),
+        message,
       });
     }
   };
@@ -348,20 +379,6 @@ export const TemplateManagement = () => {
     setMessages(_messages);
   };
 
-  const onDragOver = (event: any) => {
-    event.preventDefault();
-    console.log("event onDragOver", event);
-  };
-  const onDrop = (event: any) => {
-    // const { completedTasks, draggedTask, todos } = this.state;
-    // this.setState({
-    //   completedTasks: [...completedTasks, draggedTask],
-    //   todos: todos.filter((task) => task.taskID !== draggedTask.taskID),
-    //   draggedTask: {},
-    // });
-    console.log("event onDrop", event);
-  };
-
   return (
     <div className="template-management__container">
       <Modal
@@ -384,10 +401,7 @@ export const TemplateManagement = () => {
         <Col flex={12}>
           <Row className="header__container">
             {action && action !== "DELETE" ? (
-              <Col
-                span={screen === "MOBILE" ? 4 : 1}
-                className="back-icon__container"
-              >
+              <Col {...colOption(3)} className="back-icon__container">
                 <Button
                   size="large"
                   type="text"
@@ -400,15 +414,32 @@ export const TemplateManagement = () => {
                 </Button>
               </Col>
             ) : (
-              <Col span={screen === "MOBILE" ? 20 : 23}>
+              <Col {...colOption(21)}>
                 <Button
-                  size="large"
                   type="primary"
                   onClick={() => {
-                    setAction("ADD");
+                    setSearchParams({
+                      action: PAGE_ACTION.ADD,
+                    });
                   }}
                 >
                   Create Template
+                </Button>
+              </Col>
+            )}
+            {action === "VIEW" && (
+              <Col {...colOption(21)}>
+                <Button
+                  style={{ float: "right" }}
+                  type="primary"
+                  onClick={() => {
+                    setSearchParams({
+                      id: selectedTemplate.id as string,
+                      action: PAGE_ACTION.EDIT,
+                    });
+                  }}
+                >
+                  Edit
                 </Button>
               </Col>
             )}
@@ -424,13 +455,16 @@ export const TemplateManagement = () => {
                 <TemplateCard
                   template={template}
                   menuItems={getMenuItems(template)}
+                  onClick={() => onViewSelect(template)}
                 />
               </Col>
             ))
           ) : (
             <EmptyData
               onClickAction={() => {
-                setAction("ADD");
+                setSearchParams({
+                  action: PAGE_ACTION.ADD,
+                });
               }}
               image={NoTemplate}
               description="No template to show"
@@ -466,23 +500,6 @@ export const TemplateManagement = () => {
 
           {form.getFieldValue("channel") && (
             <Form.Item
-              label="Select Event"
-              name="type"
-              rules={[{ required: true, message: "Please select event!" }]}
-            >
-              <Select
-                style={{ width: "100%" }}
-                size="large"
-                allowClear
-                placeholder="Select a event"
-                optionFilterProp="children"
-                options={eventTypeOptions}
-              />
-            </Form.Item>
-          )}
-
-          {form.getFieldValue("channel") && (
-            <Form.Item
               label="Enter template name"
               name="name"
               rules={[
@@ -509,12 +526,7 @@ export const TemplateManagement = () => {
                 <Alert message={messageError} type="error" showIcon />
               )}
               {Object.values(messages).map((message: any) => (
-                <div
-                  style={{ padding: "8px 0px" }}
-                  key={message?.id}
-                  onDrop={(event) => onDrop(event)}
-                  onDragOver={(event) => onDragOver(event)}
-                >
+                <div style={{ padding: "8px 0px" }} key={message?.id}>
                   <Row gutter={[8, 8]}>
                     <Col span={22}>{renderVoiceMessage(message)}</Col>
                     <Col>
@@ -570,8 +582,15 @@ export const TemplateManagement = () => {
           ) : null}
           {(action === "ADD" || action === "EDIT") && (
             <Form.Item>
-              <Button type="primary" htmlType="submit" size="large">
+              <Button type="primary" htmlType="submit">
                 {action === "ADD" ? "Create" : "Update"}
+              </Button>
+              <Button
+                type="default"
+                style={{ marginLeft: ".5rem" }}
+                onClick={onCancel}
+              >
+                Cancel
               </Button>
             </Form.Item>
           )}

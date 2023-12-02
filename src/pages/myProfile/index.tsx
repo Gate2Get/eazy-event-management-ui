@@ -30,6 +30,7 @@ import { useBearStore } from "../../store";
 import { ROUTES_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { SessionCard } from "../../components/sessionCard";
+import { UserCard } from "../../components/userCard";
 
 const { Title, Text } = Typography;
 
@@ -293,9 +294,10 @@ export const MyProfile = () => {
         </div>
       ) : (
         <div className="my-profile__container">
-          <Card
-            style={cardStyle}
-            actions={[
+          <UserCard
+            userInfo={userInfo}
+            title={<Title level={2}>Personal Information</Title>}
+            action={[
               <Button
                 type="text"
                 onClick={() => {
@@ -326,87 +328,7 @@ export const MyProfile = () => {
                 </Button>
               </Popover>,
             ]}
-          >
-            <Card.Meta
-              title={<Title level={2}>Personal Information</Title>}
-              description={
-                <div>
-                  <Divider />
-                  {screen === "MOBILE" && (
-                    <Image
-                      width={96}
-                      src={userInfo.picture || UserIcon}
-                      rootClassName="user-icon"
-                    />
-                  )}
-                  <p>
-                    <Title level={5}>Full name</Title>
-                    <Text italic>{`${userInfo.firstName || ""} ${
-                      userInfo.lastName || "NA"
-                    }`}</Text>
-                  </p>
-                  <p>
-                    <Title level={5}>State</Title>
-                    <Text italic>{userInfo.state || "NA"}</Text>
-                  </p>
-                  <p>
-                    <Title level={5}>Email Address</Title>
-                    <Space>
-                      <Text italic>{userInfo.email || "NA"}</Text>
-                      {userInfo.email && (
-                        <Tag
-                          icon={
-                            userInfo.isEmailVerified ? (
-                              <CheckCircleOutlined />
-                            ) : (
-                              <WarningOutlined />
-                            )
-                          }
-                          color={userInfo.isEmailVerified ? "success" : "error"}
-                        >
-                          {userInfo.isEmailVerified
-                            ? "Verified"
-                            : "Not verified"}
-                        </Tag>
-                      )}
-                    </Space>
-                  </p>
-                  <p>
-                    <Title level={5}>Mobile Number</Title>
-                    <Space>
-                      <Text italic>{userInfo.mobile || "NA"}</Text>
-                      {userInfo.mobile ? (
-                        <Tag
-                          icon={
-                            userInfo.isMobileVerified ? (
-                              <CheckCircleOutlined />
-                            ) : (
-                              <WarningOutlined />
-                            )
-                          }
-                          color={
-                            userInfo.isMobileVerified ? "success" : "error"
-                          }
-                        >
-                          {userInfo.isMobileVerified
-                            ? "Verified"
-                            : "Not verified"}
-                        </Tag>
-                      ) : null}
-                    </Space>
-                  </p>
-                  <p>
-                    <Title level={5}>City</Title>
-                    <Text italic>{userInfo.city || "NA"}</Text>
-                  </p>
-                  <p>
-                    <Title level={5}>Gender</Title>
-                    <Text italic>{userInfo.gender || "NA"}</Text>
-                  </p>
-                </div>
-              }
-            />
-          </Card>
+          />
           <Card style={cardStyle}>
             <Card.Meta
               title={<Title level={2}>User Session's</Title>}

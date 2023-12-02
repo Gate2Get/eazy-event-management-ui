@@ -109,7 +109,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           <Text className="link-text" onClick={() => setIsOpen(true)}>
             Click here
           </Text>
-          <Text> to verify the mobile.</Text>
+          <Text> to verify the senderId.</Text>
         </>
       );
     }

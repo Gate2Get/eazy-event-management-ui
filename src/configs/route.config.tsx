@@ -14,6 +14,7 @@ import { MyProfile } from "../pages/myProfile";
 import { Pricing } from "../pages/pricing";
 import { PrivacyPolicy } from "../pages/privacyPolicy";
 import { ReportBug } from "../pages/reportBug";
+import { ReviewEvent } from "../pages/reviewEvent";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
 
@@ -72,6 +73,11 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.EVENT_MANAGEMENT,
     element: <EventManagement />,
+  },
+  {
+    path: ROUTES_URL.REVIEW_EVENTS,
+    element: <ReviewEvent />,
+    // element: <div></div>,
   },
   {
     path: ROUTES_URL.MY_PROFILE,

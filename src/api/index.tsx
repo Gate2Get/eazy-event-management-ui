@@ -1,3 +1,4 @@
+import { adminAPI } from "./admin";
 import { commonAPI } from "./common";
 import { contactManagementAPI } from "./contactManagement";
 import { contactManagementMockAPI } from "./contactManagement/mock";
@@ -17,6 +18,7 @@ const appAPI = {
   eventManagement: eventManagementAPI,
   dashboardAPI,
   commonAPI,
+  adminAPI,
 };
 
 const IS_MOCK = true;

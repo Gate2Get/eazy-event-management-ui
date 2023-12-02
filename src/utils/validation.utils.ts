@@ -4,10 +4,10 @@ export const contactValidator = (directory: ContactDirectoryType) => {
   const { name, contacts } = directory;
   console.log({ name, contacts });
   const isContactError = contacts?.find(
-    (contact) => !contact.name || !contact.mobile
+    (contact) => !contact.name || !contact.senderId
   );
   console.log(isContactError, !name, !contacts);
-  return isContactError || !name || !contacts;
+  return !!isContactError || !name || !contacts;
 };
 
 export const validateEmail = (_: any, value: string) => {

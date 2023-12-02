@@ -5,6 +5,8 @@ import feedbackBanner from "../../assets/svg/feedback-banner.svg";
 import { FEEDBACK_DETAILS } from "./constant";
 import TextArea from "antd/es/input/TextArea";
 import { useBearStore } from "../../store";
+import { API } from "../../api";
+import { FeedbackType } from "../../types";
 
 const { Title, Text } = Typography;
 
@@ -18,7 +20,7 @@ const customIcons: Record<number, React.ReactNode> = {
 
 export const Feedback = () => {
   const [form] = Form.useForm();
-  const { screen } = useBearStore.appStore();
+  const { screen, setLoading } = useBearStore.appStore();
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -26,6 +28,19 @@ export const Feedback = () => {
           flex: count,
         }
       : { span: count };
+
+  const handleSubmit = (bugs: FeedbackType) => {
+    setLoading(true);
+    API.commonAPI
+      .submitFeedback(bugs)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "handleSubmit", error });
+      });
+  };
 
   return (
     <div>
@@ -38,11 +53,15 @@ export const Feedback = () => {
           <Text>Help us make your Eazy Event experience better.</Text>
           <Divider />
           <Title level={4}>Give app feedback</Title>
-          <Form layout="vertical" form={form} style={{ maxWidth: 600 }}>
+          <Form
+            layout="vertical"
+            form={form}
+            style={{ maxWidth: 600 }}
+            onFinish={handleSubmit}
+          >
             {FEEDBACK_DETAILS.map((feedback) => (
               <Form.Item label={feedback.label} name="layout">
                 <Rate
-                  defaultValue={3}
                   character={(props) =>
                     customIcons[(props.index as number) + 1]
                   }

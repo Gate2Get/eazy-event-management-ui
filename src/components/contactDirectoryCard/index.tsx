@@ -30,10 +30,11 @@ const { Title, Text } = Typography;
 type ContactCardType = {
   cardContact: ContactDirectoryType;
   menuItems?: MenuProps["items"];
+  onClick?: () => void;
 };
 
 export const ContactDirectoryCard = (props: ContactCardType) => {
-  const { cardContact, menuItems } = props;
+  const { cardContact, menuItems, onClick } = props;
   const avatarClassName = `ee__avatar-color-${cardContact.name
     ?.toString()?.[0]
     ?.toLowerCase()}`;
@@ -49,12 +50,12 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
   );
   return (
     <Row gutter={[-8, 16]} className="contact-directory-card__container">
-      <Col span={6} className="icon__container">
+      <Col span={6} className="icon__container" onClick={() => onClick?.()}>
         <Avatar shape="square" size={50} className={avatarClassName}>
           {avatarIconLetter}
         </Avatar>
       </Col>
-      <Col span={menuItems ? 15 : 17}>
+      <Col span={menuItems ? 15 : 17} onClick={() => onClick?.()}>
         <Space direction="vertical">
           <Text strong className="font-size-16">
             {cardContact.name}

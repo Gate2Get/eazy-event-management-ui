@@ -10,11 +10,14 @@ import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { contactDirectoryColumns } from "./config";
 import { CONTACT_DIRECTORY_COLUMN_KEYS } from "./constant";
 import NoContact from "../../../../assets/svg/no-contact.svg";
+import { useSearchParams } from "react-router-dom";
+import { PAGE_ACTION } from "../../../../constants";
 
 const { Link, Text } = Typography;
 const { Search } = Input;
 
 export const ListContactDirectory = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { directoryList, setSelectedDirectory, setAction, isListView } =
     useBearStore.contactStore();
   const { screen } = useBearStore.appStore();
@@ -67,13 +70,11 @@ export const ListContactDirectory = () => {
   });
 
   const onViewSelect = (record: ContactDirectoryType) => {
-    setAction("VIEW");
-    setSelectedDirectory(record);
+    setSearchParams({ id: record.id as string, action: PAGE_ACTION.VIEW });
   };
 
   const onEditSelect = (record: ContactDirectoryType) => {
-    setAction("EDIT");
-    setSelectedDirectory(record);
+    setSearchParams({ id: record.id as string, action: PAGE_ACTION.EDIT });
   };
 
   const closeEditModal = () => {
@@ -140,13 +141,13 @@ export const ListContactDirectory = () => {
                   span={screen === "MOBILE" ? 24 : 8}
                   key={directory.id}
                   style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    onViewSelect(directory);
-                  }}
                 >
                   <ContactDirectoryCard
                     cardContact={directory}
                     menuItems={getMenuItems(directory)}
+                    onClick={() => {
+                      onViewSelect(directory);
+                    }}
                   />
                 </Col>
               );
@@ -156,7 +157,9 @@ export const ListContactDirectory = () => {
       ) : (
         <EmptyData
           onClickAction={() => {
-            setAction("ADD");
+            setSearchParams({
+              action: PAGE_ACTION.ADD,
+            });
           }}
           image={NoContact}
           description={

@@ -24,7 +24,7 @@ const { Title, Text, Paragraph } = Typography;
 type ContactUserCardType = {
   id: string;
   name: string;
-  mobile: number;
+  senderId: number | string;
   image?: string;
   status?: number;
   menuItems?: MenuProps["items"];
@@ -37,7 +37,7 @@ type ContactUserCardType = {
 
 export const ContactUserCard = (props: ContactUserCardType) => {
   const {
-    mobile,
+    senderId,
     name,
     id,
     menuItems,
@@ -80,7 +80,10 @@ export const ContactUserCard = (props: ContactUserCardType) => {
       >
         <Row gutter={[-8, 16]}>
           <Col span={6}>{userAvatar}</Col>
-          <Col span={menuItems ? 15 : 17}>
+          <Col
+            span={menuItems ? 15 : 17}
+            className="contact-name-sender__container"
+          >
             <div style={editable ? { marginBottom: "5px" } : {}}>
               {editable ? (
                 <Input
@@ -111,11 +114,11 @@ export const ContactUserCard = (props: ContactUserCardType) => {
             <div>
               {editable ? (
                 <Input
-                  placeholder="Input user mobile"
-                  status={isError && !mobile ? "error" : ""}
-                  value={mobile}
+                  placeholder="Input user senderId"
+                  status={isError && !senderId ? "error" : ""}
+                  value={senderId}
                   onChange={(e) => {
-                    onContactChange?.(id, "mobile", e.target.value);
+                    onContactChange?.(id, "senderId", e.target.value);
                   }}
                   maxLength={10}
                 />
@@ -126,12 +129,12 @@ export const ContactUserCard = (props: ContactUserCardType) => {
                       maxLength: 10,
                       tooltip: "click to edit text",
                       onChange: (value) =>
-                        onContactChange?.(id, "mobile", value),
+                        onContactChange?.(id, "senderId", value),
                       triggerType: ["text"],
                     }
                   }
                 >
-                  {mobile.toString()}
+                  {senderId.toString()}
                 </Text>
               )}
             </div>

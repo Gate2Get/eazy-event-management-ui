@@ -22,18 +22,23 @@ export const ROUTES_URL = {
   PRICING: "pricing",
   HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
+  REVIEW_EVENTS: "review-events",
 };
 
 export const ROUTES_MENU = {
   DASHBOARD: "Dashboard",
   SERVICE: "Service",
-  CONTACT_MANAGEMENT: "Contact Management",
-  EVENT_MANAGEMENT: "Event Management",
+  MANAGEMENT: "Management",
+  CONTACT_MANAGEMENT: "Contact",
+  EVENT_MANAGEMENT: "Event",
   GIFT_MANAGEMENT: "Gift Management",
-  TEMPLATE_MANAGEMENT: "Template Management",
+  TEMPLATE_MANAGEMENT: "Template",
   FEEDBACK: "Feedback",
   REPORT_BUG: "Report Bug",
   MY_PROFILE: "My Profile",
+  MY_ACCOUNT: "My Account",
+  ADMIN: "Admin",
+  REVIEW_EVENTS: "Review Events",
 };
 
 export const SERVICE_MENU = [
@@ -46,6 +51,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.FEEDBACK,
   ROUTES_MENU.REPORT_BUG,
   ROUTES_MENU.MY_PROFILE,
+  ROUTES_MENU.REVIEW_EVENTS,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -55,9 +61,10 @@ export const EVENT_STATUS = {
   PENDING_APPROVAL: "PENDING_APPROVAL",
   REJECTED: "REJECTED",
   NOT_STARTED: "NOT_STARTED",
+  ON_HOLD: "ON_HOLD",
   COMPLETED: "COMPLETED",
   IN_PROGRESS: "IN_PROGRESS",
-  DRAFT: "DRAFT",
+  // DRAFT: "DRAFT",
 };
 
 export const EDITABLE_EVENT_STATUS = [
@@ -66,17 +73,18 @@ export const EDITABLE_EVENT_STATUS = [
 ];
 
 export const EVENT_STATUS_LABEL = {
-  DRAFT: "Draft",
+  // DRAFT: "Draft",
   IN_PROGRESS: "In progress",
   PENDING_APPROVAL: "Pending approval",
   REJECTED: "Rejected",
   APPROVED: "Approved",
+  ON_HOLD: "On-hold/More info needed",
   COMPLETED: "Completed",
   NOT_STARTED: "Not started",
 };
 
 export const EVENT_STATUS_LABEL_COLOR = {
-  [EVENT_STATUS_LABEL.DRAFT]: "default",
+  // [EVENT_STATUS_LABEL.DRAFT]: "default",
   [EVENT_STATUS_LABEL.IN_PROGRESS]: "processing",
   [EVENT_STATUS_LABEL.PENDING_APPROVAL]: "processing",
   [EVENT_STATUS_LABEL.REJECTED]: "error",
@@ -101,6 +109,31 @@ export const EVENT_TYPE_PROPS = {
     label: "Others",
   },
 };
+
+export const EVENT_ADMIN_ACTION = [
+  {
+    label: "Reject",
+    key: EVENT_STATUS.REJECTED,
+    props: {
+      danger: true,
+    },
+  },
+  {
+    label: "On-Hold/More info",
+    key: EVENT_STATUS.ON_HOLD,
+    props: {
+      type: "default",
+    },
+  },
+
+  {
+    label: "Approve",
+    key: EVENT_STATUS.APPROVED,
+    props: {
+      type: "primary",
+    },
+  },
+];
 
 export const EVENT_DATE_FORMAT = "YYYY/MM/DD";
 
@@ -218,5 +251,38 @@ export const PRICING_CARDS = [
       "Standard delivery speed.",
       "Admin review and approval.",
     ],
+  },
+];
+
+export const PAGE_ACTION = {
+  VIEW: "VIEW",
+  EDIT: "EDIT",
+  DELETE: "DELETE",
+  ADD: "ADD",
+};
+
+export const PAGE_QUERY_ACTIONS = [
+  PAGE_ACTION.ADD,
+  PAGE_ACTION.VIEW,
+  PAGE_ACTION.EDIT,
+];
+
+export const ROLES = {
+  ADMIN: "ADMIN",
+  CUSTOMER: "CUSTOMER",
+};
+
+export const STEPS_EDITABLE = [
+  {
+    title: "Event Information",
+    content: "First-content",
+  },
+  {
+    title: "Message",
+    content: "Second-content",
+  },
+  {
+    title: "Contacts",
+    content: "Last-content",
   },
 ];

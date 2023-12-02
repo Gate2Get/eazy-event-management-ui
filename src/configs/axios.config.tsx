@@ -80,5 +80,14 @@ export const dashboardEndpoint = {
 export const commonEndpoint = {
   getAlerts: "/api/v1/app/common/alerts",
   createBug: "/api/v1/app/common/report-bug",
+  submitFeedback: "/api/v1/app/common/feedback",
   uploadFile: "/api/v1/app/file/upload",
+};
+
+export const adminEndpoint = {
+  getEvents: "/api/v1/app/admin/events",
+  getUser: "/api/v1/app/admin/user",
+  getContacts: "/api/v1/app/admin/event",
+  getTemplate: "/api/v1/app/admin/event",
+  adminEventAction: "/api/v1/app/admin/event/action",
 };

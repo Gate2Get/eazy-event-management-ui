@@ -16,10 +16,14 @@ export const PreviewTemplate = (props: TemplateType) => {
   if (screen === "DESKTOP") {
     cardStyle = {
       margin: "2% 20%",
+      textAlign: "left",
     };
   }
 
   const renderTemplate = () => {
+    if (!message) {
+      return <></>;
+    }
     switch (channel) {
       case "VOICE_CALL": {
         const messagesObj: Record<string, VoiceMessageTemplateType> =
@@ -51,7 +55,7 @@ export const PreviewTemplate = (props: TemplateType) => {
   };
   return (
     <div>
-      <Card style={cardStyle}>
+      <Card style={cardStyle} bordered={false}>
         <Meta
           description={
             <div>

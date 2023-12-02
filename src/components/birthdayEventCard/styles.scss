@@ -6,6 +6,10 @@
   border-radius: 8px;
   width: 100%;
 
+  .image__container {
+    cursor: pointer;
+  }
+
   .birthday-image {
     background-repeat: no-repeat;
     // background-attachment: fixed;

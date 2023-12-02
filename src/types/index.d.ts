@@ -4,7 +4,7 @@ export type ContactListType = {
   key?: string;
   id: string;
   name: string;
-  mobile: number;
+  senderId: number | string;
   image?: string;
   status?: number;
   createdAt?: string;
@@ -44,6 +44,7 @@ export type UserInfoType = {
   isEmailVerified?: boolean;
   isMobileVerified?: boolean;
   profileImage?: string;
+  roles?: string | string[];
 };
 
 export type ContactDirectoryType = {
@@ -52,7 +53,7 @@ export type ContactDirectoryType = {
   name: string;
   image?: string;
   noOfContacts?: number;
-  contacts: ContactsType[];
+  contacts?: ContactListType[];
   createdAt?: string;
   updatedAt?: string;
 };
@@ -90,9 +91,8 @@ export enum EventStatus {
 
 export type EventType = {
   id: string;
-  id: string;
   name: string;
-  userId: number;
+  userId: string;
   type: Events;
   groomName?: string;
   brideName?: string;
@@ -115,11 +115,14 @@ export type EventType = {
   failed?: number;
   success?: number;
   progress?: number;
+  isEditable?: boolean;
+  isDeleteAllowed?: boolean;
 };
 
 export type CardType = {
   menuItems?: MenuProps["items"];
   isEdit?: boolean;
+  onSelect?: () => void;
 };
 
 export type EventCardType = EventType & CardType;
@@ -127,6 +130,9 @@ export type EventCardType = EventType & CardType;
 export type EventFilterType = {
   type?: string;
   status?: string;
+  id?: string;
+  fromDate?: string;
+  toDate?: string;
 };
 
 export type AlertType = {
@@ -167,4 +173,21 @@ export type SessionType = {
   createdAt?: Date;
   expiryAt?: Date;
   isCurrent?: boolean;
+};
+
+type QuestionType = {
+  question: string;
+  answer: string;
+};
+
+export type FeedbackType = {
+  userId?: string;
+  questions: QuestionType[];
+  comments: string;
+};
+
+export type EventAdminType = {
+  id: string;
+  approvalStatus: string;
+  price: number;
 };

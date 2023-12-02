@@ -1,10 +1,5 @@
 import { eventManagementEndpoint, instance } from "../../configs/axios.config";
-import {
-  ContactDirectoryType,
-  ContactListType,
-  EventFilterType,
-  EventType,
-} from "../../types";
+import { ContactListType, EventFilterType, EventType } from "../../types";
 
 export const eventManagementAPI = {
   createEvent: async (event: EventType) => {

@@ -111,6 +111,9 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                 options={CHANNEL_OPTIONS}
                 optionType="button"
                 buttonStyle="solid"
+                onChange={() => {
+                  form.setFieldValue("messageTemplate", undefined);
+                }}
               />
             </Form.Item>
             <Form.Item

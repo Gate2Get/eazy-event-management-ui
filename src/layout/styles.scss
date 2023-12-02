@@ -61,13 +61,32 @@
       font-size: 14px;
     }
 
-    .ant-menu-item-selected {
-      border-left: 5px solid rgb(22, 119, 255);
-      border-bottom: 1px solid rgb(22, 119, 255);
+    .ant-menu-item-selected::before {
+      // border-left: 5px solid rgb(22, 119, 255);
+      // border-bottom: 1px solid rgb(22, 119, 255);
+      background: #0071dc;
+      border-radius: 0 62.5rem 62.5rem 0;
+      bottom: 0.25rem;
+      content: "";
+      left: 0;
+      position: absolute;
+      top: 0.25rem;
+      width: 0.1875rem;
 
       .ant-menu-title-content {
         font-weight: 700;
       }
+    }
+
+    .ant-menu-item-selected {
+      color: #46474a;
+      border-radius: 0%;
+      background-color: #f2f8fd;
+    }
+
+    .ant-menu-item-active {
+      color: #46474a;
+      border-radius: 0%;
     }
   }
 }

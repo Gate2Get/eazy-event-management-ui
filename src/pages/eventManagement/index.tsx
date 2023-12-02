@@ -13,7 +13,6 @@ import {
   Tag,
   Typography,
   Modal,
-  Space,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
@@ -23,18 +22,18 @@ import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
 import { MarriageEventCard } from "../../components/marriageEventCard";
 import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
-  EDITABLE_EVENT_STATUS,
   EVENT_DATE_FORMAT,
-  EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPES,
   EVENT_TYPE_PROPS,
+  PAGE_ACTION,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
   ContactDirectoryType,
   DebounceFnType,
+  EventFilterType,
   Events,
   EventType,
   TemplateType,
@@ -44,7 +43,7 @@ import NoEvents from "../../assets/svg/no-events.svg";
 import { PreviewEvent } from "../../components/previewEvent";
 import { OtherEventCreation } from "../../components/otherEventCreation";
 import { debounce } from "lodash";
-import { removeEmptyProp } from "../../utils/common.utils";
+import { removeEmptyProp, urlhandler } from "../../utils/common.utils";
 import { OtherEventCard } from "../../components/otherEventCard";
 import { EmptyData } from "../../components/EmptyData";
 import {
@@ -52,7 +51,8 @@ import {
   modalStyles,
   useModalStyle,
 } from "../../configs/antd.config";
-import { createStyles, useTheme } from "antd-style";
+import { useTheme } from "antd-style";
+import { useSearchParams } from "react-router-dom";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -82,6 +82,7 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
 export const EventManagement = () => {
   const { styles } = useModalStyle();
   const token = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { screen, setLoading } = useBearStore.appStore();
   const [isPreview, setIsPreview] = React.useState(false);
   const { setDirectoryList, directoryList } = useBearStore.contactStore();
@@ -117,13 +118,30 @@ export const EventManagement = () => {
     form,
     preserve: true,
   });
-  console.log({ messageTemplate });
+
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
 
   React.useEffect(() => {
-    console.log({ channel });
-    form.setFieldValue("messageTemplate", undefined);
     getTemplates({ channel });
   }, [channel]);
+
+  React.useEffect(() => {
+    const filters: EventFilterType = {
+      status: searchParams.get("status") as string,
+      type: searchParams.get("type") as string,
+      fromDate: searchParams.get("fromDate") as string,
+      toDate: searchParams.get("toDate") as string,
+    };
+
+    urlhandler(searchParams, setAction, getEventById, () => {
+      getEvents(filters);
+    });
+  }, [searchParams]);
 
   React.useEffect(() => {
     form.setFieldValue("eventType", eventType || undefined);
@@ -141,36 +159,26 @@ export const EventManagement = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log({ searchTemplate });
-    if (searchTemplate) {
-      const search = debounce(getTemplates, 1000);
-      setTemplateSearchQuery((prevSearch: DebounceFnType) => {
-        if (prevSearch.cancel) {
-          prevSearch.cancel();
-        }
-        return search;
-      });
-      search({ name: searchTemplate, type: eventType });
-    }
+    const search = debounce(getTemplates, 1000);
+    setTemplateSearchQuery((prevSearch: DebounceFnType) => {
+      if (prevSearch.cancel) {
+        prevSearch.cancel();
+      }
+      return search;
+    });
+    search({ name: searchTemplate, type: eventType });
   }, [searchTemplate]);
 
   React.useEffect(() => {
-    console.log({ searchContact });
-    if (searchContact) {
-      const search = debounce(getContactDirectory, 1000);
-      setContactSearchQuery((prevSearch: DebounceFnType) => {
-        if (prevSearch.cancel) {
-          prevSearch.cancel();
-        }
-        return search;
-      });
-      search({ name: searchContact });
-    }
+    const search = debounce(getContactDirectory, 1000);
+    setContactSearchQuery((prevSearch: DebounceFnType) => {
+      if (prevSearch.cancel) {
+        prevSearch.cancel();
+      }
+      return search;
+    });
+    search({ name: searchContact });
   }, [searchContact]);
-
-  React.useEffect(() => {
-    if (!action) getEvents();
-  }, [filters, action]);
 
   React.useEffect(() => {
     const isEdit = action === "EDIT" || action === "ADD";
@@ -190,7 +198,7 @@ export const EventManagement = () => {
 
       form.setFieldsValue(formValues);
     }
-  }, []);
+  }, [selectedEvents]);
 
   const handleEvent = (event: any): void => {
     const { dateTime, triggerDateTime } = event;
@@ -206,7 +214,7 @@ export const EventManagement = () => {
   };
 
   const getMenuItems = (data: EventType): MenuProps["items"] => {
-    const menu1 = [
+    const menu = [
       {
         label: "View",
         key: "view",
@@ -214,25 +222,25 @@ export const EventManagement = () => {
         icon: <EyeOutlined />,
       },
     ];
-    const menu2 = [
-      {
+
+    if (data.isEditable) {
+      menu.push({
         label: "Edit",
         key: "edit",
         onClick: () => onEditSelect(data),
         icon: <EditOutlined />,
-      },
-      {
+      });
+    }
+    if (data.isDeleteAllowed) {
+      menu.push({
         label: "Delete",
         key: "delete",
         onClick: () => onDeleteSelect(data),
         icon: <DeleteOutlined />,
-      },
-    ];
-    if (EDITABLE_EVENT_STATUS.includes(data.status as string)) {
-      return [...menu1, ...menu2];
-    } else {
-      return menu1;
+      });
     }
+
+    return menu;
   };
 
   const colProps: ColProps = {};
@@ -244,7 +252,7 @@ export const EventManagement = () => {
 
   const onCancel = (isClearAction?: boolean) => {
     if (!isPreview || isClearAction) {
-      setAction("");
+      setSearchParams({});
     }
     setIsPreview(false);
   };
@@ -255,19 +263,22 @@ export const EventManagement = () => {
   };
 
   const onViewSelect = (record: EventType) => {
-    setAction("VIEW");
-    setSelectedEvents(record);
+    setSearchParams({
+      id: record.id,
+      action: PAGE_ACTION.VIEW,
+    });
   };
 
   const onDeleteConfirm = () => {
     const { id } = selectedEvents;
-    deleteEvent(id as string);
+    deleteEvent(id);
   };
 
   const onEditSelect = (record: EventType) => {
-    setAction("EDIT");
-    setEventType(record.type);
-    setSelectedEvents(record);
+    setSearchParams({
+      id: record.id,
+      action: PAGE_ACTION.EDIT,
+    });
   };
 
   const renderEvents = (): React.ReactNode => {
@@ -276,19 +287,31 @@ export const EventManagement = () => {
         if (event.type === EVENT_TYPES.MARRIAGE) {
           return (
             <Col {...colProps}>
-              <MarriageEventCard {...event} menuItems={getMenuItems(event)} />
+              <MarriageEventCard
+                {...event}
+                menuItems={getMenuItems(event)}
+                onSelect={() => onViewSelect(event)}
+              />
             </Col>
           );
         } else if (event.type === EVENT_TYPES.BIRTHDAY) {
           return (
             <Col {...colProps}>
-              <BirthdayEventCard {...event} menuItems={getMenuItems(event)} />
+              <BirthdayEventCard
+                {...event}
+                menuItems={getMenuItems(event)}
+                onSelect={() => onViewSelect(event)}
+              />
             </Col>
           );
         } else if (event.type === EVENT_TYPES.OTHERS) {
           return (
             <Col {...colProps}>
-              <OtherEventCard {...event} menuItems={getMenuItems(event)} />
+              <OtherEventCard
+                {...event}
+                menuItems={getMenuItems(event)}
+                onSelect={() => onViewSelect(event)}
+              />
             </Col>
           );
         } else {
@@ -298,7 +321,9 @@ export const EventManagement = () => {
     ) : (
       <EmptyData
         onClickAction={() => {
-          setAction("ADD");
+          setSearchParams({
+            action: PAGE_ACTION.ADD,
+          });
         }}
         image={NoEvents}
         description="No events to show"
@@ -391,7 +416,7 @@ export const EventManagement = () => {
       });
   };
 
-  const getEvents = (): void => {
+  const getEvents = (filters = {}): void => {
     setLoading(true);
     API.eventManagement
       .getEvent(filters)
@@ -404,6 +429,38 @@ export const EventManagement = () => {
         console.log({ location: "getEvents", error });
       });
   };
+
+  const getEventById = (id: string): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEvent({ id })
+      .then((events: EventType[]) => {
+        setLoading(false);
+        if (events?.length) {
+          const record = events?.[0];
+          setEventType(record.type);
+          setSelectedEvents(record);
+        }
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEvents", error });
+      });
+  };
+
+  const handleFilterChange = (filter = {}) => {
+    const _filters: any = { ...filters, ...filter };
+    if (!Object.values(filter)?.[0]) {
+      delete _filters[Object.keys(filter)[0]];
+    }
+    console.log({ _filters });
+    setFilters(_filters);
+    setSearchParams({
+      ..._filters,
+    });
+  };
+
+  const isEditable = action === "ADD" || action === "EDIT";
 
   return (
     <div className="event-management__container">
@@ -437,7 +494,7 @@ export const EventManagement = () => {
                     options={eventTypeOptions}
                     value={filters.type}
                     onChange={(type) => {
-                      setFilters({ ...filters, type });
+                      handleFilterChange({ type });
                     }}
                   />
                 </Form.Item>
@@ -449,7 +506,6 @@ export const EventManagement = () => {
                   <Select
                     style={{ width: "100%" }}
                     allowClear
-                    mode="multiple"
                     placeholder="Select a status"
                     optionFilterProp="children"
                     options={eventStatusOptions}
@@ -464,7 +520,7 @@ export const EventManagement = () => {
                       );
                     }}
                     onChange={(status) => {
-                      setFilters({ ...filters, status });
+                      handleFilterChange({ status });
                     }}
                   />
                 </Form.Item>
@@ -479,6 +535,22 @@ export const EventManagement = () => {
                     //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
                     //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
                     // ]}
+                    onChange={(e) => {
+                      if (e) {
+                        handleFilterChange({
+                          fromDate: dayjs(e?.[0]),
+                          toDate: dayjs(e?.[1]),
+                        });
+                      } else {
+                        const _filters: any = { ...filters };
+                        delete _filters.fromDate;
+                        delete _filters.toDate;
+                        setFilters(_filters);
+                        setSearchParams({
+                          ..._filters,
+                        });
+                      }
+                    }}
                     format={EVENT_DATE_FORMAT}
                   />
                 </Form.Item>
@@ -492,9 +564,10 @@ export const EventManagement = () => {
             <Col span={12} className="upcoming-event__pagination">
               <Button
                 type="primary"
-                size="large"
                 onClick={() => {
-                  setAction("ADD");
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
                 }}
               >
                 Create Event
@@ -508,10 +581,7 @@ export const EventManagement = () => {
         <Row gutter={[16, 16]} className="header__row">
           <Col flex={12}>
             <Row className="header__container">
-              <Col
-                span={screen === "MOBILE" ? 4 : 1}
-                className="back-icon__container"
-              >
+              <Col {...colOption(4)} className="back-icon__container">
                 <Button
                   size="large"
                   type="text"
@@ -525,18 +595,46 @@ export const EventManagement = () => {
                   back
                 </Button>
               </Col>
+
+              {action === "VIEW" && (
+                <Col {...colOption(20)}>
+                  <div style={{ float: "right" }}>
+                    {selectedEvents.isEditable && (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          onEditSelect(selectedEvents);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    {selectedEvents.isDeleteAllowed && (
+                      <Button
+                        danger
+                        onClick={() => {
+                          onDeleteSelect(selectedEvents);
+                        }}
+                        style={{ marginLeft: ".5rem" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </div>
+                </Col>
+              )}
             </Row>
           </Col>
         </Row>
       )}
       <div
         className={
-          screen === "MOBILE" ? "creation-form-mobile" : "creation-form"
+          screen === "MOBILE" ? "creation-form-senderId" : "creation-form"
         }
       >
         {action === "ADD" && !isPreview && (
           <Form layout="vertical" form={form}>
-            <Form.Item label="Select Event" name="eventType">
+            <Form.Item label="Select Event" name="type">
               <Select
                 style={{ width: "100%" }}
                 size="large"
@@ -600,6 +698,7 @@ export const EventManagement = () => {
         ((action === "ADD" || action === "EDIT") && isPreview)) && (
         <PreviewEvent
           onSubmit={action !== "VIEW" ? handleSubmitEvent : undefined}
+          isEditable={isEditable}
         />
       )}
     </div>

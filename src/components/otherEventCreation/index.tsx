@@ -105,6 +105,9 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                 options={CHANNEL_OPTIONS}
                 optionType="button"
                 buttonStyle="solid"
+                onChange={() => {
+                  form.setFieldValue("messageTemplate", undefined);
+                }}
               />
             </Form.Item>
             <Form.Item

@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
 import { EventCardType, GenericJsonType } from "../../types";
 import dayjs from "dayjs";
+import React from "react";
 
 const { Text } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
@@ -35,17 +36,20 @@ export const BirthdayEventCard = (props: EventCardType) => {
     startDateTime,
     location,
     menuItems,
+    onSelect,
   } = props;
 
   const status = eventStatusLabel[progressionStatus as string];
   const randomIndex = Math.ceil(
     Math.random() * (ILLUSTRATION_ASSETS.birthday - 1)
   );
-  const imageUrl = new URL(
-    `../../assets/svg/birthday/card-${randomIndex}.svg`,
-    import.meta.url
-  );
-  console.log({ randomIndex });
+
+  const imageUrl = React.useMemo(() => {
+    return new URL(
+      `../../assets/svg/birthday/card-${randomIndex}.svg`,
+      import.meta.url
+    );
+  }, []);
 
   return (
     <Space
@@ -53,7 +57,7 @@ export const BirthdayEventCard = (props: EventCardType) => {
       size="small"
       direction="vertical"
     >
-      <Row gutter={[8, 8]}>
+      <Row onClick={onSelect} className="image__container">
         <Col span={12} className="">
           <img src={imageUrl as any} width={"100%"} alt="" height={180} />
         </Col>

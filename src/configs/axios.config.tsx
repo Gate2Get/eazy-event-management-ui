@@ -1,7 +1,6 @@
 import axios, { type AxiosInstance } from "axios";
 import { message, notification } from "antd";
 import { ROUTES_URL } from "../constants";
-import { EnqueueSnackbar } from "notistack";
 
 export const instance: AxiosInstance = axios.create();
 
@@ -15,13 +14,12 @@ export const interceptors = (navigate: (url: string) => void): void => {
     (response) => {
       const { data, config, status } = response;
       console.log({ response });
-      // if (snackbarAllowedMethods.includes(config?.method as string)) {
-      // notification.success({
-      //   message: data.message,
-      //   className: "eazy__event-snackbar success",
-      //   duration: 0,
-      // });
-      // }
+      if (snackbarAllowedMethods.includes(config?.method as string)) {
+        notification.success({
+          message: data.message,
+          className: "eazy__event-snackbar success",
+        });
+      }
       return response;
     },
     (error) => {

@@ -152,7 +152,13 @@ export const ReviewEvent = () => {
 
   const onActionConfirm = () => {
     const { id } = selectedEvents;
-    const isValid = comment && price;
+    let isValid;
+    if (adminActionStatus === "APPROVED") {
+      isValid = comment && price;
+    } else {
+      isValid = comment;
+    }
+
     if (isValid) {
       setIsError(false);
       adminEventAction({
@@ -298,17 +304,19 @@ export const ReviewEvent = () => {
         styles={modalStyles(token) as any}
       >
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
-          <InputNumber
-            status={isError && !price ? "error" : ""}
-            size="large"
-            value={price}
-            placeholder="Price"
-            addonBefore="₹"
-            onChange={(value) => {
-              setPrice(Number(value));
-            }}
-            style={{ float: "left" }}
-          />
+          {adminActionStatus === "APPROVED" && (
+            <InputNumber
+              status={isError && !price ? "error" : ""}
+              size="large"
+              value={price}
+              placeholder="Price"
+              addonBefore="₹"
+              onChange={(value) => {
+                setPrice(Number(value));
+              }}
+              style={{ float: "left" }}
+            />
+          )}
           <TextArea
             showCount
             size="large"

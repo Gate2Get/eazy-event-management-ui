@@ -40,7 +40,7 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
           />
         </Col>
         <Col {...colOption(10)} order={!isOdd && screen !== "MOBILE" ? 1 : 2}>
-          <Tag color="#004484">
+          <Tag color="rgb(18, 183, 106)">
             <Text className="tag-module" italic>
               {moduleName}
             </Text>

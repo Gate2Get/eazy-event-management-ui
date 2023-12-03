@@ -28,10 +28,6 @@ export const ContactManagement = () => {
     setContactList,
   } = useBearStore.contactStore();
 
-  // React.useEffect(() => {
-  //   if (!action) getContactDirectory();
-  // }, [action]);
-
   React.useEffect(() => {
     return () => {
       setAction("");

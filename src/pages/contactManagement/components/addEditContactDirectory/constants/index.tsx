@@ -33,11 +33,11 @@ export const DIRECTORY_ACTIONS: any = {
     header: "Update Directory",
     primaryButtonText: "Update",
     primaryButtonAction: "EDIT",
-    deleteButtonText: "Delete",
   },
   VIEW: {
     header: "View Directory",
     primaryButtonText: "Edit",
     primaryButtonAction: "VIEW",
+    deleteButtonText: "Delete",
   },
 };

@@ -3,14 +3,14 @@ import { Theme } from "antd/es/config-provider/context";
 
 export const useModalStyle = createStyles(({ token }) => ({
   "my-modal-body": {
-    background: token["blue-1"],
+    background: "rgba(18, 183, 106, 0.12)",
     padding: token.paddingSM,
   },
   "my-modal-mask": {
     // boxShadow: `inset 0 0 15px #fff`,
   },
   "my-modal-header": {
-    borderBottom: `1px solid ${token.colorPrimary}`,
+    borderBottom: `1px solid rgb(18, 183, 106)`,
   },
   "my-modal-footer": {
     color: token.colorPrimary,
@@ -30,7 +30,7 @@ export const modalClassNames = (styles: any) => ({
 
 export const modalStyles = (token: any) => ({
   header: {
-    borderLeft: `5px solid ${token.colorPrimary}`,
+    borderLeft: `5px solid rgb(18, 183, 106)`,
     borderRadius: 0,
     paddingInlineStart: 5,
   },
@@ -40,7 +40,7 @@ export const modalStyles = (token: any) => ({
     textAlign: "center",
   },
   mask: {
-    backdropFilter: "blur(10px)",
+    // backdropFilter: "blur(5px)",
   },
   footer: {},
   content: {

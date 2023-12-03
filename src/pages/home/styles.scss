@@ -8,15 +8,15 @@
       animation: shine 3s linear infinite;
       background: linear-gradient(
         270deg,
-        #0565ff 20%,
+        #12b76a 20%,
         #d341a5 40%,
         #d341a5 60%,
-        #0565ff 80%
+        #12b76a 80%
       );
       background-clip: text;
       -webkit-background-clip: text;
       background-size: 200% auto;
-      color: #0565ff;
+      color: #12b76a;
     }
 
     .sub-heading {
@@ -39,10 +39,10 @@
     .steps {
       background: linear-gradient(
         to right,
-        #004484 20%,
-        #004484 40%,
-        #d341a5 60%,
-        #004484 80%
+        rgb(18, 183, 106) 20%,
+        rgb(18, 183, 106) 40%,
+        rgba(18, 183, 106, 0.12) 60%,
+        rgb(18, 183, 106) 80%
       );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;

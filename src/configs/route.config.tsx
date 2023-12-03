@@ -48,6 +48,10 @@ export const APP_ROUTES = [
     element: <Pricing />,
   },
   {
+    path: ROUTES_URL.FORBIDDEN,
+    element: <App403 />,
+  },
+  {
     path: "*",
     element: <App404 />,
   },

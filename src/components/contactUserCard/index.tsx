@@ -62,6 +62,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
         ?.toString()
         .split(" ")
         .map((item) => item?.[0])
+        .splice(0, 2)
         .join("")}
     </Avatar>
   );

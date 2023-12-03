@@ -92,3 +92,12 @@ export const urlhandler = (
     apiCallAll();
   }
 };
+
+export function removeFalsyValues(obj: any) {
+  return Object.entries(obj)
+    .filter(([key, value]) => Boolean(value))
+    .reduce((acc: any, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+}

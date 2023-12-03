@@ -1,8 +1,11 @@
 import React from "react";
-import { Card, Typography } from "antd";
+import { Avatar, Card, Divider, Typography } from "antd";
 import { TemplateType, VoiceMessageTemplateType } from "../../types";
 import { useBearStore } from "../../store";
 import { getFormattedMessage } from "../../utils/common.utils";
+import { UserOutlined } from "@ant-design/icons";
+import "./styles.scss";
+import { CHANNEL_OPTIONS } from "../../constants";
 
 const { Paragraph, Text, Title } = Typography;
 const { Meta } = Card;
@@ -20,6 +23,8 @@ export const PreviewTemplate = (props: TemplateType) => {
     };
   }
 
+  const channelComp = CHANNEL_OPTIONS.find((item) => item.value === channel);
+
   const renderTemplate = () => {
     if (!message) {
       return <></>;
@@ -32,17 +37,23 @@ export const PreviewTemplate = (props: TemplateType) => {
           (msg: VoiceMessageTemplateType) => {
             if (msg.type === "TEXT") {
               return (
-                <Paragraph
-                // ellipsis={{ rows: 2, expandable: true, symbol: "more" }}
-                >
-                  <Card>{msg.value}</Card>
+                <Paragraph>
+                  <Card className="message sent" bordered={false}>
+                    {msg.value}
+                  </Card>
                 </Paragraph>
               );
             } else if (msg.type === "AUDIO") {
+              console.log({ msg });
               return (
-                <Card>
-                  <audio src={msg.value} controls style={{ width: "100%" }} />
-                </Card>
+                // <Card className="message sent" bordered={false}>
+                <audio
+                  className="message sent"
+                  src={msg.value}
+                  controls
+                  style={{ width: "100%" }}
+                />
+                // </Card>
               );
             }
           }
@@ -55,7 +66,7 @@ export const PreviewTemplate = (props: TemplateType) => {
   };
   return (
     <div>
-      <Card style={cardStyle} bordered={false}>
+      {/* <Card style={cardStyle} bordered={false}>
         <Meta
           description={
             <div>
@@ -84,7 +95,25 @@ export const PreviewTemplate = (props: TemplateType) => {
             </div>
           }
         />
-      </Card>
+      </Card> */}
+
+      <div className="phone">
+        <Card style={cardStyle} className="chat-container">
+          <Card.Meta
+            avatar={<Avatar icon={<UserOutlined />} size="large" />}
+            title={
+              <div>
+                <Paragraph>{name || ""}</Paragraph>
+                <Paragraph italic style={{ fontWeight: "lighter" }}>
+                  {channelComp?.label as React.ReactNode}
+                </Paragraph>
+              </div>
+            }
+          />
+          <Divider />
+          {renderTemplate()}
+        </Card>
+      </div>
     </div>
   );
 };

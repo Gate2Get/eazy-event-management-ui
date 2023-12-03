@@ -1,11 +1,13 @@
 import React from "react";
-import { Layout, theme } from "antd";
+import { Col, Layout, Row, theme, Typography } from "antd";
 import { HeaderHome } from "../components/headerHome";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { useBearStore } from "../store";
-import { SERVICE_MENU } from "../constants";
+import { ROUTES_URL, SERVICE_MENU } from "../constants";
+import Logo from "../assets/png/logoGreen.png";
 
 const { Header, Content, Footer } = Layout;
+const { Text, Link } = Typography;
 
 type HomeLayoutType = {
   children: React.ReactNode;
@@ -16,9 +18,16 @@ export const HomeLayout = (props: HomeLayoutType) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const { height } = useWindowSize();
-  const { currentPage } = useBearStore.appStore();
+  const { currentPage, screen } = useBearStore.appStore();
   const { isAuthorized } = useBearStore.userStore();
   const { children } = props;
+
+  const colOption = (count: number) =>
+    screen === "MOBILE"
+      ? {
+          flex: count,
+        }
+      : { span: count };
 
   return (
     <Layout
@@ -48,7 +57,45 @@ export const HomeLayout = (props: HomeLayoutType) => {
         {children}
       </Content>
       <Footer style={{ textAlign: "center", background: "#fff" }}>
-        Eazy Event ©2023 All Rights Reserved
+        <Row>
+          <Col {...colOption(12)}>
+            <Text
+              style={{
+                float: !SERVICE_MENU.includes(currentPage) ? "left" : "none",
+              }}
+            >
+              <img
+                src={Logo}
+                alt=""
+                width={20}
+                style={{ position: "relative", top: "5px" }}
+              />
+              ©2023 Eazy Event
+            </Text>
+          </Col>
+          <Col {...colOption(12)}>
+            <div
+              style={{
+                float: "right",
+              }}
+            >
+              <Link style={{ cursor: "pointer", color: "rgb(102, 112, 133)" }}>
+                Terms of Service
+              </Link>
+              <Link
+                href={ROUTES_URL.PRIVACY_POLICY}
+                target="_blank"
+                style={{
+                  marginLeft: "1rem",
+                  cursor: "pointer",
+                  color: "rgb(102, 112, 133)",
+                }}
+              >
+                Privacy Policy
+              </Link>
+            </div>
+          </Col>
+        </Row>
       </Footer>
     </Layout>
   );

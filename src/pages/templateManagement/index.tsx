@@ -78,6 +78,10 @@ export const TemplateManagement = () => {
 
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
+  const [isDeleteConfirmation, setIsDeleteConfirmation]: [
+    boolean,
+    Dispatch<any>
+  ] = React.useState(false);
   const [messageError, setMessageError] = React.useState("");
 
   const colOption = (count: number) =>
@@ -172,7 +176,7 @@ export const TemplateManagement = () => {
   };
 
   const onDeleteSelect = (record: TemplateType) => {
-    setAction("DELETE");
+    setIsDeleteConfirmation(true);
     setSelectedTemplate(record);
   };
 
@@ -242,6 +246,7 @@ export const TemplateManagement = () => {
       .deleteTemplate(id)
       .then(() => {
         onCancel();
+        onCloseModal();
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -379,13 +384,17 @@ export const TemplateManagement = () => {
     setMessages(_messages);
   };
 
+  const onCloseModal = () => {
+    setIsDeleteConfirmation(false);
+  };
+
   return (
     <div className="template-management__container">
       <Modal
         title={<Title level={5}>Delete Confirmation</Title>}
-        open={action === "DELETE"}
+        open={isDeleteConfirmation}
         onOk={onDeleteConfirm}
-        onCancel={onCancel}
+        onCancel={onCloseModal}
         okText="Yes"
         cancelText="No"
         okType="danger"
@@ -429,18 +438,28 @@ export const TemplateManagement = () => {
             )}
             {action === "VIEW" && (
               <Col {...colOption(21)}>
-                <Button
-                  style={{ float: "right" }}
-                  type="primary"
-                  onClick={() => {
-                    setSearchParams({
-                      id: selectedTemplate.id as string,
-                      action: PAGE_ACTION.EDIT,
-                    });
-                  }}
-                >
-                  Edit
-                </Button>
+                <div style={{ float: "right" }}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSearchParams({
+                        id: selectedTemplate.id as string,
+                        action: PAGE_ACTION.EDIT,
+                      });
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    danger
+                    onClick={() => {
+                      onDeleteSelect(selectedTemplate);
+                    }}
+                    style={{ marginLeft: ".5rem" }}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </Col>
             )}
           </Row>

@@ -190,6 +190,7 @@ export const ILLUSTRATION_ASSETS = {
   marriage: 9,
   birthday: 16,
   others: 10,
+  forbidden: 5,
 };
 
 export const HOME_STAT = [
@@ -205,7 +206,7 @@ export const PRICING_CARDS = [
     icon: (
       <Avatar
         size={48}
-        style={{ background: "#0071dc", textAlign: "center" }}
+        style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
         icon={<FontAwesomeIcon icon={faPhone} />}
       />
     ),
@@ -222,7 +223,7 @@ export const PRICING_CARDS = [
     icon: (
       <Avatar
         size={48}
-        style={{ background: "#0071dc", textAlign: "center" }}
+        style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
         icon={<FontAwesomeIcon icon={faMessage} />}
       />
     ),
@@ -239,7 +240,7 @@ export const PRICING_CARDS = [
     icon: (
       <Avatar
         size={48}
-        style={{ background: "#0071dc", textAlign: "center" }}
+        style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
         icon={<WhatsAppOutlined />}
       />
     ),

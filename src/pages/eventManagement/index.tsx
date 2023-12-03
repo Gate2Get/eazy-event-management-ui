@@ -43,7 +43,11 @@ import NoEvents from "../../assets/svg/no-events.svg";
 import { PreviewEvent } from "../../components/previewEvent";
 import { OtherEventCreation } from "../../components/otherEventCreation";
 import { debounce } from "lodash";
-import { removeEmptyProp, urlhandler } from "../../utils/common.utils";
+import {
+  removeEmptyProp,
+  removeFalsyValues,
+  urlhandler,
+} from "../../utils/common.utils";
 import { OtherEventCard } from "../../components/otherEventCard";
 import { EmptyData } from "../../components/EmptyData";
 import {
@@ -141,7 +145,18 @@ export const EventManagement = () => {
     urlhandler(searchParams, setAction, getEventById, () => {
       getEvents(filters);
     });
+    // setFilters(filters);
   }, [searchParams]);
+
+  React.useEffect(() => {
+    const filters: EventFilterType = {
+      status: searchParams.get("status") as string,
+      type: searchParams.get("type") as string,
+      fromDate: searchParams.get("fromDate") as string,
+      toDate: searchParams.get("toDate") as string,
+    };
+    setFilters(filters);
+  }, []);
 
   React.useEffect(() => {
     form.setFieldValue("eventType", eventType || undefined);
@@ -209,7 +224,6 @@ export const EventManagement = () => {
     if (triggerDateTime) {
       event.triggerDateTime = dayjs(triggerDateTime).format();
     }
-    console.log(event);
     handleEventPreview(event);
   };
 
@@ -251,10 +265,13 @@ export const EventManagement = () => {
   }
 
   const onCancel = (isClearAction?: boolean) => {
+    setIsPreview(false);
     if (!isPreview || isClearAction) {
       setSearchParams({});
     }
-    setIsPreview(false);
+    if (action === "DELETE") {
+      setAction("");
+    }
   };
 
   const onDeleteSelect = (record: EventType) => {
@@ -453,11 +470,20 @@ export const EventManagement = () => {
     if (!Object.values(filter)?.[0]) {
       delete _filters[Object.keys(filter)[0]];
     }
-    console.log({ _filters });
-    setFilters(_filters);
+    const filterValue = removeFalsyValues(_filters);
+    setFilters(filterValue);
     setSearchParams({
-      ..._filters,
+      ...filterValue,
     });
+  };
+
+  const formatDateRange = (fromDate: string, toDate: string) => {
+    if (fromDate && toDate) {
+      return [
+        dayjs(fromDate, EVENT_DATE_FORMAT),
+        dayjs(toDate, EVENT_DATE_FORMAT),
+      ];
+    }
   };
 
   const isEditable = action === "ADD" || action === "EDIT";
@@ -535,6 +561,12 @@ export const EventManagement = () => {
                     //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
                     //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
                     // ]}
+                    value={
+                      formatDateRange(
+                        filters.fromDate as string,
+                        filters.toDate as string
+                      ) as any
+                    }
                     onChange={(e) => {
                       if (e) {
                         handleFilterChange({
@@ -545,10 +577,9 @@ export const EventManagement = () => {
                         const _filters: any = { ...filters };
                         delete _filters.fromDate;
                         delete _filters.toDate;
-                        setFilters(_filters);
-                        setSearchParams({
-                          ..._filters,
-                        });
+                        const filter = removeFalsyValues(_filters);
+                        setFilters(filter);
+                        setSearchParams(filter);
                       }
                     }}
                     format={EVENT_DATE_FORMAT}

@@ -5,7 +5,36 @@
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
 
   .stat-icon {
-    position: relative;
-    top: 10px;
+    letter-spacing: 0px;
+    background-color: rgba(18, 183, 106, 0.12);
+    color: rgb(18, 183, 106);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    margin-top: 1vh;
+
+    > svg {
+      margin-top: 10px;
+    }
+  }
+
+  .stat-title {
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 2.46;
+    // font-family: Inter, sans-serif;
+    text-transform: uppercase;
+    color: rgb(102, 112, 133);
+  }
+
+  .ant-card-body {
+    padding: 12px;
+  }
+
+  .ant-divider-horizontal {
+    margin: 4px 0px;
   }
 }

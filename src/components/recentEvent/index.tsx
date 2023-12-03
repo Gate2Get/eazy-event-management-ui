@@ -47,7 +47,7 @@ export const RecentEvent = (props: RecentEventType) => {
           <FontAwesomeIcon
             icon={faCalendarDays}
             // className="dark-color"
-            size="2x"
+            size="lg"
           />
           Recent Event
         </Space>

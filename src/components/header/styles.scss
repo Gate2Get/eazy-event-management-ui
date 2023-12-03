@@ -17,8 +17,12 @@
 
   .app__name {
     margin-left: 10px;
-    // color: #fff;
+    color: #ffffff;
     font-size: 20px;
     font-weight: 400;
+
+    .current-tab {
+      color: #fff;
+    }
   }
 }

@@ -77,7 +77,7 @@
 }
 
 .dark-color {
-  color: #0071dc;
+  color: rgb(18, 183, 106);
 }
 
 .ee__avatar-color-a,
@@ -160,7 +160,7 @@
 
 .ant-btn-primary,
 .ant-btn-primary:hover {
-  background-color: #0071dc !important;
+  background-color: rgb(18, 183, 106) !important;
   color: #fff;
 }
 
@@ -176,7 +176,11 @@
 
 .ant-btn-primary {
   color: #fff;
-  border-color: #0565ff !important;
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-btn-link {
+  color: rgb(18, 183, 106);
 }
 
 .__account__login {
@@ -213,9 +217,72 @@ form {
 }
 
 .link-text {
-  color: #1677ff;
+  color: rgb(18, 183, 106);
   text-decoration: none;
   outline: none;
   cursor: pointer;
   transition: color 0.3s;
+}
+
+.right-arrow-icon {
+  color: rgb(16, 24, 40);
+  margin-left: 1rem;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.ant-radio-button-checked,
+.ant-radio-button-wrapper-checked {
+  color: rgb(18, 183, 106) !important;
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-picker-calendar-date-today {
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-picker-cell-selected,
+.ant-picker-calendar-date-today {
+  background: rgba(18, 183, 106, 0.12) !important;
+}
+
+.ant-alert-info {
+  background: rgba(18, 183, 106, 0.12) !important;
+
+  svg {
+    color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-tabs-tab-active {
+  .ant-tabs-tab-btn {
+    color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-tabs-tab-btn:hover,
+.ant-tabs-tab-btn:active {
+  color: rgba(18, 183, 106, 0.12) !important;
+}
+
+.ant-upload-drag:hover {
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-upload-list-item-name {
+  color: rgb(18, 183, 106) !important;
+}
+
+.ant-upload-drag {
+  svg {
+    color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-input:hover {
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-radio-button-checked {
+  background-color: #fff;
 }

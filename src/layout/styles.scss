@@ -11,7 +11,8 @@
     top: 0px;
     z-index: 1000;
     width: 100%;
-    background: #fff;
+    color: rgb(255, 255, 255);
+    background: rgb(16, 24, 40);
     box-shadow: 0 100px 80px rgba(0, 0, 0, 0.01),
       0 64.8148px 46.8519px rgba(0, 0, 0, 0.00759259),
       0 38.5185px 25.4815px rgba(0, 0, 0, 0.00607407),
@@ -64,7 +65,7 @@
     .ant-menu-item-selected::before {
       // border-left: 5px solid rgb(22, 119, 255);
       // border-bottom: 1px solid rgb(22, 119, 255);
-      background: #0071dc;
+      background: rgb(18, 183, 106);
       border-radius: 0 62.5rem 62.5rem 0;
       bottom: 0.25rem;
       content: "";
@@ -81,7 +82,15 @@
     .ant-menu-item-selected {
       color: #46474a;
       border-radius: 0%;
-      background-color: #f2f8fd;
+      background-color: rgba(18, 183, 106, 0.12);
+
+      .ant-menu-title-content {
+        color: rgb(18, 183, 106) !important;
+      }
+
+      svg {
+        color: rgb(18, 183, 106) !important;
+      }
     }
 
     .ant-menu-item-active {

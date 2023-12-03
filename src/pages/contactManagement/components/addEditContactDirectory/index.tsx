@@ -166,6 +166,7 @@ export const AddEditContactDirectory = () => {
       .createContactDirectory(directory)
       .then((response) => {
         setLoading(false);
+        onCancel();
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -179,6 +180,7 @@ export const AddEditContactDirectory = () => {
       .updateContactDirectory(directory)
       .then((response) => {
         setLoading(false);
+        onCancel();
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -210,12 +212,13 @@ export const AddEditContactDirectory = () => {
 
   const onActionClick = async () => {
     const validation = await form.validateFields();
-    console.log({ validation });
+
     const directory = form.getFieldsValue();
     const directoryList = {
       ...directory,
       contacts: directoryContactList,
     };
+    console.log({ validation, directoryList });
     if (action === "ADD" || action === "EDIT") {
       const isError = contactValidator(directoryList);
       setError(isError);
@@ -226,10 +229,8 @@ export const AddEditContactDirectory = () => {
 
     if (action === "ADD") {
       createContactDirectory(directoryList);
-      onCancel();
     } else if (action === "EDIT") {
       updateContactDirectory({ id: selectedDirectory.id, ...directoryList });
-      onCancel();
     } else if (action === "VIEW") {
       setSearchParams({
         id: selectedDirectory.id as string,
@@ -425,14 +426,7 @@ export const AddEditContactDirectory = () => {
           )}
         </Col>
       </Row>
-      {isError && (
-        <Alert
-          message="One or more mandatory field are not filled"
-          type="error"
-          showIcon
-          style={{ marginBottom: "5px" }}
-        />
-      )}
+
       {action !== "VIEW" && (
         <>
           <Form
@@ -505,7 +499,14 @@ export const AddEditContactDirectory = () => {
           </Form>
         </>
       )}
-
+      {isError && (
+        <Alert
+          message="Atleast one contact is required in the directory"
+          type="error"
+          showIcon
+          style={{ margin: "1rem 0rem 0rem 0rem" }}
+        />
+      )}
       <>
         <Divider />
         <Row gutter={[16, 8]}>

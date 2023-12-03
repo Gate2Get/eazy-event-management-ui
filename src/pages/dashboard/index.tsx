@@ -1,4 +1,14 @@
-import { Alert, Col, Row, Select, Space, Typography } from "antd";
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  List,
+  Row,
+  Select,
+  Space,
+  Typography,
+} from "antd";
 import React from "react";
 import {
   BarChart,
@@ -16,14 +26,28 @@ import { NoticeCalendar } from "../../components/noticeCalendar";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import { EventType } from "../../types";
+import illustrationReports from "../../assets/png/illustration-reports.png";
+import "./styles.scss";
+import { ArrowRightOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_URL } from "../../constants";
 
-const { Title } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const statColSpan = 24 / DASHBOARD_STATS.length;
+
+const data = [
+  "Racing car sprays burning fuel into crowd.",
+  "Japanese princess to wed commoner.",
+  "Australian walks 100km after outback crash.",
+  "Man charged over missing wedding girl.",
+  "Los Angeles battles huge wildfires.",
+];
 
 export const Dashboard = () => {
   let barChartData: any[] = [];
   const { screen, setLoading } = useBearStore.appStore();
+  const navigate = useNavigate();
   const {
     recentEvent,
     setRecentEvent,
@@ -35,6 +59,7 @@ export const Dashboard = () => {
     statistics,
     setStatistics,
   } = useBearStore.dashboardStore();
+  const { user } = useBearStore.userStore();
   const colOption = (count: number) =>
     screen === "MOBILE"
       ? {
@@ -128,10 +153,62 @@ export const Dashboard = () => {
   };
 
   return (
-    <>
+    <div className="dashboard__container">
       <br />
       <Row gutter={[16, 16]}>
-        <Col {...colOption(18)}>
+        <Col {...colOption(12)}>
+          <Card style={{ background: "rgb(16, 24, 40)" }}>
+            <Row gutter={[16, 16]}>
+              <Col span={18}>
+                <Title level={3} style={{ color: "#fff" }}>
+                  Welcome, {user.firstName || "User"} !
+                </Title>
+                <Paragraph style={{ color: "#fff", fontSize: "16px" }}>
+                  Let’s complete your account information so we can gather more
+                  accurate data for you.
+                </Paragraph>
+
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`)
+                  }
+                >
+                  Go to Account{" "}
+                  <ArrowRightOutlined
+                    style={{ color: "#fff" }}
+                    className="right-arrow-icon"
+                  />
+                </Button>
+              </Col>
+              <Col span={6}>
+                <img
+                  src={illustrationReports}
+                  alt=""
+                  className="user-illustration"
+                />
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col {...colOption(12)}>
+          <List
+            size="default"
+            header={
+              <Text strong style={{ fontSize: "16px" }}>
+                Notifications
+              </Text>
+            }
+            footer={<Button type="text">See all notifications</Button>}
+            bordered
+            dataSource={[]}
+            renderItem={(item) => <List.Item>{item}</List.Item>}
+          />
+        </Col>
+      </Row>
+      <br />
+      <Row gutter={[16, 16]}>
+        <Col {...colOption(24)}>
           <Row gutter={[16, 16]}>
             {renderStatistics().map((stats) => (
               <Col flex={statColSpan} key={stats.title}>
@@ -140,11 +217,10 @@ export const Dashboard = () => {
             ))}
           </Row>
           <br />
-          <Row gutter={[8, 8]}>
+          <Row gutter={[8, 8]} style={{ padding: "1rem" }}>
             <Title level={4}>My Calendar</Title>
-            <Row>
-              <NoticeCalendar />
-            </Row>
+
+            <NoticeCalendar />
 
             <Space direction="vertical">
               <Title level={4}>My Event chart</Title>
@@ -181,12 +257,12 @@ export const Dashboard = () => {
             </Space>
           </Row>
         </Col>
-        <Col {...colOption(6)}>
+        {/* <Col {...colOption(6)}>
           <Row>
             <RecentEvent {...recentEvent} onRefresh={getRecentEvent} />
           </Row>
-        </Col>
+        </Col> */}
       </Row>
-    </>
+    </div>
   );
 };

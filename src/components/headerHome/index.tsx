@@ -11,6 +11,7 @@ import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../../constants";
 import { useBearStore } from "../../store";
 import { faPhone, faIndianRupee } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Logo from "../../assets/png/logoGreen.png";
 
 const { Text } = Typography;
 
@@ -45,6 +46,12 @@ export const HeaderHome = (props: HeaderHomeType) => {
           navigate("/");
         }}
       >
+        <img
+          src={Logo}
+          alt=""
+          width={30}
+          style={{ position: "relative", top: "10px" }}
+        />
         Eazy Event
       </Text>
       {screen === "MOBILE" ? (

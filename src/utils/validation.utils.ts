@@ -3,9 +3,9 @@ import { ContactDirectoryType } from "./../types";
 export const contactValidator = (directory: ContactDirectoryType) => {
   const { name, contacts } = directory;
   console.log({ name, contacts });
-  const isContactError = contacts?.find(
-    (contact) => !contact.name || !contact.senderId
-  );
+  const isContactError = contacts?.length
+    ? contacts?.find((contact) => !contact.name || !contact.senderId)
+    : true;
   console.log(isContactError, !name, !contacts);
   return !!isContactError || !name || !contacts;
 };

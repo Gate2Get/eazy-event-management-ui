@@ -1,5 +1,14 @@
 import React from "react";
-import { Col, Divider, Row, Typography, Form, Rate, Button } from "antd";
+import {
+  Col,
+  Divider,
+  Row,
+  Typography,
+  Form,
+  Rate,
+  Button,
+  Result,
+} from "antd";
 import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
 import feedbackBanner from "../../assets/svg/feedback-banner.svg";
 import { FEEDBACK_DETAILS } from "./constant";
@@ -21,6 +30,7 @@ const customIcons: Record<number, React.ReactNode> = {
 export const Feedback = () => {
   const [form] = Form.useForm();
   const { screen, setLoading } = useBearStore.appStore();
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -29,18 +39,51 @@ export const Feedback = () => {
         }
       : { span: count };
 
-  const handleSubmit = (bugs: FeedbackType) => {
+  React.useEffect(() => {
+    if (isSubmitted) {
+      form.resetFields();
+    }
+    return () => {
+      form.resetFields();
+    };
+  }, [isSubmitted]);
+
+  const handleSubmit = (values: any) => {
+    const bugs = {
+      comments: values.comments,
+      questions: FEEDBACK_DETAILS.map((_questions) => ({
+        question: _questions.label,
+        answer: values[_questions.id],
+      })),
+    };
+
     setLoading(true);
     API.commonAPI
       .submitFeedback(bugs)
-      .then(() => {
+      .then((response) => {
         setLoading(false);
+        console.log({ response });
+        if (response.status) setIsSubmitted(true);
       })
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "handleSubmit", error });
       });
   };
+
+  if (isSubmitted) {
+    return (
+      <Result
+        status="success"
+        title="Feedback submitted successfully"
+        extra={[
+          <Button type="primary" onClick={() => setIsSubmitted(false)}>
+            Create New
+          </Button>,
+        ]}
+      />
+    );
+  }
 
   return (
     <div>
@@ -60,7 +103,16 @@ export const Feedback = () => {
             onFinish={handleSubmit}
           >
             {FEEDBACK_DETAILS.map((feedback) => (
-              <Form.Item label={feedback.label} name="layout">
+              <Form.Item
+                label={feedback.label}
+                name={feedback.id}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please select the option!",
+                  },
+                ]}
+              >
                 <Rate
                   character={(props) =>
                     customIcons[(props.index as number) + 1]
@@ -70,12 +122,12 @@ export const Feedback = () => {
             ))}
             <Form.Item
               label="Please provide additional feedback.(Optional)"
-              name="layout"
+              name="comments"
             >
               <TextArea size="large" />
             </Form.Item>
             <Form.Item>
-              <Button size="large" type="primary">
+              <Button size="large" type="primary" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>

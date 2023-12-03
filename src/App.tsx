@@ -1,19 +1,17 @@
 import React from "react";
-import "./App.scss";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { AppLayout } from "./layout";
+import { useNavigate } from "react-router-dom";
 import { useBearStore } from "./store";
 import { useWindowSize } from "./hooks/useWindowSize";
 import { AppRoutes } from "./routes";
 import { interceptors } from "./configs/axios.config";
 import { HomeLayout } from "./homeLayout";
+import "./App.scss";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
-  const { screen, setScreen, setCollapsed } = useBearStore.appStore();
+  const { setScreen, setCollapsed } = useBearStore.appStore();
 
   const navigate = useNavigate();
-  console.log({ width });
   React.useEffect(() => {
     if (width < 650) {
       setScreen("MOBILE");

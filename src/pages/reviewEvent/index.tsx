@@ -307,7 +307,6 @@ export const ReviewEvent = () => {
           {adminActionStatus === "APPROVED" && (
             <InputNumber
               status={isError && !price ? "error" : ""}
-              size="large"
               value={price}
               placeholder="Price"
               addonBefore="₹"
@@ -319,7 +318,6 @@ export const ReviewEvent = () => {
           )}
           <TextArea
             showCount
-            size="large"
             maxLength={150}
             value={comment}
             status={isError && !comment ? "error" : ""}
@@ -424,7 +422,6 @@ export const ReviewEvent = () => {
             <Row className="header__container">
               <Col {...colOption(4)} className="back-icon__container">
                 <Button
-                  size="large"
                   type="text"
                   onClick={() => {
                     onCancel(true);

@@ -81,7 +81,6 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.REVIEW_EVENTS,
     element: <ReviewEvent />,
-    // element: <div></div>,
   },
   {
     path: ROUTES_URL.MY_PROFILE,

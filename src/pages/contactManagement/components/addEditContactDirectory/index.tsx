@@ -31,7 +31,7 @@ import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { parseXlsx } from "../../../../utils/parseXlsx.utils";
 import { ContactUserCard } from "../../../../components/contactUserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import IllustrationWebp from "../../../../assets/webp/illustration-self-service.webp";
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { saveAs } from "file-saver";
@@ -378,12 +378,9 @@ export const AddEditContactDirectory = () => {
               className="back-icon__container"
             >
               <Button
-                size="large"
                 type="text"
                 onClick={onCancel}
-                icon={
-                  <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
-                }
+                icon={<KeyboardBackspaceIcon className="back-icon" />}
               >
                 {action === "VIEW"
                   ? selectedDirectory.name
@@ -448,7 +445,6 @@ export const AddEditContactDirectory = () => {
             >
               <Input
                 required
-                size="large"
                 value={selectedDirectory.name}
                 placeholder="Name of the directory"
                 style={{ width: screen === "MOBILE" ? "100%" : "50%" }}
@@ -570,7 +566,6 @@ export const AddEditContactDirectory = () => {
               placeholder="Search here"
               onSearch={onSearch}
               style={{ width: "100%" }}
-              size="large"
               allowClear
             />
           ) : null}

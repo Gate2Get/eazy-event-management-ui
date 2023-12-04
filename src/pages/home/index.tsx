@@ -44,7 +44,7 @@ export const Home = () => {
             width={screen === "MOBILE" ? "50%" : "25%"}
           />
         </div>
-        <Button type="primary" size="large" onClick={verifyAuth}>
+        <Button type="primary" onClick={verifyAuth}>
           Get Started
         </Button>
         <Title level={screen === "MOBILE" ? 4 : 2} className="sub-heading">
@@ -99,7 +99,7 @@ export const Home = () => {
                 screen !== "MOBILE" ? { position: "relative", top: "50px" } : {}
               }
             >
-              <Button type="primary" size="large" onClick={verifyAuth}>
+              <Button type="primary" onClick={verifyAuth}>
                 Get Started
               </Button>
             </Col>

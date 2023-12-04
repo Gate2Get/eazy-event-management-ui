@@ -57,6 +57,7 @@ import {
 } from "../../configs/antd.config";
 import { useTheme } from "antd-style";
 import { useSearchParams } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -614,14 +615,11 @@ export const EventManagement = () => {
             <Row className="header__container">
               <Col {...colOption(4)} className="back-icon__container">
                 <Button
-                  size="large"
                   type="text"
                   onClick={() => {
                     onCancel();
                   }}
-                  icon={
-                    <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
-                  }
+                  icon={<KeyboardBackspaceIcon className="back-icon" />}
                 >
                   back
                 </Button>
@@ -668,7 +666,6 @@ export const EventManagement = () => {
             <Form.Item label="Select Event" name="type">
               <Select
                 style={{ width: "100%" }}
-                size="large"
                 allowClear
                 placeholder="Select a event"
                 optionFilterProp="children"

@@ -3,20 +3,8 @@
     text-align: center;
     .headline {
       padding-top: 2rem !important;
-      -webkit-text-fill-color: transparent;
-      -webkit-animation: shine 3s linear infinite;
-      animation: shine 3s linear infinite;
-      background: linear-gradient(
-        270deg,
-        #12b76a 20%,
-        #d341a5 40%,
-        #d341a5 60%,
-        #12b76a 80%
-      );
-      background-clip: text;
-      -webkit-background-clip: text;
       background-size: 200% auto;
-      color: #12b76a;
+      color: rgb(45, 55, 72);
     }
 
     .sub-heading {

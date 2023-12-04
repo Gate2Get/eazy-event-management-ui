@@ -155,7 +155,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 margin: "0px 10px 10px 10px",
                 padding: 10,
                 minHeight: height,
-                background: "#FFFFFF",
+                background: "rgb(252, 252, 253)",
                 marginLeft: collapsed ? 0 : sidebarWidth,
               }}
             >

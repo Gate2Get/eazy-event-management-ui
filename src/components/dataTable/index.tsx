@@ -63,7 +63,6 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
           placeholder="Search here"
           onSearch={onSearch}
           style={{ width: screen === "MOBILE" ? "100%" : "40%" }}
-          size="large"
         />
       )}
       <VirtualTable

@@ -100,7 +100,7 @@ export const PreviewTemplate = (props: TemplateType) => {
       <div className="phone">
         <Card style={cardStyle} className="chat-container">
           <Card.Meta
-            avatar={<Avatar icon={<UserOutlined />} size="large" />}
+            avatar={<Avatar icon={<UserOutlined />} />}
             title={
               <div>
                 <Paragraph>{name || ""}</Paragraph>

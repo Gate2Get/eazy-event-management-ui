@@ -10,15 +10,6 @@ import {
   Typography,
 } from "antd";
 import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
 import { RecentEvent } from "../../components/recentEvent";
 import { StatisticCard } from "../../components/StatisticCard";
 import { DASHBOARD_STATS } from "./constants";
@@ -30,22 +21,13 @@ import illustrationReports from "../../assets/png/illustration-reports.png";
 import "./styles.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
+import { CHANNEL_OPTIONS_MAP, ROUTES_URL } from "../../constants";
 
 const { Title, Text, Paragraph } = Typography;
 
 const statColSpan = 24 / DASHBOARD_STATS.length;
 
-const data = [
-  "Racing car sprays burning fuel into crowd.",
-  "Japanese princess to wed commoner.",
-  "Australian walks 100km after outback crash.",
-  "Man charged over missing wedding girl.",
-  "Los Angeles battles huge wildfires.",
-];
-
 export const Dashboard = () => {
-  let barChartData: any[] = [];
   const { screen, setLoading } = useBearStore.appStore();
   const navigate = useNavigate();
   const {
@@ -119,20 +101,13 @@ export const Dashboard = () => {
   };
 
   const chartSelectionOptions = calendarEvents.map((item) => ({
-    label: item.name,
+    label: (
+      <>
+        {CHANNEL_OPTIONS_MAP[item.channel as string]} {item.name} (${item.type})
+      </>
+    ),
     value: item.id,
   }));
-
-  if (selectedEvent) {
-    barChartData = [
-      {
-        name: selectedEvent.name,
-        Progress: selectedEvent.progress,
-        Success: selectedEvent.success,
-        Failed: selectedEvent.failed,
-      },
-    ];
-  }
 
   const renderStatistics = () => {
     let total = 0;
@@ -192,17 +167,11 @@ export const Dashboard = () => {
           </Card>
         </Col>
         <Col {...colOption(12)}>
-          <List
-            size="default"
-            header={
-              <Text strong style={{ fontSize: "16px" }}>
-                Notifications
-              </Text>
-            }
-            footer={<Button type="text">See all notifications</Button>}
-            bordered
-            dataSource={[]}
-            renderItem={(item) => <List.Item>{item}</List.Item>}
+          <RecentEvent
+            {...recentEvent}
+            onRefresh={getRecentEvent}
+            chartSelectionOptions={chartSelectionOptions}
+            setChartSelectionEventId={setChartSelectionEventId}
           />
         </Col>
       </Row>
@@ -218,50 +187,9 @@ export const Dashboard = () => {
           </Row>
           <br />
           <Row gutter={[8, 8]} style={{ padding: "1rem" }}>
-            <Title level={4}>My Calendar</Title>
-
             <NoticeCalendar />
-
-            <Space direction="vertical">
-              <Title level={4}>My Event chart</Title>
-              <Select
-                options={chartSelectionOptions}
-                size="large"
-                style={{ width: "100%" }}
-                placeholder="Select event"
-                onChange={(value) => {
-                  setChartSelectionEventId(value);
-                }}
-              />
-              <BarChart
-                title="My Event chart"
-                width={500}
-                height={300}
-                data={barChartData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="Count" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Progress" fill="#3498DB" />
-                <Bar dataKey="Success" fill="#1ABC9C" />
-                <Bar dataKey="Failed" fill="#D35400" />
-              </BarChart>
-            </Space>
           </Row>
         </Col>
-        {/* <Col {...colOption(6)}>
-          <Row>
-            <RecentEvent {...recentEvent} onRefresh={getRecentEvent} />
-          </Row>
-        </Col> */}
       </Row>
     </div>
   );

@@ -12,6 +12,13 @@ import {
 import { MenuProps } from "antd";
 import { NavigateFunction } from "react-router-dom";
 import { ROUTES_MENU, ROUTES_URL } from "../constants";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import BugReportIcon from "@mui/icons-material/BugReport";
 
 const adminMenu = (
   navigate: NavigateFunction,
@@ -52,7 +59,9 @@ export const getMenuItems = (
     {
       key: ROUTES_URL.DASHBOARD,
       icon: (
-        <DashboardOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+        <SpaceDashboardIcon
+          style={{ fontSize: "20px", fontWeight: "bolder" }}
+        />
       ),
       label: ROUTES_MENU.DASHBOARD,
       onClick: () => {
@@ -70,9 +79,7 @@ export const getMenuItems = (
           key: ROUTES_URL.CONTACT_MANAGEMENT,
           label: ROUTES_MENU.CONTACT_MANAGEMENT,
           icon: (
-            <ContactsOutlined
-              style={{ fontSize: "20px", fontWeight: "bolder" }}
-            />
+            <ContactsIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
           ),
           onClick: () => {
             otherFn?.();
@@ -83,7 +90,7 @@ export const getMenuItems = (
           key: ROUTES_URL.TEMPLATE_MANAGEMENT,
           label: ROUTES_MENU.TEMPLATE_MANAGEMENT,
           icon: (
-            <FilePptOutlined
+            <ChromeReaderModeIcon
               style={{ fontSize: "20px", fontWeight: "bolder" }}
             />
           ),
@@ -105,9 +112,7 @@ export const getMenuItems = (
           key: ROUTES_URL.EVENT_MANAGEMENT,
           label: ROUTES_MENU.EVENT_MANAGEMENT,
           icon: (
-            <NotificationOutlined
-              style={{ fontSize: "20px", fontWeight: "bolder" }}
-            />
+            <EventNoteIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
           ),
           onClick: () => {
             otherFn?.();
@@ -135,7 +140,9 @@ export const getMenuItems = (
         {
           key: ROUTES_URL.MY_PROFILE,
           icon: (
-            <UserOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+            <AccountBoxIcon
+              style={{ fontSize: "20px", fontWeight: "bolder" }}
+            />
           ),
           label: ROUTES_MENU.MY_PROFILE,
           onClick: () => {
@@ -146,7 +153,7 @@ export const getMenuItems = (
         {
           key: ROUTES_URL.FEEDBACK,
           icon: (
-            <CommentOutlined
+            <RateReviewIcon
               style={{ fontSize: "20px", fontWeight: "bolder" }}
             />
           ),
@@ -159,7 +166,7 @@ export const getMenuItems = (
         {
           key: ROUTES_URL.REPORT_BUG,
           icon: (
-            <BugOutlined style={{ fontSize: "20px", fontWeight: "bolder" }} />
+            <BugReportIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
           ),
           label: ROUTES_MENU.REPORT_BUG,
           onClick: () => {

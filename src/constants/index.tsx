@@ -1,8 +1,9 @@
-import { WhatsAppOutlined } from "@ant-design/icons";
-import { faMessage, faUser } from "@fortawesome/free-regular-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar } from "antd";
+import SmsIcon from "@mui/icons-material/Sms";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import PhoneIcon from "@mui/icons-material/Phone";
 
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
@@ -147,7 +148,7 @@ export const CHANNEL_OPTIONS = [
   {
     label: (
       <>
-        <FontAwesomeIcon icon={faMessage} /> SMS
+        <SmsIcon fontSize="inherit" /> SMS
       </>
     ),
     value: "SMS",
@@ -155,7 +156,7 @@ export const CHANNEL_OPTIONS = [
   {
     label: (
       <>
-        <WhatsAppOutlined /> Whatsapp
+        <WhatsAppIcon fontSize="inherit" /> Whatsapp
       </>
     ),
     value: "WHATSAPP",
@@ -163,12 +164,18 @@ export const CHANNEL_OPTIONS = [
   {
     label: (
       <>
-        <FontAwesomeIcon icon={faPhone} /> Voice call
+        <PhoneIcon fontSize="inherit" /> Voice call
       </>
     ),
     value: "VOICE_CALL",
   },
 ];
+
+export const CHANNEL_OPTIONS_MAP: Record<string, React.ReactNode> = {
+  VOICE_CALL: <PhoneIcon fontSize="inherit" />,
+  WHATSAPP: <WhatsAppIcon fontSize="inherit" />,
+  SMS: <SmsIcon fontSize="inherit" />,
+};
 
 export const EVENT_SEND_STATUS_MAP: Record<string, string> = {
   "1": "Progress",
@@ -207,7 +214,7 @@ export const PRICING_CARDS = [
       <Avatar
         size={48}
         style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
-        icon={<FontAwesomeIcon icon={faPhone} />}
+        icon={<PhoneIcon />}
       />
     ),
     title: "Voice Call Plan",
@@ -224,7 +231,7 @@ export const PRICING_CARDS = [
       <Avatar
         size={48}
         style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
-        icon={<FontAwesomeIcon icon={faMessage} />}
+        icon={<SmsIcon fontSize="inherit" />}
       />
     ),
     title: "SMS Plan",
@@ -241,7 +248,7 @@ export const PRICING_CARDS = [
       <Avatar
         size={48}
         style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
-        icon={<WhatsAppOutlined />}
+        icon={<WhatsAppIcon />}
       />
     ),
     title: "WhatsApp Plan",

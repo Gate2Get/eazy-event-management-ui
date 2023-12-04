@@ -49,6 +49,7 @@ import {
 import { EmptyData } from "../../components/EmptyData";
 import NoTemplate from "../../assets/svg/no-template.svg";
 import { useSearchParams } from "react-router-dom";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -332,7 +333,6 @@ export const TemplateManagement = () => {
     if (message.type === "TEXT") {
       return (
         <TextArea
-          size="large"
           style={{ minHeight: "40vh", width: "100%" }}
           disabled={action === "VIEW"}
           autoSize={{ minRows: 1, maxRows: 20 }}
@@ -412,12 +412,9 @@ export const TemplateManagement = () => {
             {action && action !== "DELETE" ? (
               <Col {...colOption(3)} className="back-icon__container">
                 <Button
-                  size="large"
                   type="text"
                   onClick={onCancel}
-                  icon={
-                    <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
-                  }
+                  icon={<KeyboardBackspaceIcon className="back-icon" />}
                 >
                   back
                 </Button>
@@ -525,7 +522,7 @@ export const TemplateManagement = () => {
                 { required: true, message: "Please input your template name" },
               ]}
             >
-              <Input size="large" />
+              <Input />
             </Form.Item>
           )}
 
@@ -554,7 +551,6 @@ export const TemplateManagement = () => {
                           handleRemoveFieldVoice(message.id);
                         }}
                         danger
-                        size="large"
                         icon={<DeleteOutlined />}
                       ></Button>
                     </Col>

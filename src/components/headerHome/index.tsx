@@ -11,7 +11,7 @@ import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../../constants";
 import { useBearStore } from "../../store";
 import { faPhone, faIndianRupee } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Logo from "../../assets/png/logoGreen.png";
+import Logo from "../../assets/png/logoEazyEvent.png";
 
 const { Text } = Typography;
 
@@ -61,11 +61,7 @@ export const HeaderHome = (props: HeaderHomeType) => {
       ) : (
         <span>
           <div className="get-started__button">
-            <Button
-              size="large"
-              type="text"
-              onClick={() => navigate(ROUTES_URL.PRICING)}
-            >
+            <Button type="text" onClick={() => navigate(ROUTES_URL.PRICING)}>
               Pricing
             </Button>
             {!NON_PROTECTED_ROUTES.includes(window.location.pathname) && (
@@ -81,7 +77,6 @@ export const HeaderHome = (props: HeaderHomeType) => {
         <Space direction="vertical">
           <Button
             icon={<FontAwesomeIcon icon={faIndianRupee} />}
-            size="large"
             type="text"
             onClick={() => {
               navigate(ROUTES_URL.PRICING);

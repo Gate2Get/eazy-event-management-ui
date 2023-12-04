@@ -185,7 +185,6 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
                   {payload.mobile}. Please enter the code below to continue
                 </Text>
                 <Form
-                  size="large"
                   form={form}
                   name="otp"
                   onFinish={onVerifyOTP}
@@ -231,7 +230,6 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
             ) : (
               <>
                 <Form
-                  size="large"
                   form={form}
                   name="register"
                   onFinish={onNext}

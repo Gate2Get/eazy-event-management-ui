@@ -60,7 +60,6 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
     <div>
       <Row>
         <Col flex={24}>
-          <Title level={3}>Create Other Event</Title>
           <Form
             layout="vertical"
             form={form}
@@ -72,7 +71,7 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
               name="name"
               rules={[{ required: true, message: "Please input Event name!" }]}
             >
-              <Input size="large" placeholder="Enter your Event Name" />
+              <Input placeholder="Enter your Event Name" />
             </Form.Item>
             <Form.Item
               label="Select the event date"
@@ -89,7 +88,6 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                     dayjs("11:59:59", "HH:mm:ss"),
                   ],
                 }}
-                size="large"
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%" }}
               />
@@ -118,7 +116,6 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
               ]}
             >
               <Select
-                size="large"
                 placeholder="Select the contact directory"
                 allowClear
                 showSearch
@@ -156,7 +153,6 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
             >
               <Select
                 disabled={!channel}
-                size="large"
                 showSearch
                 onSearch={onSearchTemplate}
                 placeholder="Select the message template"
@@ -192,7 +188,7 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                 { required: true, message: "Please input the event location!" },
               ]}
             >
-              <Input size="large" placeholder="Enter the event location" />
+              <Input placeholder="Enter the event location" />
             </Form.Item>
             <Form.Item
               label="Google Location url"
@@ -206,7 +202,6 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
             >
               <Input
                 type="url"
-                size="large"
                 placeholder="Enter the event google location url"
               />
             </Form.Item>
@@ -226,12 +221,11 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
                 style={{ width: "100%" }}
-                size="large"
               />
             </Form.Item>
             <Form.Item>
               <Space>
-                <Button size="large" type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit">
                   Preview & {isEdit ? "Update" : "Create"} Event
                 </Button>
               </Space>

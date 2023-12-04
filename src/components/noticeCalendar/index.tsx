@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import type { Dayjs } from "dayjs";
-import type { BadgeProps, CalendarProps } from "antd";
+import { BadgeProps, CalendarProps, Typography } from "antd";
 import { Badge, Calendar } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
@@ -9,6 +9,9 @@ import dayjs from "dayjs";
 import { CalendarMode, SelectInfo } from "antd/es/calendar/generateCalendar";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
+import "./styles.scss";
+
+const { Paragraph } = Typography;
 
 export const NoticeCalendar = () => {
   const { setLoading } = useBearStore.appStore();
@@ -112,7 +115,7 @@ export const NoticeCalendar = () => {
     const listData =
       monthYear === selectedMonthYear ? eventMonthMap[value.date()] : [];
     return (
-      <ul className="events">
+      <ul className="events-date">
         {listData?.map((item: any) => (
           <li key={item.id}>
             <Badge
@@ -205,14 +208,19 @@ export const NoticeCalendar = () => {
   };
 
   return (
-    <Calendar
-      mode={mode}
-      cellRender={cellRender}
-      onChange={onDateChange}
-      onSelect={onSelectDate}
-      value={currentDate}
-      disabledDate={onDisableDate}
-      onPanelChange={onPanelChange}
-    />
+    <div className="antd-calendar__container">
+      <Paragraph strong style={{ fontSize: "16px" }}>
+        My Calendar
+      </Paragraph>
+      <Calendar
+        mode={mode}
+        cellRender={cellRender}
+        onChange={onDateChange}
+        onSelect={onSelectDate}
+        value={currentDate}
+        disabledDate={onDisableDate}
+        onPanelChange={onPanelChange}
+      />
+    </div>
   );
 };

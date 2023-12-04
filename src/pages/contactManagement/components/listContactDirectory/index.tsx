@@ -108,7 +108,6 @@ export const ListContactDirectory = () => {
               value={searchValue}
               onSearch={onSearch}
               style={{ width: "100%" }}
-              size="large"
               allowClear
             />
           ) : null}

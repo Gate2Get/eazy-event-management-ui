@@ -15,7 +15,6 @@ export const Authorizer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   React.useEffect(() => {
-    console.log("window.location.pathname", window.location.pathname);
     if (!NON_PROTECTED_ROUTES.includes(window.location.pathname)) {
       verifyAuth();
     }

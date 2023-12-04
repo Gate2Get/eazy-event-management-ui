@@ -142,7 +142,6 @@ export const SignIn = () => {
                 code below to continue
               </Text>
               <Form
-                size="large"
                 form={form}
                 name="otp"
                 onFinish={onVerifyOTP}
@@ -205,7 +204,6 @@ export const SignIn = () => {
           ) : (
             <>
               <Form
-                size="large"
                 form={form}
                 name="register"
                 onFinish={onNext}

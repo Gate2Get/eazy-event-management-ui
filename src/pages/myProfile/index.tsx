@@ -186,7 +186,6 @@ export const MyProfile = () => {
               ]}
             >
               <Input
-                size="large"
                 type="email"
                 placeholder="Your email address"
                 suffix={
@@ -216,7 +215,6 @@ export const MyProfile = () => {
               ]}
             >
               <Input
-                size="large"
                 type="number"
                 placeholder="Mobile number"
                 suffix={
@@ -235,7 +233,7 @@ export const MyProfile = () => {
                 { required: false, message: "Please input your first name!" },
               ]}
             >
-              <Input size="large" placeholder="Enter your first name" />
+              <Input placeholder="Enter your first name" />
             </Form.Item>
             <Form.Item
               label="Last Name"
@@ -244,14 +242,14 @@ export const MyProfile = () => {
                 { required: false, message: "Please input your last name!" },
               ]}
             >
-              <Input size="large" placeholder="Enter your last name" />
+              <Input placeholder="Enter your last name" />
             </Form.Item>
             <Form.Item
               label="Gender"
               name="gender"
               rules={[{ required: false, message: "Please choose gender!" }]}
             >
-              <Radio.Group size="large">
+              <Radio.Group>
                 <Radio.Button value="M">Male</Radio.Button>
                 <Radio.Button value="F">Female</Radio.Button>
                 <Radio.Button value="NA">Not preferred</Radio.Button>
@@ -265,7 +263,7 @@ export const MyProfile = () => {
                 { required: false, message: "Please select your state!" },
               ]}
             >
-              <Select size="large" placeholder="Your state" />
+              <Select placeholder="Your state" />
             </Form.Item>
 
             <Form.Item
@@ -273,14 +271,13 @@ export const MyProfile = () => {
               name="city"
               rules={[{ required: false, message: "Please select your city!" }]}
             >
-              <Select size="large" placeholder="Your city" />
+              <Select placeholder="Your city" />
             </Form.Item>
             <Form.Item>
-              <Button size="large" type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 Save changes
               </Button>
               <Button
-                size="large"
                 type="default"
                 onClick={() => {
                   setIsEdit(!isEdit);
@@ -296,7 +293,7 @@ export const MyProfile = () => {
         <div className="my-profile__container">
           <UserCard
             userInfo={userInfo}
-            title={<Title level={2}>Personal Information</Title>}
+            title={<Title level={3}>Personal Information</Title>}
             action={[
               <Button
                 type="text"
@@ -331,7 +328,7 @@ export const MyProfile = () => {
           />
           <Card style={cardStyle}>
             <Card.Meta
-              title={<Title level={2}>User Session's</Title>}
+              title={<Title level={3}>User Session's</Title>}
               description={
                 <div>
                   <Divider />

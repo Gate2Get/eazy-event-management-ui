@@ -60,24 +60,20 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
     <div>
       <Row>
         <Col flex={24}>
-          <Title level={3}>Create Birthday Event</Title>
           <Form layout="vertical" form={form} onFinish={onHandleEvent}>
             <Form.Item
               label="Event Name"
               name="name"
               rules={[{ required: true, message: "Please input Event name!" }]}
             >
-              <Input size="large" placeholder="Enter your Event Name" />
+              <Input placeholder="Enter your Event Name" />
             </Form.Item>
             <Form.Item
               label="Birthday person name"
               name="personName"
               rules={[{ required: true, message: "Please input person name!" }]}
             >
-              <Input
-                size="large"
-                placeholder="Enter your birthday person name"
-              />
+              <Input placeholder="Enter your birthday person name" />
             </Form.Item>
 
             <Form.Item
@@ -95,7 +91,6 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                     dayjs("11:59:59", "HH:mm:ss"),
                   ],
                 }}
-                size="large"
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%" }}
               />
@@ -124,7 +119,6 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
               ]}
             >
               <Select
-                size="large"
                 placeholder="Select the contact directory"
                 allowClear
                 showSearch
@@ -162,7 +156,6 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
             >
               <Select
                 disabled={!channel}
-                size="large"
                 showSearch
                 onSearch={onSearchTemplate}
                 placeholder="Select the message template"
@@ -198,7 +191,7 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                 { required: true, message: "Please input the event location!" },
               ]}
             >
-              <Input size="large" placeholder="Enter the event location" />
+              <Input placeholder="Enter the event location" />
             </Form.Item>
             <Form.Item
               label="Google Location url"
@@ -212,7 +205,6 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
             >
               <Input
                 type="url"
-                size="large"
                 placeholder="Enter the event google location url"
               />
             </Form.Item>
@@ -232,12 +224,11 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
                 style={{ width: "100%" }}
-                size="large"
               />
             </Form.Item>
             <Form.Item>
               <Space>
-                <Button size="large" type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit">
                   Preview & {isEdit ? "Update" : "Create"} Event
                 </Button>
               </Space>

@@ -4,7 +4,7 @@ import { HeaderHome } from "../components/headerHome";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { useBearStore } from "../store";
 import { ROUTES_URL, SERVICE_MENU } from "../constants";
-import Logo from "../assets/png/logoGreen.png";
+import Logo from "../assets/png/logoEazyEvent.png";
 
 const { Header, Content, Footer } = Layout;
 const { Text, Link } = Typography;

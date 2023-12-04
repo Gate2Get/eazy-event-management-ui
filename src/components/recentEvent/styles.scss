@@ -1,7 +1,47 @@
 .recent-event__container {
   .ant-card-head {
-    background: linear-gradient(#002242, #004484);
-    color: #fff;
+    background: rgba(18, 183, 106, 0.12);
+    // color: #fff;
+  }
+
+  .event-details__container {
+    div :first-child {
+      float: left;
+    }
+
+    // div :last-child {
+    //   float: right;
+    // }
+
+    .legend-chart-success {
+      background-color: rgb(18, 183, 106);
+      border-radius: 50%;
+      height: 8px;
+      width: 8px;
+      position: relative;
+      top: 8px;
+      margin-right: 8px;
+    }
+
+    .legend-chart-failed {
+      background-color: rgb(240, 68, 56);
+      border-radius: 50%;
+      height: 8px;
+      width: 8px;
+      position: relative;
+      top: 8px;
+      margin-right: 8px;
+    }
+
+    .legend-chart-progress {
+      background-color: rgb(247, 144, 9);
+      border-radius: 50%;
+      height: 8px;
+      width: 8px;
+      position: relative;
+      top: 8px;
+      margin-right: 8px;
+    }
   }
 
   .refresh__btn {

@@ -28,7 +28,6 @@ export const App404: React.FC = () => {
       }
       extra={
         <Button
-          size="large"
           type="primary"
           onClick={() => {
             window.location.replace("/");

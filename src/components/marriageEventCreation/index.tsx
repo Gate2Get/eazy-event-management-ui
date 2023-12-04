@@ -62,21 +62,20 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
     <div>
       <Row>
         <Col flex={24}>
-          <Title level={3}>Create Marriage Event</Title>
           <Form layout="vertical" form={form} onFinish={onHandleEvent}>
             <Form.Item
               label="Event Name"
               name="name"
               rules={[{ required: true, message: "Please input Event name!" }]}
             >
-              <Input size="large" placeholder="Enter your Event Name" />
+              <Input placeholder="Enter your Event Name" />
             </Form.Item>
             <Form.Item
               label="Groom Name"
               name="groomName"
               rules={[{ required: true, message: "Please input Groom name!" }]}
             >
-              <Input size="large" placeholder="Enter your Groom Name" />
+              <Input placeholder="Enter your Groom Name" />
             </Form.Item>
 
             <Form.Item
@@ -84,7 +83,7 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
               name="brideName"
               rules={[{ required: true, message: "Please input Bride name!" }]}
             >
-              <Input size="large" placeholder="Enter your Bride Name" />
+              <Input placeholder="Enter your Bride Name" />
             </Form.Item>
 
             <Form.Item
@@ -102,7 +101,6 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                     dayjs("11:59:59", "HH:mm:ss"),
                   ],
                 }}
-                size="large"
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%" }}
               />
@@ -131,7 +129,6 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
               ]}
             >
               <Select
-                size="large"
                 placeholder="Select the contact directory"
                 allowClear
                 showSearch
@@ -169,7 +166,6 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
             >
               <Select
                 disabled={!channel}
-                size="large"
                 showSearch
                 onSearch={onSearchTemplate}
                 placeholder="Select the message template"
@@ -205,7 +201,7 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                 { required: true, message: "Please input the event location!" },
               ]}
             >
-              <Input size="large" placeholder="Enter the event location" />
+              <Input placeholder="Enter the event location" />
             </Form.Item>
             <Form.Item
               label="Google Location url"
@@ -219,7 +215,6 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
             >
               <Input
                 type="url"
-                size="large"
                 placeholder="Enter the event google location url"
               />
             </Form.Item>
@@ -239,12 +234,11 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
                 style={{ width: "100%" }}
-                size="large"
               />
             </Form.Item>
             <Form.Item>
               <Space>
-                <Button size="large" type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit">
                   Preview & {isEdit ? "Update" : "Create"} Event
                 </Button>
               </Space>

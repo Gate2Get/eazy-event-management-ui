@@ -75,7 +75,6 @@ export const ReportBug = () => {
               ]}
             >
               <Select
-                size="large"
                 options={topicOptions}
                 placeholder="Select any topic to continue"
               />
@@ -90,13 +89,13 @@ export const ReportBug = () => {
                 },
               ]}
             >
-              <TextArea size="large" />
+              <TextArea />
             </Form.Item>
             <Form.Item label="Attachment" name="attachment">
               <AttachmentDragger buttonText="Upload Attachment" />
             </Form.Item>
             <Form.Item>
-              <Button size="large" type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit">
                 Submit
               </Button>
             </Form.Item>

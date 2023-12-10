@@ -1,10 +1,5 @@
 import React from "react";
 import { Card, Tag, Space, Typography, Row, Col, Divider, Image } from "antd";
-import {
-  UserOutlined,
-  CalendarOutlined,
-  EnvironmentOutlined,
-} from "@ant-design/icons";
 import { MyInvitationType } from "../../types";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -12,7 +7,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import MapIcon from "@mui/icons-material/Map";
 import { CHANNEL_OPTIONS } from "../../constants";
 import { useBearStore } from "../../store";
-import { PDFViewer } from "../pdfViewer";
 
 const { Text, Link } = Typography;
 
@@ -100,7 +94,6 @@ export const InvitationCard = (props: MyInvitationType) => {
             </>
           }
         />
-        {/* <PDFViewer /> */}
         {invitationUrl && (
           <Row>
             <Col {...colOption(8)}>

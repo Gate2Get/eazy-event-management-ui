@@ -1,14 +1,4 @@
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  List,
-  Row,
-  Select,
-  Space,
-  Typography,
-} from "antd";
+import { Button, Card, Col, Row, Typography } from "antd";
 import React from "react";
 import { RecentEvent } from "../../components/recentEvent";
 import { StatisticCard } from "../../components/StatisticCard";
@@ -31,8 +21,6 @@ export const Dashboard = () => {
   const { screen, setLoading } = useBearStore.appStore();
   const navigate = useNavigate();
   const {
-    recentEvent,
-    setRecentEvent,
     selectedEvent,
     setSelectedEvent,
     chartSelectionEventId,
@@ -50,7 +38,6 @@ export const Dashboard = () => {
       : { span: count };
 
   React.useEffect(() => {
-    getRecentEvent();
     getEventStatistics();
   }, []);
 
@@ -58,21 +45,7 @@ export const Dashboard = () => {
     getSelectedEvent(chartSelectionEventId);
   }, [chartSelectionEventId]);
 
-  const getRecentEvent = (): void => {
-    setLoading(true);
-    API.dashboardAPI
-      .getRecentEvent()
-      .then((event: EventType) => {
-        setRecentEvent(event);
-        setLoading(false);
-      })
-      .catch((error: Error) => {
-        setLoading(false);
-        console.log({ location: "getRecentEvent", error });
-      });
-  };
-
-  const getSelectedEvent = (id: string): void => {
+  const getSelectedEvent = (id?: string): void => {
     setLoading(true);
     API.dashboardAPI
       .getRecentEvent(id)
@@ -103,7 +76,7 @@ export const Dashboard = () => {
   const chartSelectionOptions = calendarEvents.map((item) => ({
     label: (
       <>
-        {CHANNEL_OPTIONS_MAP[item.channel as string]} {item.name} (${item.type})
+        {CHANNEL_OPTIONS_MAP[item.channel as string]} {item.name} ({item.type})
       </>
     ),
     value: item.id,
@@ -168,8 +141,8 @@ export const Dashboard = () => {
         </Col>
         <Col {...colOption(12)}>
           <RecentEvent
-            {...recentEvent}
-            onRefresh={getRecentEvent}
+            {...selectedEvent}
+            onRefresh={() => getSelectedEvent(chartSelectionEventId)}
             chartSelectionOptions={chartSelectionOptions}
             setChartSelectionEventId={setChartSelectionEventId}
           />

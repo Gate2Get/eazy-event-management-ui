@@ -12,6 +12,8 @@ import { CONTACT_DIRECTORY_COLUMN_KEYS } from "./constant";
 import NoContact from "../../../../assets/svg/no-contact.svg";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_ACTION } from "../../../../constants";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const { Link, Text } = Typography;
 const { Search } = Input;
@@ -35,7 +37,7 @@ export const ListContactDirectory = () => {
       label: "Edit",
       key: "edit",
       onClick: () => onEditSelect(data),
-      icon: <EditOutlined />,
+      icon: <EditOutlinedIcon style={{ color: "rgb(102, 112, 133)" }} />,
     },
   ];
 
@@ -43,15 +45,17 @@ export const ListContactDirectory = () => {
     if (column.key === CONTACT_DIRECTORY_COLUMN_KEYS.ACTION) {
       column.render = (text, record) => (
         <Space>
-          <EditOutlined
+          <EditOutlinedIcon
             onClick={() => {
               onEditSelect(record);
             }}
+            style={{ color: "rgb(102, 112, 133)" }}
           />
-          <EyeOutlined
+          <VisibilityIcon
             onClick={() => {
               onViewSelect(record);
             }}
+            style={{ color: "rgb(102, 112, 133)" }}
           />
         </Space>
       );

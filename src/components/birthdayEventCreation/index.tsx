@@ -39,6 +39,8 @@ type BirthdayEventCreationType = {
   isTemplateFetching?: boolean;
   isContactFetching?: boolean;
   onSearchContact: (contact: string) => void;
+  getContactDirectory: () => void;
+  getTemplates: () => void;
 };
 
 export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
@@ -52,6 +54,8 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
     isTemplateFetching,
     isContactFetching,
     onSearchContact,
+    getContactDirectory,
+    getTemplates,
   } = props;
 
   const channel = Form.useWatch("channel", { form, preserve: true });
@@ -126,6 +130,9 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                   label: contact.name,
                   value: contact.id,
                 }))}
+                onFocus={() => {
+                  getContactDirectory();
+                }}
                 loading={isContactFetching}
                 onSearch={onSearchContact}
                 filterOption={false}
@@ -166,6 +173,9 @@ export const BirthdayEventCreation = (props: BirthdayEventCreationType) => {
                   label: template.name,
                   value: template.id,
                 }))}
+                onFocus={() => {
+                  getTemplates();
+                }}
                 notFoundContent={
                   <NoData
                     description={

@@ -1,14 +1,3 @@
-import {
-  BugOutlined,
-  CommentOutlined,
-  ContactsOutlined,
-  DashboardOutlined,
-  FilePptOutlined,
-  GiftOutlined,
-  NotificationOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
 import { MenuProps } from "antd";
 import { NavigateFunction } from "react-router-dom";
 import { ROUTES_MENU, ROUTES_URL } from "../constants";
@@ -19,6 +8,8 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import BugReportIcon from "@mui/icons-material/BugReport";
+import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 
 const adminMenu = (
   navigate: NavigateFunction,
@@ -35,7 +26,7 @@ const adminMenu = (
           key: ROUTES_URL.REVIEW_EVENTS,
           label: ROUTES_MENU.REVIEW_EVENTS,
           icon: (
-            <NotificationOutlined
+            <EventAvailableIcon
               style={{ fontSize: "20px", fontWeight: "bolder" }}
             />
           ),
@@ -109,6 +100,19 @@ export const getMenuItems = (
       key: ROUTES_MENU.SERVICE,
       children: [
         {
+          key: ROUTES_URL.MY_INVITATION,
+          label: ROUTES_MENU.MY_INVITATION,
+          icon: (
+            <LocalActivityIcon
+              style={{ fontSize: "20px", fontWeight: "bolder" }}
+            />
+          ),
+          onClick: () => {
+            otherFn?.();
+            navigate(ROUTES_URL.MY_INVITATION);
+          },
+        },
+        {
           key: ROUTES_URL.EVENT_MANAGEMENT,
           label: ROUTES_MENU.EVENT_MANAGEMENT,
           icon: (
@@ -119,15 +123,6 @@ export const getMenuItems = (
             navigate(`${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}`);
           },
         },
-        // {
-        //   key: ROUTES_URL.GIFT_MANAGEMENT,
-        //   label: ROUTES_MENU.GIFT_MANAGEMENT,
-        //   icon: <GiftOutlined />,
-        //   onClick: () => {
-        //     otherFn?.();
-        //     navigate(ROUTES_URL.GIFT_MANAGEMENT);
-        //   },
-        // },
       ],
     },
     ..._adminMenu,

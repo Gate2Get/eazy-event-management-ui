@@ -10,6 +10,7 @@ import { Dashboard } from "../pages/dashboard";
 import { EventManagement } from "../pages/eventManagement";
 import { Feedback } from "../pages/feedback";
 import { Home } from "../pages/home";
+import { MyInvitation } from "../pages/myInvitation";
 import { MyProfile } from "../pages/myProfile";
 import { Pricing } from "../pages/pricing";
 import { PrivacyPolicy } from "../pages/privacyPolicy";
@@ -17,6 +18,7 @@ import { ReportBug } from "../pages/reportBug";
 import { ReviewEvent } from "../pages/reviewEvent";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
+import { TermsOfService } from "../pages/termsOfService";
 
 export const APP_ROUTES = [
   {
@@ -38,6 +40,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.PRIVACY_POLICY,
     element: <PrivacyPolicy />,
+  },
+  {
+    path: ROUTES_URL.TERMS_OF_SERVICE,
+    element: <TermsOfService />,
   },
   {
     path: ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC,
@@ -77,6 +83,10 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.EVENT_MANAGEMENT,
     element: <EventManagement />,
+  },
+  {
+    path: ROUTES_URL.MY_INVITATION,
+    element: <MyInvitation />,
   },
   {
     path: ROUTES_URL.REVIEW_EVENTS,

@@ -39,6 +39,8 @@ type OtherEventCreationType = {
   isTemplateFetching?: boolean;
   isContactFetching?: boolean;
   onSearchContact: (contact: string) => void;
+  getContactDirectory: () => void;
+  getTemplates: () => void;
 };
 
 export const OtherEventCreation = (props: OtherEventCreationType) => {
@@ -52,6 +54,8 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
     isTemplateFetching,
     isContactFetching,
     onSearchContact,
+    getContactDirectory,
+    getTemplates,
   } = props;
 
   const channel = Form.useWatch("channel", { form, preserve: true });
@@ -79,6 +83,7 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
               rules={[{ required: true, message: "Please select event date!" }]}
             >
               <RangePicker
+                inputReadOnly
                 disabledDate={disabledDate}
                 disabledTime={disabledRangeTime}
                 showTime={{
@@ -123,6 +128,9 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                   label: contact.name,
                   value: contact.id,
                 }))}
+                onFocus={() => {
+                  getContactDirectory();
+                }}
                 loading={isContactFetching}
                 onSearch={onSearchContact}
                 filterOption={false}
@@ -158,6 +166,9 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                 placeholder="Select the message template"
                 allowClear
                 filterOption={false}
+                onFocus={() => {
+                  getTemplates();
+                }}
                 loading={isTemplateFetching}
                 options={templates?.map((template) => ({
                   label: template.name,
@@ -221,6 +232,7 @@ export const OtherEventCreation = (props: OtherEventCreationType) => {
                 disabledTime={disabledDateTime}
                 showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
                 style={{ width: "100%" }}
+                inputReadOnly
               />
             </Form.Item>
             <Form.Item>

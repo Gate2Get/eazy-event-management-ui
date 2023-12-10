@@ -10,7 +10,11 @@ import { MarriageEventCard } from "../marriageEventCard";
 import { BirthdayEventCard } from "../birthdayEventCard";
 import { ContactUserCard } from "../contactUserCard";
 import { API } from "../../api";
-import { ContactListType, TemplateType } from "../../types";
+import {
+  ContactDirectoryType,
+  ContactListType,
+  TemplateType,
+} from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { OtherEventCard } from "../otherEventCard";
 import { PreviewTemplate } from "../previewTemplate";
@@ -145,15 +149,17 @@ export const PreviewEvent = (props: PreviewEventType) => {
     setLoading(true);
     API.contactManagement
       .getContactList(id)
-      .then((contacts: ContactListType[]) => {
+      .then((contactList: ContactDirectoryType) => {
         setLoading(false);
-        setContactList(
-          contacts.map((contact) => ({
-            ...contact,
-            key: contact.id,
+        const _contactList =
+          contactList?.contacts?.map((contact) => ({
+            id: contact.id as string,
+            name: contact.name as string,
+            key: contact?.id as string,
+            senderId: contact?.senderId as string,
             status: 4,
-          }))
-        );
+          })) || [];
+        setContactList(_contactList);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -161,9 +167,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
       });
   };
 
-  console.log({ selectedEvents });
   const steps = [...STEPS_EDITABLE];
-  // const items = steps.map((item) => ({ key: item.title, title: item.title }));
 
   const items = steps.map((item, index) => ({
     key: `${index + 1}`,

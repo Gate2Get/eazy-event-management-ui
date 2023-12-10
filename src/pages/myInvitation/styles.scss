@@ -1,0 +1,73 @@
+.event-management__container {
+  .event-management__filters {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03), 0 0 2px rgba(0, 0, 0, 0.06),
+      0 2px 6px rgba(0, 0, 0, 0.12) !important;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  .ant-divider-horizontal {
+    margin: 8px 0px;
+  }
+
+  .creation-form-senderId {
+    padding: 0% 2%;
+  }
+
+  .creation-form {
+    padding: 0% 10%;
+  }
+
+  .upcoming-event__date-picker {
+    // text-align: end;
+    align-self: center;
+  }
+
+  .upcoming-event__pagination {
+    text-align: end;
+    align-self: center;
+  }
+
+  .event-status__tag {
+    width: 100%;
+  }
+
+  .header__row {
+    margin-bottom: 10px;
+
+    .header__container {
+      // border: 0.1px solid #183153;
+      // box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+      // border-radius: 0.75rem;
+
+      > div {
+        padding: 10px;
+      }
+
+      .back-icon__container {
+        text-align: center;
+        // background-color: #183153;
+        // border-radius: 0.75rem 0 0 0.75rem;
+
+        .back-icon {
+          // color: #fff;
+          position: relative;
+          top: 6px;
+          cursor: pointer;
+        }
+
+        button {
+          float: left;
+          padding: 0%;
+        }
+      }
+      .back-text {
+        font-size: 16px;
+      }
+
+      .event-name__container {
+        // background: #fff;
+      }
+    }
+  }
+}

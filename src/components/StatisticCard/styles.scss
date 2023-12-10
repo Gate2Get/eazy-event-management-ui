@@ -2,7 +2,8 @@
   border-radius: 0.75rem;
   background-color: #fff;
   padding: 10px;
-  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  box-shadow: rgb(234, 236, 240) 0px 0px 1px,
+    rgba(29, 41, 57, 0.08) 0px 6px 12px;
 
   .stat-icon {
     letter-spacing: 0px;
@@ -25,7 +26,6 @@
     font-weight: 600;
     letter-spacing: 1px;
     line-height: 2.46;
-    // font-family: Inter, sans-serif;
     text-transform: uppercase;
     color: rgb(102, 112, 133);
   }

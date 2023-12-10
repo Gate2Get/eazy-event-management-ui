@@ -1,4 +1,14 @@
 .template-management__container {
+  .text-message__container {
+    width: 100%;
+
+    :first-child {
+      width: 100%;
+    }
+    :nth-child(2) {
+      cursor: pointer;
+    }
+  }
   .header__row {
     margin-bottom: 10px;
 

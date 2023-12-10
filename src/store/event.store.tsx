@@ -28,6 +28,17 @@ export const createEventStore = create<EventStoreType>((set) => ({
     status: undefined,
   },
   selectedEvents: initialSelectedEvent,
+  myInvitations: [],
+  selectedInvitation: {
+    ...initialSelectedEvent,
+    invitedByInfo: {},
+  },
+  setSelectedInvitation: (selectedInvitation) => {
+    set((state) => ({ selectedInvitation }));
+  },
+  setMyInvitations: (myInvitations) => {
+    set((state) => ({ myInvitations }));
+  },
   setAction: (action) => {
     set((state) => ({ action }));
   },

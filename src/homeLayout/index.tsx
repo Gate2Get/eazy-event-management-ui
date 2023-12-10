@@ -58,7 +58,7 @@ export const HomeLayout = (props: HomeLayoutType) => {
       </Content>
       <Footer style={{ textAlign: "center", background: "#fff" }}>
         <Row>
-          <Col {...colOption(12)}>
+          <Col {...colOption(12)} style={{ textAlign: "center" }}>
             <Text
               style={{
                 float: !SERVICE_MENU.includes(currentPage) ? "left" : "none",
@@ -75,11 +75,19 @@ export const HomeLayout = (props: HomeLayoutType) => {
           </Col>
           <Col {...colOption(12)}>
             <div
-              style={{
-                float: "right",
-              }}
+              style={
+                screen !== "MOBILE"
+                  ? {
+                      float: "right",
+                    }
+                  : {}
+              }
             >
-              <Link style={{ cursor: "pointer", color: "rgb(102, 112, 133)" }}>
+              <Link
+                href={ROUTES_URL.TERMS_OF_SERVICE}
+                target="_blank"
+                style={{ cursor: "pointer", color: "rgb(102, 112, 133)" }}
+              >
                 Terms of Service
               </Link>
               <Link

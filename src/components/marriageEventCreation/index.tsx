@@ -41,6 +41,8 @@ type MarriageEventCreationType = {
   isTemplateFetching?: boolean;
   isContactFetching?: boolean;
   onSearchContact: (contact: string) => void;
+  getContactDirectory: () => void;
+  getTemplates: () => void;
 };
 
 export const MarriageEventCreation = (props: MarriageEventCreationType) => {
@@ -54,6 +56,8 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
     isTemplateFetching,
     isContactFetching,
     onSearchContact,
+    getContactDirectory,
+    getTemplates,
   } = props;
 
   const channel = Form.useWatch("channel", { form, preserve: true });
@@ -136,6 +140,9 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                   label: contact.name,
                   value: contact.id,
                 }))}
+                onFocus={() => {
+                  getContactDirectory();
+                }}
                 loading={isContactFetching}
                 onSearch={onSearchContact}
                 filterOption={false}
@@ -176,6 +183,9 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                   label: template.name,
                   value: template.id,
                 }))}
+                onFocus={() => {
+                  getTemplates();
+                }}
                 notFoundContent={
                   <NoData
                     description={

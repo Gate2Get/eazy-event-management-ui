@@ -31,6 +31,7 @@ import {
   EVENT_TYPE_PROPS,
   PAGE_ACTION,
   PAGE_QUERY_ACTIONS,
+  TEMPLATE_BUTTONS,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import { ActionType, TemplateType } from "../../types";
@@ -50,6 +51,10 @@ import { EmptyData } from "../../components/EmptyData";
 import NoTemplate from "../../assets/svg/no-template.svg";
 import { useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { AudioRecorder } from "../../components/audioRecorder";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from "@mui/icons-material/Stop";
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -58,7 +63,7 @@ const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   value: event,
 }));
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 export const TemplateManagement = () => {
   const [form] = Form.useForm();
@@ -84,6 +89,60 @@ export const TemplateManagement = () => {
     Dispatch<any>
   ] = React.useState(false);
   const [messageError, setMessageError] = React.useState("");
+  const [speechMsg, setSpeechMsg]: [
+    SpeechSynthesisUtterance | undefined,
+    Dispatch<any>
+  ] = React.useState();
+  const [speechStatus, setSpeechStatus] = React.useState({
+    id: "",
+    status: "",
+  });
+
+  const playSpeech = (text: string, id: string) => {
+    stopSpeech();
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    const voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[0]; // Use the first available voice
+    msg.onend = function () {
+      console.log("Speech finished");
+      setSpeechMsg(undefined);
+      setSpeechStatus({ id: "", status: "ENDED" });
+    };
+    console.log({ text });
+    window.speechSynthesis.speak(msg);
+    setSpeechMsg(msg);
+    if (speechStatus.status === "PLAYING") {
+      setSpeechStatus({ id: "", status: "" });
+    } else {
+      setSpeechStatus({ id, status: "PLAYING" });
+    }
+  };
+
+  const stopSpeech = () => {
+    if (speechMsg) {
+      // Pause the current utterance
+      window.speechSynthesis.cancel();
+      console.log("Speech stopped");
+      setSpeechStatus({ id: "", status: "" });
+    }
+  };
+
+  const resumeSpeech = () => {
+    if (speechMsg) {
+      // Pause the current utterance
+      window.speechSynthesis.resume();
+      setSpeechStatus({ ...speechStatus, status: "PLAYING" });
+    }
+  };
+
+  const pauseSpeech = () => {
+    if (speechMsg) {
+      // Pause the current utterance
+      window.speechSynthesis.pause();
+      setSpeechStatus({ ...speechStatus, status: "PAUSED" });
+    }
+  };
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -120,19 +179,16 @@ export const TemplateManagement = () => {
     e: UploadChangeParam<UploadFile<any>>
   ): Promise<void> => {
     const { file } = e;
+    console.log({ file });
     if (file.status === "removed") {
       handleOnChangeFieldVoice(id, "");
     } else if (file?.size && file.size < 5000000) {
-      const { uid, name } = file;
       setLoading(true);
       API.commonAPI
         .uploadFile(file, "audio")
         .then((blobId: string) => {
           setLoading(false);
-          console.log(blobId);
-          const urlObject = new URL(blobId);
-          const pathname = urlObject.pathname;
-          handleOnChangeFieldVoice(id, blobId);
+          handleOnChangeFieldVoice(id, blobId, "AUDIO");
         })
         .catch((error: Error) => {
           setLoading(false);
@@ -143,7 +199,31 @@ export const TemplateManagement = () => {
     }
   };
 
+  const handleRecordUpload = async (id: string, blob: Blob): Promise<void> => {
+    if (blob?.size && blob.size < 5000000) {
+      console.log({ blob });
+      const _blob: any = blob;
+      _blob.name = "Record.mp3";
+      setLoading(true);
+      API.commonAPI
+        .uploadFile(blob, "audio")
+        .then((blobId: string) => {
+          setLoading(false);
+          handleOnChangeFieldVoice(id, blobId, "AUDIO");
+        })
+        .catch((error: Error) => {
+          setLoading(false);
+          console.log({ location: "handleRecordUpload", error });
+        });
+    } else {
+      console.error("Upload file error", blob);
+    }
+  };
+
   const onCancel = () => {
+    setMessageError("");
+    setIsError(false);
+    setMessages({});
     setSearchParams({});
   };
 
@@ -332,26 +412,72 @@ export const TemplateManagement = () => {
   const renderVoiceMessage = (message: any) => {
     if (message.type === "TEXT") {
       return (
-        <TextArea
-          style={{ minHeight: "40vh", width: "100%" }}
-          disabled={action === "VIEW"}
-          autoSize={{ minRows: 1, maxRows: 20 }}
-          value={message.value}
-          status={isError && !message.value ? "error" : ""}
-          onChange={(e) => {
-            handleOnChangeFieldVoice(message.id, e.target.value);
-          }}
-        />
+        <Space className="text-message__container">
+          <TextArea
+            style={{ minHeight: "40vh", width: "100%" }}
+            disabled={action === "VIEW"}
+            autoSize={{ minRows: 2, maxRows: 20 }}
+            value={message.value}
+            status={isError && !message.value ? "error" : ""}
+            onChange={(e) => {
+              handleOnChangeFieldVoice(message.id, e.target.value);
+            }}
+          />
+          {speechStatus.id !== message.id && (
+            <PlayArrowIcon
+              onClick={() => {
+                playSpeech(message.value, message.id);
+              }}
+            />
+          )}
+
+          {speechStatus.id === message.id &&
+            speechStatus.status === "PLAYING" && (
+              <PauseIcon
+                onClick={() => {
+                  pauseSpeech();
+                }}
+              />
+            )}
+
+          {speechStatus.id === message.id &&
+            speechStatus.status === "PAUSED" && (
+              <PlayArrowIcon
+                onClick={() => {
+                  resumeSpeech();
+                }}
+              />
+            )}
+
+          {speechStatus.id === message.id &&
+            (speechStatus.status === "PLAYING" ||
+              speechStatus.status === "PAUSED") && (
+              <StopIcon
+                onClick={() => {
+                  stopSpeech();
+                }}
+              />
+            )}
+        </Space>
       );
-    } else if (message.type === "AUDIO") {
+    } else if (message.type === "UPLOAD_AUDIO") {
       return (
         <AttachmentDragger
           otherProps={{ maxCount: 1, fileList: getFileList(message.value) }}
           disabled={action === "VIEW"}
           buttonText="Upload"
+          accept="audio/*"
           onAttach={(e) => handleFileUpload(message.id, e)}
         />
       );
+    } else if (message.type === "RECORD_AUDIO") {
+      return (
+        <AudioRecorder
+          onUpload={(blob) => handleRecordUpload(message.id, blob)}
+        />
+      );
+    } else if (message.type === "AUDIO") {
+      return <audio src={message.value} controls style={{ width: "100%" }} />;
     }
   };
 
@@ -367,11 +493,15 @@ export const TemplateManagement = () => {
     });
   };
 
-  const handleOnChangeFieldVoice = (id: string, value: string) => {
+  const handleOnChangeFieldVoice = (
+    id: string,
+    value: string,
+    type = "TEXT"
+  ) => {
     setMessages({
       ...messages,
       [id]: {
-        type: messages[id].type,
+        type,
         value,
         id,
       },
@@ -406,7 +536,7 @@ export const TemplateManagement = () => {
           Once deleted it cannot be undo
         </Text>
       </Modal>
-      <Row gutter={[16, 16]} className="header__row">
+      <Row gutter={[16, 16]} className="header__row sticky-header">
         <Col flex={12}>
           <Row className="header__container">
             {action && action !== "DELETE" ? (
@@ -513,7 +643,6 @@ export const TemplateManagement = () => {
               }}
             />
           </Form.Item>
-
           {form.getFieldValue("channel") && (
             <Form.Item
               label="Enter template name"
@@ -525,7 +654,6 @@ export const TemplateManagement = () => {
               <Input />
             </Form.Item>
           )}
-
           {form.getFieldValue("channel") === "WHATSAPP" && (
             <Form.Item
               label="Enter message"
@@ -537,7 +665,9 @@ export const TemplateManagement = () => {
           )}
           {form.getFieldValue("channel") === "VOICE_CALL" && (
             <>
-              <Title level={5}>Message</Title>
+              <Paragraph strong style={{}}>
+                Message
+              </Paragraph>
               {messageError && (
                 <Alert message={messageError} type="error" showIcon />
               )}
@@ -562,23 +692,17 @@ export const TemplateManagement = () => {
                 style={{ padding: "30px 0px" }}
                 wrap
               >
-                <Button
-                  type="default"
-                  onClick={() => {
-                    handleAddFieldVoice("TEXT");
-                  }}
-                >
-                  Add Text
-                </Button>
-                <Button
-                  type="default"
-                  onClick={() => {
-                    handleAddFieldVoice("AUDIO");
-                  }}
-                  icon={<UploadOutlined />}
-                >
-                  Add Audio
-                </Button>
+                {TEMPLATE_BUTTONS.map((button) => (
+                  <Button
+                    type="default"
+                    onClick={() => {
+                      handleAddFieldVoice(button.key);
+                    }}
+                    icon={button.icon}
+                  >
+                    {button.label}
+                  </Button>
+                ))}
               </Space>
             </>
           )}
@@ -589,10 +713,7 @@ export const TemplateManagement = () => {
               name="message"
               rules={[{ required: true, message: "Please input your message" }]}
             >
-              <TextArea
-                style={{ minHeight: "40vh" }}
-                // disabled={action === "VIEW"}
-              />
+              <TextArea style={{ minHeight: "40vh" }} />
             </Form.Item>
           ) : null}
           {(action === "ADD" || action === "EDIT") && (
@@ -611,7 +732,16 @@ export const TemplateManagement = () => {
           )}
         </Form>
       )}
-      {action === "VIEW" && <PreviewTemplate {...selectedTemplate} />}
+      {action === "VIEW" && (
+        <PreviewTemplate
+          {...selectedTemplate}
+          speechStatus={speechStatus}
+          playSpeech={playSpeech}
+          pauseSpeech={pauseSpeech}
+          resumeSpeech={resumeSpeech}
+          stopSpeech={stopSpeech}
+        />
+      )}
     </div>
   );
 };

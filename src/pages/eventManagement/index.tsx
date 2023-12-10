@@ -58,6 +58,7 @@ import {
 import { useTheme } from "antd-style";
 import { useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { EventCard } from "../../components/eventCard";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -94,12 +95,10 @@ export const EventManagement = () => {
   const { setTemplates, templates } = useBearStore.templateStore();
   const {
     action,
-    eventType,
     events,
     filters,
     selectedEvents,
     setAction,
-    setEventType,
     setEvents,
     setFilters,
     setSelectedEvents,
@@ -119,7 +118,7 @@ export const EventManagement = () => {
   ] = React.useState({});
 
   const channel = Form.useWatch("channel", { form, preserve: true });
-  const messageTemplate = Form.useWatch("messageTemplate", {
+  const eventType = Form.useWatch("eventType", {
     form,
     preserve: true,
   });
@@ -146,7 +145,6 @@ export const EventManagement = () => {
     urlhandler(searchParams, setAction, getEventById, () => {
       getEvents(filters);
     });
-    // setFilters(filters);
   }, [searchParams]);
 
   React.useEffect(() => {
@@ -160,15 +158,10 @@ export const EventManagement = () => {
   }, []);
 
   React.useEffect(() => {
-    form.setFieldValue("eventType", eventType || undefined);
-  }, [eventType]);
-
-  React.useEffect(() => {
     getContactDirectory();
     return () => {
       console.log("unmounting");
       setFilters({});
-      setEventType("");
       form.resetFields();
       setAction("");
     };
@@ -193,7 +186,7 @@ export const EventManagement = () => {
       }
       return search;
     });
-    search({ name: searchContact });
+    search({ name: searchContact?.trim() });
   }, [searchContact]);
 
   React.useEffect(() => {
@@ -273,6 +266,7 @@ export const EventManagement = () => {
     if (action === "DELETE") {
       setAction("");
     }
+    form.resetFields();
   };
 
   const onDeleteSelect = (record: EventType) => {
@@ -301,41 +295,11 @@ export const EventManagement = () => {
 
   const renderEvents = (): React.ReactNode => {
     return events.length ? (
-      events.map((event) => {
-        if (event.type === EVENT_TYPES.MARRIAGE) {
-          return (
-            <Col {...colProps}>
-              <MarriageEventCard
-                {...event}
-                menuItems={getMenuItems(event)}
-                onSelect={() => onViewSelect(event)}
-              />
-            </Col>
-          );
-        } else if (event.type === EVENT_TYPES.BIRTHDAY) {
-          return (
-            <Col {...colProps}>
-              <BirthdayEventCard
-                {...event}
-                menuItems={getMenuItems(event)}
-                onSelect={() => onViewSelect(event)}
-              />
-            </Col>
-          );
-        } else if (event.type === EVENT_TYPES.OTHERS) {
-          return (
-            <Col {...colProps}>
-              <OtherEventCard
-                {...event}
-                menuItems={getMenuItems(event)}
-                onSelect={() => onViewSelect(event)}
-              />
-            </Col>
-          );
-        } else {
-          return <></>;
-        }
-      })
+      events.map((event) => (
+        <Col {...colProps}>
+          <EventCard {...event} onSelect={() => onViewSelect(event)} />
+        </Col>
+      ))
     ) : (
       <EmptyData
         onClickAction={() => {
@@ -454,9 +418,12 @@ export const EventManagement = () => {
       .getEvent({ id })
       .then((events: EventType[]) => {
         setLoading(false);
+        console.log({ reeventscord: events, len: events?.length });
         if (events?.length) {
           const record = events?.[0];
-          setEventType(record.type);
+          // setEventType(record.type);
+          form.setFieldValue("eventType", record.type);
+          console.log({ events });
           setSelectedEvents(record);
         }
       })
@@ -557,11 +524,6 @@ export const EventManagement = () => {
               <Form layout="vertical">
                 <Form.Item label="Event date range">
                   <RangePicker
-                    size="middle"
-                    // defaultValue={[
-                    //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                    //   dayjs("2015/01/01", EVENT_DATE_FORMAT),
-                    // ]}
                     value={
                       formatDateRange(
                         filters.fromDate as string,
@@ -610,7 +572,7 @@ export const EventManagement = () => {
         </>
       )}
       {action && action !== "DELETE" && (
-        <Row gutter={[16, 16]} className="header__row">
+        <Row gutter={[16, 16]} className="header__row sticky-header">
           <Col flex={12}>
             <Row className="header__container">
               <Col {...colOption(4)} className="back-icon__container">
@@ -663,14 +625,14 @@ export const EventManagement = () => {
       >
         {action === "ADD" && !isPreview && (
           <Form layout="vertical" form={form}>
-            <Form.Item label="Select Event" name="type">
+            <Form.Item label="Select Event" name="eventType">
               <Select
                 style={{ width: "100%" }}
                 allowClear
                 placeholder="Select a event"
                 optionFilterProp="children"
                 options={eventTypeOptions}
-                onChange={(value) => setEventType(value)}
+                // onChange={(value) => setEventType(value)}
               />
             </Form.Item>
           </Form>
@@ -688,7 +650,9 @@ export const EventManagement = () => {
               onHandleEvent={handleEvent}
               isContactFetching={isContactFetching}
               onSearchContact={(value) => setSearchContact(value)}
-              isEdit={action === "EDIT" || action === "ADD"}
+              isEdit={action === "EDIT"}
+              getContactDirectory={getContactDirectory}
+              getTemplates={getTemplates}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -703,7 +667,9 @@ export const EventManagement = () => {
               onHandleEvent={handleEvent}
               isContactFetching={isContactFetching}
               onSearchContact={(value) => setSearchContact(value)}
-              isEdit={action === "EDIT" || action === "ADD"}
+              isEdit={action === "EDIT"}
+              getContactDirectory={getContactDirectory}
+              getTemplates={getTemplates}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -718,7 +684,9 @@ export const EventManagement = () => {
               isContactFetching={isContactFetching}
               onSearchContact={(value) => setSearchContact(value)}
               onHandleEvent={handleEvent}
-              isEdit={action === "EDIT" || action === "ADD"}
+              isEdit={action === "EDIT"}
+              getContactDirectory={getContactDirectory}
+              getTemplates={getTemplates}
             />
           )}
       </div>

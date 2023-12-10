@@ -1,0 +1,35 @@
+.event-card__container {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03), 0 0 2px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.12) !important;
+
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+
+  .more-info {
+    > span {
+      float: right;
+    }
+  }
+
+  .other-image {
+    cursor: pointer;
+  }
+
+  .event-type {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(18, 183, 106, 0.12);
+    color: #fff;
+
+    .event-type__label {
+      // color: #fff;
+    }
+  }
+
+  .event-status {
+    > span {
+      float: right;
+    }
+  }
+}

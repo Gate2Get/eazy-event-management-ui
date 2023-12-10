@@ -1,5 +1,10 @@
 import { eventManagementEndpoint, instance } from "../../configs/axios.config";
-import { ContactListType, EventFilterType, EventType } from "../../types";
+import {
+  ContactListType,
+  EventFilterType,
+  EventType,
+  MyInvitationType,
+} from "../../types";
 
 export const eventManagementAPI = {
   createEvent: async (event: EventType) => {
@@ -48,6 +53,22 @@ export const eventManagementAPI = {
       .get(`${eventManagementEndpoint.getEventContact}/${id}/contacts`)
       .then((response) => {
         const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getMyInvitation: async (
+    filters: EventFilterType = {}
+  ): Promise<MyInvitationType[] | MyInvitationType> => {
+    return await instance
+      .get(eventManagementEndpoint.getMyInvitation, { params: filters })
+      .then((response) => {
+        const result = response.data.result;
+        if (filters.id) {
+          return result?.[0] || {};
+        }
         return result;
       })
       .catch((error) => {

@@ -1,8 +1,9 @@
 import React from "react";
-import { LaptopOutlined, MobileOutlined } from "@ant-design/icons";
 import { Button, Col, Popover, Row, Typography } from "antd";
 import dayjs from "dayjs";
 import { useBearStore } from "../../store";
+import LaptopIcon from "@mui/icons-material/Laptop";
+import SmartphoneIcon from "@mui/icons-material/Smartphone";
 
 const { Paragraph } = Typography;
 
@@ -47,9 +48,13 @@ export const SessionCard = (props: SessionCardType) => {
       <Row>
         <Col span={3}>
           {userAgent?.device?.type === "mobile" ? (
-            <MobileOutlined style={{ fontSize: iconSize }} />
+            <SmartphoneIcon
+              style={{ fontSize: iconSize, color: "rgb(102, 112, 133)" }}
+            />
           ) : (
-            <LaptopOutlined style={{ fontSize: iconSize }} />
+            <LaptopIcon
+              style={{ fontSize: iconSize, color: "rgb(102, 112, 133)" }}
+            />
           )}
         </Col>
         <Col span={15}>

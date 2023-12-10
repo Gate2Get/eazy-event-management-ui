@@ -50,6 +50,7 @@ import { useTheme } from "antd-style";
 import { useSearchParams } from "react-router-dom";
 import { EventAdminPreview } from "../../components/eventAdminPreview";
 import { ButtonProps } from "antd/lib/button";
+import { EventCard } from "../../components/eventCard";
 const { TextArea } = Input;
 
 const { Title, Text } = Typography;
@@ -174,29 +175,11 @@ export const ReviewEvent = () => {
 
   const renderEvents = (): React.ReactNode => {
     return events.length ? (
-      events.map((event) => {
-        if (event.type === EVENT_TYPES.MARRIAGE) {
-          return (
-            <Col {...colProps} onClick={() => onViewSelect(event)}>
-              <MarriageEventCard {...event} />
-            </Col>
-          );
-        } else if (event.type === EVENT_TYPES.BIRTHDAY) {
-          return (
-            <Col {...colProps} onClick={() => onViewSelect(event)}>
-              <BirthdayEventCard {...event} />
-            </Col>
-          );
-        } else if (event.type === EVENT_TYPES.OTHERS) {
-          return (
-            <Col {...colProps} onClick={() => onViewSelect(event)}>
-              <OtherEventCard {...event} />
-            </Col>
-          );
-        } else {
-          return <></>;
-        }
-      })
+      events.map((event) => (
+        <Col {...colProps} onClick={() => onViewSelect(event)}>
+          <EventCard {...event} />
+        </Col>
+      ))
     ) : (
       <EmptyData
         image={NoEvents}

@@ -1,19 +1,36 @@
 import React from "react";
 import { Avatar, Card, Divider, Typography } from "antd";
-import { TemplateType, VoiceMessageTemplateType } from "../../types";
+import {
+  TemplatePreviewType,
+  TemplateType,
+  VoiceMessageTemplateType,
+} from "../../types";
 import { useBearStore } from "../../store";
 import { getFormattedMessage } from "../../utils/common.utils";
 import { UserOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { CHANNEL_OPTIONS } from "../../constants";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from "@mui/icons-material/Stop";
 
 const { Paragraph, Text, Title } = Typography;
 const { Meta } = Card;
 
-export const PreviewTemplate = (props: TemplateType) => {
+export const PreviewTemplate = (props: TemplatePreviewType) => {
   const { screen } = useBearStore.appStore();
   console.log({ props });
-  const { message, type, name, channel } = props;
+  const {
+    message,
+    type,
+    name,
+    channel,
+    speechStatus,
+    pauseSpeech,
+    playSpeech,
+    resumeSpeech,
+    stopSpeech,
+  } = props;
 
   let cardStyle = {};
   if (screen === "DESKTOP") {
@@ -39,7 +56,44 @@ export const PreviewTemplate = (props: TemplateType) => {
               return (
                 <Paragraph>
                   <Card className="message sent" bordered={false}>
-                    {msg.value}
+                    <div>{msg.value}</div>
+                    <div style={{ float: "right" }}>
+                      {speechStatus?.id !== msg.id && (
+                        <PlayArrowIcon
+                          onClick={() => {
+                            playSpeech?.(msg.value, msg.id);
+                          }}
+                        />
+                      )}
+
+                      {speechStatus?.id === msg.id &&
+                        speechStatus?.status === "PLAYING" && (
+                          <PauseIcon
+                            onClick={() => {
+                              pauseSpeech?.();
+                            }}
+                          />
+                        )}
+
+                      {speechStatus?.id === msg.id &&
+                        speechStatus?.status === "PAUSED" && (
+                          <PlayArrowIcon
+                            onClick={() => {
+                              resumeSpeech?.();
+                            }}
+                          />
+                        )}
+
+                      {speechStatus?.id === msg.id &&
+                        (speechStatus?.status === "PLAYING" ||
+                          speechStatus?.status === "PAUSED") && (
+                          <StopIcon
+                            onClick={() => {
+                              stopSpeech?.();
+                            }}
+                          />
+                        )}
+                    </div>
                   </Card>
                 </Paragraph>
               );

@@ -240,6 +240,9 @@ export const AddEditContactDirectory = () => {
   };
 
   const onContactListChange = (id: string, key: string, value: string) => {
+    if (key === "senderId" && (isNaN(Number(value)) || value.length > 10)) {
+      return;
+    }
     setDirectoryContactList(
       directoryContactList.map((contact: any) => {
         if (contact.id === id) {
@@ -370,7 +373,7 @@ export const AddEditContactDirectory = () => {
       >
         Once deleted it cannot be undo
       </Modal>
-      <Row gutter={[16, 16]} className="header__row">
+      <Row gutter={[16, 16]} className="header__row sticky-header">
         <Col flex={12}>
           <Row className="header__container">
             <Col

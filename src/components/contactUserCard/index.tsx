@@ -75,14 +75,23 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     >
       <Card
         className={`contact-user-card__container ${isSelected && "selected"}`}
-        onClick={() => {
-          if (editable) onSelectCard?.(id, !isSelected);
-        }}
       >
         <Row gutter={[-8, 16]}>
-          <Col span={6}>{userAvatar}</Col>
+          <Col span={6}>
+            <div>{userAvatar}</div>
+            {editable && (
+              <div>
+                <Checkbox
+                  style={{ position: "relative", left: "20%" }}
+                  onChange={() => {
+                    onSelectCard?.(id, !isSelected);
+                  }}
+                />
+              </div>
+            )}
+          </Col>
           <Col
-            span={menuItems ? 15 : 17}
+            span={menuItems || editable ? 15 : 17}
             className="contact-name-sender__container"
           >
             <div style={editable ? { marginBottom: "5px" } : {}}>
@@ -96,26 +105,13 @@ export const ContactUserCard = (props: ContactUserCardType) => {
                   }}
                 />
               ) : (
-                <Text
-                  strong
-                  placeholder=""
-                  contentEditable={true}
-                  editable={
-                    editable && {
-                      tooltip: "click to edit text",
-                      onChange: (value) => onContactChange?.(id, "name", value),
-                      triggerType: ["text"],
-                    }
-                  }
-                >
-                  {name}
-                </Text>
+                <Text strong>{name}</Text>
               )}
             </div>
             <div>
               {editable ? (
                 <Input
-                  placeholder="Input user senderId"
+                  placeholder="Input user mobile"
                   status={isError && !senderId ? "error" : ""}
                   value={senderId}
                   onChange={(e) => {
@@ -124,19 +120,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
                   maxLength={10}
                 />
               ) : (
-                <Text
-                  editable={
-                    editable && {
-                      maxLength: 10,
-                      tooltip: "click to edit text",
-                      onChange: (value) =>
-                        onContactChange?.(id, "senderId", value),
-                      triggerType: ["text"],
-                    }
-                  }
-                >
-                  {senderId.toString()}
-                </Text>
+                <Text>{senderId.toString()}</Text>
               )}
             </div>
           </Col>

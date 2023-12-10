@@ -10,8 +10,6 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import "./styles.scss";
 import { ReloadOutlined } from "@ant-design/icons";
 import { EventType, GenericJsonType } from "../../types";
@@ -19,13 +17,17 @@ import {
   CHANNEL_OPTIONS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
+  ROUTES_URL,
 } from "../../constants";
 import { PieChart } from "@mui/x-charts";
 import { useBearStore } from "../../store";
 import EventIcon from "@mui/icons-material/Event";
 import { DefaultOptionType } from "antd/es/select";
+import NotFound from "../../assets/svg/illustration-not-found.svg";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
 
 type RecentEventProps = {
@@ -38,6 +40,7 @@ type RecentEventType = EventType & RecentEventProps;
 
 export const RecentEvent = (props: RecentEventType) => {
   const {
+    id,
     name,
     type: eventType,
     status: progressionStatus,
@@ -49,14 +52,15 @@ export const RecentEvent = (props: RecentEventType) => {
     chartSelectionOptions,
     setChartSelectionEventId,
     channel,
-    failed = 4,
-    success = 14,
-    progress = 10,
+    failed,
+    success,
+    progress,
     onRefresh,
   } = props;
   const { screen } = useBearStore.appStore();
   const status = eventStatusLabel[progressionStatus as string];
   const channelLabel = CHANNEL_OPTIONS.find((item) => item.value === channel);
+  const navigate = useNavigate();
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -68,17 +72,17 @@ export const RecentEvent = (props: RecentEventType) => {
   const chartData = [
     {
       label: "Failed",
-      value: failed as number,
+      value: (failed || 0) as number,
       color: "rgb(240, 68, 56)",
     },
     {
       label: "Success",
-      value: success as number,
+      value: (success || 0) as number,
       color: "rgb(18, 183, 106)",
     },
     {
       label: "Progress",
-      value: progress as number,
+      value: (progress || 0) as number,
       color: "rgb(247, 144, 9)",
     },
   ];
@@ -94,107 +98,132 @@ export const RecentEvent = (props: RecentEventType) => {
                 Recent Event
               </Space>
             </Col>
-            <Col span={12}>
-              <Select
-                options={chartSelectionOptions}
-                style={{ width: "100%" }}
-                placeholder="Select event"
-                onChange={(value) => {
-                  setChartSelectionEventId(value);
-                }}
-              />
-            </Col>
+            {id && (
+              <Col span={12}>
+                <Select
+                  value={id}
+                  options={chartSelectionOptions}
+                  style={{ width: "100%" }}
+                  placeholder="Select event"
+                  onChange={(value) => {
+                    setChartSelectionEventId(value);
+                  }}
+                />
+              </Col>
+            )}
           </Row>
         }
         bordered={false}
-        style={{ width: "100%" }}
+        style={{
+          width: "100%",
+          boxShadow:
+            "rgb(234, 236, 240) 0px 0px 1px, rgba(29, 41, 57, 0.08) 0px 6px 12px",
+        }}
         className="recent-event__container"
       >
-        <Row>
-          <Col {...colOption(12)}>
-            <PieChart
-              series={[
-                {
-                  paddingAngle: 5,
-                  innerRadius: 60,
-                  outerRadius: 80,
-                  data: chartData,
-                },
-              ]}
-              margin={{ right: 5 }}
-              width={200}
-              height={200}
-              legend={{
-                hidden: true,
+        {id ? (
+          <Row>
+            <Col {...colOption(12)}>
+              <PieChart
+                series={[
+                  {
+                    paddingAngle: 5,
+                    innerRadius: 60,
+                    outerRadius: 80,
+                    data: chartData,
+                  },
+                ]}
+                margin={{ right: 5 }}
+                width={200}
+                height={200}
+                legend={{
+                  hidden: true,
+                }}
+              />
+            </Col>
+            <Col {...colOption(12)}>
+              <div className="event-details__container">
+                <Row>
+                  <Col span={12}>
+                    <Text strong type="secondary">
+                      Total
+                    </Text>
+                  </Col>
+                  <Col span={12}>
+                    <Text italic style={{ float: "right" }}>
+                      {(progress || 0) + (success || 0) + (failed || 0)}
+                    </Text>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                    <span className="legend-chart-progress"></span>
+                    <Text type="secondary">Inprogress</Text>
+                  </Col>
+                  <Col span={12}>
+                    <Text italic style={{ float: "right" }}>
+                      {progress || "-"}
+                    </Text>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                    <span className="legend-chart-success"></span>
+                    <Text type="secondary">Success</Text>
+                  </Col>
+                  <Col span={12}>
+                    <Text italic style={{ float: "right" }}>
+                      {success || "-"}
+                    </Text>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                    <span className="legend-chart-failed"></span>
+                    <Text type="secondary">Failed</Text>
+                  </Col>
+                  <Col span={12}>
+                    <Text italic style={{ float: "right" }}>
+                      {failed || "-"}
+                    </Text>
+                  </Col>
+                </Row>
+              </div>
+              {status && (
+                <div style={{ textAlign: "center" }}>
+                  <Tag color={EVENT_STATUS_LABEL_COLOR?.[status as any]}>
+                    {status}
+                  </Tag>
+                </div>
+              )}
+              <div className="refresh__btn">
+                <Button
+                  type="link"
+                  icon={<ReloadOutlined />}
+                  onClick={onRefresh}
+                >
+                  Refresh
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        ) : (
+          <div style={{ textAlign: "center" }}>
+            <img src={NotFound} alt="No recent event" />
+            <Paragraph>There are no recent event to show.</Paragraph>
+            <Button
+              type="primary"
+              onClick={() => {
+                navigate(
+                  `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?action=ADD`
+                );
               }}
-            />
-          </Col>
-          <Col {...colOption(12)}>
-            <div className="event-details__container">
-              <Row>
-                <Col span={12}>
-                  <Text strong type="secondary">
-                    Total
-                  </Text>
-                </Col>
-                <Col span={12}>
-                  <Text italic style={{ float: "right" }}>
-                    {(progress || 0) + (success || 0) + (failed || 0)}
-                  </Text>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>
-                  <span className="legend-chart-progress"></span>
-                  <Text strong type="secondary">
-                    Inprogress
-                  </Text>
-                </Col>
-                <Col span={12}>
-                  <Text italic style={{ float: "right" }}>
-                    {progress || "-"}
-                  </Text>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>
-                  <span className="legend-chart-success"></span>
-                  <Text strong type="secondary">
-                    Success
-                  </Text>
-                </Col>
-                <Col span={12}>
-                  <Text italic style={{ float: "right" }}>
-                    {success || "-"}
-                  </Text>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={12}>
-                  <span className="legend-chart-failed"></span>
-                  <Text strong type="secondary">
-                    Failed
-                  </Text>
-                </Col>
-                <Col span={12}>
-                  <Text italic style={{ float: "right" }}>
-                    {failed || "-"}
-                  </Text>
-                </Col>
-              </Row>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <Tag color={EVENT_STATUS_LABEL_COLOR?.[status as any]}>
-                {status}
-              </Tag>
-            </div>
-            <div className="refresh__btn">
-              <Button type="link" icon={<ReloadOutlined />} onClick={onRefresh}>
-                Refresh
-              </Button>
-            </div>
-          </Col>
-        </Row>
+              icon={<AddIcon fontSize="inherit" />}
+            >
+              Create Event
+            </Button>
+          </div>
+        )}
       </Card>
     </>
   );

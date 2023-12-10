@@ -164,13 +164,23 @@
   color: #fff;
 }
 
+.ant-notification-notice-wrapper {
+  height: 48px !important;
+  margin-bottom: 0px !important;
+}
+
 .eazy__event-snackbar {
-  opacity: 0.9;
-  border-width: 0 0 0 6px !important;
+  padding: 13px 24px !important;
+  .ant-notification-notice-message {
+    font-size: 14px !important;
+  }
+  .ant-notification-notice-close {
+    top: 13px !important;
+  }
 }
 
 .eazy__event-snackbar.success {
-  border: solid #22c55e;
+  // border: solid #22c55e;
   color: #22c55e;
 }
 
@@ -289,4 +299,60 @@ form {
 
 .ant-radio-button-checked {
   background-color: #fff;
+}
+
+.ant-tag-success {
+  background-color: rgb(18, 183, 106);
+  color: #fff;
+}
+
+.ant-tag-processing {
+  background-color: rgb(6, 174, 212);
+  color: #fff;
+}
+
+.ant-tag-error {
+  background-color: rgb(240, 68, 56);
+  color: #fff;
+}
+
+.ant-tag-warning {
+  background-color: rgb(247, 144, 9);
+  color: #fff;
+}
+
+.ant-picker-dropdown {
+  .ant-picker-cell-selected,
+  .ant-picker-cell-range-end {
+    .ant-picker-cell-inner {
+      background-color: rgb(18, 183, 106) !important;
+      color: #fff;
+    }
+  }
+}
+
+.ant-picker-time-panel {
+  .ant-picker-time-panel-cell-selected {
+    .ant-picker-time-panel-cell-inner {
+      background-color: rgba(18, 183, 106, 0.12) !important;
+    }
+  }
+}
+
+.ant-picker-dropdown .ant-picker-panel-container .ant-picker-panels {
+  display: inline-flex;
+  animation: none;
+  flex-wrap: nowrap;
+  direction: ltr;
+  @media (max-width: 768px) {
+    display: inline-grid;
+  }
+}
+
+.sticky-header {
+  position: sticky;
+  top: 65px;
+  background: #ffffff;
+  z-index: 2;
+  padding-top: 8px;
 }

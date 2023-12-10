@@ -48,7 +48,7 @@ export const PrivacyPolicy = () => {
         introducing new services. Your new visit will be subject to the new
         privacy policy.
       </p>
-      <p className="policy-paragraph">Last Updated: 08th Feb, 2022</p>
+      <p className="policy-paragraph">Last Updated: 10th Dec, 2023</p>
     </div>
   );
 };

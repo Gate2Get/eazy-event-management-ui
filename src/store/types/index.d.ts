@@ -4,6 +4,7 @@ import {
   ContactListType,
   EventFilterType,
   EventType,
+  MyInvitationType,
   ScreenType,
   TemplateType,
   UserInfoType,
@@ -54,6 +55,10 @@ export type EventStoreType = {
   selectedEvents: EventType;
   action: ActionType;
   eventType: string;
+  selectedInvitation: MyInvitationType;
+  myInvitations: MyInvitationType[];
+  setSelectedInvitation: (selectedInvitation: MyInvitationType) => void;
+  setMyInvitations: (myInvitations: MyInvitationType[]) => void;
   setAction: (action: ActionType) => void;
   setSelectedEvents: (selectedEvents: EventType) => void;
   setEventType: (eventType: string) => void;
@@ -74,6 +79,8 @@ export type TemplateStoreType = {
 
 export type DashboardStoreType = {
   recentEvent: EventType;
+  upcomingEvents: EventType[];
+  transactionalEvents: EventType[];
   calendarEvents: EventType[];
   selectedEvent: EventType;
   chartSelectionEventId: string;
@@ -83,6 +90,8 @@ export type DashboardStoreType = {
   setSelectedEvent: (selectedEvent: EventType) => void;
   setRecentEvent: (recentEvent: EventType) => void;
   setCalendarEvents: (calendarEvents: EventType[]) => void;
+  setUpcomingEvents: (upcomingEvents: EventType[]) => void;
+  setTransactionalEvents: (transactionalEvents: EventType[]) => void;
 };
 
 export type BearStoreType = {

@@ -4,6 +4,9 @@ import { Avatar } from "antd";
 import SmsIcon from "@mui/icons-material/Sms";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import PhoneIcon from "@mui/icons-material/Phone";
+import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
@@ -19,11 +22,13 @@ export const ROUTES_URL = {
   LOGIN: "/account/login",
   AUTHORIZER: "/account/auth-verify",
   PRIVACY_POLICY: "/privacy-policy",
+  TERMS_OF_SERVICE: "/terms-of-service",
   FORBIDDEN: "forbidden",
   PRICING: "pricing",
   HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
   REVIEW_EVENTS: "review-events",
+  MY_INVITATION: "my-invitation",
 };
 
 export const ROUTES_MENU = {
@@ -40,6 +45,7 @@ export const ROUTES_MENU = {
   MY_ACCOUNT: "My Account",
   ADMIN: "Admin",
   REVIEW_EVENTS: "Review Events",
+  MY_INVITATION: "My Invitation",
 };
 
 export const SERVICE_MENU = [
@@ -53,6 +59,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.REPORT_BUG,
   ROUTES_MENU.MY_PROFILE,
   ROUTES_MENU.REVIEW_EVENTS,
+  ROUTES_MENU.MY_INVITATION,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -193,7 +200,7 @@ export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
 
 export const DATE_FORMAT = "DD-MM-YYYY";
 
-export const ILLUSTRATION_ASSETS = {
+export const ILLUSTRATION_ASSETS: Record<string, number> = {
   marriage: 9,
   birthday: 16,
   others: 10,
@@ -292,5 +299,23 @@ export const STEPS_EDITABLE = [
   {
     title: "Contacts",
     content: "Last-content",
+  },
+];
+
+export const TEMPLATE_BUTTONS = [
+  {
+    label: "Add Text",
+    key: "TEXT",
+    icon: <TextFieldsIcon fontSize="small" />,
+  },
+  {
+    label: "Upload Audio",
+    key: "UPLOAD_AUDIO",
+    icon: <FileUploadIcon fontSize="small" />,
+  },
+  {
+    label: "Record Audio",
+    key: "RECORD_AUDIO",
+    icon: <RecordVoiceOverIcon fontSize="small" />,
   },
 ];

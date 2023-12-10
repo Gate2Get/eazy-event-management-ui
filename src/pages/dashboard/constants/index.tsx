@@ -26,7 +26,7 @@ export const DASHBOARD_STATS = [
     icon: <FontAwesomeIcon icon={faMessage} className="dark-color" size="xl" />,
     stats: 0,
     key: "INPROGRESS",
-    url: `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?status=${EVENT_STATUS.IN_PROGRESS}`,
+    url: `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?status=${EVENT_STATUS.NOT_STARTED}`,
     urlLabel: "Inprogress",
   },
 ];

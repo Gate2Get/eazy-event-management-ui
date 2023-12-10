@@ -1,21 +1,9 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Divider,
-  Row,
-  Space,
-  Statistic,
-  Typography,
-} from "antd";
+import { Button, Card, Col, Divider, Row, Typography } from "antd";
 import "./styles.scss";
 import { valueType } from "antd/es/statistic/utils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
 
 type StatisticCardType = {
   icon: React.ReactNode;

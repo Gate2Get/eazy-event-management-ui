@@ -71,6 +71,7 @@ export const eventManagementEndpoint = {
   deleteEvent: "/api/v1/app/event/my-events/",
   getEventContact: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
+  getMyInvitation: "/api/v1/app/event/my-invitation",
 };
 
 export const dashboardEndpoint = {

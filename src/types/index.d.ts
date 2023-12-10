@@ -70,6 +70,19 @@ export type TemplateType = {
   updatedAt?: string;
 };
 
+type TemplateActionType = {
+  speechStatus?: {
+    id: string;
+    status: string;
+  };
+  playSpeech?: (text: string, id: string) => void;
+  stopSpeech?: () => void;
+  resumeSpeech?: () => void;
+  pauseSpeech?: () => void;
+};
+
+export type TemplatePreviewType = TemplateType & TemplateActionType;
+
 export enum Events {
   MARRIAGE = "MARRIAGE",
   BIRTHDAY = "BIRTHDAY",
@@ -108,6 +121,7 @@ export type EventType = {
   isTrigger?: boolean;
   status?: EventStatus;
   triggerDateTime?: Date;
+  invitationUrl?: string;
   notificationStartDateTime?: Date;
   notificationEndDateTime?: Date;
   createdAt?: string;
@@ -126,6 +140,12 @@ export type CardType = {
 };
 
 export type EventCardType = EventType & CardType;
+
+type MyInvitationInvitedByInfoType = {
+  invitedByInfo: UserInfoType;
+};
+
+export type MyInvitationType = EventType & MyInvitationInvitedByInfoType;
 
 export type EventFilterType = {
   type?: string;

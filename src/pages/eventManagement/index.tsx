@@ -1,6 +1,4 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   Col,
@@ -13,13 +11,12 @@ import {
   Tag,
   Typography,
   Modal,
+  Badge,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
 import { API } from "../../api";
-import { BirthdayEventCard } from "../../components/birthdayEventCard";
 import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
-import { MarriageEventCard } from "../../components/marriageEventCard";
 import { MarriageEventCreation } from "../../components/marriageEventCreation";
 import {
   EVENT_DATE_FORMAT,
@@ -48,7 +45,7 @@ import {
   removeFalsyValues,
   urlhandler,
 } from "../../utils/common.utils";
-import { OtherEventCard } from "../../components/otherEventCard";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { EmptyData } from "../../components/EmptyData";
 import {
   modalClassNames,
@@ -116,6 +113,7 @@ export const EventManagement = () => {
     DebounceFnType,
     Dispatch<any>
   ] = React.useState({});
+  const [isFilter, setIsFilter] = React.useState(false);
 
   const channel = Form.useWatch("channel", { form, preserve: true });
   const eventType = Form.useWatch("eventType", {
@@ -476,86 +474,26 @@ export const EventManagement = () => {
       </Modal>
       {(!action || action === "DELETE") && (
         <>
-          <Row className="event-management__filters" gutter={[8, 8]}>
-            <Col flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Event">
-                  <Select
-                    style={{ width: "100%" }}
-                    allowClear
-                    placeholder="Select a event"
-                    optionFilterProp="children"
-                    options={eventTypeOptions}
-                    value={filters.type}
-                    onChange={(type) => {
-                      handleFilterChange({ type });
-                    }}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Status">
-                  <Select
-                    style={{ width: "100%" }}
-                    allowClear
-                    placeholder="Select a status"
-                    optionFilterProp="children"
-                    options={eventStatusOptions}
-                    tagRender={({ label }) => {
-                      return (
-                        <Tag
-                          color={EVENT_STATUS_LABEL_COLOR[label as string]}
-                          className="event-status__tag"
-                        >
-                          {label}
-                        </Tag>
-                      );
-                    }}
-                    onChange={(status) => {
-                      handleFilterChange({ status });
-                    }}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col className="upcoming-event__date-picker" flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Event date range">
-                  <RangePicker
-                    value={
-                      formatDateRange(
-                        filters.fromDate as string,
-                        filters.toDate as string
-                      ) as any
-                    }
-                    onChange={(e) => {
-                      if (e) {
-                        handleFilterChange({
-                          fromDate: dayjs(e?.[0]),
-                          toDate: dayjs(e?.[1]),
-                        });
-                      } else {
-                        const _filters: any = { ...filters };
-                        delete _filters.fromDate;
-                        delete _filters.toDate;
-                        const filter = removeFalsyValues(_filters);
-                        setFilters(filter);
-                        setSearchParams(filter);
-                      }
-                    }}
-                    format={EVENT_DATE_FORMAT}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-          </Row>
           <Row wrap gutter={[8, 8]}>
             <Col span={12}>
               <Title level={3}> Events</Title>
             </Col>
             <Col span={12} className="upcoming-event__pagination">
+              <Button
+                type="text"
+                icon={
+                  <Badge
+                    count={Object.values(filters).filter((_) => _).length}
+                    style={{ marginRight: "20px" }}
+                  >
+                    <FilterAltIcon fontSize="medium" />
+                  </Badge>
+                }
+                style={{ position: "relative", top: "8px" }}
+                onClick={() => {
+                  setIsFilter(!isFilter);
+                }}
+              />
               <Button
                 type="primary"
                 onClick={() => {
@@ -568,6 +506,83 @@ export const EventManagement = () => {
               </Button>
             </Col>
           </Row>
+          {isFilter && (
+            <Row className="event-management__filters" gutter={[8, 8]}>
+              <Col flex={6}>
+                <Form layout="vertical">
+                  <Form.Item label="Event">
+                    <Select
+                      style={{ width: "100%" }}
+                      allowClear
+                      placeholder="Select a event"
+                      optionFilterProp="children"
+                      options={eventTypeOptions}
+                      value={filters.type}
+                      onChange={(type) => {
+                        handleFilterChange({ type });
+                      }}
+                    />
+                  </Form.Item>
+                </Form>
+              </Col>
+              <Col flex={6}>
+                <Form layout="vertical">
+                  <Form.Item label="Status">
+                    <Select
+                      style={{ width: "100%" }}
+                      allowClear
+                      placeholder="Select a status"
+                      optionFilterProp="children"
+                      options={eventStatusOptions}
+                      tagRender={({ label }) => {
+                        return (
+                          <Tag
+                            color={EVENT_STATUS_LABEL_COLOR[label as string]}
+                            className="event-status__tag"
+                          >
+                            {label}
+                          </Tag>
+                        );
+                      }}
+                      onChange={(status) => {
+                        handleFilterChange({ status });
+                      }}
+                    />
+                  </Form.Item>
+                </Form>
+              </Col>
+              <Col className="upcoming-event__date-picker" flex={6}>
+                <Form layout="vertical">
+                  <Form.Item label="Event date range">
+                    <RangePicker
+                      value={
+                        formatDateRange(
+                          filters.fromDate as string,
+                          filters.toDate as string
+                        ) as any
+                      }
+                      onChange={(e) => {
+                        if (e) {
+                          handleFilterChange({
+                            fromDate: dayjs(e?.[0]),
+                            toDate: dayjs(e?.[1]),
+                          });
+                        } else {
+                          const _filters: any = { ...filters };
+                          delete _filters.fromDate;
+                          delete _filters.toDate;
+                          const filter = removeFalsyValues(_filters);
+                          setFilters(filter);
+                          setSearchParams(filter);
+                        }
+                      }}
+                      format={EVENT_DATE_FORMAT}
+                    />
+                  </Form.Item>
+                </Form>
+              </Col>
+            </Row>
+          )}
           <Row gutter={[16, 16]}>{renderEvents()}</Row>
         </>
       )}

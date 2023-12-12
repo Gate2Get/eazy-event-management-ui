@@ -26,6 +26,7 @@ import { DefaultOptionType } from "antd/es/select";
 import NotFound from "../../assets/svg/illustration-not-found.svg";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const { Text, Paragraph } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
@@ -101,6 +102,7 @@ export const RecentEvent = (props: RecentEventType) => {
             {id && (
               <Col span={12}>
                 <Select
+                  suffixIcon={<ArrowDropDownIcon />}
                   value={id}
                   options={chartSelectionOptions}
                   style={{ width: "100%" }}
@@ -123,7 +125,7 @@ export const RecentEvent = (props: RecentEventType) => {
       >
         {id ? (
           <Row>
-            <Col {...colOption(12)}>
+            <Col {...colOption(10)}>
               <PieChart
                 series={[
                   {
@@ -141,51 +143,45 @@ export const RecentEvent = (props: RecentEventType) => {
                 }}
               />
             </Col>
-            <Col {...colOption(12)}>
+            <Col {...colOption(14)}>
               <div className="event-details__container">
                 <Row>
-                  <Col span={12}>
+                  <Col span={20}>
                     <Text strong type="secondary">
                       Total
                     </Text>
                   </Col>
-                  <Col span={12}>
-                    <Text italic style={{ float: "right" }}>
+                  <Col span={4}>
+                    <Text italic>
                       {(progress || 0) + (success || 0) + (failed || 0)}
                     </Text>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={12}>
+                  <Col span={20}>
                     <span className="legend-chart-progress"></span>
                     <Text type="secondary">Inprogress</Text>
                   </Col>
-                  <Col span={12}>
-                    <Text italic style={{ float: "right" }}>
-                      {progress || "-"}
-                    </Text>
+                  <Col span={4}>
+                    <Text italic>{progress || "-"}</Text>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={12}>
+                  <Col span={20}>
                     <span className="legend-chart-success"></span>
                     <Text type="secondary">Success</Text>
                   </Col>
-                  <Col span={12}>
-                    <Text italic style={{ float: "right" }}>
-                      {success || "-"}
-                    </Text>
+                  <Col span={4}>
+                    <Text italic>{success || "-"}</Text>
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={12}>
+                  <Col span={20}>
                     <span className="legend-chart-failed"></span>
                     <Text type="secondary">Failed</Text>
                   </Col>
-                  <Col span={12}>
-                    <Text italic style={{ float: "right" }}>
-                      {failed || "-"}
-                    </Text>
+                  <Col span={4}>
+                    <Text italic>{failed || "-"}</Text>
                   </Col>
                 </Row>
               </div>

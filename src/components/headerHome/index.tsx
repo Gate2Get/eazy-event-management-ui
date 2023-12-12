@@ -1,4 +1,4 @@
-import { Typography, Col, Row, Button, Drawer, Space } from "antd";
+import { Typography, Col, Row, Button, Drawer, Space, Divider } from "antd";
 import React from "react";
 import {
   MenuFoldOutlined,
@@ -9,9 +9,9 @@ import "./styles.scss";
 import { useNavigate } from "react-router-dom";
 import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../../constants";
 import { useBearStore } from "../../store";
-import { faPhone, faIndianRupee } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Logo from "../../assets/png/logoEazyEvent.png";
+import CloseIcon from "@mui/icons-material/Close";
 
 const { Text } = Typography;
 
@@ -73,27 +73,44 @@ export const HeaderHome = (props: HeaderHomeType) => {
         </span>
       )}
 
-      <Drawer placement="top" width={500} onClose={onClose} open={open}>
-        <Space direction="vertical">
-          <Button
-            icon={<FontAwesomeIcon icon={faIndianRupee} />}
-            type="text"
+      <Drawer
+        placement="top"
+        width={500}
+        onClose={onClose}
+        open={open}
+        closeIcon={<CloseIcon />}
+      >
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Row
             onClick={() => {
               navigate(ROUTES_URL.PRICING);
               onClose();
             }}
           >
-            Pricing
-          </Button>
-          <Button
-            type="text"
+            <Col span={20}>
+              <Button type="text">Pricing</Button>
+            </Col>
+            <Col span={4}>
+              <ArrowForwardIcon style={{ float: "right", color: "#667085" }} />
+            </Col>
+          </Row>
+
+          <Divider style={{ margin: "0px" }} />
+          <Row
             onClick={() => {
               verifyAuth();
               onClose();
             }}
           >
-            Get Started
-          </Button>
+            <Col span={20}>
+              <Button type="text">Get Started</Button>
+            </Col>
+            <Col span={4}>
+              <ArrowForwardIcon style={{ float: "right", color: "#667085" }} />
+            </Col>
+          </Row>
+
+          <Divider style={{ margin: "0px" }} />
         </Space>
       </Drawer>
     </div>

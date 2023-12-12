@@ -16,7 +16,7 @@ export const interceptors = (navigate: (url: string) => void): void => {
       console.log({ response });
       if (snackbarAllowedMethods.includes(config?.method as string)) {
         notification.success({
-          message: data.message,
+          message: data?.message || "Operation completed successfully",
           className: "eazy__event-snackbar success",
         });
       }

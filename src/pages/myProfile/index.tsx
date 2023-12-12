@@ -31,6 +31,10 @@ import { ROUTES_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { SessionCard } from "../../components/sessionCard";
 import { UserCard } from "../../components/userCard";
+import LogoutIcon from "@mui/icons-material/Logout";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import WarningIcon from "@mui/icons-material/Warning";
 
 const { Title, Text } = Typography;
 
@@ -126,6 +130,7 @@ export const MyProfile = () => {
       .then((response) => {
         setLoading(false);
         setIsEdit(!isEdit);
+        getUserInfo();
       })
       .catch((error) => {
         setLoading(false);
@@ -142,25 +147,6 @@ export const MyProfile = () => {
 
   return (
     <>
-      <Row style={screen === "DESKTOP" ? { margin: "2% 15%" } : {}}>
-        {screen === "DESKTOP" && (
-          <Col>
-            <Image
-              preview={false}
-              width={180}
-              src={userInfo.picture || UserIcon}
-              style={{ padding: "20px" }}
-            />
-          </Col>
-        )}
-        <Col style={{ padding: "20px" }}>
-          <Title level={3}>Hi {userInfo.firstName}, </Title>
-          <Text>
-            View and manage your personal information, security and preferences
-            here.
-          </Text>
-        </Col>
-      </Row>
       {isEdit ? (
         <div className="my-profile__container" style={cardStyle}>
           <Image
@@ -190,9 +176,15 @@ export const MyProfile = () => {
                 placeholder="Your email address"
                 suffix={
                   userInfo.isEmailVerified ? (
-                    <CheckCircleOutlined />
+                    <CheckCircleIcon
+                      fontSize="inherit"
+                      style={{ color: "rgb(18, 183, 106)" }}
+                    />
                   ) : (
-                    <WarningOutlined />
+                    <WarningIcon
+                      fontSize="inherit"
+                      style={{ color: "rgb(247, 144, 9)" }}
+                    />
                   )
                 }
                 disabled
@@ -219,9 +211,15 @@ export const MyProfile = () => {
                 placeholder="Mobile number"
                 suffix={
                   userInfo.isMobileVerified ? (
-                    <CheckCircleOutlined />
+                    <CheckCircleIcon
+                      fontSize="inherit"
+                      style={{ color: "rgb(18, 183, 106)" }}
+                    />
                   ) : (
-                    <WarningOutlined />
+                    <WarningIcon
+                      fontSize="inherit"
+                      style={{ color: "rgb(247, 144, 9)" }}
+                    />
                   )
                 }
               />
@@ -300,7 +298,7 @@ export const MyProfile = () => {
                 onClick={() => {
                   setIsEdit(!isEdit);
                 }}
-                icon={<EditOutlined key="edit" />}
+                icon={<EditIcon fontSize="inherit" key="edit" />}
               >
                 Edit
               </Button>,
@@ -320,7 +318,7 @@ export const MyProfile = () => {
                 open={isLogout}
                 onOpenChange={handleLogoutOpenChange}
               >
-                <Button type="text" icon={<LogoutOutlined />}>
+                <Button type="text" icon={<LogoutIcon fontSize="inherit" />}>
                   Logout
                 </Button>
               </Popover>,

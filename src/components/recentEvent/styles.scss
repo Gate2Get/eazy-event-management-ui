@@ -1,17 +1,18 @@
 .recent-event__container {
   .ant-card-head {
-    background: rgba(18, 183, 106, 0.12);
-    // color: #fff;
+    .ant-select-selector {
+      border: none;
+    }
+  }
+
+  .ant-card-body {
+    padding: 24px 8px;
   }
 
   .event-details__container {
     div :first-child {
       float: left;
     }
-
-    // div :last-child {
-    //   float: right;
-    // }
 
     .legend-chart-success {
       background-color: rgb(18, 183, 106);

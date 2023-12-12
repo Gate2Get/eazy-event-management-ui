@@ -46,13 +46,12 @@ export const UserCard = (props: UserCardType) => {
           description={
             <div>
               <Divider />
-              {screen === "MOBILE" && (
-                <Image
-                  width={96}
-                  src={userInfo.picture || UserIcon}
-                  rootClassName="user-icon"
-                />
-              )}
+              <Image
+                width={96}
+                src={userInfo.picture || UserIcon}
+                rootClassName="user-icon"
+              />
+
               <p>
                 <Title level={5}>Full name</Title>
                 <Text italic>{`${userInfo.firstName || ""} ${

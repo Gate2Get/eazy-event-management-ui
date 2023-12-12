@@ -4,12 +4,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { API } from "../api";
 import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../constants";
 import { useBearStore } from "../store";
+import AuthenticationAnimation from "../assets/svg/authenticating-animate.svg";
 import "./styles.scss";
 
 const { Text } = Typography;
 
 export const Authorizer = () => {
-  const { setLoading } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
   const { setIsAuthorized } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +52,13 @@ export const Authorizer = () => {
       <Text className="other-text">
         Bringing people together, one event at a time!
       </Text>
+      <div>
+        <img
+          src={AuthenticationAnimation}
+          alt=""
+          width={screen === "MOBILE" ? "80%" : "35%"}
+        />
+      </div>
     </div>
   );
 };

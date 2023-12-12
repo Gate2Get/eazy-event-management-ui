@@ -160,14 +160,15 @@ export const CHANNEL_OPTIONS = [
     ),
     value: "SMS",
   },
-  {
-    label: (
-      <>
-        <WhatsAppIcon fontSize="inherit" /> Whatsapp
-      </>
-    ),
-    value: "WHATSAPP",
-  },
+  // @TODO: Whatsapp
+  // {
+  //   label: (
+  //     <>
+  //       <WhatsAppIcon fontSize="inherit" /> Whatsapp
+  //     </>
+  //   ),
+  //   value: "WHATSAPP",
+  // },
   {
     label: (
       <>
@@ -180,7 +181,8 @@ export const CHANNEL_OPTIONS = [
 
 export const CHANNEL_OPTIONS_MAP: Record<string, React.ReactNode> = {
   VOICE_CALL: <PhoneIcon fontSize="inherit" />,
-  WHATSAPP: <WhatsAppIcon fontSize="inherit" />,
+  // @TODO: Whatsapp
+  // WHATSAPP: <WhatsAppIcon fontSize="inherit" />,
   SMS: <SmsIcon fontSize="inherit" />,
 };
 
@@ -250,23 +252,24 @@ export const PRICING_CARDS = [
       "Admin review and approval.",
     ],
   },
-  {
-    icon: (
-      <Avatar
-        size={48}
-        style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
-        icon={<WhatsAppIcon />}
-      />
-    ),
-    title: "WhatsApp Plan",
-    price: "₹1 per WhatsApp Message",
-    info: [
-      "Sending one WhatsApp notification to each recipient.",
-      "Advanced notification content customization with rich media.",
-      "Standard delivery speed.",
-      "Admin review and approval.",
-    ],
-  },
+  // @TODO: Whatsapp
+  // {
+  //   icon: (
+  //     <Avatar
+  //       size={48}
+  //       style={{ background: "rgb(18, 183, 106)", textAlign: "center" }}
+  //       icon={<WhatsAppIcon />}
+  //     />
+  //   ),
+  //   title: "WhatsApp Plan",
+  //   price: "₹1 per WhatsApp Message",
+  //   info: [
+  //     "Sending one WhatsApp notification to each recipient.",
+  //     "Advanced notification content customization with rich media.",
+  //     "Standard delivery speed.",
+  //     "Admin review and approval.",
+  //   ],
+  // },
 ];
 
 export const PAGE_ACTION = {

@@ -16,6 +16,9 @@ import TextArea from "antd/es/input/TextArea";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import { FeedbackType } from "../../types";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useNavigate } from "react-router-dom";
+import { ROUTES_URL } from "../../constants";
 
 const { Title, Text } = Typography;
 
@@ -31,6 +34,7 @@ export const Feedback = () => {
   const [form] = Form.useForm();
   const { screen, setLoading } = useBearStore.appStore();
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const navigate = useNavigate();
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -45,6 +49,7 @@ export const Feedback = () => {
     }
     return () => {
       form.resetFields();
+      setIsSubmitted(false);
     };
   }, [isSubmitted]);
 
@@ -77,8 +82,12 @@ export const Feedback = () => {
         status="success"
         title="Feedback submitted successfully"
         extra={[
-          <Button type="primary" onClick={() => setIsSubmitted(false)}>
-            Create New
+          <Button
+            icon={<ArrowForwardIcon fontSize="inherit" />}
+            type="primary"
+            onClick={() => navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`)}
+          >
+            Go to Home
           </Button>,
         ]}
       />
@@ -88,10 +97,10 @@ export const Feedback = () => {
   return (
     <div>
       <Row gutter={[16, 16]}>
-        <Col {...colOption(10)}>
-          <img src={feedbackBanner} alt="" />
+        <Col {...colOption(8)} style={{ textAlign: "center" }}>
+          <img src={feedbackBanner} alt="" width={"60%"} />
         </Col>
-        <Col {...colOption(14)}>
+        <Col {...colOption(16)}>
           <Title level={3}>We value your feedback!</Title>
           <Text>Help us make your Eazy Event experience better.</Text>
           <Divider />
@@ -124,7 +133,7 @@ export const Feedback = () => {
               label="Please provide additional feedback.(Optional)"
               name="comments"
             >
-              <TextArea />
+              <TextArea rows={4} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">

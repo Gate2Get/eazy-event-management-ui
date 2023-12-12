@@ -356,3 +356,7 @@ form {
   z-index: 2;
   padding-top: 8px;
 }
+
+.ant-select-item-option-selected {
+  background-color: rgba(18, 183, 106, 0.12) !important;
+}

@@ -51,10 +51,14 @@ export const ReportBug = () => {
   return (
     <div>
       <Row gutter={[16, 16]}>
-        <Col {...colOption(10)} style={{ textAlign: "center" }}>
-          <img src={bugBanner} alt="" />
+        <Col {...colOption(8)} style={{ textAlign: "center" }}>
+          <img
+            src={bugBanner}
+            alt=""
+            width={screen === "MOBILE" ? "70%" : "100%"}
+          />
         </Col>
-        <Col {...colOption(14)}>
+        <Col {...colOption(16)}>
           <Title level={3}>Report a bug</Title>
 
           <Divider />
@@ -89,7 +93,7 @@ export const ReportBug = () => {
                 },
               ]}
             >
-              <TextArea />
+              <TextArea rows={4} />
             </Form.Item>
             <Form.Item label="Attachment" name="attachment">
               <AttachmentDragger buttonText="Upload Attachment" />

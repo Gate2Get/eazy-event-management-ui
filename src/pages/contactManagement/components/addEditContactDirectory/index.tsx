@@ -32,7 +32,7 @@ import { parseXlsx } from "../../../../utils/parseXlsx.utils";
 import { ContactUserCard } from "../../../../components/contactUserCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import IllustrationWebp from "../../../../assets/webp/illustration-self-service.webp";
+import GoogleIcon from "@mui/icons-material/Google";
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
@@ -41,6 +41,8 @@ import { contactValidator } from "../../../../utils/validation.utils";
 import { PAGE_ACTION, ROUTES_URL } from "../../../../constants";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "react-router-dom";
+import NoContactList from "../../../../assets/svg/no-contact-list.svg";
+import { EmptyData } from "../../../../components/EmptyData";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -390,16 +392,6 @@ export const AddEditContactDirectory = () => {
                   : DIRECTORY_ACTIONS[action].header}
               </Button>
             </Col>
-            {/* <Col
-              span={screen === "MOBILE" ? 20 : 23}
-              className="event-name__container"
-            >
-              <Text className="tab__header">
-                {action === "VIEW"
-                  ? selectedDirectory.name
-                  : DIRECTORY_ACTIONS[action].header}
-              </Text>
-            </Col> */}
           </Row>
         </Col>
         <Col className="action__button-groups">
@@ -475,7 +467,7 @@ export const AddEditContactDirectory = () => {
             </Form.Item>
             <Space direction="vertical">
               <Text italic>
-                Want to export <GoogleOutlined /> google contact?{" "}
+                Want to export <GoogleIcon fontSize="inherit" /> google contact?{" "}
                 <Link
                   href={ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC}
                   target="_blank"
@@ -590,6 +582,30 @@ export const AddEditContactDirectory = () => {
 
       <br />
       <br />
+      {!(filteredGrid.length || directoryContactList.length) ? (
+        <EmptyData
+          onClickAction={onAddContact}
+          image={NoContactList}
+          description={
+            searchValue ? (
+              <>
+                No contact list to show for the selected filter,{" "}
+                <Link
+                  href="#"
+                  onClick={() => {
+                    onSearch("");
+                  }}
+                >
+                  Clear filter
+                </Link>
+              </>
+            ) : (
+              "No contact list to show"
+            )
+          }
+          buttonText="Add Contact"
+        />
+      ) : null}
       {isListView ? (
         <DataTable
           columns={columns}

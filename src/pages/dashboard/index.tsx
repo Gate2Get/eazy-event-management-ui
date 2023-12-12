@@ -8,6 +8,7 @@ import { useBearStore } from "../../store";
 import { API } from "../../api";
 import { EventType } from "../../types";
 import illustrationReports from "../../assets/png/illustration-reports.png";
+import userIconAnimate from "../../assets/svg/user-icon-animate.svg";
 import "./styles.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -111,18 +112,42 @@ export const Dashboard = () => {
                 <Title level={3} style={{ color: "#fff" }}>
                   Welcome, {user.firstName || "User"} !
                 </Title>
-                <Paragraph style={{ color: "#fff", fontSize: "16px" }}>
-                  Let’s complete your account information so we can gather more
-                  accurate data for you.
+                <Paragraph italic style={{ color: "#fff", fontSize: "16px" }}>
+                  {!user.isMobileVerified || !user.isEmailVerified ? (
+                    <div>
+                      <p>
+                        Unlock a personalized experience! 🚀 Complete your
+                        account details to tailor our services just for you.
+                        Your journey to a more customized and efficient
+                        experience begins now. 🌟{" "}
+                      </p>
+                      <p>#PersonalizationPerfection #CompleteYourProfile</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>
+                        Transform your event planning experience with our
+                        intuitive notification system. Let's craft memorable
+                        moments together! 🎉{" "}
+                      </p>{" "}
+                      <p> #EventExcellence #NotificationMagic</p>
+                    </div>
+                  )}
                 </Paragraph>
 
                 <Button
                   type="primary"
                   onClick={() =>
-                    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`)
+                    navigate(
+                      !user.isMobileVerified || !user.isEmailVerified
+                        ? `${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`
+                        : `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?action=ADD`
+                    )
                   }
                 >
-                  Go to Account{" "}
+                  {!user.isMobileVerified || !user.isEmailVerified
+                    ? "Go to Account"
+                    : "Event Creation"}{" "}
                   <ArrowRightOutlined
                     style={{ color: "#fff" }}
                     className="right-arrow-icon"
@@ -131,8 +156,9 @@ export const Dashboard = () => {
               </Col>
               <Col span={6}>
                 <img
-                  src={illustrationReports}
+                  src={userIconAnimate}
                   alt=""
+                  width={"100%"}
                   className="user-illustration"
                 />
               </Col>

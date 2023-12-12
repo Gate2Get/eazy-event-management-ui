@@ -7,18 +7,15 @@ import { ROUTES_URL, SERVICE_MENU } from "../constants";
 import Logo from "../assets/png/logoEazyEvent.png";
 
 const { Header, Content, Footer } = Layout;
-const { Text, Link } = Typography;
+const { Text, Link, Paragraph } = Typography;
 
 type HomeLayoutType = {
   children: React.ReactNode;
 };
 
 export const HomeLayout = (props: HomeLayoutType) => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   const { height } = useWindowSize();
-  const { currentPage, screen } = useBearStore.appStore();
+  const { currentPage, screen, collapsed } = useBearStore.appStore();
   const { isAuthorized } = useBearStore.userStore();
   const { children } = props;
 
@@ -28,6 +25,13 @@ export const HomeLayout = (props: HomeLayoutType) => {
           flex: count,
         }
       : { span: count };
+
+  const isFooterVisible =
+    screen === "DESKTOP"
+      ? true
+      : screen === "MOBILE" && !collapsed
+      ? false
+      : true;
 
   return (
     <Layout
@@ -56,55 +60,60 @@ export const HomeLayout = (props: HomeLayoutType) => {
       <Content className="site-layout" style={{ minHeight: height - 130 }}>
         {children}
       </Content>
-      <Footer style={{ textAlign: "center", background: "#fff" }}>
-        <Row>
-          <Col {...colOption(12)} style={{ textAlign: "center" }}>
-            <Text
-              style={{
-                float: !SERVICE_MENU.includes(currentPage) ? "left" : "none",
-              }}
-            >
-              <img
-                src={Logo}
-                alt=""
-                width={20}
-                style={{ position: "relative", top: "5px" }}
-              />
-              ©2023 Eazy Event
-            </Text>
-          </Col>
-          <Col {...colOption(12)}>
-            <div
-              style={
-                screen !== "MOBILE"
-                  ? {
-                      float: "right",
-                    }
-                  : {}
-              }
-            >
-              <Link
-                href={ROUTES_URL.TERMS_OF_SERVICE}
-                target="_blank"
-                style={{ cursor: "pointer", color: "rgb(102, 112, 133)" }}
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href={ROUTES_URL.PRIVACY_POLICY}
-                target="_blank"
+      {isFooterVisible && (
+        <Footer style={{ textAlign: "center", background: "#fff" }}>
+          <Row>
+            <Col {...colOption(12)} style={{ textAlign: "center" }}>
+              <Paragraph
                 style={{
-                  marginLeft: "1rem",
-                  cursor: "pointer",
-                  color: "rgb(102, 112, 133)",
+                  float:
+                    !SERVICE_MENU.includes(currentPage) && screen === "DESKTOP"
+                      ? "left"
+                      : "none",
                 }}
               >
-                Privacy Policy
-              </Link>
-            </div>
-          </Col>
-        </Row>
-      </Footer>
+                <img
+                  src={Logo}
+                  alt=""
+                  width={20}
+                  style={{ position: "relative", top: "5px" }}
+                />
+                ©2023 Eazy Event
+              </Paragraph>
+            </Col>
+            <Col {...colOption(12)}>
+              <div
+                style={
+                  screen !== "MOBILE"
+                    ? {
+                        float: "right",
+                      }
+                    : {}
+                }
+              >
+                <Link
+                  href={ROUTES_URL.TERMS_OF_SERVICE}
+                  target="_blank"
+                  style={{ cursor: "pointer", color: "rgb(102, 112, 133)" }}
+                >
+                  Terms of Service
+                </Link>
+                <Link
+                  href={ROUTES_URL.PRIVACY_POLICY}
+                  target="_blank"
+                  style={{
+                    marginLeft: "1rem",
+                    cursor: "pointer",
+                    color: "rgb(102, 112, 133)",
+                  }}
+                >
+                  Privacy Policy
+                </Link>
+              </div>
+            </Col>
+          </Row>
+        </Footer>
+      )}
     </Layout>
   );
 };

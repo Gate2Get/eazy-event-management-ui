@@ -1,8 +1,6 @@
 import React from "react";
 import { Avatar, Col, Divider, Row, Space, Typography } from "antd";
 import "./styles.scss";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PRICING_CARDS } from "../../constants";
 import { useBearStore } from "../../store";
 

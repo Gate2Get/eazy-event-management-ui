@@ -1,13 +1,7 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   Alert,
+  Badge,
   Button,
   Col,
   Form,
@@ -55,6 +49,7 @@ import { AudioRecorder } from "../../components/audioRecorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -97,6 +92,7 @@ export const TemplateManagement = () => {
     id: "",
     status: "",
   });
+  const [isFilter, setIsFilter] = React.useState(false);
 
   const playSpeech = (text: string, id: string) => {
     stopSpeech();
@@ -550,17 +546,24 @@ export const TemplateManagement = () => {
                 </Button>
               </Col>
             ) : (
-              <Col {...colOption(21)}>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    setSearchParams({
-                      action: PAGE_ACTION.ADD,
-                    });
-                  }}
-                >
-                  Create Template
-                </Button>
+              <Col {...colOption(24)}>
+                <Row wrap gutter={[8, 8]}>
+                  <Col span={12}>
+                    <Title level={3}> Template</Title>
+                  </Col>
+                  <Col span={12} className="template__pagination">
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setSearchParams({
+                          action: PAGE_ACTION.ADD,
+                        });
+                      }}
+                    >
+                      Create Template
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
             )}
             {action === "VIEW" && (

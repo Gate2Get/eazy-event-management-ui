@@ -1,4 +1,10 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  BarsOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -12,6 +18,8 @@ import {
   Typography,
   Modal,
   Badge,
+  Space,
+  Segmented,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
@@ -45,7 +53,7 @@ import {
   removeFalsyValues,
   urlhandler,
 } from "../../utils/common.utils";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { EmptyData } from "../../components/EmptyData";
 import {
   modalClassNames,
@@ -56,6 +64,11 @@ import { useTheme } from "antd-style";
 import { useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { EventCard } from "../../components/eventCard";
+import { eventColumns } from "./config";
+import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { DataTable } from "../../components/dataTable";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -95,6 +108,8 @@ export const EventManagement = () => {
     events,
     filters,
     selectedEvents,
+    isListView,
+    setIsListView,
     setAction,
     setEvents,
     setFilters,
@@ -291,13 +306,51 @@ export const EventManagement = () => {
     });
   };
 
+  eventColumns.forEach((column) => {
+    if (column.key === EVENT_COLUMN_KEYS.ACTION) {
+      column.render = (text, record) => (
+        <Space>
+          <EditOutlinedIcon
+            fontSize="inherit"
+            onClick={() => {
+              onEditSelect(record);
+            }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+          />
+          <VisibilityIcon
+            fontSize="inherit"
+            onClick={() => {
+              onViewSelect(record);
+            }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+          />
+        </Space>
+      );
+    } else if (column.key === EVENT_COLUMN_KEYS.NAME) {
+      column.render = (text, record) => (
+        <Text
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            onViewSelect(record);
+          }}
+        >
+          {record.name}
+        </Text>
+      );
+    }
+  });
+
   const renderEvents = (): React.ReactNode => {
     return events.length ? (
-      events.map((event) => (
-        <Col {...colProps}>
-          <EventCard {...event} onSelect={() => onViewSelect(event)} />
-        </Col>
-      ))
+      isListView ? (
+        <DataTable columns={eventColumns} data={events} sortKeys={SORT_KEYS} />
+      ) : (
+        events?.map((event) => (
+          <Col {...colProps}>
+            <EventCard {...event} onSelect={() => onViewSelect(event)} />
+          </Col>
+        ))
+      )
     ) : (
       <EmptyData
         onClickAction={() => {
@@ -482,18 +535,17 @@ export const EventManagement = () => {
               <Button
                 type="text"
                 icon={
-                  <Badge
-                    count={Object.values(filters).filter((_) => _).length}
-                    style={{ marginRight: "20px" }}
-                  >
-                    <FilterAltIcon fontSize="medium" />
+                  <Badge count={Object.values(filters).filter((_) => _).length}>
+                    <FilterListIcon fontSize="inherit" />
                   </Badge>
                 }
-                style={{ position: "relative", top: "8px" }}
                 onClick={() => {
                   setIsFilter(!isFilter);
                 }}
-              />
+              >
+                Filter
+              </Button>
+
               <Button
                 type="primary"
                 onClick={() => {
@@ -504,6 +556,23 @@ export const EventManagement = () => {
               >
                 Create Event
               </Button>
+              <Segmented
+                style={{ margin: "10px" }}
+                value={isListView ? "List" : "Card"}
+                options={[
+                  {
+                    value: "List",
+                    icon: <BarsOutlined />,
+                  },
+                  {
+                    value: "Card",
+                    icon: <AppstoreOutlined />,
+                  },
+                ]}
+                onChange={(value) => {
+                  setIsListView(value === "List");
+                }}
+              />
             </Col>
           </Row>
           {isFilter && (

@@ -33,6 +33,10 @@ export const createEventStore = create<EventStoreType>((set) => ({
     ...initialSelectedEvent,
     invitedByInfo: {},
   },
+  isListView: false,
+  setIsListView: (isListView: boolean) => {
+    set((state) => ({ isListView }));
+  },
   setSelectedInvitation: (selectedInvitation) => {
     set((state) => ({ selectedInvitation }));
   },

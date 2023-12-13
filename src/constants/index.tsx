@@ -80,7 +80,7 @@ export const EDITABLE_EVENT_STATUS = [
   EVENT_STATUS.NOT_STARTED,
 ];
 
-export const EVENT_STATUS_LABEL = {
+export const EVENT_STATUS_LABEL: Record<string, string> = {
   // DRAFT: "Draft",
   IN_PROGRESS: "In progress",
   PENDING_APPROVAL: "Pending approval",
@@ -91,7 +91,7 @@ export const EVENT_STATUS_LABEL = {
   NOT_STARTED: "Not started",
 };
 
-export const EVENT_STATUS_LABEL_COLOR = {
+export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
   // [EVENT_STATUS_LABEL.DRAFT]: "default",
   [EVENT_STATUS_LABEL.IN_PROGRESS]: "processing",
   [EVENT_STATUS_LABEL.PENDING_APPROVAL]: "processing",
@@ -150,6 +150,12 @@ export const NON_PROTECTED_ROUTES = [
   `/${ROUTES_URL.FORBIDDEN}`,
   `${ROUTES_URL.EE}/${ROUTES_URL.FORBIDDEN}`,
 ];
+
+export const CHANNELS: Record<string, string> = {
+  SMS: "SMS",
+  VOICE_CALL: "Voice call",
+  WHATSAPP: "Whatsapp",
+};
 
 export const CHANNEL_OPTIONS = [
   {

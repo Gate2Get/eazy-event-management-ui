@@ -45,7 +45,7 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
 
   if (isScroll) {
     // @TODO: Need to revisit the height - 220
-    otherProps.scroll = { y: height - 220 };
+    otherProps.scroll = { y: height - 220, x: columns.length * 150 };
   }
 
   const onSearch = (searchValue: string) => {

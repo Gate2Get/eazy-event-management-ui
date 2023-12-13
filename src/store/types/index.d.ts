@@ -57,6 +57,8 @@ export type EventStoreType = {
   eventType: string;
   selectedInvitation: MyInvitationType;
   myInvitations: MyInvitationType[];
+  isListView: boolean;
+  setIsListView: (isListView: boolean) => void;
   setSelectedInvitation: (selectedInvitation: MyInvitationType) => void;
   setMyInvitations: (myInvitations: MyInvitationType[]) => void;
   setAction: (action: ActionType) => void;

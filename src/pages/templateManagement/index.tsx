@@ -1,4 +1,10 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import {
+  AppstoreOutlined,
+  BarsOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
 import {
   Alert,
   Badge,
@@ -10,6 +16,7 @@ import {
   Modal,
   Radio,
   Row,
+  Segmented,
   Select,
   Space,
   Typography,
@@ -49,7 +56,12 @@ import { AudioRecorder } from "../../components/audioRecorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { templateColumns } from "./config";
+import { SORT_KEYS, TEMPLATE_COLUMN_KEYS } from "./constant";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { DataTable } from "../../components/dataTable";
+import { searchGrid } from "../../utils/searchGrid.utils";
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -59,6 +71,7 @@ const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
 }));
 
 const { Title, Text, Paragraph } = Typography;
+const { Search } = Input;
 
 export const TemplateManagement = () => {
   const [form] = Form.useForm();
@@ -77,6 +90,8 @@ export const TemplateManagement = () => {
     templates,
   } = useBearStore.templateStore();
 
+  let filteredGrid: any[] = [];
+  const [searchValue, setSearchValue] = React.useState("");
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
   const [isDeleteConfirmation, setIsDeleteConfirmation]: [
@@ -405,6 +420,40 @@ export const TemplateManagement = () => {
     return fileList;
   };
 
+  templateColumns.forEach((column) => {
+    if (column.key === TEMPLATE_COLUMN_KEYS.ACTION) {
+      column.render = (text, record) => (
+        <Space>
+          <EditOutlinedIcon
+            fontSize="inherit"
+            onClick={() => {
+              onEditSelect(record);
+            }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+          />
+          <VisibilityIcon
+            fontSize="inherit"
+            onClick={() => {
+              onViewSelect(record);
+            }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+          />
+        </Space>
+      );
+    } else if (column.key === TEMPLATE_COLUMN_KEYS.NAME) {
+      column.render = (text, record) => (
+        <Text
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            onViewSelect(record);
+          }}
+        >
+          {record.name}
+        </Text>
+      );
+    }
+  });
+
   const renderVoiceMessage = (message: any) => {
     if (message.type === "TEXT") {
       return (
@@ -514,6 +563,17 @@ export const TemplateManagement = () => {
     setIsDeleteConfirmation(false);
   };
 
+  const onSearch = (searchValue: string) => {
+    console.log({ searchValue });
+    setSearchValue(searchValue);
+  };
+
+  if (searchValue) {
+    console.log({ searchValue });
+    filteredGrid = searchGrid(searchValue, templates);
+    console.log({ filteredGrid });
+  }
+
   return (
     <div className="template-management__container">
       <Modal
@@ -562,10 +622,28 @@ export const TemplateManagement = () => {
                     >
                       Create Template
                     </Button>
+                    <Segmented
+                      style={{ margin: "10px" }}
+                      value={isListView ? "List" : "Card"}
+                      options={[
+                        {
+                          value: "List",
+                          icon: <BarsOutlined />,
+                        },
+                        {
+                          value: "Card",
+                          icon: <AppstoreOutlined />,
+                        },
+                      ]}
+                      onChange={(value) => {
+                        setIsListView(value === "List");
+                      }}
+                    />
                   </Col>
                 </Row>
               </Col>
             )}
+
             {action === "VIEW" && (
               <Col {...colOption(21)}>
                 <div style={{ float: "right" }}>
@@ -596,18 +674,54 @@ export const TemplateManagement = () => {
         </Col>
       </Row>
 
+      {!action && (
+        <Row gutter={[8, 8]} className="margin-bottom-16">
+          <Col {...colOption(12)}>
+            {templates?.length ? (
+              <Search
+                placeholder="Search here"
+                value={searchValue}
+                onChange={(e) => onSearch(e.target.value)}
+                style={{ width: "100%" }}
+                allowClear
+              />
+            ) : null}
+          </Col>
+          <Col {...colOption(12)}>
+            {searchValue ? (
+              <Text italic className="float-right">
+                Showing <Text strong>{filteredGrid.length}</Text> of{" "}
+                <Text strong>{templates?.length}</Text> template's
+              </Text>
+            ) : (
+              <Text italic className="float-right">
+                Showing total <Text strong>{templates?.length} </Text>
+                template's
+              </Text>
+            )}
+          </Col>
+        </Row>
+      )}
       {(!action || action === "DELETE") && (
         <Row gutter={[16, 16]}>
-          {templates.length ? (
-            templates.map((template) => (
-              <Col span={screen === "MOBILE" ? 24 : 8} key={template.id}>
-                <TemplateCard
-                  template={template}
-                  menuItems={getMenuItems(template)}
-                  onClick={() => onViewSelect(template)}
-                />
-              </Col>
-            ))
+          {(searchValue ? filteredGrid : templates).length ? (
+            isListView ? (
+              <DataTable
+                columns={templateColumns}
+                data={searchValue ? filteredGrid : templates}
+                sortKeys={SORT_KEYS}
+              />
+            ) : (
+              (searchValue ? filteredGrid : templates).map((template) => (
+                <Col span={screen === "MOBILE" ? 24 : 8} key={template.id}>
+                  <TemplateCard
+                    template={template}
+                    menuItems={getMenuItems(template)}
+                    onClick={() => onViewSelect(template)}
+                  />
+                </Col>
+              ))
+            )
           ) : (
             <EmptyData
               onClickAction={() => {

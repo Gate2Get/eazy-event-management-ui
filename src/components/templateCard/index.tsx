@@ -12,7 +12,12 @@ import {
 } from "antd";
 import { TemplateType } from "../../types";
 import "./styles.scss";
-import { CHANNEL_OPTIONS, EVENT_TYPE_PROPS } from "../../constants";
+import {
+  CHANNELS,
+  CHANNEL_OPTIONS,
+  CHANNEL_OPTIONS_MAP,
+  EVENT_TYPE_PROPS,
+} from "../../constants";
 
 const { Title, Text } = Typography;
 
@@ -34,9 +39,8 @@ export const TemplateCard = (props: TemplateCardType) => {
     .map((item) => item?.[0])
     .join("");
 
-  const channelComp = CHANNEL_OPTIONS.find(
-    (item) => item.value === template.channel
-  );
+  const channelComp = CHANNEL_OPTIONS_MAP[template.channel as string];
+  const channelLabel = CHANNELS[template.channel as string];
 
   return (
     <Row gutter={[8, 8]} className="template-card__container">
@@ -65,7 +69,9 @@ export const TemplateCard = (props: TemplateCardType) => {
               <Text strong className="font-size-16">
                 {template.name}
               </Text>
-              <Text>{channelComp?.label as React.ReactNode}</Text>
+              <Text>
+                {channelComp} {channelLabel}
+              </Text>
             </Space>
           </Col>
           {menuItems && (

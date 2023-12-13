@@ -8,7 +8,7 @@ import { useBearStore } from "../../../../store";
 import { ContactDirectoryType } from "../../../../types";
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { contactDirectoryColumns } from "./config";
-import { CONTACT_DIRECTORY_COLUMN_KEYS } from "./constant";
+import { CONTACT_DIRECTORY_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import NoContact from "../../../../assets/svg/no-contact.svg";
 import { useSearchParams } from "react-router-dom";
 import { PAGE_ACTION } from "../../../../constants";
@@ -46,16 +46,18 @@ export const ListContactDirectory = () => {
       column.render = (text, record) => (
         <Space>
           <EditOutlinedIcon
+            fontSize="inherit"
             onClick={() => {
               onEditSelect(record);
             }}
-            style={{ color: "rgb(102, 112, 133)" }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
           />
           <VisibilityIcon
+            fontSize="inherit"
             onClick={() => {
               onViewSelect(record);
             }}
-            style={{ color: "rgb(102, 112, 133)" }}
+            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
           />
         </Space>
       );
@@ -110,7 +112,9 @@ export const ListContactDirectory = () => {
             <Search
               placeholder="Search here"
               value={searchValue}
-              onSearch={onSearch}
+              onChange={(e) => {
+                onSearch(e.target.value);
+              }}
               style={{ width: "100%" }}
               allowClear
             />
@@ -119,7 +123,7 @@ export const ListContactDirectory = () => {
         <Col {...colOption(12)}>
           {searchValue ? (
             <Text italic className="float-right">
-              Showing <Text strong>{filteredGrid.length}</Text> of
+              Showing <Text strong>{filteredGrid.length}</Text> of{" "}
               <Text strong>{directoryList.length}</Text> directories
             </Text>
           ) : (
@@ -136,6 +140,7 @@ export const ListContactDirectory = () => {
             <DataTable
               columns={contactDirectoryColumns}
               data={searchValue ? filteredGrid : directoryList}
+              sortKeys={SORT_KEYS}
             />
           ) : (
             (searchValue ? filteredGrid : directoryList).map((directory) => {

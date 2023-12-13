@@ -28,9 +28,9 @@ export const Header = (props: HeaderType) => {
           )}
           <Text className="app__name">
             Eazy Event{" "}
-            <Text className="current-tab" italic>
+            {/* <Text className="current-tab" italic>
               ({currentPage})
-            </Text>
+            </Text> */}
           </Text>
         </Col>
         {/* <Col span={12}>

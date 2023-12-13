@@ -165,14 +165,16 @@ export const Dashboard = () => {
             </Row>
           </Card>
         </Col>
-        <Col {...colOption(12)}>
-          <RecentEvent
-            {...selectedEvent}
-            onRefresh={() => getSelectedEvent(chartSelectionEventId)}
-            chartSelectionOptions={chartSelectionOptions}
-            setChartSelectionEventId={setChartSelectionEventId}
-          />
-        </Col>
+        {screen !== "MOBILE" && (
+          <Col {...colOption(12)}>
+            <RecentEvent
+              {...selectedEvent}
+              onRefresh={() => getSelectedEvent(chartSelectionEventId)}
+              chartSelectionOptions={chartSelectionOptions}
+              setChartSelectionEventId={setChartSelectionEventId}
+            />
+          </Col>
+        )}
       </Row>
       <br />
       <Row gutter={[16, 16]}>
@@ -190,6 +192,17 @@ export const Dashboard = () => {
           </Row>
         </Col>
       </Row>
+
+      {screen === "MOBILE" && (
+        <div>
+          <RecentEvent
+            {...selectedEvent}
+            onRefresh={() => getSelectedEvent(chartSelectionEventId)}
+            chartSelectionOptions={chartSelectionOptions}
+            setChartSelectionEventId={setChartSelectionEventId}
+          />
+        </div>
+      )}
     </div>
   );
 };

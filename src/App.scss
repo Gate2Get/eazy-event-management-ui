@@ -297,28 +297,32 @@ form {
   border-color: rgb(18, 183, 106) !important;
 }
 
+.ant-input-affix-wrapper:hover {
+  border-color: rgb(18, 183, 106) !important;
+}
+
 .ant-radio-button-checked {
   background-color: #fff;
 }
 
 .ant-tag-success {
-  background-color: rgb(18, 183, 106);
-  color: #fff;
+  color: rgb(18, 183, 106);
+  background-color: rgba(18, 183, 106, 0.12);
 }
 
 .ant-tag-processing {
-  background-color: rgb(6, 174, 212);
-  color: #fff;
+  color: rgb(6, 174, 212);
+  background-color: rgba(6, 174, 212, 0.12);
 }
 
 .ant-tag-error {
-  background-color: rgb(240, 68, 56);
-  color: #fff;
+  color: rgb(240, 68, 56);
+  background-color: rgba(240, 68, 56, 0.12);
 }
 
 .ant-tag-warning {
-  background-color: rgb(247, 144, 9);
-  color: #fff;
+  color: rgb(247, 144, 9);
+  background-color: rgba(247, 144, 9, 0.12);
 }
 
 .ant-picker-dropdown {

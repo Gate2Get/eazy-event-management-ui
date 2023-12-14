@@ -624,6 +624,7 @@ export const EventManagement = () => {
                 <Form layout="vertical">
                   <Form.Item label="Event date range">
                     <RangePicker
+                      style={{ width: "100%" }}
                       value={
                         formatDateRange(
                           filters.fromDate as string,

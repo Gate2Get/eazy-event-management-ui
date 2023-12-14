@@ -1,9 +1,11 @@
 import {
+  Badge,
   Button,
   Col,
   DatePicker,
   Form,
   Row,
+  Segmented,
   Select,
   Tag,
   Typography,
@@ -24,13 +26,17 @@ import "./styles.scss";
 import NoEvents from "../../assets/svg/no-events.svg";
 import { removeFalsyValues, urlhandler } from "../../utils/common.utils";
 import { EmptyData } from "../../components/EmptyData";
-import { useModalStyle } from "../../configs/antd.config";
 import { useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { EventCard } from "../../components/eventCard";
 import { InvitationCard } from "../../components/invitationCard";
+import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { DataTable } from "../../components/dataTable";
+import { invitationColumns } from "./config";
+import { INVITATION_COLUMN_KEYS, SORT_KEYS } from "./constant";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const eventLabel: any = EVENT_STATUS_LABEL;
@@ -54,7 +60,6 @@ const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
 }));
 
 export const MyInvitation = () => {
-  const { styles } = useModalStyle();
   const [searchParams, setSearchParams] = useSearchParams();
   const { screen, setLoading } = useBearStore.appStore();
   const [isPreview, setIsPreview] = React.useState(false);
@@ -64,12 +69,15 @@ export const MyInvitation = () => {
     filters,
     selectedInvitation,
     myInvitations,
+    isListView,
+    setIsListView,
     setAction,
     setFilters,
     setSelectedInvitation,
     setMyInvitations,
   } = useBearStore.eventStore();
   const [form] = Form.useForm();
+  const [isFilter, setIsFilter] = React.useState(false);
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -126,13 +134,36 @@ export const MyInvitation = () => {
     });
   };
 
+  invitationColumns.forEach((column) => {
+    if (column.key === INVITATION_COLUMN_KEYS.NAME) {
+      column.render = (text, record) => (
+        <Text
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            onViewSelect(record);
+          }}
+        >
+          {record.name}
+        </Text>
+      );
+    }
+  });
+
   const renderEvents = (): React.ReactNode => {
     return myInvitations.length ? (
-      myInvitations.map((event) => (
-        <Col {...colOption(8)}>
-          <EventCard {...event} onSelect={() => onViewSelect(event)} />
-        </Col>
-      ))
+      isListView ? (
+        <DataTable
+          columns={invitationColumns}
+          data={myInvitations}
+          sortKeys={SORT_KEYS}
+        />
+      ) : (
+        myInvitations.map((event) => (
+          <Col {...colOption(8)}>
+            <EventCard {...event} onSelect={() => onViewSelect(event)} />
+          </Col>
+        ))
+      )
     ) : (
       <EmptyData image={NoEvents} description="No invitation to show" />
     );
@@ -174,90 +205,100 @@ export const MyInvitation = () => {
   };
 
   return (
-    <div className="event-management__container">
+    <div className="my-invitation__container">
       {(!action || action === "DELETE") && (
         <>
-          <Row className="event-management__filters" gutter={[8, 8]}>
-            <Col flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Event">
-                  <Select
-                    style={{ width: "100%" }}
-                    allowClear
-                    placeholder="Select a event"
-                    optionFilterProp="children"
-                    options={eventTypeOptions}
-                    value={filters.type}
-                    onChange={(type) => {
-                      handleFilterChange({ type });
-                    }}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Status">
-                  <Select
-                    style={{ width: "100%" }}
-                    allowClear
-                    placeholder="Select a status"
-                    optionFilterProp="children"
-                    options={eventStatusOptions}
-                    tagRender={({ label }) => {
-                      return (
-                        <Tag
-                          color={EVENT_STATUS_LABEL_COLOR[label as string]}
-                          className="event-status__tag"
-                        >
-                          {label}
-                        </Tag>
-                      );
-                    }}
-                    onChange={(status) => {
-                      handleFilterChange({ status });
-                    }}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-            <Col className="upcoming-event__date-picker" flex={6}>
-              <Form layout="vertical">
-                <Form.Item label="Event date range">
-                  <RangePicker
-                    value={
-                      formatDateRange(
-                        filters.fromDate as string,
-                        filters.toDate as string
-                      ) as any
-                    }
-                    onChange={(e) => {
-                      if (e) {
-                        handleFilterChange({
-                          fromDate: dayjs(e?.[0]),
-                          toDate: dayjs(e?.[1]),
-                        });
-                      } else {
-                        const _filters: any = { ...filters };
-                        delete _filters.fromDate;
-                        delete _filters.toDate;
-                        const filter = removeFalsyValues(_filters);
-                        setFilters(filter);
-                        setSearchParams(filter);
-                      }
-                    }}
-                    format={EVENT_DATE_FORMAT}
-                  />
-                </Form.Item>
-              </Form>
-            </Col>
-          </Row>
           <Row wrap gutter={[8, 8]}>
             <Col span={12}>
-              <Title level={3}>Invitation</Title>
+              <Title level={3}> My Invitation</Title>
             </Col>
-            <Col span={12} className="upcoming-event__pagination"></Col>
+            <Col span={12} className="upcoming-event__pagination">
+              <Button
+                type="text"
+                icon={
+                  <Badge count={Object.values(filters).filter((_) => _).length}>
+                    <FilterListIcon fontSize="inherit" />
+                  </Badge>
+                }
+                onClick={() => {
+                  setIsFilter(!isFilter);
+                }}
+              >
+                Filter
+              </Button>
+
+              <Segmented
+                style={{ margin: "10px" }}
+                value={isListView ? "List" : "Card"}
+                options={[
+                  {
+                    value: "List",
+                    icon: <BarsOutlined />,
+                  },
+                  {
+                    value: "Card",
+                    icon: <AppstoreOutlined />,
+                  },
+                ]}
+                onChange={(value) => {
+                  setIsListView(value === "List");
+                }}
+              />
+            </Col>
           </Row>
+          {isFilter && (
+            <Row className="my-invitation__filters" gutter={[8, 8]}>
+              <Col {...colOption(12)}>
+                <Form layout="vertical">
+                  <Form.Item label="Event">
+                    <Select
+                      style={{ width: "100%" }}
+                      allowClear
+                      placeholder="Select a event"
+                      optionFilterProp="children"
+                      options={eventTypeOptions}
+                      value={filters.type}
+                      onChange={(type) => {
+                        handleFilterChange({ type });
+                      }}
+                    />
+                  </Form.Item>
+                </Form>
+              </Col>
+
+              <Col className="upcoming-event__date-picker" {...colOption(12)}>
+                <Form layout="vertical">
+                  <Form.Item label="Event date range">
+                    <RangePicker
+                      style={{ width: "100%" }}
+                      value={
+                        formatDateRange(
+                          filters.fromDate as string,
+                          filters.toDate as string
+                        ) as any
+                      }
+                      onChange={(e) => {
+                        if (e) {
+                          handleFilterChange({
+                            fromDate: dayjs(e?.[0]),
+                            toDate: dayjs(e?.[1]),
+                          });
+                        } else {
+                          const _filters: any = { ...filters };
+                          delete _filters.fromDate;
+                          delete _filters.toDate;
+                          const filter = removeFalsyValues(_filters);
+                          setFilters(filter);
+                          setSearchParams(filter);
+                        }
+                      }}
+                      format={EVENT_DATE_FORMAT}
+                    />
+                  </Form.Item>
+                </Form>
+              </Col>
+            </Row>
+          )}
           <Row gutter={[16, 16]}>{renderEvents()}</Row>
         </>
       )}

@@ -1,5 +1,5 @@
 import { commonEndpoint, instance } from "../../configs/axios.config";
-import { FeedbackType, ReportBugsType } from "../../types";
+import { FeedbackType, ReportBugsType, UserLocationType } from "../../types";
 
 export const commonAPI = {
   getAlerts: async (): Promise<any> => {
@@ -48,6 +48,18 @@ export const commonAPI = {
         const data = response.data;
         const url = data.url;
         return url;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getDataByPinCode: async (pinCode: string): Promise<UserLocationType[]> => {
+    return await instance
+      .get(`${commonEndpoint.getDataByPinCode}${pinCode}`)
+      .then((response) => {
+        const result = response.data.records;
+        return result;
       })
       .catch((error) => {
         throw error;

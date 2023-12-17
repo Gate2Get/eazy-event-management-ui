@@ -7,6 +7,7 @@ import {
   Form,
   Image,
   Input,
+  InputNumber,
   Popover,
   Radio,
   Row,
@@ -16,16 +17,9 @@ import {
   Typography,
 } from "antd";
 import UserIcon from "../../assets/png/user.png";
-import UserProfileIcon from "../../assets/png/user-profile.png";
-import {
-  CheckCircleOutlined,
-  EditOutlined,
-  LogoutOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
 import "./styles.scss";
 import { API } from "../../api";
-import { UserInfoType } from "../../types";
+import { UserInfoType, UserLocationType } from "../../types";
 import { useBearStore } from "../../store";
 import { ROUTES_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
@@ -35,6 +29,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WarningIcon from "@mui/icons-material/Warning";
+import { DefaultOptionType } from "antd/es/select";
 
 const { Title, Text } = Typography;
 
@@ -47,6 +42,15 @@ export const MyProfile = () => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLogout, setIsLogout] = React.useState(false);
   const navigate = useNavigate();
+  const [userLocation, setUserLocation]: [
+    UserLocationType[],
+    React.Dispatch<any>
+  ] = React.useState([]);
+  const [isLocationFetching, setLocationFetching] = React.useState(false);
+  const [locationOptions, setLocationOptions]: [
+    DefaultOptionType[],
+    React.Dispatch<any>
+  ] = React.useState([]);
 
   React.useEffect(() => {
     getUserInfo();
@@ -56,6 +60,12 @@ export const MyProfile = () => {
   React.useEffect(() => {
     form.setFieldsValue({ ...userInfo, mobile: userInfo.mobile?.toString() });
   }, [userInfo]);
+
+  React.useEffect(() => {
+    if (isEdit) {
+      getDataByPinCode(userInfo?.pinCode?.toString());
+    }
+  }, [isEdit]);
 
   const hideLogout = () => {
     setIsLogout(false);
@@ -136,6 +146,48 @@ export const MyProfile = () => {
         setLoading(false);
         console.log({ location: "updateUserInfo", error });
       });
+  };
+
+  const onSearchPinCode = (value: string) => {
+    if (value?.length >= 6) {
+      getDataByPinCode(value);
+    }
+  };
+
+  const getDataByPinCode = (pinCode?: string): void => {
+    setLocationFetching(true);
+    API.commonAPI
+      .getDataByPinCode(pinCode as string)
+      .then((locationInfo: UserLocationType[]) => {
+        setLocationFetching(false);
+        setUserLocation(locationInfo);
+        setLocationOptions(
+          locationInfo.map((info) => ({
+            label: info.officename,
+            value: info.officename,
+          }))
+        );
+      })
+      .catch((error: Error) => {
+        setLocationFetching(false);
+        console.log({ location: "getDataByPinCode", error });
+      });
+  };
+
+  const onSelectPinCode = (post: string) => {
+    const selectedPostal = userLocation.find(
+      (info) => info.officename === post
+    );
+    if (selectedPostal) {
+      form.setFieldsValue({
+        state: selectedPostal.statename,
+        district: selectedPostal.districtname,
+        pinCode: selectedPostal.pincode,
+        postOffice: selectedPostal.officename,
+      });
+    } else {
+      form.resetFields(["state", "district", "pinCode", "postOffice"]);
+    }
   };
 
   let cardStyle = {};
@@ -255,22 +307,54 @@ export const MyProfile = () => {
             </Form.Item>
 
             <Form.Item
+              label="Postal office"
+              name="postOffice"
+              rules={[
+                { required: false, message: "Please input your pincode!" },
+              ]}
+            >
+              <Select
+                placeholder="Your pincode"
+                allowClear
+                showSearch
+                options={locationOptions}
+                loading={isLocationFetching}
+                onSearch={onSearchPinCode}
+                filterOption={false}
+                onSelect={onSelectPinCode}
+              />
+            </Form.Item>
+
+            <Form.Item
+              label="Pincode"
+              name="pinCode"
+              rules={[
+                { required: false, message: "Please input your pincode!" },
+              ]}
+            >
+              <Input placeholder="Your pincode" disabled />
+            </Form.Item>
+
+            <Form.Item
+              label="District"
+              name="district"
+              rules={[
+                { required: false, message: "Please input your district!" },
+              ]}
+            >
+              <Input placeholder="Your district" disabled />
+            </Form.Item>
+
+            <Form.Item
               label="State"
               name="state"
               rules={[
                 { required: false, message: "Please select your state!" },
               ]}
             >
-              <Select placeholder="Your state" />
+              <Input placeholder="Your state" disabled />
             </Form.Item>
 
-            <Form.Item
-              label="City"
-              name="city"
-              rules={[{ required: false, message: "Please select your city!" }]}
-            >
-              <Select placeholder="Your city" />
-            </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 Save changes

@@ -187,7 +187,10 @@ export const RecentEvent = (props: RecentEventType) => {
               </div>
               {status && (
                 <div style={{ textAlign: "center" }}>
-                  <Tag color={EVENT_STATUS_LABEL_COLOR?.[status as any]}>
+                  <Tag
+                    bordered={false}
+                    color={EVENT_STATUS_LABEL_COLOR?.[status as any]}
+                  >
                     {status}
                   </Tag>
                 </div>

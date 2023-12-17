@@ -30,6 +30,7 @@ import { RichTextEditor } from "../../components/richTextEditor";
 import {
   CHANNEL_OPTIONS,
   EVENT_TYPE_PROPS,
+  LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
   PAGE_QUERY_ACTIONS,
   TEMPLATE_BUTTONS,
@@ -73,7 +74,7 @@ const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
-export const TemplateManagement = () => {
+export const TemplateManagement = (): React.ReactElement => {
   const [form] = Form.useForm();
   const { styles } = useModalStyle();
   const token = useTheme();
@@ -177,6 +178,7 @@ export const TemplateManagement = () => {
   }, [searchParams]);
 
   React.useEffect(() => {
+    setIsListView(localStorage.getItem(LOCAL_STORAGE_VIEW.TEMPLATE) === "List");
     return () => {
       setAction("");
       setMessageError("");
@@ -636,6 +638,10 @@ export const TemplateManagement = () => {
                         },
                       ]}
                       onChange={(value) => {
+                        localStorage.setItem(
+                          LOCAL_STORAGE_VIEW.TEMPLATE,
+                          value.toString()
+                        );
                         setIsListView(value === "List");
                       }}
                     />

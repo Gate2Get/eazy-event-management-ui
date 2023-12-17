@@ -22,7 +22,10 @@ export const eventColumns: ColumnsType<EventType> = [
     dataIndex: EVENT_COLUMN_KEYS.CHANNEL,
     title: EVENT_COLUMN_NAME.CHANNEL,
     render: (value) => (
-      <Tag icon={CHANNEL_OPTIONS_MAP[value]}> {CHANNELS[value]}</Tag>
+      <Tag bordered={false} icon={CHANNEL_OPTIONS_MAP[value]}>
+        {" "}
+        {CHANNELS[value]}
+      </Tag>
     ),
   },
   {
@@ -37,7 +40,10 @@ export const eventColumns: ColumnsType<EventType> = [
     render: (value) =>
       EVENT_STATUS_LABEL?.[value] && (
         <div className="event-status">
-          <Tag color={EVENT_STATUS_LABEL_COLOR?.[EVENT_STATUS_LABEL?.[value]]}>
+          <Tag
+            bordered={false}
+            color={EVENT_STATUS_LABEL_COLOR?.[EVENT_STATUS_LABEL?.[value]]}
+          >
             {EVENT_STATUS_LABEL?.[value]}
           </Tag>
         </div>

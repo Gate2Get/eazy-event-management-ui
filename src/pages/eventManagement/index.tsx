@@ -32,6 +32,7 @@ import {
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPES,
   EVENT_TYPE_PROPS,
+  LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
 } from "../../constants";
 import { useBearStore } from "../../store";
@@ -172,6 +173,7 @@ export const EventManagement = () => {
 
   React.useEffect(() => {
     getContactDirectory();
+    setIsListView(localStorage.getItem(LOCAL_STORAGE_VIEW.EVENT) === "List");
     return () => {
       console.log("unmounting");
       setFilters({});
@@ -570,6 +572,10 @@ export const EventManagement = () => {
                   },
                 ]}
                 onChange={(value) => {
+                  localStorage.setItem(
+                    LOCAL_STORAGE_VIEW.EVENT,
+                    value.toString()
+                  );
                   setIsListView(value === "List");
                 }}
               />

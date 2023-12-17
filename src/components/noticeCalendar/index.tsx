@@ -1,7 +1,6 @@
 import React, { Dispatch } from "react";
 import type { Dayjs } from "dayjs";
-import { BadgeProps, CalendarProps, Typography } from "antd";
-import { Badge, Calendar } from "antd";
+import { CalendarProps, Space, Tag, Typography, Calendar } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import { EventType } from "../../types";
@@ -97,16 +96,18 @@ export const NoticeCalendar = () => {
     const listData = eventYearMap[month];
     console.log({ listData, eventYearMap, month: value.month() });
     return (
-      <ul className="events">
+      <Space className="events-date" direction="vertical">
         {listData?.map((item: any) => (
-          <li key={item.id}>
-            <Badge
-              status={item.type as BadgeProps["status"]}
-              text={item.name}
-            />
-          </li>
+          <Tag
+            bordered={false}
+            key={item.name}
+            color="success"
+            style={{ width: "100%" }}
+          >
+            {item.name}
+          </Tag>
         ))}
-      </ul>
+      </Space>
     );
   };
 
@@ -115,16 +116,18 @@ export const NoticeCalendar = () => {
     const listData =
       monthYear === selectedMonthYear ? eventMonthMap[value.date()] : [];
     return (
-      <ul className="events-date">
+      <Space className="events-date" direction="vertical">
         {listData?.map((item: any) => (
-          <li key={item.id}>
-            <Badge
-              status={item.type as BadgeProps["status"]}
-              text={item.name}
-            />
-          </li>
+          <Tag
+            bordered={false}
+            key={item.name}
+            color="success"
+            style={{ width: "100%" }}
+          >
+            {item.name}
+          </Tag>
         ))}
-      </ul>
+      </Space>
     );
   };
 

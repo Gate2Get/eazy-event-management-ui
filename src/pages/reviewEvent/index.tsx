@@ -20,8 +20,6 @@ import {
 import dayjs from "dayjs";
 import React from "react";
 import { API } from "../../api";
-import { BirthdayEventCard } from "../../components/birthdayEventCard";
-import { MarriageEventCard } from "../../components/marriageEventCard";
 import {
   EVENT_ADMIN_ACTION,
   EVENT_DATE_FORMAT,
@@ -29,6 +27,7 @@ import {
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPES,
   EVENT_TYPE_PROPS,
+  LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
 } from "../../constants";
 import { useBearStore } from "../../store";
@@ -125,6 +124,9 @@ export const ReviewEvent = () => {
 
   React.useEffect(() => {
     getContactDirectory();
+    setIsListView(
+      localStorage.getItem(LOCAL_STORAGE_VIEW.EVENT_REVIEW) === "List"
+    );
     return () => {
       console.log("unmounting");
       setFilters({});
@@ -373,6 +375,10 @@ export const ReviewEvent = () => {
                   },
                 ]}
                 onChange={(value) => {
+                  localStorage.setItem(
+                    LOCAL_STORAGE_VIEW.EVENT_REVIEW,
+                    value.toString()
+                  );
                   setIsListView(value === "List");
                 }}
               />

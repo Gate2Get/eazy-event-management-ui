@@ -12,6 +12,7 @@ import { ServiceRoutes } from "../routes";
 import { ROUTES_URL } from "../constants";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProfileVerification } from "../components/profileVerification";
+import { useSpring, animated } from "react-spring";
 
 const { Header, Content, Sider } = Layout;
 const { Title, Text } = Typography;
@@ -43,6 +44,12 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   } else {
     sidebarWidth = (width * 21) / 100;
   }
+
+  console.log({ collapsed });
+  // Animated styles for the Content component
+  const contentAnimation = useSpring({
+    marginLeft: collapsed ? 0 : sidebarWidth,
+  });
 
   React.useEffect(() => {
     if (!isAuthorized) {
@@ -131,7 +138,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
         />
       </Header>
       <Spin tip="Loading..." spinning={isLoading}>
-        <Layout hasSider>
+        <Layout hasSider style={{ flexDirection: "column" }}>
           <Sider
             collapsible
             breakpoint="lg"
@@ -150,41 +157,43 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           </Sider>
 
           {screen === "DESKTOP" || (screen === "MOBILE" && collapsed) ? (
-            <Content
-              style={{
-                margin: "0px 10px 10px 10px",
-                padding: 10,
-                minHeight: height,
-                background: "rgb(252, 252, 253)",
-                marginLeft: collapsed ? 0 : sidebarWidth,
-              }}
-            >
-              {!user.mobile || !user.isMobileVerified ? (
-                <Alert message={renderAccountWarning()} type="warning" />
-              ) : null}
-              <div className="alert-container">
-                {alerts.length
-                  ? alerts.map((alert) => (
-                      <Alert
-                        banner
-                        {...alert.props}
-                        message={
-                          <Marquee
-                            pauseOnHover
-                            gradient={false}
-                            {...alert.props}
-                          >
-                            {alert.text}
-                          </Marquee>
-                        }
-                      />
-                    ))
-                  : null}
-              </div>
-              <div className="banner-text"></div>
+            <animated.div style={contentAnimation}>
+              <Content
+                style={{
+                  margin: "0px 10px 10px 10px",
+                  padding: 10,
+                  minHeight: height,
+                  background: "rgb(252, 252, 253)",
+                  // marginLeft: collapsed ? 0 : sidebarWidth,
+                }}
+              >
+                {!user.mobile || !user.isMobileVerified ? (
+                  <Alert message={renderAccountWarning()} type="warning" />
+                ) : null}
+                <div className="alert-container">
+                  {alerts.length
+                    ? alerts.map((alert) => (
+                        <Alert
+                          banner
+                          {...alert.props}
+                          message={
+                            <Marquee
+                              pauseOnHover
+                              gradient={false}
+                              {...alert.props}
+                            >
+                              {alert.text}
+                            </Marquee>
+                          }
+                        />
+                      ))
+                    : null}
+                </div>
+                <div className="banner-text"></div>
 
-              <ServiceRoutes />
-            </Content>
+                <ServiceRoutes />
+              </Content>
+            </animated.div>
           ) : null}
         </Layout>
       </Spin>

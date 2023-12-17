@@ -19,6 +19,22 @@ export const HomeLayout = (props: HomeLayoutType) => {
   const { isAuthorized } = useBearStore.userStore();
   const { children } = props;
 
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const colOption = (count: number) =>
     screen === "MOBILE"
       ? {
@@ -50,14 +66,21 @@ export const HomeLayout = (props: HomeLayoutType) => {
             display: "grid",
             alignItems: "center",
             background: "#fff",
+            boxShadow: scrolled
+              ? "rgb(234, 236, 240) 0px 0px 1px, rgba(29, 41, 57, 0.08) 0px 6px 12px"
+              : "none",
           }}
+          // className={headerClass}
         >
           <div>
             <HeaderHome isAuthorized={isAuthorized} />
           </div>
         </Header>
       )}
-      <Content className="site-layout" style={{ minHeight: height - 130 }}>
+      <Content
+        className="site-layout"
+        style={{ minHeight: height - 130, background: "rgb(255, 255, 255)" }}
+      >
         {children}
       </Content>
       {isFooterVisible && (
@@ -70,13 +93,17 @@ export const HomeLayout = (props: HomeLayoutType) => {
                     !SERVICE_MENU.includes(currentPage) && screen === "DESKTOP"
                       ? "left"
                       : "none",
+                  color: "rgb(102, 112, 133)",
                 }}
               >
                 <img
                   src={Logo}
                   alt=""
                   width={20}
-                  style={{ position: "relative", top: "5px" }}
+                  style={{
+                    position: "relative",
+                    top: "5px",
+                  }}
                 />
                 ©2023 Eazy Event
               </Paragraph>

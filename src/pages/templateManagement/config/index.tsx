@@ -16,7 +16,10 @@ export const templateColumns: ColumnsType<TemplateType> = [
     dataIndex: TEMPLATE_COLUMN_KEYS.CHANNEL,
     title: TEMPLATE_COLUMN_NAME.CHANNEL,
     render: (value) => (
-      <Tag icon={CHANNEL_OPTIONS_MAP[value]}> {CHANNELS[value]}</Tag>
+      <Tag bordered={false} icon={CHANNEL_OPTIONS_MAP[value]}>
+        {" "}
+        {CHANNELS[value]}
+      </Tag>
     ),
   },
   {

@@ -6,6 +6,7 @@ import { GoogleContactDoc } from "../components/googleContactDoc";
 import { ROUTES_URL } from "../constants";
 import { AppLayout } from "../layout";
 import { ContactManagement } from "../pages/contactManagement";
+import { ContactUs } from "../pages/contactUs";
 import { Dashboard } from "../pages/dashboard";
 import { EventManagement } from "../pages/eventManagement";
 import { Feedback } from "../pages/feedback";
@@ -52,6 +53,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.PRICING,
     element: <Pricing />,
+  },
+  {
+    path: ROUTES_URL.CONTACT_US,
+    element: <ContactUs />,
   },
   {
     path: ROUTES_URL.FORBIDDEN,

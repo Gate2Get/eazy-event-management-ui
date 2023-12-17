@@ -103,8 +103,16 @@ export const UserCard = (props: UserCardType) => {
                 </Space>
               </p>
               <p>
-                <Title level={5}>City</Title>
-                <Text italic>{userInfo.city || "NA"}</Text>
+                <Title level={5}>District</Title>
+                <Text italic>{userInfo.district || "NA"}</Text>
+              </p>
+              <p>
+                <Title level={5}>Pincode</Title>
+                <Text italic>{userInfo.pinCode || "NA"}</Text>
+              </p>
+              <p>
+                <Title level={5}>State</Title>
+                <Text italic>{userInfo.state || "NA"}</Text>
               </p>
               <p>
                 <Title level={5}>Gender</Title>

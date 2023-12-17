@@ -34,6 +34,8 @@ export const SidebarTab = (props: SidebarTabProps) => {
       const menu = routeMenu[route[0]];
       setSelectedTab(route[1]);
       setCurrentPage(menu);
+      // Scroll to the top when the component is mounted
+      window.scrollTo(0, 0);
     }
   }, [window.location.pathname]);
 

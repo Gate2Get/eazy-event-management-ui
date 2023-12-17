@@ -39,7 +39,8 @@ export type UserInfoType = {
   lastName?: string;
   email?: string;
   state?: string;
-  city?: string;
+  district?: string;
+  pinCode?: number;
   picture?: string;
   isEmailVerified?: boolean;
   isMobileVerified?: boolean;
@@ -210,4 +211,17 @@ export type EventAdminType = {
   id: string;
   approvalStatus: string;
   price: number;
+};
+
+export type UserLocationType = {
+  officename: string;
+  pincode: string;
+  officetype: string;
+  deliverystatus: string;
+  divisionname: string;
+  regionname: string;
+  circlename: string;
+  taluk: string;
+  districtname: string;
+  statename: string;
 };

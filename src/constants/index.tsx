@@ -29,6 +29,7 @@ export const ROUTES_URL = {
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
   REVIEW_EVENTS: "review-events",
   MY_INVITATION: "my-invitation",
+  CONTACT_US: "contact-us",
 };
 
 export const ROUTES_MENU = {
@@ -328,3 +329,12 @@ export const TEMPLATE_BUTTONS = [
     icon: <RecordVoiceOverIcon fontSize="small" />,
   },
 ];
+
+export const LOCAL_STORAGE_VIEW = {
+  TEMPLATE: "templateViewType",
+  CONTACT_DIRECTORY: "contactDirectoryViewType",
+  CONTACT_LIST: "contactListViewType",
+  EVENT: "eventViewType",
+  EVENT_REVIEW: "eventReviewViewType",
+  MY_INVITATION: "myInvitationViewType",
+};

@@ -87,7 +87,12 @@ export const EventCard = (props: EventCardType) => {
               </Col>
               {EVENT_STATUS_LABEL_COLOR?.[status] && (
                 <Col flex={12} className="event-status">
-                  <Tag color={EVENT_STATUS_LABEL_COLOR?.[status]}>{status}</Tag>
+                  <Tag
+                    bordered={false}
+                    color={EVENT_STATUS_LABEL_COLOR?.[status]}
+                  >
+                    {status}
+                  </Tag>
                 </Col>
               )}
             </Row>

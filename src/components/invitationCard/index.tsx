@@ -38,7 +38,14 @@ export const InvitationCard = (props: MyInvitationType) => {
   // const docType = invitationUrl?.split(',')
 
   return (
-    <Card title="Event Details" extra={<Tag color="success">{type}</Tag>}>
+    <Card
+      title="Event Details"
+      extra={
+        <Tag bordered={false} color="success">
+          {type}
+        </Tag>
+      }
+    >
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <RenderList name="Event Name" value={<>{name}</>} />
         <RenderList

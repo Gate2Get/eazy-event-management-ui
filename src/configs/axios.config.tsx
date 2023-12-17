@@ -84,6 +84,7 @@ export const commonEndpoint = {
   createBug: "/api/v1/app/common/report-bug",
   submitFeedback: "/api/v1/app/common/feedback",
   uploadFile: "/api/v1/app/file/upload",
+  getDataByPinCode: "/api/v1/pincode/",
 };
 
 export const adminEndpoint = {

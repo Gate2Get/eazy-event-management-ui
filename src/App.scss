@@ -251,6 +251,10 @@ form {
   border-color: rgb(18, 183, 106) !important;
 }
 
+.ant-picker-cell-range-start .ant-picker-cell-inner {
+  background: rgb(18, 183, 106) !important;
+}
+
 .ant-picker-cell-selected,
 .ant-picker-calendar-date-today {
   background: rgba(18, 183, 106, 0.12) !important;
@@ -258,6 +262,13 @@ form {
 
 .ant-picker-cell-selected .ant-picker-calendar-date-value {
   color: rgb(18, 183, 106) !important;
+}
+
+.ant-steps-item-active {
+  .ant-steps-item-icon {
+    border-color: rgba(18, 183, 106, 0.12) !important;
+    background: rgb(18, 183, 106) !important;
+  }
 }
 
 .ant-alert-info {
@@ -276,7 +287,8 @@ form {
 
 .ant-tabs-tab-btn:hover,
 .ant-tabs-tab-btn:active {
-  color: rgba(18, 183, 106, 0.12) !important;
+  color: rgb(18, 183, 106) !important;
+  background: rgba(18, 183, 106, 0.12) !important;
 }
 
 .ant-upload-drag:hover {

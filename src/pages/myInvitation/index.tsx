@@ -18,6 +18,7 @@ import {
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
+  LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
 } from "../../constants";
 import { useBearStore } from "../../store";
@@ -107,6 +108,9 @@ export const MyInvitation = () => {
   }, [searchParams]);
 
   React.useEffect(() => {
+    setIsListView(
+      localStorage.getItem(LOCAL_STORAGE_VIEW.MY_INVITATION) === "List"
+    );
     const filters: EventFilterType = {
       status: searchParams.get("status") as string,
       type: searchParams.get("type") as string,
@@ -241,6 +245,10 @@ export const MyInvitation = () => {
                   },
                 ]}
                 onChange={(value) => {
+                  localStorage.setItem(
+                    LOCAL_STORAGE_VIEW.MY_INVITATION,
+                    value.toString()
+                  );
                   setIsListView(value === "List");
                 }}
               />

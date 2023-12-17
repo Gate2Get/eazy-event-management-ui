@@ -119,7 +119,12 @@ export const MarriageEventCard = (props: EventCardType) => {
           </Text>
         </Col>
         <Col flex={12} className="event-status">
-          <Tag color={EVENT_STATUS_LABEL_COLOR?.[status as any]}>{status}</Tag>
+          <Tag
+            bordered={false}
+            color={EVENT_STATUS_LABEL_COLOR?.[status as any]}
+          >
+            {status}
+          </Tag>
         </Col>
       </Row>
     </Space>

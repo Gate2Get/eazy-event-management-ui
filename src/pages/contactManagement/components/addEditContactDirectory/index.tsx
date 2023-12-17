@@ -38,7 +38,11 @@ import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
 import { phoneNumberParser } from "../../../../utils/common.utils";
 import { contactValidator } from "../../../../utils/validation.utils";
-import { PAGE_ACTION, ROUTES_URL } from "../../../../constants";
+import {
+  LOCAL_STORAGE_VIEW,
+  PAGE_ACTION,
+  ROUTES_URL,
+} from "../../../../constants";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "react-router-dom";
 import NoContactList from "../../../../assets/svg/no-contact-list.svg";
@@ -54,8 +58,6 @@ export const AddEditContactDirectory = () => {
   const { setLoading, screen, isError, setError } = useBearStore.appStore();
   const {
     action,
-    setAction,
-    setContactList,
     contactList,
     selectedDirectory,
     setSelectedDirectory,
@@ -93,6 +95,12 @@ export const AddEditContactDirectory = () => {
       );
     }
   }, [selectedDirectory]);
+
+  React.useEffect(() => {
+    setIsListView(
+      localStorage.getItem(LOCAL_STORAGE_VIEW.CONTACT_LIST) === "List"
+    );
+  }, []);
 
   if (action === "EDIT" || action === "ADD") {
     columns.forEach((column) => {
@@ -537,6 +545,10 @@ export const AddEditContactDirectory = () => {
                   },
                 ]}
                 onChange={(value) => {
+                  localStorage.setItem(
+                    LOCAL_STORAGE_VIEW.CONTACT_LIST,
+                    value.toString()
+                  );
                   setIsListView(value === "List");
                 }}
               />

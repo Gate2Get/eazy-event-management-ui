@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
 import { urlhandler } from "../../utils/common.utils";
 import { useSearchParams } from "react-router-dom";
-import { PAGE_ACTION } from "../../constants";
+import { LOCAL_STORAGE_VIEW, PAGE_ACTION } from "../../constants";
 
 const { Title } = Typography;
 
@@ -29,6 +29,9 @@ export const ContactManagement = () => {
   } = useBearStore.contactStore();
 
   React.useEffect(() => {
+    setIsListView(
+      localStorage.getItem(LOCAL_STORAGE_VIEW.CONTACT_DIRECTORY) === "List"
+    );
     return () => {
       setAction("");
       setDirectoryList([]);
@@ -116,6 +119,10 @@ export const ContactManagement = () => {
                       },
                     ]}
                     onChange={(value) => {
+                      localStorage.setItem(
+                        LOCAL_STORAGE_VIEW.CONTACT_DIRECTORY,
+                        value.toString()
+                      );
                       setIsListView(value === "List");
                     }}
                   />

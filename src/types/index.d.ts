@@ -1,4 +1,5 @@
-import { MenuProps } from "antd";
+import { FormInstance, MenuProps } from "antd";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 export type ContactListType = {
   key?: string;
@@ -16,6 +17,12 @@ export type GenericJsonType = Record<string, any>;
 export type ActionType = "VIEW" | "ADD" | "EDIT" | "DELETE" | "";
 
 export type ScreenType = "MOBILE" | "TABLET" | "DESKTOP" | "";
+
+export type AttachmentType = {
+  id: string;
+  url: string;
+  name: string;
+};
 
 export type EditConfigType = {
   text?: string;
@@ -122,7 +129,6 @@ export type EventType = {
   isTrigger?: boolean;
   status?: EventStatus;
   triggerDateTime?: Date;
-  invitationUrl?: string;
   notificationStartDateTime?: Date;
   notificationEndDateTime?: Date;
   createdAt?: string;
@@ -132,6 +138,7 @@ export type EventType = {
   progress?: number;
   isEditable?: boolean;
   isDeleteAllowed?: boolean;
+  invitationAttachment?: AttachmentType[];
 };
 
 export type CardType = {
@@ -224,4 +231,19 @@ export type UserLocationType = {
   taluk: string;
   districtname: string;
   statename: string;
+};
+
+export type EventCreationType = {
+  contactList: ContactDirectoryType[];
+  templates: TemplateType[];
+  onHandleEvent: (event: EventType) => void;
+  isEdit?: boolean;
+  onSearchTemplate: (template: string) => void;
+  form: FormInstance;
+  isTemplateFetching?: boolean;
+  isContactFetching?: boolean;
+  onSearchContact: (contact: string) => void;
+  getContactDirectory: () => void;
+  getTemplates: () => void;
+  handleFileUpload?: (e: UploadChangeParam<UploadFile<any>>) => void;
 };

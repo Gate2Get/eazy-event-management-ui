@@ -1,3 +1,4 @@
+import { RcFile } from "antd/es/upload";
 import { SetURLSearchParams } from "react-router-dom";
 import { PAGE_ACTION, PAGE_QUERY_ACTIONS } from "../constants";
 import { ActionType, VoiceMessageTemplateType } from "../types";
@@ -101,3 +102,33 @@ export function removeFalsyValues(obj: any) {
       return acc;
     }, {});
 }
+
+export const getFileList = (file?: string) => {
+  let fileList: any[] = [];
+  if (file) {
+    const urlObject = new URL(file);
+    console.log({ urlObject });
+    const pathname = urlObject.pathname;
+    const filePath = pathname.substring(pathname.lastIndexOf("/") + 1);
+    const fileName = filePath.split("_");
+    fileName.shift();
+    fileList = [
+      {
+        uid: "1",
+        name: fileName.join("_"),
+        status: "done",
+        url: file,
+      },
+    ];
+  }
+  console.log({ fileList, file });
+  return fileList;
+};
+
+export const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });

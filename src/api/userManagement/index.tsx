@@ -36,7 +36,7 @@ export const userManagementAPI = {
     return await instance
       .post(userManagementEndpoint.verifyEmailOTP, { otp })
       .then((response) => {
-        return true;
+        return response.data.status;
       })
       .catch((error) => {
         throw error;

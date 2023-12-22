@@ -7,6 +7,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import MapIcon from "@mui/icons-material/Map";
 import { CHANNEL_OPTIONS } from "../../constants";
 import { useBearStore } from "../../store";
+import { checkIsPdf } from "../../utils/validation.utils";
+import { PdfViewer } from "../pdfViewer";
 
 const { Text, Link } = Typography;
 
@@ -18,7 +20,7 @@ export const InvitationCard = (props: MyInvitationType) => {
     startDateTime,
     endDateTime,
     location,
-    invitationUrl,
+    invitationAttachment,
     locationUrl,
     invitedByInfo,
   } = props;
@@ -101,14 +103,21 @@ export const InvitationCard = (props: MyInvitationType) => {
             </>
           }
         />
-        {invitationUrl && (
+        {invitationAttachment && (
           <Row>
-            <Col {...colOption(8)}>
-              <Image
-                width="100%"
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-              />
-            </Col>
+            {invitationAttachment.map((invitation) => (
+              <Col {...colOption(invitationAttachment?.length === 1 ? 24 : 12)}>
+                {checkIsPdf(invitation.url) ? (
+                  <PdfViewer url={invitation.url} />
+                ) : (
+                  <img
+                    alt="example"
+                    style={{ width: "100%" }}
+                    src={invitation.url}
+                  />
+                )}
+              </Col>
+            ))}
           </Row>
         )}
       </Space>

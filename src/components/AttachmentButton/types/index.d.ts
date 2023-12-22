@@ -7,4 +7,5 @@ type AttachmentButtonType = {
   hoverText?: React.ReactNode;
   buttonText: React.ReactNode;
   otherProps?: any;
+  isPreview?: boolean;
 };

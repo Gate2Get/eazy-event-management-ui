@@ -41,7 +41,11 @@ import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
 import { PreviewTemplate } from "../../components/previewTemplate";
-import { getFormattedMessage, urlhandler } from "../../utils/common.utils";
+import {
+  getFileList,
+  getFormattedMessage,
+  urlhandler,
+} from "../../utils/common.utils";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
 import { useTheme } from "antd-style";
 import {
@@ -108,7 +112,6 @@ export const TemplateManagement = (): React.ReactElement => {
     id: "",
     status: "",
   });
-  const [isFilter, setIsFilter] = React.useState(false);
 
   const playSpeech = (text: string, id: string) => {
     stopSpeech();
@@ -132,12 +135,10 @@ export const TemplateManagement = (): React.ReactElement => {
   };
 
   const stopSpeech = () => {
-    if (speechMsg) {
-      // Pause the current utterance
-      window.speechSynthesis.cancel();
-      console.log("Speech stopped");
-      setSpeechStatus({ id: "", status: "" });
-    }
+    // Pause the current utterance
+    window?.speechSynthesis?.cancel();
+    console.log("Speech stopped");
+    setSpeechStatus({ id: "", status: "" });
   };
 
   const resumeSpeech = () => {
@@ -184,6 +185,7 @@ export const TemplateManagement = (): React.ReactElement => {
       setMessageError("");
       setIsError(false);
       setTemplates([]);
+      stopSpeech();
     };
   }, []);
 
@@ -236,6 +238,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const onCancel = () => {
     setMessageError("");
     setIsError(false);
+    stopSpeech();
     setMessages({});
     setSearchParams({});
   };
@@ -399,28 +402,6 @@ export const TemplateManagement = (): React.ReactElement => {
     richTextProps.setContents = selectedTemplate.message;
     richTextProps.hideToolbar = action === "VIEW";
   }
-
-  const getFileList = (file?: string) => {
-    let fileList: any[] = [];
-    if (file) {
-      const urlObject = new URL(file);
-      console.log({ urlObject });
-      const pathname = urlObject.pathname;
-      const filePath = pathname.substring(pathname.lastIndexOf("/") + 1);
-      const fileName = filePath.split("_");
-      fileName.shift();
-      fileList = [
-        {
-          uid: "1",
-          name: fileName.join("_"),
-          status: "done",
-          url: file,
-        },
-      ];
-    }
-    console.log({ fileList, file });
-    return fileList;
-  };
 
   templateColumns.forEach((column) => {
     if (column.key === TEMPLATE_COLUMN_KEYS.ACTION) {

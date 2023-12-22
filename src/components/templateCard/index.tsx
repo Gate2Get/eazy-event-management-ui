@@ -29,9 +29,8 @@ type TemplateCardType = {
 
 export const TemplateCard = (props: TemplateCardType) => {
   const { template, menuItems, onClick } = props;
-  const avatarClassName = `ee__avatar-color-${template.name
-    ?.toString()?.[0]
-    ?.toLowerCase()}`;
+  const avatarClassName = `ee__avatar-color`;
+  // -${template.name?.toString()?.[0]?.toLowerCase()}`;
 
   const avatarIconLetter = template.name
     ?.toString()

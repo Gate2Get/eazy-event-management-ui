@@ -81,6 +81,13 @@ export const EDITABLE_EVENT_STATUS = [
   EVENT_STATUS.NOT_STARTED,
 ];
 
+export const EVENT_YET_TO_START_STATUS = [
+  EVENT_STATUS.PENDING_APPROVAL,
+  EVENT_STATUS.NOT_STARTED,
+  EVENT_STATUS.ON_HOLD,
+  EVENT_STATUS.IN_PROGRESS,
+];
+
 export const EVENT_STATUS_LABEL: Record<string, string> = {
   // DRAFT: "Draft",
   IN_PROGRESS: "In progress",

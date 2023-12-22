@@ -4,6 +4,7 @@ import {
   EventFilterType,
   EventType,
   MyInvitationType,
+  TemplateType,
 } from "../../types";
 
 export const eventManagementAPI = {
@@ -51,6 +52,17 @@ export const eventManagementAPI = {
   getEventContacts: async (id: string): Promise<ContactListType[]> => {
     return await instance
       .get(`${eventManagementEndpoint.getEventContact}/${id}/contacts`)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getEventTemplate: async (id: string): Promise<TemplateType> => {
+    return await instance
+      .get(`${eventManagementEndpoint.getEventTemplate}/${id}/template`)
       .then((response) => {
         const result = response.data.result;
         return result;

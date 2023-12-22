@@ -26,3 +26,15 @@ export const validateMobileNumber = (mobileNumber: string) => {
   // Check if the provided mobile number matches the regex
   return mobileNumberRegex.test(mobileNumber);
 };
+
+export const checkIsPdf = (previewUrl: string) => {
+  let isPdf = false;
+  try {
+    if (previewUrl) {
+      isPdf = new URL(previewUrl)?.pathname?.endsWith(".pdf");
+    }
+  } catch (error) {
+    console.error({ location: "check pdf", error });
+  }
+  return isPdf;
+};

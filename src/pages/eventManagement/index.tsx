@@ -37,6 +37,7 @@ import {
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
+  AttachmentType,
   ContactDirectoryType,
   DebounceFnType,
   EventFilterType,
@@ -70,6 +71,7 @@ import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTable } from "../../components/dataTable";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -211,13 +213,25 @@ export const EventManagement = () => {
       const event = selectedEvents;
       const formValues = removeEmptyProp(event);
       if (event?.startDateTime && event?.endDateTime) {
-        formValues.dateTime = [
-          dayjs(event?.startDateTime),
-          dayjs(event?.endDateTime),
-        ];
+        if (screen !== "MOBILE") {
+          formValues.dateTime = [
+            dayjs(event?.startDateTime),
+            dayjs(event?.endDateTime),
+          ];
+        } else {
+          formValues.startDateTime = dayjs(event?.startDateTime).format(
+            "YYYY-MM-DDTHH:mm"
+          );
+          formValues.endDateTime = dayjs(event?.endDateTime).format(
+            "YYYY-MM-DDTHH:mm"
+          );
+        }
       }
       if (event?.triggerDateTime) {
-        formValues.triggerDateTime = dayjs(event?.triggerDateTime);
+        formValues.triggerDateTime =
+          screen !== "MOBILE"
+            ? dayjs(event?.triggerDateTime)
+            : dayjs(event?.triggerDateTime).format("YYYY-MM-DDTHH:mm");
       }
 
       form.setFieldsValue(formValues);
@@ -226,13 +240,16 @@ export const EventManagement = () => {
 
   const handleEvent = (event: any): void => {
     const { dateTime, triggerDateTime } = event;
-    if (dateTime) {
-      event.startDateTime = dayjs(dateTime[0]).format();
-      event.endDateTime = dayjs(dateTime[1]).format();
+    if (screen !== "MOBILE") {
+      if (dateTime) {
+        event.startDateTime = dayjs(dateTime[0]).format();
+        event.endDateTime = dayjs(dateTime[1]).format();
+      }
     }
     if (triggerDateTime) {
       event.triggerDateTime = dayjs(triggerDateTime).format();
     }
+    console.log({ event });
     handleEventPreview(event);
   };
 
@@ -277,11 +294,11 @@ export const EventManagement = () => {
     setIsPreview(false);
     if (!isPreview || isClearAction) {
       setSearchParams({});
+      form.resetFields();
     }
     if (action === "DELETE") {
       setAction("");
     }
-    form.resetFields();
   };
 
   const onDeleteSelect = (record: EventType) => {
@@ -376,8 +393,47 @@ export const EventManagement = () => {
   };
 
   const handleEventPreview = (event: EventType) => {
-    setSelectedEvents({ ...event, type: eventType as Events });
+    setSelectedEvents({
+      ...selectedEvents,
+      ...event,
+      type: eventType as Events,
+    });
     setIsPreview(true);
+  };
+
+  const handleFileUpload = async (e: any): Promise<void> => {
+    const { file } = e;
+    console.log({ file });
+    const { status, preview, uid, id, name } = file;
+    if (file.status === "removed") {
+      const invitationAttachment: AttachmentType[] =
+        form.getFieldValue("invitationAttachment") || [];
+      const _invitationAttachment = invitationAttachment.filter(
+        (invitation: AttachmentType) => invitation.id !== id
+      );
+      form.setFieldValue("invitationAttachment", _invitationAttachment);
+    } else if (file?.size && file.size < 5000000) {
+      setLoading(true);
+      API.commonAPI
+        .uploadFile(file, "invitation")
+        .then((blobId: string) => {
+          setLoading(false);
+          const invitationAttachment: AttachmentType[] =
+            form.getFieldValue("invitationAttachment") || [];
+          invitationAttachment.push({
+            id: uid,
+            name,
+            url: blobId,
+          });
+          form.setFieldValue("invitationAttachment", invitationAttachment);
+        })
+        .catch((error: Error) => {
+          setLoading(false);
+          console.log({ location: "handleFileUpload", error });
+        });
+    } else {
+      console.error("Upload file error", file);
+    }
   };
 
   const getContactDirectory = (filters = {}): any => {
@@ -535,6 +591,16 @@ export const EventManagement = () => {
             </Col>
             <Col span={12} className="upcoming-event__pagination">
               <Button
+                type="primary"
+                onClick={() => {
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
+                }}
+              >
+                Create Event
+              </Button>
+              <Button
                 type="text"
                 icon={
                   <Badge count={Object.values(filters).filter((_) => _).length}>
@@ -546,17 +612,6 @@ export const EventManagement = () => {
                 }}
               >
                 Filter
-              </Button>
-
-              <Button
-                type="primary"
-                onClick={() => {
-                  setSearchParams({
-                    action: PAGE_ACTION.ADD,
-                  });
-                }}
-              >
-                Create Event
               </Button>
               <Segmented
                 style={{ margin: "10px" }}
@@ -744,6 +799,7 @@ export const EventManagement = () => {
               isEdit={action === "EDIT"}
               getContactDirectory={getContactDirectory}
               getTemplates={getTemplates}
+              handleFileUpload={handleFileUpload}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -761,6 +817,7 @@ export const EventManagement = () => {
               isEdit={action === "EDIT"}
               getContactDirectory={getContactDirectory}
               getTemplates={getTemplates}
+              handleFileUpload={handleFileUpload}
             />
           )}
         {(action === "ADD" || action === "EDIT") &&
@@ -778,6 +835,7 @@ export const EventManagement = () => {
               isEdit={action === "EDIT"}
               getContactDirectory={getContactDirectory}
               getTemplates={getTemplates}
+              handleFileUpload={handleFileUpload}
             />
           )}
       </div>

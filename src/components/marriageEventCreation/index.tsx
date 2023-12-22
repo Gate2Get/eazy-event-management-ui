@@ -1,51 +1,33 @@
 import React from "react";
 import {
   Col,
-  Divider,
   Row,
-  Typography,
   Form,
-  Rate,
   Button,
   Input,
   DatePicker,
   Select,
   Space,
   Radio,
-  FormInstance,
 } from "antd";
-import illustrationBanner from "../../assets/webp/illustration-self-service.webp";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
 import {
   disabledDate,
   disabledDateTime,
   disabledRangeTime,
-} from "../../utils/datePicket.utils";
+} from "../../utils/datePicker.utils";
 import { CHANNEL_OPTIONS, ROUTES_URL } from "../../constants";
-import { ContactDirectoryType, EventType, TemplateType } from "../../types";
-import { removeEmptyProp } from "../../utils/common.utils";
+import { EventCreationType } from "../../types";
 import { NoData } from "../noData";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { useBearStore } from "../../store";
+import { AttachmentDragger } from "../AttachmentDragger";
 
-const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 
-type MarriageEventCreationType = {
-  contactList: ContactDirectoryType[];
-  templates: TemplateType[];
-  onHandleEvent: (event: EventType) => void;
-  isEdit?: boolean;
-  onSearchTemplate: (template: string) => void;
-  form: FormInstance;
-  isTemplateFetching?: boolean;
-  isContactFetching?: boolean;
-  onSearchContact: (contact: string) => void;
-  getContactDirectory: () => void;
-  getTemplates: () => void;
-};
-
-export const MarriageEventCreation = (props: MarriageEventCreationType) => {
+export const MarriageEventCreation = (props: EventCreationType) => {
   const {
     contactList,
     templates,
@@ -58,9 +40,16 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
     onSearchContact,
     getContactDirectory,
     getTemplates,
+    handleFileUpload,
   } = props;
 
+  const { width } = useWindowSize();
+  const { screen } = useBearStore.appStore();
   const channel = Form.useWatch("channel", { form, preserve: true });
+  const invitationAttachment = Form.useWatch("invitationAttachment", {
+    form,
+    preserve: true,
+  });
 
   return (
     <div>
@@ -90,25 +79,56 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
               <Input placeholder="Enter your Bride Name" />
             </Form.Item>
 
-            <Form.Item
-              label="Select the event date"
-              name="dateTime"
-              rules={[{ required: true, message: "Please select event date!" }]}
-            >
-              <RangePicker
-                disabledDate={disabledDate}
-                disabledTime={disabledRangeTime}
-                showTime={{
-                  hideDisabledOptions: true,
-                  defaultValue: [
-                    dayjs("00:00:00", "HH:mm:ss"),
-                    dayjs("11:59:59", "HH:mm:ss"),
-                  ],
-                }}
-                format="YYYY-MM-DD HH:mm:ss"
-                style={{ width: "100%" }}
-              />
-            </Form.Item>
+            {screen === "MOBILE" ? (
+              <>
+                <Form.Item
+                  label="Select the event start date"
+                  name="startDateTime"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select event start date!",
+                    },
+                  ]}
+                >
+                  <Input type="datetime-local" allowClear />
+                </Form.Item>
+                <Form.Item
+                  label="Select the event end date"
+                  name="endDateTime"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select event end date!",
+                    },
+                  ]}
+                >
+                  <Input type="datetime-local" allowClear />
+                </Form.Item>
+              </>
+            ) : (
+              <Form.Item
+                label="Select the event date"
+                name="dateTime"
+                rules={[
+                  { required: true, message: "Please select event date!" },
+                ]}
+              >
+                <RangePicker
+                  disabledDate={disabledDate}
+                  disabledTime={disabledRangeTime}
+                  showTime={{
+                    hideDisabledOptions: true,
+                    defaultValue: [
+                      dayjs("00:00", "HH:mm"),
+                      dayjs("11:59", "HH:mm"),
+                    ],
+                  }}
+                  format="YYYY-MM-DD HH:mm"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            )}
             <Form.Item
               label="Select the channel"
               name="channel"
@@ -238,12 +258,33 @@ export const MarriageEventCreation = (props: MarriageEventCreationType) => {
                 },
               ]}
             >
-              <DatePicker
-                format="YYYY-MM-DD HH:mm:ss"
-                disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
-                showTime={{ defaultValue: dayjs("00:00:00", "HH:mm:ss") }}
-                style={{ width: "100%" }}
+              {screen !== "MOBILE" ? (
+                <DatePicker
+                  format="YYYY-MM-DD HH:mm"
+                  disabledDate={disabledDate}
+                  disabledTime={disabledDateTime}
+                  showTime
+                  style={{ width: "100%" }}
+                  popupStyle={{
+                    maxWidth: width,
+                  }}
+                />
+              ) : (
+                <Input type="datetime-local" allowClear />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="Invitation Attachment"
+              name="invitationAttachment"
+            >
+              <AttachmentDragger
+                buttonText="Upload Attachment"
+                isPreview
+                otherProps={{
+                  fileList: invitationAttachment,
+                }}
+                accept="image/*,application/pdf"
+                onAttach={(e) => handleFileUpload?.(e)}
               />
             </Form.Item>
             <Form.Item>

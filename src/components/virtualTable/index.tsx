@@ -164,6 +164,7 @@ export const VirtualTable = <RecordType extends object>(
       columns={mergedColumns}
       pagination={false}
       {...virtualizationProps}
+      style={{ tableLayout: "fixed" }}
     />
   );
 };

@@ -63,10 +63,12 @@ export const SignIn = () => {
     setLoading(true);
     API.userManagement
       .verifyEmailOTP(otp.toString())
-      .then((response) => {
+      .then((status) => {
         setLoading(false);
-        setIsAuthorized(true);
-        navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
+        if (status) {
+          setIsAuthorized(true);
+          navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
+        }
       })
       .catch((error) => {
         setLoading(false);
@@ -263,7 +265,7 @@ export const SignIn = () => {
               width: "100%",
               height: "auto",
               position: "absolute",
-              zIndex: -1,
+              zIndex: 1,
             }}
           />
         </Row>

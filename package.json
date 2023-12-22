@@ -21,6 +21,8 @@
     "@mui/icons-material": "^5.14.19",
     "@mui/material": "^5.14.19",
     "@mui/x-charts": "^6.18.2",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
     "@types/lodash": "^4.14.197",
     "@wojtekmaj/react-hooks": "^1.18.1",
     "antd": "^5.12.2",

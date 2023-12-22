@@ -50,9 +50,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     onSelectCard,
   } = props;
 
-  const avatarClassName = image
-    ? ""
-    : `ee__avatar-color-${name?.toString()?.[0]?.toLowerCase()}`;
+  const avatarClassName = image ? "" : `ee__avatar-color`; //-${name?.toString()?.[0]?.toLowerCase()}`;
 
   const userAvatar = image ? (
     <Avatar shape="square" size={50} src={image} />

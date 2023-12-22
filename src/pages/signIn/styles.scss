@@ -8,8 +8,10 @@
   }
 
   .login-form {
-    background-color: #fff;
-    border: 1px solid #f0f3f7;
+    position: relative;
+    z-index: 2;
+    background-color: transparent;
+    // border: 1px solid #f0f3f7;
     border-radius: 8px;
     height: -webkit-max-content;
     height: -moz-max-content;

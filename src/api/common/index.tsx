@@ -42,6 +42,7 @@ export const commonAPI = {
     const data = new FormData();
     data.append("file", file);
     data.append("name", file.name);
+    data.append("format", file.type);
     return await instance
       .post(`${commonEndpoint.uploadFile}/${type}`, data)
       .then((response) => {

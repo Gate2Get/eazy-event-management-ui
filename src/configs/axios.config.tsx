@@ -23,12 +23,18 @@ export const interceptors = (navigate: (url: string) => void): void => {
       return response;
     },
     (error) => {
+      console.log({ error });
       if (error?.response?.status === 401) {
         navigate(ROUTES_URL.LOGIN);
       } else if (error?.response?.status === 403) {
         navigate(`/${ROUTES_URL.FORBIDDEN}`);
       } else if (error?.response?.status === 404) {
         navigate("/404");
+      } else if (error?.response?.status === 400) {
+        notification.success({
+          message: error?.response?.data?.message || "Something went wrong!",
+          className: "eazy__event-snackbar success",
+        });
       }
     }
   );
@@ -70,6 +76,7 @@ export const eventManagementEndpoint = {
   updateEvent: "/api/v1/app/event/my-events",
   deleteEvent: "/api/v1/app/event/my-events/",
   getEventContact: "/api/v1/app/event",
+  getEventTemplate: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
   getMyInvitation: "/api/v1/app/event/my-invitation",
 };

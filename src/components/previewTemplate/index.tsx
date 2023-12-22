@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import { Avatar, Card, Divider, Typography } from "antd";
 import {
   TemplatePreviewType,
@@ -15,7 +15,6 @@ import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
 
 const { Paragraph, Text, Title } = Typography;
-const { Meta } = Card;
 
 export const PreviewTemplate = (props: TemplatePreviewType) => {
   const { screen } = useBearStore.appStore();
@@ -25,12 +24,65 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
     type,
     name,
     channel,
-    speechStatus,
-    pauseSpeech,
-    playSpeech,
-    resumeSpeech,
-    stopSpeech,
+    // speechStatus,
+    // pauseSpeech,
+    // playSpeech,
+    // resumeSpeech,
+    // stopSpeech,
   } = props;
+
+  const [speechMsg, setSpeechMsg]: [
+    SpeechSynthesisUtterance | undefined,
+    Dispatch<any>
+  ] = React.useState();
+  const [speechStatus, setSpeechStatus] = React.useState({
+    id: "",
+    status: "",
+  });
+
+  const playSpeech = (text: string, id: string) => {
+    stopSpeech();
+    const msg = new SpeechSynthesisUtterance();
+    msg.text = text;
+    const voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[0]; // Use the first available voice
+    msg.onend = function () {
+      console.log("Speech finished");
+      setSpeechMsg(undefined);
+      setSpeechStatus({ id: "", status: "ENDED" });
+    };
+    console.log({ text });
+    window.speechSynthesis.speak(msg);
+    setSpeechMsg(msg);
+    if (speechStatus.status === "PLAYING") {
+      setSpeechStatus({ id: "", status: "" });
+    } else {
+      setSpeechStatus({ id, status: "PLAYING" });
+    }
+  };
+
+  const stopSpeech = () => {
+    // Pause the current utterance
+    window?.speechSynthesis?.cancel();
+    console.log("Speech stopped");
+    setSpeechStatus({ id: "", status: "" });
+  };
+
+  const resumeSpeech = () => {
+    if (speechMsg) {
+      // Pause the current utterance
+      window.speechSynthesis.resume();
+      setSpeechStatus({ ...speechStatus, status: "PLAYING" });
+    }
+  };
+
+  const pauseSpeech = () => {
+    if (speechMsg) {
+      // Pause the current utterance
+      window.speechSynthesis.pause();
+      setSpeechStatus({ ...speechStatus, status: "PAUSED" });
+    }
+  };
 
   let cardStyle = {};
   if (screen === "DESKTOP") {

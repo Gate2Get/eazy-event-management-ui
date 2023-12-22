@@ -5,6 +5,7 @@ import {
   EVENT_TYPES,
   EVENT_STATUS,
   EDITABLE_EVENT_STATUS,
+  EVENT_YET_TO_START_STATUS,
 } from "../../constants";
 import { MarriageEventCard } from "../marriageEventCard";
 import { BirthdayEventCard } from "../birthdayEventCard";
@@ -51,14 +52,16 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   React.useEffect(() => {
     if (selectedEvents.name) {
-      getTemplatesById();
+      console.log(!selectedEvents.status, selectedEvents.status);
       if (
         !selectedEvents.status ||
-        selectedEvents.status === EVENT_STATUS.NOT_STARTED
+        EVENT_YET_TO_START_STATUS.includes(selectedEvents.status)
       ) {
-        getContactList(selectedEvents.contactDirectory);
+        getTemplatesById();
+        getContactById();
       } else {
         getEventContacts();
+        getEventTemplate();
       }
     }
   }, [selectedEvents]);
@@ -131,6 +134,20 @@ export const PreviewEvent = (props: PreviewEventType) => {
       });
   };
 
+  const getEventTemplate = (): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEventTemplate(selectedEvents.id)
+      .then((template: TemplateType) => {
+        setSelectedTemplate(template);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEventTemplate", error });
+      });
+  };
+
   const getEventContacts = (): void => {
     setLoading(true);
     API.eventManagement
@@ -141,21 +158,21 @@ export const PreviewEvent = (props: PreviewEventType) => {
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "contact", error });
+        console.log({ location: "getEventContacts", error });
       });
   };
 
-  const getContactList = (id: string): any => {
+  const getContactById = (): any => {
     setLoading(true);
     API.contactManagement
-      .getContactList(id)
+      .getContactList(selectedEvents.contactDirectory)
       .then((contactList: ContactDirectoryType) => {
         setLoading(false);
         const _contactList =
           contactList?.contacts?.map((contact) => ({
-            id: contact.id as string,
-            name: contact.name as string,
-            key: contact?.id as string,
+            id: contact.id,
+            name: contact.name,
+            key: contact?.id,
             senderId: contact?.senderId as string,
             status: 4,
           })) || [];

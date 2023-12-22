@@ -80,6 +80,11 @@
   color: rgb(18, 183, 106);
 }
 
+.ee__avatar-color {
+  background-color: rgba(18, 183, 106, 0.12);
+  color: rgb(18, 183, 106);
+}
+
 .ee__avatar-color-a,
 .ee__avatar-color-n {
   background-color: #f5d5e9;
@@ -268,6 +273,35 @@ form {
   .ant-steps-item-icon {
     border-color: rgba(18, 183, 106, 0.12) !important;
     background: rgb(18, 183, 106) !important;
+
+    .ant-steps-icon {
+      color: #fff;
+    }
+  }
+}
+
+.ant-steps-item.ant-steps-item-wait {
+  .ant-steps-item-container[role="button"]:hover .ant-steps-item-title,
+  .ant-steps-item-container[role="button"]:hover
+    .ant-steps-item-icon
+    .ant-steps-icon {
+    color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-steps-item.ant-steps-item-finish {
+  .ant-steps-item-icon {
+    background: rgba(18, 183, 106, 0.12) !important;
+    .ant-steps-icon {
+      color: rgb(18, 183, 106) !important;
+    }
+  }
+
+  .ant-steps-item-container[role="button"]:hover .ant-steps-item-title,
+  .ant-steps-item-container[role="button"]:hover
+    .ant-steps-item-icon
+    .ant-steps-icon {
+    color: rgb(18, 183, 106) !important;
   }
 }
 
@@ -305,7 +339,8 @@ form {
   }
 }
 
-.ant-input:hover {
+.ant-input:hover,
+.ant-steps-item-container[role="button"]:hover .ant-steps-item-icon {
   border-color: rgb(18, 183, 106) !important;
 }
 
@@ -375,4 +410,21 @@ form {
 
 .ant-select-item-option-selected {
   background-color: rgba(18, 183, 106, 0.12) !important;
+}
+
+.ant-select :hover {
+  border-color: rgb(18, 183, 106) !important;
+}
+
+.ant-btn-default:hover {
+  border-color: rgb(18, 183, 106) !important;
+  color: rgb(18, 183, 106) !important;
+}
+
+.date-picker-mobile {
+  left: auto !important;
+}
+
+.ant-radio-button-wrapper:hover {
+  color: rgb(18, 183, 106) !important;
 }

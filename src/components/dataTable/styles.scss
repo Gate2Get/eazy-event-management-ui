@@ -6,6 +6,10 @@
     flex-direction: row;
     gap: 24px;
     height: 56px;
+
+    table {
+      table-layout: calc(100) !important;
+    }
   }
   // .ant-table-body {
   //   tr:nth-child(odd) {

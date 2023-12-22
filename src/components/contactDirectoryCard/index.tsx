@@ -1,28 +1,16 @@
-import {
-  ContactsOutlined,
-  IdcardOutlined,
-  MoreOutlined,
-} from "@ant-design/icons";
+import React from "react";
+import { MoreOutlined } from "@ant-design/icons";
 import {
   Avatar,
-  Badge,
-  Card,
   Col,
-  Divider,
   Dropdown,
-  Image,
   MenuProps,
   Row,
   Space,
-  Tag,
   Tooltip,
   Typography,
 } from "antd";
-import React from "react";
 import { ContactDirectoryType } from "../../types";
-import ContactBookIcon from "../../assets/png/contact-book.png";
-import { faAddressBook } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./styles.scss";
 
 const { Title, Text } = Typography;
@@ -35,9 +23,8 @@ type ContactCardType = {
 
 export const ContactDirectoryCard = (props: ContactCardType) => {
   const { cardContact, menuItems, onClick } = props;
-  const avatarClassName = `ee__avatar-color-${cardContact.name
-    ?.toString()?.[0]
-    ?.toLowerCase()}`;
+  const avatarClassName = `ee__avatar-color`;
+  // - ${ cardContact.name?.toString()?.[0]?.toLowerCase()}`;
 
   const avatarIconLetter = cardContact.image ? (
     <img src={cardContact.image} alt="" />

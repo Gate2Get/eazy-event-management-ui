@@ -45,7 +45,6 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     sidebarWidth = (width * 21) / 100;
   }
 
-  console.log({ collapsed });
   // Animated styles for the Content component
   const contentAnimation = useSpring({
     marginLeft: collapsed ? 0 : sidebarWidth,

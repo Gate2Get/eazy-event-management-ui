@@ -105,24 +105,30 @@ export const AddEditContactDirectory = () => {
   if (action === "EDIT" || action === "ADD") {
     columns.forEach((column) => {
       if (column.key === CONTACT_LIST_COLUMN_KEYS.NAME) {
-        column.render = (text, record) => (
+        column.render = (record) => (
           <Input
             placeholder="Input user name"
-            status={isError && !text ? "error" : ""}
-            value={text}
+            status={
+              isError && !record?.[CONTACT_LIST_COLUMN_KEYS.NAME] ? "error" : ""
+            }
+            value={record?.[CONTACT_LIST_COLUMN_KEYS.NAME]}
             onChange={(e) => {
               onContactListChange(record.id, "name", e.target.value);
             }}
           />
         );
       } else if (column.key === CONTACT_LIST_COLUMN_KEYS.MOBILE) {
-        column.render = (text, record) => (
+        column.render = (record) => (
           <Input
-            placeholder="Input user senderId"
-            status={isError && !text ? "error" : ""}
+            placeholder="Input user mobile"
+            status={
+              isError && !record?.[CONTACT_LIST_COLUMN_KEYS.MOBILE]
+                ? "error"
+                : ""
+            }
             max={10}
             type="number"
-            value={text}
+            value={record?.[CONTACT_LIST_COLUMN_KEYS.MOBILE]}
             onChange={(e) => {
               onContactListChange(record.id, "senderId", e.target.value);
             }}
@@ -133,9 +139,13 @@ export const AddEditContactDirectory = () => {
   } else {
     columns.forEach((column) => {
       if (column.key === CONTACT_LIST_COLUMN_KEYS.NAME) {
-        column.render = (text, record) => <Text>{text}</Text>;
+        column.render = (record) => (
+          <Text>{record?.[CONTACT_LIST_COLUMN_KEYS.NAME]}</Text>
+        );
       } else if (column.key === CONTACT_LIST_COLUMN_KEYS.MOBILE) {
-        column.render = (text, record) => <Text>{text}</Text>;
+        column.render = (record) => (
+          <Text>{record?.[CONTACT_LIST_COLUMN_KEYS.MOBILE]}</Text>
+        );
       }
     });
   }

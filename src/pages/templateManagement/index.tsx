@@ -405,7 +405,7 @@ export const TemplateManagement = (): React.ReactElement => {
 
   templateColumns.forEach((column) => {
     if (column.key === TEMPLATE_COLUMN_KEYS.ACTION) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Space>
           <EditOutlinedIcon
             fontSize="inherit"
@@ -424,7 +424,7 @@ export const TemplateManagement = (): React.ReactElement => {
         </Space>
       );
     } else if (column.key === TEMPLATE_COLUMN_KEYS.NAME) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Text
           style={{ cursor: "pointer" }}
           onClick={() => {

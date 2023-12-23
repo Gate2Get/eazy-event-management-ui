@@ -19,6 +19,7 @@ import {
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { OtherEventCard } from "../otherEventCard";
 import { PreviewTemplate } from "../previewTemplate";
+import { PreviewContact } from "../previewContact";
 
 type PreviewEventType = {
   onSubmit?: () => void;
@@ -75,7 +76,6 @@ export const PreviewEvent = (props: PreviewEventType) => {
   };
 
   const onChange = (value: number) => {
-    console.log("onChange:", value);
     setCurrent(value);
   };
 
@@ -99,20 +99,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
         );
       }
       case 3: {
-        return (
-          <Row gutter={[16, 16]}>
-            {contactList.map((contact) => (
-              <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
-                <ContactUserCard
-                  senderId={contact.senderId}
-                  name={contact.name}
-                  id={contact.id}
-                  status={contact.status}
-                />
-              </Col>
-            ))}
-          </Row>
-        );
+        return <PreviewContact contactList={contactList} />;
       }
 
       default:

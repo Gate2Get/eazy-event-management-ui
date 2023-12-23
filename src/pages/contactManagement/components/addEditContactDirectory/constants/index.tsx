@@ -4,6 +4,7 @@ export const CONTACT_LIST_COLUMN_KEYS = {
   MOBILE: "senderId",
   CREATED_AT: "createdAt",
   UPDATED_AT: "updatedAt",
+  STATUS: "status",
   ACTION: "action",
 };
 
@@ -13,6 +14,7 @@ export const CONTACT_LIST_COLUMN_NAME = {
   MOBILE: "Mobile",
   CREATED_AT: "Creation",
   UPDATED_AT: "Updated",
+  STATUS: "Status",
   ACTION: "Action",
 };
 

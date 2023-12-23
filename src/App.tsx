@@ -6,7 +6,9 @@ import { AppRoutes } from "./routes";
 import { interceptors } from "./configs/axios.config";
 import { HomeLayout } from "./homeLayout";
 import { Helmet } from "react-helmet";
+import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
 import "./App.scss";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
@@ -39,9 +41,11 @@ function App(): React.ReactElement {
           content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.5, maximum-scale=2.0"
         />
       </Helmet>
-      <HomeLayout>
-        <AppRoutes />
-      </HomeLayout>
+      <PrimeReactProvider>
+        <HomeLayout>
+          <AppRoutes />
+        </HomeLayout>
+      </PrimeReactProvider>
     </div>
   );
 }

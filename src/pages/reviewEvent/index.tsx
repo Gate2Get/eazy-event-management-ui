@@ -188,7 +188,7 @@ export const ReviewEvent = () => {
 
   eventColumns.forEach((column) => {
     if (column.key === EVENT_COLUMN_KEYS.NAME) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Text
           style={{ cursor: "pointer" }}
           onClick={() => {

@@ -140,7 +140,7 @@ export const MyInvitation = () => {
 
   invitationColumns.forEach((column) => {
     if (column.key === INVITATION_COLUMN_KEYS.NAME) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Text
           style={{ cursor: "pointer" }}
           onClick={() => {

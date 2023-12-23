@@ -1,6 +1,6 @@
 import { Tag } from "antd";
-import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
+import { DataTableColumnType } from "../../../components/dataTable/types";
 import {
   CHANNELS,
   CHANNEL_OPTIONS_MAP,
@@ -11,46 +11,60 @@ import {
 import { MyInvitationType } from "../../../types";
 import { INVITATION_COLUMN_KEYS, INVITATION_COLUMN_NAME } from "../constant";
 
-export const invitationColumns: ColumnsType<MyInvitationType> = [
+export const invitationColumns: DataTableColumnType[] = [
   {
     key: INVITATION_COLUMN_KEYS.NAME,
     dataIndex: INVITATION_COLUMN_KEYS.NAME,
     title: INVITATION_COLUMN_NAME.NAME,
+    sortable: true,
+    filterable: true,
   },
   {
     key: INVITATION_COLUMN_KEYS.CHANNEL,
     dataIndex: INVITATION_COLUMN_KEYS.CHANNEL,
     title: INVITATION_COLUMN_NAME.CHANNEL,
-    render: (value) => (
-      <Tag bordered={false} icon={CHANNEL_OPTIONS_MAP[value]}>
+    render: (record) => (
+      <Tag
+        bordered={false}
+        icon={CHANNEL_OPTIONS_MAP[record?.[INVITATION_COLUMN_KEYS.CHANNEL]]}
+      >
         {" "}
-        {CHANNELS[value]}
+        {CHANNELS[record?.[INVITATION_COLUMN_KEYS.CHANNEL]]}
       </Tag>
     ),
+    sortable: true,
+    filterable: true,
   },
   {
     key: INVITATION_COLUMN_KEYS.TYPE,
     dataIndex: INVITATION_COLUMN_KEYS.TYPE,
     title: INVITATION_COLUMN_NAME.TYPE,
+    sortable: true,
+    filterable: true,
   },
   {
     key: INVITATION_COLUMN_KEYS.INVITED_BY,
     dataIndex: INVITATION_COLUMN_KEYS.INVITED_BY,
     title: INVITATION_COLUMN_NAME.INVITED_BY,
-    render: (value, record: MyInvitationType) => {
-      console.log({ record });
-      return `${record?.invitedByInfo?.firstName} ${record?.invitedByInfo?.lastName}`;
-    },
+    render: (record: MyInvitationType) =>
+      `${record?.invitedByInfo?.firstName} ${record?.invitedByInfo?.lastName}`,
+    sortable: true,
+    filterable: true,
   },
   {
     key: INVITATION_COLUMN_KEYS.LOCATION,
     dataIndex: INVITATION_COLUMN_KEYS.LOCATION,
     title: INVITATION_COLUMN_NAME.LOCATION,
+    sortable: true,
+    filterable: true,
   },
   {
     key: INVITATION_COLUMN_KEYS.CREATED_AT,
     dataIndex: INVITATION_COLUMN_KEYS.CREATED_AT,
     title: INVITATION_COLUMN_NAME.CREATED_AT,
-    render: (value) => dayjs(value).format(DATE_FORMAT),
+    render: (record) =>
+      dayjs(record?.[INVITATION_COLUMN_KEYS.CREATED_AT]).format(DATE_FORMAT),
+    sortable: true,
+    filterable: true,
   },
 ];

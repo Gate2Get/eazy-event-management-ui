@@ -1,20 +1,23 @@
-import { ColumnsType } from "antd/es/table";
-import { ContactListType } from "../../../../../types";
+import { DataTableColumnType } from "../../../../../components/dataTable/types";
 import {
   CONTACT_LIST_COLUMN_KEYS,
   CONTACT_LIST_COLUMN_NAME,
 } from "../constants";
 
-export const contactListColumns: ColumnsType<ContactListType> = [
+export const contactListColumns: DataTableColumnType[] = [
   {
     key: CONTACT_LIST_COLUMN_KEYS.NAME,
     dataIndex: CONTACT_LIST_COLUMN_KEYS.NAME,
     title: CONTACT_LIST_COLUMN_NAME.NAME,
+    sortable: true,
+    filterable: true,
   },
   {
     key: CONTACT_LIST_COLUMN_KEYS.MOBILE,
     dataIndex: CONTACT_LIST_COLUMN_KEYS.MOBILE,
     title: CONTACT_LIST_COLUMN_NAME.MOBILE,
+    sortable: true,
+    filterable: true,
   },
 ];
 

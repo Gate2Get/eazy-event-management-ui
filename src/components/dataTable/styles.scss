@@ -1,40 +1,60 @@
 .data__table {
-  width: 100%;
-  padding: 0.3rem;
-  .ant-table-header {
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    height: 56px;
-
-    table {
-      table-layout: calc(100) !important;
-    }
+  .p-sortable-column.p-highlight {
+    background: rgba(18, 183, 106, 0.12) !important;
+    color: rgb(18, 183, 106) !important;
   }
-  // .ant-table-body {
-  //   tr:nth-child(odd) {
-  //     background: #ecf3ff;
-  //   }
-  //   .ant-table-row .ant-table-cell {
-  //     padding: 16px 12px 16px 16px !important;
-  //   }
 
-  //   .ant-table-cell {
-  //     font-size: 16px;
-  //   }
-  // }
+  .p-sortable-column.p-highlight .p-sortable-column-icon {
+    color: rgb(18, 183, 106) !important;
+  }
 
-  .ant-table-thead {
-    tr th {
-      // background: rgba(18, 183, 106, 0.12) !important;
-      border-bottom: none;
-      font-size: 12px;
-      font-weight: 600;
-      line-height: 1;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      background-color: rgb(248, 249, 250);
-      color: rgb(47, 55, 70);
-    }
+  .p-column-filter-menu-button.p-column-filter-menu-button-active,
+  .p-column-filter-menu-button.p-column-filter-menu-button-active:hover {
+    color: rgb(18, 183, 106) !important;
+    background: rgba(18, 183, 106, 0.12) !important;
+  }
+
+  .p-inputtext:enabled:hover {
+    border-color: rgb(18, 183, 106) !important;
+  }
+
+  .p-inputtext:enabled:focus {
+    box-shadow: 0 0 0 0.2rem rgba(18, 183, 106, 0.12);
+  }
+
+  .p-datatable-thead > tr > th {
+    padding: 0.7rem;
+  }
+
+  .p-inputtext.p-component.p-column-filter.p-column-filter {
+    padding: 0.4rem;
+  }
+
+  .p-datatable-tbody > tr > td {
+    padding: 0.6rem;
+  }
+}
+
+.p-column-filter-overlay {
+  .p-button.p-button-text {
+    color: rgb(18, 183, 106) !important;
+  }
+
+  .p-button {
+    border-color: rgb(18, 183, 106) !important;
+    color: rgb(18, 183, 106) !important;
+    background: none;
+  }
+
+  .p-dropdown:not(.p-disabled):hover {
+    border-color: rgb(18, 183, 106) !important;
+  }
+}
+
+.p-dropdown-panel.p-component.p-ripple-disabled.p-connected-overlay-enter-done {
+  .p-dropdown-items .p-dropdown-item.p-highlight {
+    border-color: rgb(18, 183, 106) !important;
+    color: rgb(18, 183, 106) !important;
+    background: rgba(18, 183, 106, 0.12) !important;
   }
 }

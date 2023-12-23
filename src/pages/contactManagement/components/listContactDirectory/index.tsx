@@ -43,7 +43,7 @@ export const ListContactDirectory = () => {
 
   contactDirectoryColumns.forEach((column) => {
     if (column.key === CONTACT_DIRECTORY_COLUMN_KEYS.ACTION) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Space>
           <EditOutlinedIcon
             fontSize="inherit"
@@ -62,7 +62,7 @@ export const ListContactDirectory = () => {
         </Space>
       );
     } else if (column.key === CONTACT_DIRECTORY_COLUMN_KEYS.NAME) {
-      column.render = (text, record) => (
+      column.render = (record) => (
         <Text
           style={{ cursor: "pointer" }}
           onClick={() => {

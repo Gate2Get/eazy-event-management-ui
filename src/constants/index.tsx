@@ -214,7 +214,7 @@ export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
   "4": "#BDBDBD",
 };
 
-export const DATE_FORMAT = "DD-MM-YYYY";
+export const DATE_FORMAT = "DD MMM, YYYY";
 
 export const ILLUSTRATION_ASSETS: Record<string, number> = {
   marriage: 9,
@@ -344,4 +344,12 @@ export const LOCAL_STORAGE_VIEW = {
   EVENT: "eventViewType",
   EVENT_REVIEW: "eventReviewViewType",
   MY_INVITATION: "myInvitationViewType",
+};
+
+export const COMPONENT_TYPE = {
+  INPUT_TEXT: "INPUT_TEXT",
+  INPUT_URL: "INPUT_URL",
+  INPUT_DATETIME_LOCAL: "INPUT_DATETIME_LOCAL",
+  RANGE_PICKER: "RANGE_PICKER",
+  RADIO_GROUP: "RADIO_GROUP",
 };

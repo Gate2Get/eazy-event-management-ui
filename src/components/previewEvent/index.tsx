@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col, message, Row, Steps, Tabs, theme } from "antd";
+import { Button, Col, message, Modal, Row, Steps, Tabs, theme } from "antd";
 import { useBearStore } from "../../store";
 import {
   EVENT_TYPES,
@@ -20,6 +20,8 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { OtherEventCard } from "../otherEventCard";
 import { PreviewTemplate } from "../previewTemplate";
 import { PreviewContact } from "../previewContact";
+import { checkIsPdf } from "../../utils/validation.utils";
+import { PdfViewer } from "../pdfViewer";
 
 type PreviewEventType = {
   onSubmit?: () => void;
@@ -50,10 +52,12 @@ export const PreviewEvent = (props: PreviewEventType) => {
   const { screen, setLoading } = useBearStore.appStore();
   const { token } = theme.useToken();
   const [current, setCurrent] = React.useState(1);
+  const [previewOpen, setPreviewOpen] = React.useState(false);
+  const [previewUrl, setPreviewUrl] = React.useState("");
+  const [previewTitle, setPreviewTitle] = React.useState("");
 
   React.useEffect(() => {
     if (selectedEvents.name) {
-      console.log(!selectedEvents.status, selectedEvents.status);
       if (
         !selectedEvents.status ||
         EVENT_YET_TO_START_STATUS.includes(selectedEvents.status)
@@ -80,15 +84,29 @@ export const PreviewEvent = (props: PreviewEventType) => {
   };
 
   const renderComponent = (current: number) => {
-    console.log({ current, selectedEvents });
     switch (current) {
       case 1: {
         if (selectedEvents.type === EVENT_TYPES.MARRIAGE)
-          return <MarriageEventCard {...selectedEvents} />;
+          return (
+            <MarriageEventCard
+              {...selectedEvents}
+              setPreviewOpen={() => setPreviewOpen(!previewOpen)}
+            />
+          );
         else if (selectedEvents.type === EVENT_TYPES.BIRTHDAY)
-          return <BirthdayEventCard {...selectedEvents} />;
+          return (
+            <BirthdayEventCard
+              {...selectedEvents}
+              setPreviewOpen={() => setPreviewOpen(!previewOpen)}
+            />
+          );
         else if (selectedEvents.type === EVENT_TYPES.OTHERS)
-          return <OtherEventCard {...selectedEvents} />;
+          return (
+            <OtherEventCard
+              {...selectedEvents}
+              setPreviewOpen={() => setPreviewOpen(!previewOpen)}
+            />
+          );
       }
       case 2: {
         return (
@@ -190,8 +208,35 @@ export const PreviewEvent = (props: PreviewEventType) => {
     marginTop: 16,
   };
 
+  let isPdf = false;
+  if (previewUrl) {
+    isPdf = checkIsPdf(previewUrl);
+  }
+
+  const handleCancel = () => setPreviewOpen(false);
+
   return (
     <>
+      <Modal
+        open={previewOpen}
+        title={previewTitle}
+        footer={null}
+        onCancel={handleCancel}
+      >
+        {selectedEvents?.invitationAttachment?.map((invitation) => (
+          <div>
+            {checkIsPdf(invitation.url) ? (
+              <PdfViewer url={invitation.url} />
+            ) : (
+              <img
+                alt="example"
+                style={{ width: "100%" }}
+                src={invitation.url}
+              />
+            )}
+          </div>
+        ))}
+      </Modal>
       {isEditable ? (
         <Steps
           current={current - 1}

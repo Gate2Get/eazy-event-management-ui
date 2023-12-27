@@ -23,7 +23,7 @@ import "./styles.scss";
 import { EventCardType, GenericJsonType } from "../../types";
 import dayjs from "dayjs";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
 
@@ -38,7 +38,9 @@ export const MarriageEventCard = (props: EventCardType) => {
     startDateTime,
     location,
     menuItems,
+    invitationAttachment,
     onSelect,
+    setPreviewOpen,
   } = props;
   const status = eventStatusLabel[progressionStatus as string];
   const randomIndex = Math.ceil(
@@ -80,9 +82,14 @@ export const MarriageEventCard = (props: EventCardType) => {
       <Divider />
       <Row gutter={[8, 16]}>
         <Col flex={20}>
-          <Text strong className="font-size-16">
-            {name}
-          </Text>
+          <Space direction="vertical">
+            <Text strong className="font-size-16">
+              {name}
+            </Text>
+            {invitationAttachment?.length ? (
+              <Link onClick={setPreviewOpen}>View invitation</Link>
+            ) : null}
+          </Space>
         </Col>
 
         {menuItems && (

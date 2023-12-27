@@ -1,0 +1,13 @@
+.event-notification-edit__container {
+  > div {
+    padding: 8px 0px;
+  }
+
+  .submit-button {
+    float: right;
+
+    :first-child {
+      margin-right: 8px;
+    }
+  }
+}

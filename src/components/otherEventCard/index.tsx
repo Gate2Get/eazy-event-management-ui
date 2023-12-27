@@ -23,7 +23,7 @@ import { EventCardType, GenericJsonType } from "../../types";
 import dayjs from "dayjs";
 import React from "react";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
 
 export const OtherEventCard = (props: EventCardType) => {
@@ -36,7 +36,9 @@ export const OtherEventCard = (props: EventCardType) => {
     startDateTime,
     location,
     menuItems,
+    invitationAttachment,
     onSelect,
+    setPreviewOpen,
   } = props;
 
   const status = eventStatusLabel[progressionStatus as string];
@@ -81,9 +83,14 @@ export const OtherEventCard = (props: EventCardType) => {
       <Divider />
       <Row gutter={[8, 16]}>
         <Col flex={20}>
-          <Text strong className="font-size-16">
-            {name}
-          </Text>
+          <Space direction="vertical">
+            <Text strong className="font-size-16">
+              {name}
+            </Text>
+            {invitationAttachment?.length ? (
+              <Link onClick={setPreviewOpen}>View invitation</Link>
+            ) : null}
+          </Space>
         </Col>
 
         {menuItems && (

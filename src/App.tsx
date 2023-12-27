@@ -9,10 +9,12 @@ import { Helmet } from "react-helmet";
 import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
 import "./App.scss";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { Toast } from "primereact/toast";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
   const { setScreen, setCollapsed, currentPage } = useBearStore.appStore();
+  const toast = React.useRef<Toast>(null);
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -26,7 +28,7 @@ function App(): React.ReactElement {
   }, [width]);
 
   React.useEffect(() => {
-    interceptors(navigate);
+    interceptors(navigate, toast);
   }, []);
 
   return (
@@ -42,6 +44,7 @@ function App(): React.ReactElement {
         />
       </Helmet>
       <PrimeReactProvider>
+        <Toast ref={toast} />
         <HomeLayout>
           <AppRoutes />
         </HomeLayout>

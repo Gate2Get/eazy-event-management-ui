@@ -1,5 +1,5 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { Col, Row, Segmented } from "antd";
+import { Col, Row, Segmented, Space } from "antd";
 import React from "react";
 import { LOCAL_STORAGE_VIEW } from "../../constants";
 import { useBearStore } from "../../store";
@@ -24,7 +24,7 @@ export const PreviewContact = (props: PreviewContactType) => {
   }, []);
 
   return (
-    <div>
+    <Space direction="vertical" style={{ width: "100%" }}>
       <Segmented
         value={isListView ? "List" : "Card"}
         options={[
@@ -62,6 +62,6 @@ export const PreviewContact = (props: PreviewContactType) => {
           ))}
         </Row>
       )}
-    </div>
+    </Space>
   );
 };

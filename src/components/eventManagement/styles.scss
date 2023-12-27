@@ -1,0 +1,27 @@
+.event-creation__container {
+  .view-mode {
+    ant-form-item-control-input-content {
+      background-color: transparent;
+      border: none;
+    }
+
+    label::before {
+      content: "";
+      display: none !important;
+    }
+
+    .text-view {
+      padding-left: 12px;
+    }
+
+    .ant-picker-range {
+      background-color: transparent;
+      border: none;
+      input[disabled],
+      .ant-picker-separator,
+      .ant-picker-suffix {
+        color: #000;
+      }
+    }
+  }
+}

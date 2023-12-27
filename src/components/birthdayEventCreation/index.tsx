@@ -18,7 +18,7 @@ import {
   disabledRangeTime,
 } from "../../utils/datePicker.utils";
 import { CHANNEL_OPTIONS, ROUTES_URL } from "../../constants";
-import { EventCreationType } from "../../types";
+import { EventManagementType } from "../../types";
 import { NoData } from "../noData";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useBearStore } from "../../store";
@@ -27,7 +27,7 @@ import { AttachmentDragger } from "../AttachmentDragger";
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 
-export const BirthdayEventCreation = (props: EventCreationType) => {
+export const BirthdayEventCreation = (props: EventManagementType) => {
   const {
     contactList,
     templates,

@@ -111,39 +111,36 @@ export enum EventStatus {
 }
 
 export type EventType = {
-  id: string;
-  name: string;
-  userId: string;
-  type: Events;
+  id?: string;
+  name?: string;
+  userId?: string;
+  type?: Events;
   groomName?: string;
   brideName?: string;
-  reminder?: string;
-  startDateTime: string;
-  endDateTime: string;
-  channel?: Channels;
+  startDateTime?: string;
+  endDateTime?: string;
   personName?: string;
   location?: string;
-  contactDirectory: string;
-  messageTemplate: string;
+  contactDirectory?: string[];
   locationUrl?: string;
   isTrigger?: boolean;
   status?: EventStatus;
-  triggerDateTime?: Date;
-  notificationStartDateTime?: Date;
-  notificationEndDateTime?: Date;
-  createdAt?: string;
-  updatedAt?: string;
-  failed?: number;
-  success?: number;
-  progress?: number;
+  invitationEnableDateTime?: string;
+  isAlbumEnable?: boolean;
+  isVideoEnable?: boolean;
+  isPostEnable?: boolean;
   isEditable?: boolean;
   isDeleteAllowed?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
   invitationAttachment?: AttachmentType[];
+  notification?: EventNotificationType[];
 };
 
 export type CardType = {
   menuItems?: MenuProps["items"];
   isEdit?: boolean;
+  setPreviewOpen?: () => void;
   onSelect?: () => void;
 };
 
@@ -233,10 +230,11 @@ export type UserLocationType = {
   statename: string;
 };
 
-export type EventCreationType = {
+export type EventManagementType = {
   contactList: ContactDirectoryType[];
   templates: TemplateType[];
   onHandleEvent: (event: EventType) => void;
+  handleUpdateEventNotification?: (event: EventType) => void;
   isEdit?: boolean;
   onSearchTemplate: (template: string) => void;
   form: FormInstance;
@@ -246,4 +244,37 @@ export type EventCreationType = {
   getContactDirectory: () => void;
   getTemplates: () => void;
   handleFileUpload?: (e: UploadChangeParam<UploadFile<any>>) => void;
+  action?: ActionType;
 };
+
+export type EventNotificationType = {
+  id?: string;
+  name: string;
+  contactDirectory: string[];
+  messageTemplate: string;
+  triggerDateTime?: string;
+  channel?: string;
+  action?: ActionType;
+  notificationStartDateTime?: Date;
+  notificationEndDateTime?: Date;
+  createdAt?: string;
+  updatedAt?: string;
+  failed?: number;
+  success?: number;
+  progress?: number;
+  isEditAllowed?: boolean;
+};
+
+export type EventNotificationCardType = {
+  isEdit?: boolean;
+  contactList: ContactDirectoryType[];
+  templates: TemplateType[];
+  onSearchTemplate: (template: string) => void;
+  isTemplateFetching?: boolean;
+  isContactFetching?: boolean;
+  onSearchContact: (contact: string) => void;
+  getContactDirectory: () => void;
+  getTemplates: () => void;
+  onCancelEdit?: () => void;
+  handleSubmit?: (values?: any) => void;
+} & EventNotificationType;

@@ -7,6 +7,8 @@ export const INVITATION_COLUMN_KEYS = {
   UPDATED_AT: "updatedAt",
   INVITED_BY: "invitedByInfo",
   LOCATION: "location",
+  START_DATE_TIME: "startDateTime",
+  END_DATE_TIME: "endDateTime",
 };
 
 export const INVITATION_COLUMN_NAME = {
@@ -18,6 +20,8 @@ export const INVITATION_COLUMN_NAME = {
   UPDATED_AT: "Updated at",
   INVITED_BY: "Invited By",
   LOCATION: "Location",
+  START_DATE_TIME: "Start date",
+  END_DATE_TIME: "End date",
 };
 
 export const SORT_KEYS = [

@@ -428,3 +428,8 @@ form {
 .ant-radio-button-wrapper:hover {
   color: rgb(18, 183, 106) !important;
 }
+
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeInherit {
+  position: relative;
+  top: 2px;
+}

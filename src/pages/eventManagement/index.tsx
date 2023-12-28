@@ -47,7 +47,7 @@ import {
 } from "../../types";
 import "./styles.scss";
 import NoEvents from "../../assets/svg/no-events.svg";
-import { PreviewEvent } from "../../components/previewEvent";
+import { PreviewEventNotification } from "../../components/previewEventNotification";
 import { OtherEventCreation } from "../../components/otherEventCreation";
 import { debounce } from "lodash";
 import {
@@ -104,7 +104,8 @@ export const EventManagement = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { screen, setLoading } = useBearStore.appStore();
   const [isPreview, setIsPreview] = React.useState(false);
-  const { setDirectoryList, directoryList } = useBearStore.contactStore();
+  const { setDirectoryList, directoryList, contactList } =
+    useBearStore.contactStore();
   const { setTemplates, templates } = useBearStore.templateStore();
   const {
     action,
@@ -351,14 +352,14 @@ export const EventManagement = () => {
       );
     } else if (column.key === EVENT_COLUMN_KEYS.NAME) {
       column.render = (record) => (
-        <Text
+        <div
           style={{ cursor: "pointer" }}
           onClick={() => {
             onViewSelect(record);
           }}
         >
           {record.name}
-        </Text>
+        </div>
       );
     }
   });
@@ -822,13 +823,6 @@ export const EventManagement = () => {
             />
           )}
       </div>
-      {/* {(action === "VIEW" ||
-        ((action === "ADD" || action === "EDIT") && isPreview)) && (
-        <PreviewEvent
-          onSubmit={action !== "VIEW" ? handleSubmitEvent : undefined}
-          isEditable={isEditable}
-        />
-      )} */}
     </div>
   );
 };

@@ -145,6 +145,12 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
         filterClearIcon={<FilterAltOffOutlinedIcon />}
         {...otherProps}
       >
+        {otherProps.selectionMode && (
+          <Column
+            selectionMode="multiple"
+            headerStyle={{ width: "3rem" }}
+          ></Column>
+        )}
         {columns.map((column) => {
           const otherColProps: any = {};
           if (column.filterElement) {

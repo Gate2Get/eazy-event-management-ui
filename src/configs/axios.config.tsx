@@ -89,7 +89,9 @@ export const eventManagementEndpoint = {
   updateEvent: "/api/v1/app/event/my-events",
   deleteEvent: "/api/v1/app/event/my-events/",
   getEventContact: "/api/v1/app/event",
-  getEventTemplate: "/api/v1/app/event",
+  updateEventContact: "/api/v1/app/event",
+  getEventNotificationContact: "/api/v1/app/event",
+  getEventNotificationTemplate: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
   getMyInvitation: "/api/v1/app/event/my-invitation",
 };

@@ -113,7 +113,11 @@ export const AddEditContactDirectory = () => {
             }
             value={record?.[CONTACT_LIST_COLUMN_KEYS.NAME]}
             onChange={(e) => {
-              onContactListChange(record.id, "name", e.target.value);
+              onContactListChange(
+                record.id,
+                CONTACT_LIST_COLUMN_KEYS.NAME,
+                e.target.value
+              );
             }}
           />
         );
@@ -130,7 +134,11 @@ export const AddEditContactDirectory = () => {
             type="number"
             value={record?.[CONTACT_LIST_COLUMN_KEYS.MOBILE]}
             onChange={(e) => {
-              onContactListChange(record.id, "senderId", e.target.value);
+              onContactListChange(
+                record.id,
+                CONTACT_LIST_COLUMN_KEYS.MOBILE,
+                e.target.value
+              );
             }}
           />
         );
@@ -260,7 +268,10 @@ export const AddEditContactDirectory = () => {
   };
 
   const onContactListChange = (id: string, key: string, value: string) => {
-    if (key === "senderId" && (isNaN(Number(value)) || value.length > 10)) {
+    if (
+      key === CONTACT_LIST_COLUMN_KEYS.MOBILE &&
+      (isNaN(Number(value)) || value.length > 10)
+    ) {
       return;
     }
     setDirectoryContactList(

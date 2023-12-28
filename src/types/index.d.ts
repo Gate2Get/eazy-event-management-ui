@@ -269,12 +269,13 @@ export type EventNotificationCardType = {
   isEdit?: boolean;
   contactList: ContactDirectoryType[];
   templates: TemplateType[];
-  onSearchTemplate: (template: string) => void;
   isTemplateFetching?: boolean;
   isContactFetching?: boolean;
+  onSearchTemplate: (template: string) => void;
   onSearchContact: (contact: string) => void;
   getContactDirectory: () => void;
   getTemplates: () => void;
   onCancelEdit?: () => void;
   handleSubmit?: (values?: any) => void;
+  viewNotification?: () => void;
 } & EventNotificationType;

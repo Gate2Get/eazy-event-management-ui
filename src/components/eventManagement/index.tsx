@@ -21,7 +21,11 @@ import {
   disabledRangeTime,
 } from "../../utils/datePicker.utils";
 import { COMPONENT_TYPE, ROUTES_URL } from "../../constants";
-import { EventManagementType, EventNotificationType } from "../../types";
+import {
+  ActionType,
+  EventManagementType,
+  EventNotificationType,
+} from "../../types";
 import { NoData } from "../noData";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useBearStore } from "../../store";
@@ -34,11 +38,13 @@ import EditNotificationsOutlinedIcon from "@mui/icons-material/EditNotifications
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import "./styles.scss";
+import { PreviewEventNotification } from "../previewEventNotification";
+import { PreviewEvent } from "../previewEvent";
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
 const { Panel } = Collapse;
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const defaultEventNotification: EventNotificationType = {
   contactDirectory: [],
@@ -69,7 +75,9 @@ export const EventManagement = (props: EventManagementType) => {
   const { screen } = useBearStore.appStore();
   const [selectedNotification, setSelectedNotification] =
     React.useState<EventNotificationType>(defaultEventNotification);
-  const [deleteNotificationId, setDeleteNotificationId] = React.useState("");
+  const [isPreviewEvent, setPreviewEvent] = React.useState(false);
+  const [notificationAction, setNotificationAction] =
+    React.useState<ActionType>("");
 
   const invitationAttachment = Form.useWatch("invitationAttachment", {
     form,
@@ -165,6 +173,11 @@ export const EventManagement = (props: EventManagementType) => {
 
   const onCancelEdit = () => {
     setSelectedNotification(defaultEventNotification);
+    setNotificationAction("");
+  };
+
+  const onCancelPreview = () => {
+    setPreviewEvent(false);
   };
 
   const handleSubmitNotification = (values: any) => {
@@ -185,19 +198,19 @@ export const EventManagement = (props: EventManagementType) => {
   const handleDeleteEvent = () => {
     if (action === "ADD") {
       const _notifications: EventNotificationType[] = notifications.filter(
-        (item: EventNotificationType) => item.id !== deleteNotificationId
+        (item: EventNotificationType) => item.id !== selectedNotification.id
       );
       form.setFieldValue("notification", _notifications);
     } else {
       const deleteNotification = notifications.find(
-        (item: EventNotificationType) => item.id === deleteNotificationId
+        (item: EventNotificationType) => item.id === selectedNotification.id
       );
       if (deleteNotification)
         handleUpdateEventNotification?.({
           notification: [{ ...deleteNotification, action: "DELETE" }],
         });
     }
-    setDeleteNotificationId("");
+    setNotificationAction("");
   };
 
   return (
@@ -210,11 +223,21 @@ export const EventManagement = (props: EventManagementType) => {
         onSearchTemplate={onSearchTemplate}
         isContactFetching={isContactFetching}
         onSearchContact={onSearchContact}
-        isEdit={!!selectedNotification.id}
+        isEdit={notificationAction === "EDIT"}
         getContactDirectory={getContactDirectory}
         getTemplates={getTemplates}
         onCancelEdit={onCancelEdit}
         handleSubmit={handleSubmitNotification}
+      />
+      <PreviewEventNotification
+        previewOpen={notificationAction === "VIEW"}
+        notification={selectedNotification}
+        setPreviewClose={onCancelEdit}
+      />
+
+      <PreviewEvent
+        previewOpen={isPreviewEvent}
+        setPreviewClose={onCancelPreview}
       />
       <Row>
         <Col flex={24}>
@@ -243,6 +266,17 @@ export const EventManagement = (props: EventManagementType) => {
                   message: "Please choose contact directory!",
                 },
               ]}
+              extra={
+                action === "VIEW" && (
+                  <Link
+                    onClick={() => {
+                      setPreviewEvent(true);
+                    }}
+                  >
+                    View contacts
+                  </Link>
+                )
+              }
             >
               <Select
                 placeholder="Select the contact directory"
@@ -314,7 +348,7 @@ export const EventManagement = (props: EventManagementType) => {
                                 <Button
                                   type="text"
                                   onClick={() => {
-                                    setDeleteNotificationId("");
+                                    setNotificationAction("");
                                   }}
                                 >
                                   No
@@ -323,11 +357,16 @@ export const EventManagement = (props: EventManagementType) => {
                             }
                             title="Delete Notification"
                             trigger="click"
-                            open={notification.id === deleteNotificationId}
+                            open={
+                              notificationAction === "DELETE" &&
+                              notification.id === selectedNotification.id
+                            }
                             onOpenChange={() => {
-                              setDeleteNotificationId(
-                                notification.id as string
-                              );
+                              setSelectedNotification({
+                                ...notification,
+                                action: "DELETE",
+                              });
+                              setNotificationAction("DELETE");
                             }}
                           >
                             <DeleteOutlineOutlinedIcon
@@ -343,6 +382,7 @@ export const EventManagement = (props: EventManagementType) => {
                                 ...notification,
                                 action: "EDIT",
                               });
+                              setNotificationAction("EDIT");
                               event.stopPropagation();
                             }}
                           />
@@ -359,6 +399,10 @@ export const EventManagement = (props: EventManagementType) => {
                         onSearchContact={onSearchContact}
                         getContactDirectory={getContactDirectory}
                         getTemplates={getTemplates}
+                        viewNotification={() => {
+                          setNotificationAction("VIEW");
+                          setSelectedNotification(notification);
+                        }}
                       />
                     </Panel>
                   </Collapse>

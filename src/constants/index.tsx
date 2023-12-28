@@ -215,6 +215,7 @@ export const EVENT_SEND_STATUS_LABEL_MAP: Record<string, string> = {
 };
 
 export const DATE_FORMAT = "DD MMM, YYYY";
+export const DATE_TIME_FORMAT = "DD MMM, YYYY hh:mm a";
 
 export const ILLUSTRATION_ASSETS: Record<string, number> = {
   marriage: 9,

@@ -73,6 +73,7 @@ export const EVENT_STATUS = {
   ON_HOLD: "ON_HOLD",
   COMPLETED: "COMPLETED",
   IN_PROGRESS: "IN_PROGRESS",
+  APPEAL: "APPEAL"
   // DRAFT: "DRAFT",
 };
 
@@ -106,6 +107,20 @@ export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
   [EVENT_STATUS_LABEL.REJECTED]: "error",
   [EVENT_STATUS_LABEL.APPROVED]: "success",
   [EVENT_STATUS_LABEL.COMPLETED]: "success",
+};
+
+export const TEMPLATE_STATUS_LABEL: Record<string, string> = {
+  [EVENT_STATUS.APPROVED]: "Review Passed",
+  [EVENT_STATUS.REJECTED]: "Review failed",
+  [EVENT_STATUS.PENDING_APPROVAL]: "Pending for Review",
+  [EVENT_STATUS.APPEAL]: "Re Review",
+};
+
+export const TEMPLATE_STATUS_LABEL_COLOR: Record<string, string> = {
+  [EVENT_STATUS.APPROVED]: "success",
+  [EVENT_STATUS.REJECTED]: "error",
+  [EVENT_STATUS.PENDING_APPROVAL]: "processing",
+  [EVENT_STATUS.APPEAL]: "processing",
 };
 
 export const EVENT_TYPES = {

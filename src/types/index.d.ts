@@ -1,5 +1,6 @@
 import { FormInstance, MenuProps } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
+import { EVENT_STATUS } from "../constants";
 
 export type ContactListType = {
   key?: string;
@@ -66,6 +67,13 @@ export type ContactDirectoryType = {
   updatedAt?: string;
 };
 
+export const APPROVAL_STATUS = [
+  EVENT_STATUS.APPROVED,
+  EVENT_STATUS.REJECTED,
+  EVENT_STATUS.PENDING_APPROVAL,
+  EVENT_STATUS.APPEAL,
+];
+
 export type TemplateType = {
   id?: string;
   userId?: number;
@@ -73,6 +81,7 @@ export type TemplateType = {
   type?: string;
   message: string;
   blob?: string;
+  approvalStatus?: APPROVAL_STATUS;
   channel?: string;
   createdAt?: string;
   updatedAt?: string;

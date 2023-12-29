@@ -49,9 +49,9 @@ export const eventManagementAPI = {
         throw error;
       });
   },
-  getEventContacts: async (id: string): Promise<ContactListType[]> => {
+  getEventContact: async (eventId: string): Promise<ContactListType[]> => {
     return await instance
-      .get(`${eventManagementEndpoint.getEventContact}/${id}/contacts`)
+      .get(`${eventManagementEndpoint.getEventContact}/${eventId}/contacts`)
       .then((response) => {
         const result = response.data.result;
         return result;
@@ -60,9 +60,65 @@ export const eventManagementAPI = {
         throw error;
       });
   },
-  getEventTemplate: async (id: string): Promise<TemplateType> => {
+  updateEventContact: async (eventId: string, contacts: ContactListType[]) => {
     return await instance
-      .get(`${eventManagementEndpoint.getEventTemplate}/${id}/template`)
+      .put(
+        `${eventManagementEndpoint.updateEventContact}/${eventId}/contacts`,
+        {
+          contacts,
+        }
+      )
+      .then((response) => {
+        return response.data.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  updateEventNotificationContact: async (
+    eventId: string,
+    notificationId: string,
+    contacts: ContactListType[]
+  ): Promise<ContactListType[]> => {
+    return await instance
+      .put(
+        `${eventManagementEndpoint.getEventNotificationContact}/${eventId}/notification/${notificationId}/contacts`,
+        {
+          contacts,
+        }
+      )
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getEventNotificationContact: async (
+    eventId: string,
+    notificationId: string
+  ): Promise<ContactListType[]> => {
+    return await instance
+      .get(
+        `${eventManagementEndpoint.getEventNotificationContact}/${eventId}/notification/${notificationId}/contacts`
+      )
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getEventNotificationTemplate: async (
+    eventId: string,
+    notificationId: string
+  ): Promise<TemplateType> => {
+    return await instance
+      .get(
+        `${eventManagementEndpoint.getEventNotificationTemplate}/${eventId}/notification/${notificationId}/template`
+      )
       .then((response) => {
         const result = response.data.result;
         return result;

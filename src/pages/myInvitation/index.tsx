@@ -133,7 +133,7 @@ export const MyInvitation = () => {
 
   const onViewSelect = (record: EventType) => {
     setSearchParams({
-      id: record.id,
+      id: record.id as string,
       action: PAGE_ACTION.VIEW,
     });
   };

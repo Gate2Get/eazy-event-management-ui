@@ -14,8 +14,18 @@
     background: rgba(18, 183, 106, 0.12) !important;
   }
 
+  .p-checkbox .p-checkbox-box.p-highlight {
+    border-color: rgb(18, 183, 106) !important;
+    background: rgb(18, 183, 106) !important;
+  }
+
   .p-inputtext:enabled:hover {
     border-color: rgb(18, 183, 106) !important;
+  }
+
+  .p-datatable-tbody > tr.p-highlight {
+    background: rgba(18, 183, 106, 0.12) !important;
+    color: #374151;
   }
 
   .p-inputtext:enabled:focus {
@@ -32,6 +42,14 @@
 
   .p-datatable-tbody > tr > td {
     padding: 0.6rem;
+  }
+
+  .p-column-filter-row .p-column-filter-element {
+    width: 100%;
+  }
+
+  .p-column-filter-clear-button.p-link.p-hidden-space {
+    display: none;
   }
 }
 

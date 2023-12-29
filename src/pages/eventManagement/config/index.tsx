@@ -19,22 +19,22 @@ export const eventColumns: DataTableColumnType[] = [
     sortable: true,
     filterable: true,
   },
-  {
-    key: EVENT_COLUMN_KEYS.CHANNEL,
-    dataIndex: EVENT_COLUMN_KEYS.CHANNEL,
-    title: EVENT_COLUMN_NAME.CHANNEL,
-    render: (record) => (
-      <Tag
-        bordered={false}
-        icon={CHANNEL_OPTIONS_MAP[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
-      >
-        {" "}
-        {CHANNELS[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
-      </Tag>
-    ),
-    sortable: true,
-    filterable: true,
-  },
+  // {
+  //   key: EVENT_COLUMN_KEYS.CHANNEL,
+  //   dataIndex: EVENT_COLUMN_KEYS.CHANNEL,
+  //   title: EVENT_COLUMN_NAME.CHANNEL,
+  //   render: (record) => (
+  //     <Tag
+  //       bordered={false}
+  //       icon={CHANNEL_OPTIONS_MAP[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
+  //     >
+  //       {" "}
+  //       {CHANNELS[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
+  //     </Tag>
+  //   ),
+  //   sortable: true,
+  //   filterable: true,
+  // },
   {
     key: EVENT_COLUMN_KEYS.TYPE,
     dataIndex: EVENT_COLUMN_KEYS.TYPE,
@@ -72,20 +72,20 @@ export const eventColumns: DataTableColumnType[] = [
     filterable: true,
   },
   {
-    key: EVENT_COLUMN_KEYS.CREATED_AT,
-    dataIndex: EVENT_COLUMN_KEYS.CREATED_AT,
-    title: EVENT_COLUMN_NAME.CREATED_AT,
+    key: EVENT_COLUMN_KEYS.START_DATE_TIME,
+    dataIndex: EVENT_COLUMN_KEYS.START_DATE_TIME,
+    title: EVENT_COLUMN_NAME.START_DATE_TIME,
     render: (record) =>
-      dayjs(record?.[EVENT_COLUMN_KEYS.CREATED_AT]).format(DATE_FORMAT),
+      dayjs(record?.[EVENT_COLUMN_KEYS.START_DATE_TIME]).format(DATE_FORMAT),
     sortable: true,
     filterable: true,
   },
   {
-    key: EVENT_COLUMN_KEYS.UPDATED_AT,
-    dataIndex: EVENT_COLUMN_KEYS.UPDATED_AT,
-    title: EVENT_COLUMN_NAME.UPDATED_AT,
+    key: EVENT_COLUMN_KEYS.END_DATE_TIME,
+    dataIndex: EVENT_COLUMN_KEYS.END_DATE_TIME,
+    title: EVENT_COLUMN_NAME.END_DATE_TIME,
     render: (record) =>
-      dayjs(record?.[EVENT_COLUMN_KEYS.UPDATED_AT]).format(DATE_FORMAT),
+      dayjs(record?.[EVENT_COLUMN_KEYS.END_DATE_TIME]).format(DATE_FORMAT),
     sortable: true,
     filterable: true,
   },

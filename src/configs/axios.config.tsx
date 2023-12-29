@@ -1,6 +1,7 @@
 import axios, { type AxiosInstance } from "axios";
 import { message, notification } from "antd";
 import { ROUTES_URL } from "../constants";
+import { Toast } from "primereact/toast";
 
 export const instance: AxiosInstance = axios.create();
 
@@ -9,16 +10,23 @@ const snackbarAllowedMethods = ["post", "put", "delete"];
 /**
  * Catch the unAuthorized Request
  */
-export const interceptors = (navigate: (url: string) => void): void => {
+export const interceptors = (
+  navigate: (url: string) => void,
+  toast: React.RefObject<Toast>
+): void => {
   instance.interceptors.response.use(
     (response) => {
       const { data, config, status } = response;
-      console.log({ response });
       if (snackbarAllowedMethods.includes(config?.method as string)) {
-        notification.success({
-          message: data?.message || "Operation completed successfully",
-          className: "eazy__event-snackbar success",
+        toast.current?.show({
+          severity: "success",
+          detail: data?.message || "Operation completed successfully",
+          life: 3000,
         });
+        // notification.success({
+        //   message: data?.message || "Operation completed successfully",
+        //   className: "eazy__event-snackbar success",
+        // });
       }
       return response;
     },
@@ -31,9 +39,14 @@ export const interceptors = (navigate: (url: string) => void): void => {
       } else if (error?.response?.status === 404) {
         navigate("/404");
       } else if (error?.response?.status === 400) {
-        notification.success({
-          message: error?.response?.data?.message || "Something went wrong!",
-          className: "eazy__event-snackbar success",
+        // notification.success({
+        //   message: error?.response?.data?.message || "Something went wrong!",
+        //   className: "eazy__event-snackbar success",
+        // });
+        toast.current?.show({
+          severity: "error",
+          detail: error?.response?.data?.message || "Something went wrong!",
+          life: 3000,
         });
       }
     }
@@ -76,7 +89,9 @@ export const eventManagementEndpoint = {
   updateEvent: "/api/v1/app/event/my-events",
   deleteEvent: "/api/v1/app/event/my-events/",
   getEventContact: "/api/v1/app/event",
-  getEventTemplate: "/api/v1/app/event",
+  updateEventContact: "/api/v1/app/event",
+  getEventNotificationContact: "/api/v1/app/event",
+  getEventNotificationTemplate: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
   getMyInvitation: "/api/v1/app/event/my-invitation",
 };

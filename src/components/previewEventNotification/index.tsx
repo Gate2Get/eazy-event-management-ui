@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Modal, Tabs, theme } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
-import { EventNotificationType, EventType, TemplateType } from "../../types";
+import { EventNotificationType, TemplateType } from "../../types";
 import { PreviewTemplate } from "../previewTemplate";
 import { PreviewContact } from "../previewContact";
 import { checkIsPdf } from "../../utils/validation.utils";
@@ -10,19 +10,32 @@ import { checkIsPdf } from "../../utils/validation.utils";
 type PreviewEventType = {
   onSubmit?: () => void;
   isEditable?: boolean;
+  notification: EventNotificationType;
   previewOpen?: boolean;
   setPreviewClose?: () => void;
 };
 
 const STEPS_EDITABLE = [
   {
+    title: "Message",
+    content: "Second-content",
+  },
+  {
     title: "Contacts",
     content: "Last-content",
   },
 ];
 
-export const PreviewEvent = (props: PreviewEventType) => {
-  const { previewOpen, setPreviewClose } = props;
+export const PreviewEventNotification = (props: PreviewEventType) => {
+  const { notification, previewOpen, setPreviewClose } = props;
+  const {
+    contactDirectory,
+    messageTemplate,
+    name,
+    action,
+    channel,
+    id: notificationId,
+  } = notification;
   const { selectedEvents, isEdit, setIsEdit } = useBearStore.eventStore();
   const { selectedTemplate, setSelectedTemplate } =
     useBearStore.templateStore();
@@ -35,8 +48,8 @@ export const PreviewEvent = (props: PreviewEventType) => {
 
   React.useEffect(() => {
     if (previewOpen) {
-      getEventContacts();
-      setIsEdit(false);
+      getEventNotificationContacts();
+      getEventNotificationTemplate();
     }
   }, [selectedEvents, previewOpen]);
 
@@ -55,13 +68,15 @@ export const PreviewEvent = (props: PreviewEventType) => {
   const renderComponent = (current: number) => {
     switch (current) {
       case 1: {
+        return <PreviewTemplate {...selectedTemplate} />;
+      }
+      case 2: {
         return (
           <PreviewContact
             contactList={contactList}
-            showStatus={false}
             setContactList={setContactList}
             isEditable
-            onUpdateContact={updateEventContacts}
+            onUpdateContact={updateEventNotificationContacts}
             isEdit={isEdit}
             setIsEdit={setIsEdit}
           />
@@ -72,31 +87,54 @@ export const PreviewEvent = (props: PreviewEventType) => {
     }
   };
 
-  const getEventContacts = (): void => {
+  const updateEventNotificationContacts = (): void => {
     setLoading(true);
     API.eventManagement
-      .getEventContact(selectedEvents.id as string)
+      .updateEventNotificationContact(
+        selectedEvents.id as string,
+        notificationId as string,
+        contactList
+      )
+      .then((contact) => {
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "updateEventContacts", error });
+      });
+  };
+
+  const getEventNotificationTemplate = (): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEventNotificationTemplate(
+        selectedEvents.id as string,
+        notificationId as string
+      )
+      .then((template: TemplateType) => {
+        setSelectedTemplate(template);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEventNotificationTemplate", error });
+      });
+  };
+
+  const getEventNotificationContacts = (): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEventNotificationContact(
+        selectedEvents.id as string,
+        notificationId as string
+      )
       .then((contact) => {
         setContactList(contact);
         setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "getEventContacts", error });
-      });
-  };
-
-  const updateEventContacts = (): void => {
-    setLoading(true);
-    API.eventManagement
-      .updateEventContact(selectedEvents.id as string, contactList)
-      .then((contact) => {
-        setLoading(false);
-        setPreviewClose?.();
-      })
-      .catch((error: Error) => {
-        setLoading(false);
-        console.log({ location: "updateEventContacts", error });
+        console.log({ location: "getEventNotificationContacts", error });
       });
   };
 

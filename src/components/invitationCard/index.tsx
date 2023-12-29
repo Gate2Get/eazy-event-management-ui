@@ -16,7 +16,6 @@ export const InvitationCard = (props: MyInvitationType) => {
   const {
     name,
     type,
-    channel,
     startDateTime,
     endDateTime,
     location,
@@ -35,9 +34,6 @@ export const InvitationCard = (props: MyInvitationType) => {
 
   const formattedStartDateTime = new Date(startDateTime).toLocaleString();
   const formattedEndDateTime = new Date(endDateTime).toLocaleString();
-
-  const _channel = CHANNEL_OPTIONS.find((option) => option.value === channel);
-  // const docType = invitationUrl?.split(',')
 
   return (
     <Card

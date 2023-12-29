@@ -20,22 +20,6 @@ export const invitationColumns: DataTableColumnType[] = [
     filterable: true,
   },
   {
-    key: INVITATION_COLUMN_KEYS.CHANNEL,
-    dataIndex: INVITATION_COLUMN_KEYS.CHANNEL,
-    title: INVITATION_COLUMN_NAME.CHANNEL,
-    render: (record) => (
-      <Tag
-        bordered={false}
-        icon={CHANNEL_OPTIONS_MAP[record?.[INVITATION_COLUMN_KEYS.CHANNEL]]}
-      >
-        {" "}
-        {CHANNELS[record?.[INVITATION_COLUMN_KEYS.CHANNEL]]}
-      </Tag>
-    ),
-    sortable: true,
-    filterable: true,
-  },
-  {
     key: INVITATION_COLUMN_KEYS.TYPE,
     dataIndex: INVITATION_COLUMN_KEYS.TYPE,
     title: INVITATION_COLUMN_NAME.TYPE,
@@ -59,11 +43,22 @@ export const invitationColumns: DataTableColumnType[] = [
     filterable: true,
   },
   {
-    key: INVITATION_COLUMN_KEYS.CREATED_AT,
-    dataIndex: INVITATION_COLUMN_KEYS.CREATED_AT,
-    title: INVITATION_COLUMN_NAME.CREATED_AT,
+    key: INVITATION_COLUMN_KEYS.START_DATE_TIME,
+    dataIndex: INVITATION_COLUMN_KEYS.START_DATE_TIME,
+    title: INVITATION_COLUMN_NAME.START_DATE_TIME,
     render: (record) =>
-      dayjs(record?.[INVITATION_COLUMN_KEYS.CREATED_AT]).format(DATE_FORMAT),
+      dayjs(record?.[INVITATION_COLUMN_KEYS.START_DATE_TIME]).format(
+        DATE_FORMAT
+      ),
+    sortable: true,
+    filterable: true,
+  },
+  {
+    key: INVITATION_COLUMN_KEYS.END_DATE_TIME,
+    dataIndex: INVITATION_COLUMN_KEYS.END_DATE_TIME,
+    title: INVITATION_COLUMN_NAME.END_DATE_TIME,
+    render: (record) =>
+      dayjs(record?.[INVITATION_COLUMN_KEYS.END_DATE_TIME]).format(DATE_FORMAT),
     sortable: true,
     filterable: true,
   },

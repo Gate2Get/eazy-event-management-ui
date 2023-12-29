@@ -8,6 +8,8 @@ export const EVENT_COLUMN_KEYS = {
   STATUS: "status",
   LOCATION: "location",
   ACTION: "action",
+  START_DATE_TIME: "startDateTime",
+  END_DATE_TIME: "endDateTime",
 };
 
 export const EVENT_COLUMN_NAME = {
@@ -20,6 +22,8 @@ export const EVENT_COLUMN_NAME = {
   STATUS: "Status",
   LOCATION: "Location",
   ACTION: "Action",
+  START_DATE_TIME: "Start date",
+  END_DATE_TIME: "End date",
 };
 
 export const SORT_KEYS = [

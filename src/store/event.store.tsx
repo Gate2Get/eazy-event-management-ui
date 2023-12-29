@@ -11,9 +11,8 @@ import { ContactStoreType, EventStoreType } from "./types";
 const initialSelectedEvent = {
   id: "",
   userId: "",
-  contactDirectory: "",
+  contactDirectory: [],
   endDateTime: "",
-  messageTemplate: "",
   name: "",
   startDateTime: "",
   type: "OTHERS" as Events,
@@ -34,6 +33,10 @@ export const createEventStore = create<EventStoreType>((set) => ({
     invitedByInfo: {},
   },
   isListView: false,
+  isEdit: false,
+  setIsEdit: (isEdit: boolean) => {
+    set((state) => ({ isEdit }));
+  },
   setIsListView: (isListView: boolean) => {
     set((state) => ({ isListView }));
   },

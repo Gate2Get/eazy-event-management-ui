@@ -88,15 +88,17 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
   };
 
   const updateEventNotificationContacts = (): void => {
+    const _contactList = contactList?.filter((item) => item.action);
     setLoading(true);
     API.eventManagement
       .updateEventNotificationContact(
         selectedEvents.id as string,
         notificationId as string,
-        contactList
+        _contactList
       )
       .then((contact) => {
         setLoading(false);
+        setPreviewClose?.();
       })
       .catch((error: Error) => {
         setLoading(false);

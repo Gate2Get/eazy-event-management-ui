@@ -7,7 +7,9 @@ import {
   Row,
   Segmented,
   Select,
+  Tabs,
   Tag,
+  theme,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
@@ -36,6 +38,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { DataTable } from "../../components/dataTable";
 import { invitationColumns } from "./config";
 import { INVITATION_COLUMN_KEYS, SORT_KEYS } from "./constant";
+import { VideoPlayer } from "../../components/videoPlayer";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
@@ -47,18 +50,16 @@ const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   value: event,
 }));
 
-const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
-  label: (
-    <Tag
-      color={EVENT_STATUS_LABEL_COLOR?.[event[1] as any]}
-      className="event-status__tag"
-    >
-      {eventLabel?.[event[0]]}
-    </Tag>
-  ),
-
-  value: event[0],
-}));
+const STEPS = [
+  {
+    title: "Invitation",
+    content: "first-content",
+  },
+  {
+    title: "Video",
+    content: "second-content",
+  },
+];
 
 export const MyInvitation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -78,7 +79,9 @@ export const MyInvitation = () => {
     setMyInvitations,
   } = useBearStore.eventStore();
   const [form] = Form.useForm();
+  const { token } = theme.useToken();
   const [isFilter, setIsFilter] = React.useState(false);
+  const [current, setCurrent] = React.useState(1);
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -208,6 +211,46 @@ export const MyInvitation = () => {
     }
   };
 
+  const contentStyle: React.CSSProperties = {
+    // lineHeight: "260px",
+    // height: height - 300,
+    textAlign: "center",
+    color: token.colorTextTertiary,
+    // backgroundColor: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    // border: `1px solid ${token.colorBorder}`,
+    marginTop: 16,
+  };
+
+  const items = STEPS.map((item, index) => ({
+    key: `${index + 1}`,
+    label: item.title,
+    title: item.title,
+  }));
+
+  const renderComponent = (current: number) => {
+    console.log({ current });
+    switch (current) {
+      case 1: {
+        return <InvitationCard {...selectedInvitation} />;
+      }
+      case 2: {
+        return (
+          <VideoPlayer
+            url={selectedInvitation.videoUrl}
+            isVideoEnable={selectedInvitation.isVideoEnable}
+          />
+        );
+      }
+      default:
+        return <></>;
+    }
+  };
+
+  const onChange = (value: number) => {
+    setCurrent(value);
+  };
+
   return (
     <div className="my-invitation__container">
       {(!action || action === "DELETE") && (
@@ -329,7 +372,20 @@ export const MyInvitation = () => {
           </Col>
         </Row>
       )}
-      {action === "VIEW" && <InvitationCard {...selectedInvitation} />}
+      {action === "VIEW" && (
+        <>
+          <Tabs
+            onChange={(value) => {
+              onChange(Number(value));
+            }}
+            activeKey={current.toString()}
+            type="card"
+            items={items}
+          />
+
+          <div style={contentStyle}>{renderComponent(current)}</div>
+        </>
+      )}
     </div>
   );
 };

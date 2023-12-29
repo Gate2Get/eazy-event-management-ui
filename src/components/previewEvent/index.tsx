@@ -100,7 +100,7 @@ export const PreviewEvent = (props: PreviewEventType) => {
       });
   };
 
-  const steps = [...STEPS_EDITABLE];
+  const steps = STEPS_EDITABLE;
 
   const items = steps.map((item, index) => ({
     key: `${index + 1}`,

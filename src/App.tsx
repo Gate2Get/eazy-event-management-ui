@@ -10,11 +10,13 @@ import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
 import "./App.scss";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { Toast } from "primereact/toast";
+import { message } from "antd";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
   const { setScreen, setCollapsed, currentPage } = useBearStore.appStore();
   const toast = React.useRef<Toast>(null);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -28,11 +30,12 @@ function App(): React.ReactElement {
   }, [width]);
 
   React.useEffect(() => {
-    interceptors(navigate, toast);
+    interceptors(navigate, toast, messageApi);
   }, []);
 
   return (
     <div>
+      {contextHolder}
       <Helmet>
         <meta charSet="utf-8" />
         <title>Eazy Event {currentPage && `| ${currentPage}`} </title>

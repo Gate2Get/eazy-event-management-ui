@@ -32,8 +32,10 @@ export const InvitationCard = (props: MyInvitationType) => {
         }
       : { span: count };
 
-  const formattedStartDateTime = new Date(startDateTime).toLocaleString();
-  const formattedEndDateTime = new Date(endDateTime).toLocaleString();
+  const formattedStartDateTime = new Date(
+    startDateTime as string
+  ).toLocaleString();
+  const formattedEndDateTime = new Date(endDateTime as string).toLocaleString();
 
   return (
     <Card
@@ -44,7 +46,11 @@ export const InvitationCard = (props: MyInvitationType) => {
         </Tag>
       }
     >
-      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+      <Space
+        direction="vertical"
+        size="middle"
+        style={{ width: "100%", textAlign: "start" }}
+      >
         <RenderList name="Event Name" value={<>{name}</>} />
         <RenderList
           name="Event Date"
@@ -94,8 +100,8 @@ export const InvitationCard = (props: MyInvitationType) => {
                 fontSize="small"
                 style={{ position: "relative", top: "4px" }}
               />{" "}
-              {invitedByInfo.firstName} {invitedByInfo.lastName} (
-              {invitedByInfo.mobile})
+              {invitedByInfo?.firstName} {invitedByInfo?.lastName} (
+              {invitedByInfo?.mobile})
             </>
           }
         />
@@ -109,7 +115,7 @@ export const InvitationCard = (props: MyInvitationType) => {
                   <img
                     alt="example"
                     style={{ width: "100%" }}
-                    src={invitation.url}
+                    src={invitation?.url}
                   />
                 )}
               </Col>

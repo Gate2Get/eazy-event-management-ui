@@ -24,5 +24,21 @@
       }
       padding: 0;
     }
+
+    .ant-select-selector {
+      background-color: transparent !important;
+      border: none;
+
+      .ant-select-selection-overflow-item {
+        .ant-select-selection-item {
+          color: rgb(18, 183, 106);
+          background-color: rgba(18, 183, 106, 0.12);
+        }
+      }
+    }
+
+    .ant-select-arrow {
+      display: none;
+    }
   }
 }

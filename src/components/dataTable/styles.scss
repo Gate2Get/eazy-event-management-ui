@@ -67,6 +67,11 @@
   .p-dropdown:not(.p-disabled):hover {
     border-color: rgb(18, 183, 106) !important;
   }
+
+  .p-column-filter-row-items .p-column-filter-row-item.p-highlight {
+    color: rgb(18, 183, 106) !important;
+    background: rgba(18, 183, 106, 0.12) !important;
+  }
 }
 
 .p-dropdown-panel.p-component.p-ripple-disabled.p-connected-overlay-enter-done {

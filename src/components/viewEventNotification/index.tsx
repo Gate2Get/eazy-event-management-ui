@@ -31,7 +31,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         <Paragraph>
           <Space wrap>
             {contacts?.map((contact) => (
-              <Tag>{contact.name}</Tag>
+              <Tag color="success">{contact.name}</Tag>
             ))}
           </Space>
         </Paragraph>
@@ -45,7 +45,9 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         <Paragraph>{dayjs(triggerDateTime).format(DATE_TIME_FORMAT)}</Paragraph>
       </div>
       <div>
-        <Link onClick={viewNotification}>View</Link>
+        <Link onClick={viewNotification} className="app-link">
+          View info
+        </Link>
       </div>
     </>
   );

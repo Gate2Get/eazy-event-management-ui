@@ -8,6 +8,7 @@ export type ContactListType = {
   senderId: number | string;
   image?: string;
   status?: number;
+  action?: ActionType;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -129,6 +130,7 @@ export type EventType = {
   isAlbumEnable?: boolean;
   isVideoEnable?: boolean;
   isPostEnable?: boolean;
+  videoUrl?: string;
   isEditable?: boolean;
   isDeleteAllowed?: boolean;
   createdAt?: Date;

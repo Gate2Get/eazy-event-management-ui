@@ -114,6 +114,9 @@ export const PreviewContact = (props: PreviewContactType) => {
     const contacts = contactList.map((contact: any) => {
       if (contact.id === id) {
         contact[key] = value;
+        if (contact.action !== "ADD") {
+          contact.action = "EDIT";
+        }
       }
       return contact;
     });
@@ -128,23 +131,28 @@ export const PreviewContact = (props: PreviewContactType) => {
     } else {
       _selectedKeys = _selectedKeys.filter((item) => item.id !== record.id);
     }
-    setSelectedKey(selectedKey);
+    setSelectedKey(_selectedKeys);
   };
 
   const onAddNewContct = () => {
-    const contacts = [
-      { id: uuidV4(), name: "", senderId: "", image: "" },
-      ...contactList,
-    ];
+    const newContact: ContactListType = {
+      id: uuidV4(),
+      name: "",
+      senderId: "",
+      action: "ADD",
+    };
+    const contacts = [newContact, ...contactList];
     setContactList?.(contacts);
   };
 
   const onRemoveContact = () => {
     const _selectedKeys = selectedKey.map((item) => item.id);
-    const contacts = contactList.filter(
-      (contact) => !_selectedKeys.includes(contact.id)
-    );
-    console.log({ contacts, _selectedKeys });
+    const contacts = contactList.map((contact) => {
+      if (_selectedKeys.includes(contact.id)) {
+        contact.action = "DELETE";
+      }
+      return contact;
+    });
     setContactList?.(contacts);
     setSelectedKey([]);
   };
@@ -172,6 +180,8 @@ export const PreviewContact = (props: PreviewContactType) => {
       dataKey: "id",
     };
   }
+
+  const _contactList = contactList?.filter((item) => item.action !== "DELETE");
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
@@ -249,13 +259,13 @@ export const PreviewContact = (props: PreviewContactType) => {
         <div style={{ width: "100%" }}>
           <DataTable
             columns={columns}
-            data={contactList}
+            data={_contactList}
             otherProps={otherProps}
           />
         </div>
       ) : (
         <Row gutter={[16, 16]}>
-          {contactList?.map((contact) => (
+          {_contactList?.map((contact) => (
             <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
               <ContactUserCard
                 senderId={contact.senderId}

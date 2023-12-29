@@ -69,8 +69,10 @@ export const AddEditContactDirectory = () => {
     ContactListType[],
     Dispatch<any>
   ] = React.useState([]);
-  const [selectedRowKeys, setSelectedRowKeys]: [string[], Dispatch<any>] =
-    React.useState([]);
+  const [selectedRowKeys, setSelectedRowKeys]: [
+    ContactListType[],
+    Dispatch<any>
+  ] = React.useState([]);
   const [isDeleteConfirmation, setIsDeleteConfirmation] = React.useState("");
   const [searchValue, setSearchValue] = React.useState("");
   let filteredGrid: any[] = [];
@@ -170,24 +172,6 @@ export const AddEditContactDirectory = () => {
     setIsDeleteConfirmation("");
   };
 
-  // const getContactList = (id: string): any => {
-  //   setLoading(true);
-  //   API.contactManagement
-  //     .getContactList(id)
-  //     .then((contacts: ContactListType[]) => {
-  //       setLoading(false);
-  //       setContactList(contacts);
-  //       form.setFieldValue("contacts", contacts);
-  //       setDirectoryContactList(
-  //         contacts.map((contact) => ({ ...contact, key: contact.id }))
-  //       );
-  //     })
-  //     .catch((error: Error) => {
-  //       setLoading(false);
-  //       console.log({ location: "getContactList", error });
-  //     });
-  // };
-
   const createContactDirectory = (directory: ContactDirectoryType): any => {
     setLoading(true);
     API.contactManagement
@@ -284,35 +268,14 @@ export const AddEditContactDirectory = () => {
     );
   };
 
-  const onSelectCard = (id: string, isChecked: boolean) => {
-    let _selectedRowKeys = [...selectedRowKeys];
+  const onSelectCard = (record: ContactListType, isChecked: boolean) => {
+    let _selectedKeys = [...selectedRowKeys];
     if (isChecked) {
-      _selectedRowKeys.push(id);
+      _selectedKeys.push(record);
     } else {
-      _selectedRowKeys = selectedRowKeys.filter((item) => item !== id);
+      _selectedKeys = _selectedKeys.filter((item) => item.id !== record.id);
     }
-    console.log({ _selectedRowKeys });
-    setSelectedRowKeys(_selectedRowKeys);
-  };
-
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (
-      selectedRowKeys: React.Key[],
-      selectedRows: ContactListType[]
-    ) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
-      setSelectedRowKeys(selectedRowKeys);
-    },
-    getCheckboxProps: (record: ContactListType) => {
-      return {
-        name: record?.name,
-      };
-    },
+    setSelectedRowKeys(_selectedKeys);
   };
 
   const handleFileUpload = async (
@@ -375,8 +338,9 @@ export const AddEditContactDirectory = () => {
   };
 
   const removeContact = () => {
+    const _selectedKeys = selectedRowKeys.map((item) => item.id);
     const contactList = directoryContactList.filter(
-      (contact) => !selectedRowKeys.includes(contact.id)
+      (contact) => !_selectedKeys.includes(contact.id)
     );
     setDirectoryContactList(contactList);
     setSelectedRowKeys([]);
@@ -639,7 +603,7 @@ export const AddEditContactDirectory = () => {
           buttonText="Add Contact"
         />
       ) : null}
-      {isListView ? (
+      {isListView && (filteredGrid.length || directoryContactList.length) ? (
         <DataTable
           columns={columns}
           data={searchValue ? filteredGrid : directoryContactList}
@@ -647,11 +611,10 @@ export const AddEditContactDirectory = () => {
           otherProps={
             action === "EDIT" || action === "ADD"
               ? {
-                  rowSelection: {
-                    type: "checkbox",
-                    ...rowSelection,
-                    selectedRowKeys,
-                  },
+                  selectionMode: "checkbox",
+                  selection: selectedRowKeys,
+                  onSelectionChange: (e: any) => setSelectedRowKeys(e.value),
+                  dataKey: "id",
                 }
               : {}
           }
@@ -670,7 +633,9 @@ export const AddEditContactDirectory = () => {
                   name={contact.name}
                   id={contact.id}
                   isSelected={selectedRowKeys.includes(contact.id)}
-                  onSelectCard={onSelectCard}
+                  onSelectCard={(id, isChecked) =>
+                    onSelectCard(contact, isChecked)
+                  }
                 />
               </Col>
             )

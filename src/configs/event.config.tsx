@@ -69,6 +69,30 @@ export const eventCreationConfig = (
             },
           ]),
       {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable album",
+        name: "isAlbumEnable",
+      },
+      {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable video",
+        name: "isVideoEnable",
+      },
+      {
+        type: COMPONENT_TYPE.INPUT_URL,
+        label: "Video url",
+        name: "videoUrl",
+        rules: [
+          {
+            required: false,
+            message: "Please input video url!",
+          },
+        ],
+        fieldProps: {
+          placeholder: "Please input video url!",
+        },
+      },
+      {
         type: COMPONENT_TYPE.INPUT_TEXT,
         label: "Location",
         name: "location",
@@ -147,6 +171,30 @@ export const eventCreationConfig = (
             },
           ]),
       {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable album",
+        name: "isAlbumEnable",
+      },
+      {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable video",
+        name: "isVideoEnable",
+      },
+      {
+        type: COMPONENT_TYPE.INPUT_URL,
+        label: "Video url",
+        name: "videoUrl",
+        rules: [
+          {
+            required: false,
+            message: "Please input video url!",
+          },
+        ],
+        fieldProps: {
+          placeholder: "Please input video url!",
+        },
+      },
+      {
         type: COMPONENT_TYPE.INPUT_TEXT,
         label: "Location",
         name: "location",
@@ -215,6 +263,30 @@ export const eventCreationConfig = (
               rules: [{ required: true, message: "Please select event date!" }],
             },
           ]),
+      {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable album",
+        name: "isAlbumEnable",
+      },
+      {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable video",
+        name: "isVideoEnable",
+      },
+      {
+        type: COMPONENT_TYPE.INPUT_URL,
+        label: "Video url",
+        name: "videoUrl",
+        rules: [
+          {
+            required: false,
+            message: "Please input video url!",
+          },
+        ],
+        fieldProps: {
+          placeholder: "Please input video url!",
+        },
+      },
       {
         type: COMPONENT_TYPE.INPUT_TEXT,
         label: "Location",

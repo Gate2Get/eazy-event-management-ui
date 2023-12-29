@@ -12,6 +12,8 @@ import {
   Collapse,
   Popover,
   Typography,
+  Switch,
+  Tag,
 } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
@@ -73,6 +75,7 @@ export const EventManagement = (props: EventManagementType) => {
 
   const { width } = useWindowSize();
   const { screen } = useBearStore.appStore();
+  const { setIsEdit } = useBearStore.eventStore();
   const [selectedNotification, setSelectedNotification] =
     React.useState<EventNotificationType>(defaultEventNotification);
   const [isPreviewEvent, setPreviewEvent] = React.useState(false);
@@ -112,9 +115,17 @@ export const EventManagement = (props: EventManagementType) => {
       }
       case COMPONENT_TYPE.INPUT_URL: {
         return action === "VIEW" ? (
-          <Text className="text-view">
-            {form.getFieldValue(props.name) || "NA"}
-          </Text>
+          form.getFieldValue(props.name) ? (
+            <a
+              target="_blank"
+              className="app-link"
+              href={form.getFieldValue(props.name)}
+            >
+              {form.getFieldValue(props.name)}
+            </a>
+          ) : (
+            "NA"
+          )
         ) : (
           <Input type="url" {...props.fieldProps} />
         );
@@ -151,6 +162,14 @@ export const EventManagement = (props: EventManagementType) => {
             disabled={action === "VIEW"}
           />
         );
+      case COMPONENT_TYPE.SWITCH:
+        return action === "VIEW" ? (
+          <Tag color={form.getFieldValue(props.name) ? "success" : "default"}>
+            {form.getFieldValue(props.name) ? "Yes" : "No"}
+          </Tag>
+        ) : (
+          <Switch checkedChildren="No" unCheckedChildren="Yes" />
+        );
 
       default:
         return <></>;
@@ -174,6 +193,7 @@ export const EventManagement = (props: EventManagementType) => {
   const onCancelEdit = () => {
     setSelectedNotification(defaultEventNotification);
     setNotificationAction("");
+    setIsEdit(false);
   };
 
   const onCancelPreview = () => {
@@ -272,6 +292,7 @@ export const EventManagement = (props: EventManagementType) => {
                     onClick={() => {
                       setPreviewEvent(true);
                     }}
+                    className="app-link"
                   >
                     View contacts
                   </Link>

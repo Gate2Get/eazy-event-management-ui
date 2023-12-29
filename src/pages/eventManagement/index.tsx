@@ -24,13 +24,11 @@ import {
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
 import { API } from "../../api";
-import { BirthdayEventCreation } from "../../components/birthdayEventCreation";
 import { EventManagement as EventManagementComponent } from "../../components/eventManagement";
 import {
   EVENT_DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPES,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
@@ -47,8 +45,6 @@ import {
 } from "../../types";
 import "./styles.scss";
 import NoEvents from "../../assets/svg/no-events.svg";
-import { PreviewEventNotification } from "../../components/previewEventNotification";
-import { OtherEventCreation } from "../../components/otherEventCreation";
 import { debounce } from "lodash";
 import {
   removeEmptyProp,
@@ -69,9 +65,7 @@ import { EventCard } from "../../components/eventCard";
 import { eventColumns } from "./config";
 import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTable } from "../../components/dataTable";
-import { eventCreationConfig } from "../../configs/event.config";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 

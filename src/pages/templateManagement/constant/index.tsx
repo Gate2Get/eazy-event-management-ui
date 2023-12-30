@@ -6,6 +6,8 @@ export const TEMPLATE_COLUMN_KEYS = {
   CREATED_AT: "createdAt",
   UPDATED_AT: "updatedAt",
   ACTION: "action",
+  SUBMITTER: "userName",
+  MOBILE: "mobileNumber"
 };
 
 export const TEMPLATE_COLUMN_NAME = {
@@ -16,6 +18,8 @@ export const TEMPLATE_COLUMN_NAME = {
   CREATED_AT: "Creation at",
   UPDATED_AT: "Updated at",
   ACTION: "Action",
+  SUBMITTER: "Submitter Name",
+  MOBILE: "Mobile Number"
 };
 
 export const SORT_KEYS = [

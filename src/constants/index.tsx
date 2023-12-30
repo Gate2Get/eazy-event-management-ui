@@ -27,7 +27,7 @@ export const ROUTES_URL = {
   PRICING: "pricing",
   HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
-  REVIEW_EVENTS: "review-events",
+  REVIEW_TEMPLATES: "review-templates",
   MY_INVITATION: "my-invitation",
   CONTACT_US: "contact-us",
 };
@@ -45,7 +45,7 @@ export const ROUTES_MENU = {
   MY_PROFILE: "My Profile",
   MY_ACCOUNT: "My Account",
   ADMIN: "Admin",
-  REVIEW_EVENTS: "Review Events",
+  REVIEW_TEMPLATES: "Review Templates",
   MY_INVITATION: "My Invitation",
 };
 
@@ -59,7 +59,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.FEEDBACK,
   ROUTES_MENU.REPORT_BUG,
   ROUTES_MENU.MY_PROFILE,
-  ROUTES_MENU.REVIEW_EVENTS,
+  ROUTES_MENU.REVIEW_TEMPLATES,
   ROUTES_MENU.MY_INVITATION,
 ];
 
@@ -141,7 +141,7 @@ export const EVENT_TYPE_PROPS = {
   },
 };
 
-export const EVENT_ADMIN_ACTION = [
+export const TEMPLATE_ADMIN_ACTION = [
   {
     label: "Reject",
     key: EVENT_STATUS.REJECTED,

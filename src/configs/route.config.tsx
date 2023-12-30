@@ -16,7 +16,7 @@ import { MyProfile } from "../pages/myProfile";
 import { Pricing } from "../pages/pricing";
 import { PrivacyPolicy } from "../pages/privacyPolicy";
 import { ReportBug } from "../pages/reportBug";
-import { ReviewEvent } from "../pages/reviewEvent";
+import { ReviewTemplate } from "../pages/reviewTemplate";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
 import { TermsOfService } from "../pages/termsOfService";
@@ -94,8 +94,8 @@ export const SERVICE_ROUTES = [
     element: <MyInvitation />,
   },
   {
-    path: ROUTES_URL.REVIEW_EVENTS,
-    element: <ReviewEvent />,
+    path: ROUTES_URL.REVIEW_TEMPLATES,
+    element: <ReviewTemplate />,
   },
   {
     path: ROUTES_URL.MY_PROFILE,

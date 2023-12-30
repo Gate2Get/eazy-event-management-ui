@@ -1,9 +1,8 @@
 import { adminEndpoint, instance } from "../../configs/axios.config";
 import {
   ContactListType,
-  EventAdminType,
   EventFilterType,
-  EventType,
+  TemplateAdminType,
   TemplateType,
   UserInfoType,
 } from "../../types";
@@ -29,9 +28,9 @@ export const adminAPI = {
   //         throw error;
   //       });
   //   },
-  adminEventAction: async (payload: EventAdminType) => {
+  adminTemplateAction: async (payload: TemplateAdminType) => {
     return await instance
-      .put(adminEndpoint.adminEventAction, payload)
+      .put(adminEndpoint.adminTemplateAction, payload)
       .then((response) => {
         return true;
       })
@@ -39,9 +38,9 @@ export const adminAPI = {
         throw error;
       });
   },
-  getEvents: async (filters: EventFilterType = {}): Promise<EventType[]> => {
+  getTemplates: async (filters: EventFilterType = {}): Promise<TemplateType[]> => {
     return await instance
-      .get(adminEndpoint.getEvents, { params: filters })
+      .get(adminEndpoint.getTemplates, { params: filters })
       .then((response) => {
         const result = response.data.result;
         return result;

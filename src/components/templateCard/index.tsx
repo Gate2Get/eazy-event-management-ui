@@ -32,7 +32,7 @@ type TemplateCardType = {
 };
 
 export const TemplateCard = (props: TemplateCardType) => {
-  const { template, menuItems, onClick,  } = props;
+  const { template, menuItems, onClick  } = props;
   const { approvalStatus } = template;
   const avatarClassName = `ee__avatar-color`;
   // -${template.name?.toString()?.[0]?.toLowerCase()}`;

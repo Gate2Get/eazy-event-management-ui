@@ -67,18 +67,18 @@ export type ContactDirectoryType = {
   updatedAt?: string;
 };
 
-export const APPROVAL_STATUS = [
-  EVENT_STATUS.APPROVED,
-  EVENT_STATUS.REJECTED,
-  EVENT_STATUS.PENDING_APPROVAL,
-  EVENT_STATUS.APPEAL,
-];
+export const enum APPROVAL_STATUS  {
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  PENDING_APPROVAL = "PENDING_APPROVAL",
+  ON_HOLD = "ON_HOLD",
+}
 
 export type TemplateType = {
-  id?: string;
-  userId?: number;
+  id: string;
   name: string;
   type?: string;
+  userId?: string;
   message: string;
   blob?: string;
   approvalStatus?: APPROVAL_STATUS;
@@ -120,7 +120,7 @@ export enum EventStatus {
 }
 
 export type EventType = {
-  id?: string;
+  id: string;
   name?: string;
   userId?: string;
   type?: Events;
@@ -167,6 +167,13 @@ export type EventFilterType = {
   id?: string;
   fromDate?: string;
   toDate?: string;
+};
+
+export type TemplateFilterType = {
+  _id?: string;
+  channel?: string;
+  name?: string;
+  approvalStatus?: APPROVAL_STATUS;
 };
 
 export type AlertType = {
@@ -220,10 +227,10 @@ export type FeedbackType = {
   comments: string;
 };
 
-export type EventAdminType = {
+export type TemplateAdminType = {
   id: string;
   approvalStatus: string;
-  price: number;
+  comment: string;
 };
 
 export type UserLocationType = {

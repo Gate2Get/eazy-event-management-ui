@@ -6,6 +6,7 @@ import {
   EventType,
   MyInvitationType,
   ScreenType,
+  TemplateFilterType,
   TemplateType,
   UserInfoType,
 } from "./../../types";
@@ -65,7 +66,7 @@ export type EventStoreType = {
   setMyInvitations: (myInvitations: MyInvitationType[]) => void;
   setAction: (action: ActionType) => void;
   setSelectedEvents: (selectedEvents: EventType) => void;
-  setEventType: (eventType: string) => void;
+  setEventType: (eventType?: string) => void;
   setEvents: (events: EventType[]) => void;
   setFilters: (filters: EventFilterType) => void;
 };

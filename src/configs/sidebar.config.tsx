@@ -23,8 +23,8 @@ const adminMenu = (
       key: ROUTES_MENU.ADMIN,
       children: [
         {
-          key: ROUTES_URL.REVIEW_EVENTS,
-          label: ROUTES_MENU.REVIEW_EVENTS,
+          key: ROUTES_URL.REVIEW_TEMPLATES,
+          label: ROUTES_MENU.REVIEW_TEMPLATES,
           icon: (
             <EventAvailableIcon
               style={{ fontSize: "20px", fontWeight: "bolder" }}
@@ -32,7 +32,7 @@ const adminMenu = (
           ),
           onClick: () => {
             otherFn?.();
-            navigate(`${ROUTES_URL.EE}/${ROUTES_URL.REVIEW_EVENTS}`);
+            navigate(`${ROUTES_URL.EE}/${ROUTES_URL.REVIEW_TEMPLATES}`);
           },
         },
       ],

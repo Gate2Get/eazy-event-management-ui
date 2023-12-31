@@ -5,9 +5,7 @@ import {
   Col,
   ColProps,
   DatePicker,
-  Form,
   Row,
-  Select,
   Tag,
   Typography,
   Modal,
@@ -16,31 +14,33 @@ import {
   Space,
   Segmented,
   Badge,
+  Form,
+  Select,
 } from "antd";
-import dayjs from "dayjs";
 import React from "react";
 import { API } from "../../api";
 import {
-  EVENT_ADMIN_ACTION,
-  EVENT_DATE_FORMAT,
+  EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPES,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
+  TEMPLATE_ADMIN_ACTION,
+  TEMPLATE_STATUS_LABEL,
+  TEMPLATE_STATUS_LABEL_COLOR,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
-  ContactDirectoryType,
-  EventAdminType,
-  EventFilterType,
+  APPROVAL_STATUS,
   EventType,
+  TemplateAdminType,
+  TemplateFilterType,
+  TemplateType,
 } from "../../types";
 import "./styles.scss";
-import NoEvents from "../../assets/svg/no-events.svg";
+import NoTemplates from "../../assets/svg/no-events.svg";
 import { urlhandler } from "../../utils/common.utils";
-import { OtherEventCard } from "../../components/otherEventCard";
 import { EmptyData } from "../../components/EmptyData";
 import {
   modalClassNames,
@@ -49,88 +49,114 @@ import {
 } from "../../configs/antd.config";
 import { useTheme } from "antd-style";
 import { useSearchParams } from "react-router-dom";
-import { EventAdminPreview } from "../../components/eventAdminPreview";
 import { ButtonProps } from "antd/lib/button";
-import { EventCard } from "../../components/eventCard";
-import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
-import { eventColumns } from "./config";
+import { SORT_KEYS } from "./constant";
 import { DataTable } from "../../components/dataTable";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { templateColumns } from "../templateManagement/config";
+import { TemplateCard } from "../../components/templateCard";
+import {
+  TEMPLATE_COLUMN_KEYS,
+  TEMPLATE_COLUMN_NAME,
+} from "../templateManagement/constant";
+import { DataTableColumnType } from "../../components/dataTable/types";
+import { TemplateAdminPreview } from "../../components/TemplateAdminPreview";
 
 const { TextArea } = Input;
 
 const { Title, Text } = Typography;
-const { RangePicker } = DatePicker;
 
-const eventLabel: any = EVENT_STATUS_LABEL;
+const templateLabel: any = TEMPLATE_STATUS_LABEL;
 
-const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-  label: EVENT_TYPE_PROPS[event].label,
-  value: event,
-}));
-
-const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
+const templateStatusOptions = Object.entries(templateLabel).map((template: any) => ({
   label: (
     <Tag
-      color={EVENT_STATUS_LABEL_COLOR?.[event[1] as any]}
+      color={TEMPLATE_STATUS_LABEL_COLOR?.[template[0]]}
       className="event-status__tag"
     >
-      {eventLabel?.[event[0]]}
+      {templateLabel?.[template[0]]}
     </Tag>
   ),
 
-  value: event[0],
+  value: template[0],
 }));
 
-export const ReviewEvent = () => {
+export const ReviewTemplate = () => {
   const { styles } = useModalStyle();
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [reviewColumns, setReviewColumns] = React.useState(
+    [] as DataTableColumnType[]
+  );
   const { screen, setLoading } = useBearStore.appStore();
   const [adminActionStatus, setAdminActionStatus] = React.useState("");
   const [comment, setComment] = React.useState("");
   const [isError, setIsError] = React.useState(false);
-  const [price, setPrice] = React.useState(0);
+  const [statusFilter, setStatusFilter] = React.useState([EVENT_STATUS.PENDING_APPROVAL]);
   const [isFilter, setIsFilter] = React.useState(false);
-  const { setDirectoryList } = useBearStore.contactStore();
   const {
     action,
-    eventType,
-    events,
-    filters,
-    selectedEvents,
+    setTemplates,
+    templates,
+    selectedTemplate,
+    setSelectedTemplate,
     isListView,
     setIsListView,
     setAction,
-    setEventType,
-    setEvents,
-    setFilters,
-    setSelectedEvents,
-  } = useBearStore.eventStore();
+  } = useBearStore.templateStore();
 
   React.useEffect(() => {
-    const filters: EventFilterType = {
-      status: searchParams.get("status") as string,
-      type: searchParams.get("type") as string,
-      fromDate: searchParams.get("fromDate") as string,
-      toDate: searchParams.get("toDate") as string,
+    const filters: any = {
+      approvalStatus: statusFilter.join(',')
     };
 
-    urlhandler(searchParams, setAction, getEventById, () => {
-      getEvents(filters);
+    urlhandler(searchParams, setAction, getTemplateById, () => {
+      getTemplates(filters);
     });
-  }, [searchParams]);
+  }, [searchParams, statusFilter]);
 
   React.useEffect(() => {
-    getContactDirectory();
+    const columns = templateColumns.slice(0, templateColumns.length - 1);
+    columns.forEach((column) => {
+      if (column.key === TEMPLATE_COLUMN_KEYS.NAME) {
+        column.render = (record) => (
+          <Text
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setSelectedTemplate(record);
+              onViewSelect(record);
+            }}
+          >
+            {record.name}
+          </Text>
+        );
+      }
+    });
+    columns.push({
+      key: TEMPLATE_COLUMN_KEYS.SUBMITTER,
+      dataIndex: TEMPLATE_COLUMN_KEYS.SUBMITTER,
+      title: TEMPLATE_COLUMN_NAME.SUBMITTER,
+      sortable: true,
+      filterable: true,
+    });
+    columns.push({
+      key: TEMPLATE_COLUMN_KEYS.MOBILE,
+      dataIndex: TEMPLATE_COLUMN_KEYS.MOBILE,
+      title: TEMPLATE_COLUMN_NAME.MOBILE,
+      sortable: true,
+      filterable: true,
+    });
+    setReviewColumns(columns);
+  }, []);
+
+  React.useEffect(() => {
     setIsListView(
       localStorage.getItem(LOCAL_STORAGE_VIEW.EVENT_REVIEW) === "List"
     );
     return () => {
       console.log("unmounting");
-      setFilters({});
-      setEventType("");
+      setTemplates([]);
       setAction("");
       onCancel();
     };
@@ -149,7 +175,6 @@ export const ReviewEvent = () => {
     }
     setComment("");
     setIsError(false);
-    setPrice(0);
     setAdminActionStatus("");
   };
 
@@ -157,7 +182,7 @@ export const ReviewEvent = () => {
     setAdminActionStatus(status);
   };
 
-  const onViewSelect = (record: EventType) => {
+  const onViewSelect = (record: TemplateType) => {
     setSearchParams({
       id: record.id,
       action: PAGE_ACTION.VIEW,
@@ -165,20 +190,15 @@ export const ReviewEvent = () => {
   };
 
   const onActionConfirm = () => {
-    const { id } = selectedEvents;
-    let isValid;
-    if (adminActionStatus === "APPROVED") {
-      isValid = comment && price;
-    } else {
-      isValid = comment;
-    }
+    const { id } = selectedTemplate;
+    let isValid = !!comment;
 
     if (isValid) {
       setIsError(false);
-      adminEventAction({
+      adminTemplateAction({
         id,
         approvalStatus: adminActionStatus,
-        price,
+        comment
       });
       onCancel();
     } else {
@@ -186,108 +206,75 @@ export const ReviewEvent = () => {
     }
   };
 
-  eventColumns.forEach((column) => {
-    if (column.key === EVENT_COLUMN_KEYS.NAME) {
-      column.render = (record) => (
-        <Text
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            onViewSelect(record);
-          }}
-        >
-          {record.name}
-        </Text>
-      );
-    }
-  });
-
-  const renderEvents = (): React.ReactNode => {
-    return events.length ? (
+  const renderTemplates = (): React.ReactNode => {
+    return templates.length ? (
       isListView ? (
-        <DataTable columns={eventColumns} data={events} sortKeys={SORT_KEYS} />
+        <DataTable
+          columns={reviewColumns}
+          data={templates}
+          sortKeys={SORT_KEYS}
+        />
       ) : (
-        events?.map((event) => (
+        templates?.map((template) => (
           <Col {...colProps}>
-            <EventCard {...event} onSelect={() => onViewSelect(event)} />
+            <TemplateCard
+              template={template}
+              onClick={() => {
+                setSelectedTemplate(template);
+                onViewSelect(template);
+              }}
+            />
           </Col>
         ))
       )
     ) : (
-      <EmptyData image={NoEvents} description="No events to show" />
+      <EmptyData image={NoTemplates} description="No templatess to show" />
     );
   };
 
-  const getContactDirectory = (filters = {}): any => {
-    setLoading(true);
-    API.contactManagement
-      .getContactDirectory(filters)
-      .then((contacts: ContactDirectoryType[]) => {
-        setDirectoryList(contacts);
-        setLoading(false);
-      })
-      .catch((error: Error) => {
-        setLoading(false);
-        console.log({ location: "getContactDirectory", error });
-      });
-  };
-
-  const adminEventAction = (payload: EventAdminType): any => {
+  const adminTemplateAction = (payload: TemplateAdminType): any => {
     setLoading(true);
     API.adminAPI
-      .adminEventAction(payload)
+      .adminTemplateAction(payload)
       .then((response) => {
         setLoading(false);
-        getEventById(selectedEvents.id);
+        getTemplateById(selectedTemplate.id);
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "adminEventAction", error });
+        console.log({ location: "adminTemplateAction", error });
       });
   };
 
-  const getEvents = (filters = {}): void => {
+  const getTemplates = (filters = {}): void => {
     setLoading(true);
     API.adminAPI
-      .getEvents(filters)
-      .then((events: EventType[]) => {
-        setEvents(events);
+      .getTemplates(filters)
+      .then((template: TemplateType[]) => {
+        setTemplates(template);
         setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "getEvents", error });
+        console.log({ location: "getTemplates", error });
       });
   };
 
-  const getEventById = (id: string): void => {
+  const getTemplateById = (id?: string): void => {
     setLoading(true);
     API.adminAPI
-      .getEvents({ id })
-      .then((events: EventType[]) => {
+      .getTemplates({ id })
+      .then((templates: TemplateType[]) => {
         setLoading(false);
-        if (events?.length) {
-          const record = events?.[0];
-          setEventType(record.type);
-          setSelectedEvents(record);
+        if (templates?.length) {
+          const record = templates?.[0];
+          setSelectedTemplate(record);
         }
       })
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "getEvents", error });
       });
-  };
-
-  const handleFilterChange = (filter = {}) => {
-    const _filters: any = { ...filters, ...filter };
-    console.log(Object.values(filter), "Object.values(filter)");
-    if (!Object.values(filter)?.[0]) {
-      delete _filters[Object.keys(filter)[0]];
-    }
-    console.log({ _filters });
-    setFilters(_filters);
-    setSearchParams({
-      ..._filters,
-    });
   };
 
   const colOption = (count: number) =>
@@ -302,7 +289,7 @@ export const ReviewEvent = () => {
       <Modal
         title={
           <>
-            {adminActionStatus} - {selectedEvents.name} ?
+            {adminActionStatus} - {selectedTemplate.name} ?
           </>
         }
         open={!!adminActionStatus}
@@ -315,18 +302,6 @@ export const ReviewEvent = () => {
         styles={modalStyles(token) as any}
       >
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
-          {adminActionStatus === "APPROVED" && (
-            <InputNumber
-              status={isError && !price ? "error" : ""}
-              value={price}
-              placeholder="Price"
-              addonBefore="₹"
-              onChange={(value) => {
-                setPrice(Number(value));
-              }}
-              style={{ float: "left" }}
-            />
-          )}
           <TextArea
             showCount
             maxLength={150}
@@ -344,13 +319,13 @@ export const ReviewEvent = () => {
         <>
           <Row wrap gutter={[8, 8]}>
             <Col span={12}>
-              <Title level={3}> Review Events</Title>
+              <Title level={3}> Review Templates</Title>
             </Col>
             <Col span={12} className="upcoming-event__pagination">
               <Button
                 type="text"
                 icon={
-                  <Badge count={Object.values(filters).filter((_) => _).length}>
+                  <Badge count={Object.values({}).filter((_) => _).length}>
                     <FilterListIcon fontSize="inherit" />
                   </Badge>
                 }
@@ -388,30 +363,15 @@ export const ReviewEvent = () => {
             <Row className="event-review__filters" gutter={[8, 8]}>
               <Col flex={6}>
                 <Form layout="vertical">
-                  <Form.Item label="Event">
-                    <Select
-                      style={{ width: "100%" }}
-                      allowClear
-                      placeholder="Select a event"
-                      optionFilterProp="children"
-                      options={eventTypeOptions}
-                      value={filters.type}
-                      onChange={(type) => {
-                        handleFilterChange({ type });
-                      }}
-                    />
-                  </Form.Item>
-                </Form>
-              </Col>
-              <Col flex={6}>
-                <Form layout="vertical">
                   <Form.Item label="Status">
                     <Select
                       style={{ width: "100%" }}
                       allowClear
+                      mode="multiple"
                       placeholder="Select a status"
                       optionFilterProp="children"
-                      options={eventStatusOptions}
+                      options={templateStatusOptions}
+                      value={statusFilter}
                       tagRender={({ label }) => {
                         return (
                           <Tag
@@ -423,35 +383,8 @@ export const ReviewEvent = () => {
                         );
                       }}
                       onChange={(status) => {
-                        handleFilterChange({ status });
+                        setStatusFilter(status)
                       }}
-                    />
-                  </Form.Item>
-                </Form>
-              </Col>
-              <Col className="upcoming-event__date-picker" flex={6}>
-                <Form layout="vertical">
-                  <Form.Item label="Event date range">
-                    <RangePicker
-                      style={{ width: "100%" }}
-                      size="middle"
-                      onChange={(e) => {
-                        if (e) {
-                          handleFilterChange({
-                            fromDate: dayjs(e?.[0]),
-                            toDate: dayjs(e?.[1]),
-                          });
-                        } else {
-                          const _filters: any = { ...filters };
-                          delete _filters.fromDate;
-                          delete _filters.toDate;
-                          setFilters(_filters);
-                          setSearchParams({
-                            ..._filters,
-                          });
-                        }
-                      }}
-                      format={EVENT_DATE_FORMAT}
                     />
                   </Form.Item>
                 </Form>
@@ -459,7 +392,7 @@ export const ReviewEvent = () => {
             </Row>
           )}
           <Row gutter={[16, 16]} className="event-list">
-            {renderEvents()}
+            {renderTemplates()}
           </Row>
         </>
       )}
@@ -481,7 +414,7 @@ export const ReviewEvent = () => {
                 </Button>
               </Col>
               <Col {...colOption(20)}>
-                {EVENT_ADMIN_ACTION.map((button) => (
+                {TEMPLATE_ADMIN_ACTION.map((button) => (
                   <Button
                     {...(button.props as ButtonProps)}
                     onClick={() => {
@@ -497,7 +430,7 @@ export const ReviewEvent = () => {
           </Col>
         </Row>
       )}
-      {action === "VIEW" && <EventAdminPreview />}
+      {action === "VIEW" && <TemplateAdminPreview />}
     </div>
   );
 };

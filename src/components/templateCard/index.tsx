@@ -7,6 +7,7 @@ import {
   MenuProps,
   Row,
   Space,
+  Tag,
   Tooltip,
   Typography,
 } from "antd";
@@ -16,7 +17,10 @@ import {
   CHANNELS,
   CHANNEL_OPTIONS,
   CHANNEL_OPTIONS_MAP,
+  EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
+  TEMPLATE_STATUS_LABEL_COLOR,
+  TEMPLATE_STATUS_LABEL
 } from "../../constants";
 
 const { Title, Text } = Typography;
@@ -28,7 +32,8 @@ type TemplateCardType = {
 };
 
 export const TemplateCard = (props: TemplateCardType) => {
-  const { template, menuItems, onClick } = props;
+  const { template, menuItems, onClick  } = props;
+  const { approvalStatus } = template;
   const avatarClassName = `ee__avatar-color`;
   // -${template.name?.toString()?.[0]?.toLowerCase()}`;
 
@@ -64,13 +69,27 @@ export const TemplateCard = (props: TemplateCardType) => {
             }}
             style={{ cursor: "pointer" }}
           >
-            <Space direction="vertical" size="small">
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
               <Text strong className="font-size-16">
                 {template.name}
               </Text>
-              <Text>
-                {channelComp} {channelLabel}
-              </Text>
+              <Row gutter={[16, 16]}>
+                <Col flex={12}>
+                  <Text>
+                    {channelComp} {channelLabel}
+                  </Text>
+                </Col>
+                    {TEMPLATE_STATUS_LABEL_COLOR?.[approvalStatus] && (
+                    <Col flex={12}>
+                      <Tag
+                        bordered={false}
+                        color={EVENT_STATUS_LABEL_COLOR?.[approvalStatus]}
+                      >
+                        {TEMPLATE_STATUS_LABEL[approvalStatus]}
+                      </Tag>
+                    </Col>
+                  )}
+              </Row>
             </Space>
           </Col>
           {menuItems && (
@@ -86,6 +105,7 @@ export const TemplateCard = (props: TemplateCardType) => {
               </Dropdown>
             </Col>
           )}
+          
         </Row>
       </Col>
     </Row>

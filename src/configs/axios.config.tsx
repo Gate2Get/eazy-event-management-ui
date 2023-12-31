@@ -135,6 +135,11 @@ export const eventManagementEndpoint = {
   getEventNotificationTemplate: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
   getMyInvitation: "/api/v1/app/event/my-invitation",
+  addEventAlbum: "/api/v1/app/event/media",
+  updateEventAlbum: "/api/v1/app/event/media",
+  deleteEventAlbum: "/api/v1/app/event/media",
+  getEventAlbum: "/api/v1/app/event/media",
+  getEventInvitationAlbum: "/api/v1/app/event/media",
 };
 
 export const dashboardEndpoint = {
@@ -146,7 +151,7 @@ export const commonEndpoint = {
   getAlerts: "/api/v1/app/common/alerts",
   createBug: "/api/v1/app/common/report-bug",
   submitFeedback: "/api/v1/app/common/feedback",
-  uploadFile: "/api/v1/app/file/upload",
+  uploadFile: "/api/v1/app/file/upload-single",
   getDataByPinCode: "/api/v1/pincode/",
 };
 

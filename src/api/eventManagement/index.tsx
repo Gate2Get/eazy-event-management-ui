@@ -1,10 +1,12 @@
 import { eventManagementEndpoint, instance } from "../../configs/axios.config";
 import {
+  AttachmentType,
   ContactListType,
   EventFilterType,
   EventType,
   MyInvitationType,
   TemplateType,
+  VirtualLoadQueryType,
 } from "../../types";
 
 export const eventManagementAPI = {
@@ -137,6 +139,53 @@ export const eventManagementAPI = {
         if (filters.id) {
           return result?.[0] || {};
         }
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  addEventAlbum: async (eventId: string, attachments: AttachmentType[]) => {
+    return await instance
+      .post(`${eventManagementEndpoint.addEventAlbum}/${eventId}/album`, {
+        attachments,
+      })
+      .then((response) => {
+        return response.data?.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getEventAlbum: async (
+    eventId: string,
+    filter: VirtualLoadQueryType
+  ): Promise<AttachmentType[]> => {
+    return await instance
+      .get(`${eventManagementEndpoint.getEventAlbum}/${eventId}/album`, {
+        params: filter,
+      })
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getEventInvitationAlbum: async (
+    eventId: string,
+    filter: VirtualLoadQueryType
+  ): Promise<AttachmentType[]> => {
+    return await instance
+      .get(
+        `${eventManagementEndpoint.getEventInvitationAlbum}/${eventId}/invitation/album`,
+        {
+          params: filter,
+        }
+      )
+      .then((response) => {
+        const result = response.data.result;
         return result;
       })
       .catch((error) => {

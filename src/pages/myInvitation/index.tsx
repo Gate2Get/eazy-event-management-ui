@@ -39,11 +39,10 @@ import { DataTable } from "../../components/dataTable";
 import { invitationColumns } from "./config";
 import { INVITATION_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import { VideoPlayer } from "../../components/videoPlayer";
+import { InvitationAlbum } from "../../components/invitationAlbum";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
-
-const eventLabel: any = EVENT_STATUS_LABEL;
 
 const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   label: EVENT_TYPE_PROPS[event].label,
@@ -58,6 +57,10 @@ const STEPS = [
   {
     title: "Video",
     content: "second-content",
+  },
+  {
+    title: "Album",
+    content: "third-content",
   },
 ];
 
@@ -108,6 +111,9 @@ export const MyInvitation = () => {
         getMyInvitation(setMyInvitations, filters);
       }
     );
+    return () => {
+      setCurrent(1);
+    };
   }, [searchParams]);
 
   React.useEffect(() => {
@@ -241,6 +247,9 @@ export const MyInvitation = () => {
             isVideoEnable={selectedInvitation.isVideoEnable}
           />
         );
+      }
+      case 3: {
+        return <InvitationAlbum isEnabled={selectedInvitation.isAlbumEnable} />;
       }
       default:
         return <></>;

@@ -20,6 +20,7 @@ import {
   Badge,
   Space,
   Segmented,
+  Tabs,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
@@ -66,6 +67,7 @@ import { eventColumns } from "./config";
 import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DataTable } from "../../components/dataTable";
+import { EventAlbum } from "../../components/eventAlbum";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -73,6 +75,17 @@ const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const eventLabel: any = EVENT_STATUS_LABEL;
+
+const STEPS = [
+  {
+    title: "Event",
+    content: "first-content",
+  },
+  {
+    title: "Album",
+    content: "second-content",
+  },
+];
 
 const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
   label: EVENT_TYPE_PROPS[event].label,
@@ -127,6 +140,7 @@ export const EventManagement = () => {
     Dispatch<any>
   ] = React.useState({});
   const [isFilter, setIsFilter] = React.useState(false);
+  const [current, setCurrent] = React.useState(1);
 
   const channel = Form.useWatch("channel", { form, preserve: true });
   const eventType = Form.useWatch("eventType", {
@@ -301,6 +315,18 @@ export const EventManagement = () => {
   const onDeleteSelect = (record: EventType) => {
     setAction("DELETE");
     setSelectedEvents(record);
+  };
+
+  const onCancelSelect = () => {
+    if (action === "ADD") {
+      setSearchParams({});
+      form.resetFields();
+    } else {
+      setSearchParams({
+        id: selectedEvents.id as string,
+        action: PAGE_ACTION.VIEW,
+      });
+    }
   };
 
   const onViewSelect = (record: EventType) => {
@@ -578,6 +604,57 @@ export const EventManagement = () => {
     }
   };
 
+  const items = STEPS.map((item, index) => ({
+    key: `${index + 1}`,
+    label: item.title,
+    title: item.title,
+  }));
+
+  const contentStyle: React.CSSProperties = {
+    // lineHeight: "260px",
+    // height: height - 300,
+    textAlign: "center",
+    color: token.colorTextTertiary,
+    // backgroundColor: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    // border: `1px solid ${token.colorBorder}`,
+    marginTop: 16,
+  };
+
+  const renderComponent = (current: number) => {
+    switch (current) {
+      case 1: {
+        return (
+          <EventManagementComponent
+            contactList={directoryList}
+            templates={templates}
+            form={form}
+            isTemplateFetching={isTemplateFetching}
+            onSearchTemplate={(value) => setSearchTemplate(value)}
+            onHandleEvent={handleEvent}
+            isContactFetching={isContactFetching}
+            onSearchContact={(value) => setSearchContact(value)}
+            isEdit={action === "EDIT"}
+            action={action}
+            getContactDirectory={getContactDirectory}
+            getTemplates={getTemplates}
+            handleFileUpload={handleFileUpload}
+            handleUpdateEventNotification={handleUpdateEventNotification}
+          />
+        );
+      }
+      case 2: {
+        return <EventAlbum />;
+      }
+      default:
+        return <></>;
+    }
+  };
+
+  const onChange = (value: number) => {
+    setCurrent(value);
+  };
+
   return (
     <div className="event-management__container">
       <Modal
@@ -746,20 +823,22 @@ export const EventManagement = () => {
                 </Button>
               </Col>
 
-              {action === "VIEW" && (
+              {current === 1 && (
                 <Col {...colOption(20)}>
                   <div style={{ float: "right" }}>
                     {selectedEvents.isEditable && (
                       <Button
-                        type="primary"
+                        type={action === "VIEW" ? "primary" : "default"}
                         onClick={() => {
-                          onEditSelect(selectedEvents);
+                          action === "VIEW"
+                            ? onEditSelect(selectedEvents)
+                            : onCancelSelect();
                         }}
                       >
-                        Edit
+                        {action === "VIEW" ? "Edit" : "Cancel"}
                       </Button>
                     )}
-                    {selectedEvents.isDeleteAllowed && (
+                    {selectedEvents.isDeleteAllowed && action === "VIEW" && (
                       <Button
                         danger
                         onClick={() => {
@@ -799,22 +878,18 @@ export const EventManagement = () => {
         {(action === "ADD" || action === "EDIT" || action === "VIEW") &&
           eventType &&
           !isPreview && (
-            <EventManagementComponent
-              contactList={directoryList}
-              templates={templates}
-              form={form}
-              isTemplateFetching={isTemplateFetching}
-              onSearchTemplate={(value) => setSearchTemplate(value)}
-              onHandleEvent={handleEvent}
-              isContactFetching={isContactFetching}
-              onSearchContact={(value) => setSearchContact(value)}
-              isEdit={action === "EDIT"}
-              action={action}
-              getContactDirectory={getContactDirectory}
-              getTemplates={getTemplates}
-              handleFileUpload={handleFileUpload}
-              handleUpdateEventNotification={handleUpdateEventNotification}
-            />
+            <>
+              <Tabs
+                onChange={(value) => {
+                  onChange(Number(value));
+                }}
+                activeKey={current.toString()}
+                type="card"
+                items={items}
+              />
+
+              <div style={contentStyle}>{renderComponent(current)}</div>
+            </>
           )}
       </div>
     </div>

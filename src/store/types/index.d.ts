@@ -8,6 +8,7 @@ import {
   ScreenType,
   TemplateType,
   UserInfoType,
+  AttachmentType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -59,6 +60,8 @@ export type EventStoreType = {
   myInvitations: MyInvitationType[];
   isListView: boolean;
   isEdit: boolean;
+  eventAlbums: AttachmentType[];
+  setEventAlbums: (eventAlbums: AttachmentType[]) => void;
   setIsListView: (isListView: boolean) => void;
   setIsEdit: (isEdit: boolean) => void;
   setSelectedInvitation: (selectedInvitation: MyInvitationType) => void;

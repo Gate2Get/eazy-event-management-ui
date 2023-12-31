@@ -281,3 +281,8 @@ export type EventNotificationCardType = {
   handleSubmit?: (values?: any) => void;
   viewNotification?: () => void;
 } & EventNotificationType;
+
+export type VirtualLoadQueryType = {
+  offset?: number;
+  limit?: number;
+};

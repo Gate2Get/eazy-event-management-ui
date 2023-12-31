@@ -1,12 +1,6 @@
 import { create } from "zustand";
-import {
-  ActionType,
-  ContactDirectoryType,
-  ContactListType,
-  Events,
-  GenericJsonType,
-} from "../types";
-import { ContactStoreType, EventStoreType } from "./types";
+import { Events } from "../types";
+import { EventStoreType } from "./types";
 
 const initialSelectedEvent = {
   id: "",
@@ -34,6 +28,10 @@ export const createEventStore = create<EventStoreType>((set) => ({
   },
   isListView: false,
   isEdit: false,
+  eventAlbums: [],
+  setEventAlbums: (eventAlbums) => {
+    set((state) => ({ eventAlbums }));
+  },
   setIsEdit: (isEdit: boolean) => {
     set((state) => ({ isEdit }));
   },

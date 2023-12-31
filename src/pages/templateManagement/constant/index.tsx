@@ -2,18 +2,24 @@ export const TEMPLATE_COLUMN_KEYS = {
   ID: "id",
   NAME: "name",
   CHANNEL: "channel",
+  APPROVAL_STATUS: "approvalStatus",
   CREATED_AT: "createdAt",
   UPDATED_AT: "updatedAt",
   ACTION: "action",
+  SUBMITTER: "userName",
+  MOBILE: "mobileNumber"
 };
 
 export const TEMPLATE_COLUMN_NAME = {
   ID: "id",
   NAME: "Name",
   CHANNEL: "Channel",
+  APPROVAL_STATUS: "Approval Status",
   CREATED_AT: "Creation at",
   UPDATED_AT: "Updated at",
   ACTION: "Action",
+  SUBMITTER: "Submitter Name",
+  MOBILE: "Mobile Number"
 };
 
 export const SORT_KEYS = [

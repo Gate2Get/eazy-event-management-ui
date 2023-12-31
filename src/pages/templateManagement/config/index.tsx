@@ -1,7 +1,8 @@
 import { Tag } from "antd";
 import dayjs from "dayjs";
 import { DataTableColumnType } from "../../../components/dataTable/types";
-import { CHANNELS, CHANNEL_OPTIONS_MAP, DATE_FORMAT } from "../../../constants";
+import { CHANNELS, CHANNEL_OPTIONS_MAP, DATE_FORMAT, EVENT_STATUS_LABEL, EVENT_STATUS_LABEL_COLOR, TEMPLATE_STATUS_LABEL, TEMPLATE_STATUS_LABEL_COLOR } from "../../../constants";
+import { EVENT_COLUMN_KEYS, EVENT_COLUMN_NAME } from "../../eventManagement/constant";
 import { TEMPLATE_COLUMN_KEYS, TEMPLATE_COLUMN_NAME } from "../constant";
 
 export const templateColumns: DataTableColumnType[] = [
@@ -25,6 +26,28 @@ export const templateColumns: DataTableColumnType[] = [
         {CHANNELS[record?.[TEMPLATE_COLUMN_KEYS.CHANNEL]]}
       </Tag>
     ),
+    sortable: true,
+    filterable: true,
+  },
+  {
+    key: TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS,
+    dataIndex: TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS,
+    title: TEMPLATE_COLUMN_NAME.APPROVAL_STATUS,
+    render: (record) =>
+      EVENT_STATUS_LABEL?.[record?.[TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS]] && (
+        <div className="event-status">
+          <Tag
+            bordered={false}
+            color={
+              TEMPLATE_STATUS_LABEL_COLOR?.[
+                TEMPLATE_STATUS_LABEL?.[record?.[TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS]]
+              ]
+            }
+          >
+            {TEMPLATE_STATUS_LABEL?.[record?.[TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS]]}
+          </Tag>
+        </div>
+      ),
     sortable: true,
     filterable: true,
   },

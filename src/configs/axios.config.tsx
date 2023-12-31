@@ -156,9 +156,9 @@ export const commonEndpoint = {
 };
 
 export const adminEndpoint = {
-  getEvents: "/api/v1/app/admin/events",
+  getTemplates: "/api/v1/app/admin/templates",
   getUser: "/api/v1/app/admin/user",
   getContacts: "/api/v1/app/admin/event",
   getTemplate: "/api/v1/app/admin/event",
-  adminEventAction: "/api/v1/app/admin/event/action",
+  adminTemplateAction: "/api/v1/app/admin/template/action",
 };

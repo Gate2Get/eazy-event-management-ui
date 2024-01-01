@@ -169,6 +169,7 @@ export const TemplateManagement = (): React.ReactElement => {
       setSelectedTemplate({
         message: "",
         name: "",
+        id: "",
       });
       form.resetFields();
     }

@@ -68,7 +68,7 @@ export type ContactDirectoryType = {
   updatedAt?: string;
 };
 
-export const enum APPROVAL_STATUS  {
+export const enum APPROVAL_STATUS {
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
   PENDING_APPROVAL = "PENDING_APPROVAL",
@@ -121,7 +121,7 @@ export enum EventStatus {
 }
 
 export type EventType = {
-  id: string;
+  id?: string;
   name?: string;
   userId?: string;
   type?: Events;

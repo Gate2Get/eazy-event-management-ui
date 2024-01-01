@@ -173,6 +173,24 @@ export const eventManagementAPI = {
         throw error;
       });
   },
+  deleteEventAlbum: async (
+    eventId: string,
+    id: string[]
+  ): Promise<AttachmentType[]> => {
+    return await instance
+      .delete(`${eventManagementEndpoint.deleteEventAlbum}/${eventId}/album`, {
+        data: {
+          id,
+        },
+      })
+      .then((response) => {
+        const result = response.data.status;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
   getEventInvitationAlbum: async (
     eventId: string,
     filter: VirtualLoadQueryType

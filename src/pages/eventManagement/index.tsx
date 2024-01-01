@@ -68,6 +68,7 @@ import { EVENT_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DataTable } from "../../components/dataTable";
 import { EventAlbum } from "../../components/eventAlbum";
+import { initialSelectedEvent } from "../../store/event.store";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -170,6 +171,10 @@ export const EventManagement = () => {
     urlhandler(searchParams, setAction, getEventById, () => {
       getEvents(filters);
     });
+    return () => {
+      setCurrent(1);
+      setSelectedEvents(initialSelectedEvent);
+    };
   }, [searchParams]);
 
   React.useEffect(() => {
@@ -233,12 +238,6 @@ export const EventManagement = () => {
         );
       }
     }
-    // if (event?.triggerDateTime) {
-    //   formValues.triggerDateTime =
-    //     screen !== "MOBILE"
-    //       ? dayjs(event?.triggerDateTime)
-    //       : dayjs(event?.triggerDateTime).format("YYYY-MM-DDTHH:mm");
-    // }
 
     form.setFieldsValue(formValues);
   }, [selectedEvents]);
@@ -879,14 +878,16 @@ export const EventManagement = () => {
           eventType &&
           !isPreview && (
             <>
-              <Tabs
-                onChange={(value) => {
-                  onChange(Number(value));
-                }}
-                activeKey={current.toString()}
-                type="card"
-                items={items}
-              />
+              {action === "VIEW" && (
+                <Tabs
+                  onChange={(value) => {
+                    onChange(Number(value));
+                  }}
+                  activeKey={current.toString()}
+                  type="card"
+                  items={items}
+                />
+              )}
 
               <div style={contentStyle}>{renderComponent(current)}</div>
             </>

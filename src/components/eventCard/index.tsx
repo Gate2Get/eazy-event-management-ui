@@ -31,7 +31,8 @@ export const EventCard = (props: EventCardType) => {
 
   const status = eventStatusLabel[progressionStatus as string];
   const randomIndex = Math.ceil(
-    Math.random() * (ILLUSTRATION_ASSETS?.[eventType?.toLowerCase()] - 1)
+    Math.random() *
+      (ILLUSTRATION_ASSETS?.[eventType?.toLowerCase() as string] - 1)
   );
 
   const imageUrl = React.useMemo(() => {
@@ -69,7 +70,7 @@ export const EventCard = (props: EventCardType) => {
             <Row className="event-type">
               <Col span={12}>
                 <Text strong className="event-type__label">
-                  {EVENT_TYPE_PROPS[eventType].label}
+                  {EVENT_TYPE_PROPS?.[eventType as string]?.label}
                 </Text>
               </Col>
               <Col span={10}>

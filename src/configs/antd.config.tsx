@@ -3,7 +3,7 @@ import { Theme } from "antd/es/config-provider/context";
 
 export const useModalStyle = createStyles(({ token }) => ({
   "my-modal-body": {
-    background: "rgba(18, 183, 106, 0.12)",
+    // background: "rgba(18, 183, 106, 0.12)",
     padding: token.paddingSM,
   },
   "my-modal-mask": {

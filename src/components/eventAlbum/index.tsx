@@ -1,11 +1,13 @@
 import React from "react";
-import { Button, Modal, Space } from "antd";
+import { Button, Modal, Space, Typography } from "antd";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import { UploadAttachmentDragger } from "../uploadAttachmentDragger";
 import { AttachmentType, VirtualLoadQueryType } from "../../types";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
 import { AlbumImageTile } from "../albumImageTile";
+
+const { Text } = Typography;
 
 export const EventAlbum = () => {
   const [isUpload, setIsUpload] = React.useState(false);
@@ -36,6 +38,7 @@ export const EventAlbum = () => {
       .then((status) => {
         setLoading(false);
         setIsUpload(false);
+        getEventAlbum(true);
       })
       .catch((error) => {
         setLoading(false);
@@ -43,10 +46,31 @@ export const EventAlbum = () => {
       });
   };
 
+  const deleteEventAlbum = () => {
+    setLoading(true);
+    API.eventManagement
+      .deleteEventAlbum(selectedEvents.id as string, selectedImage)
+      .then((status) => {
+        setLoading(false);
+        setSelectedImage([]);
+        getEventAlbum(true);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "deleteEventAlbum", error });
+      });
+  };
+
   const getEventAlbum = (isFresh?: boolean) => {
     setIsFetchingData(true);
+    const _filter = isFresh
+      ? {
+          limit: 5,
+          offset: 0,
+        }
+      : filter;
     API.eventManagement
-      .getEventAlbum(selectedEvents.id as string, filter)
+      .getEventAlbum(selectedEvents.id as string, _filter)
       .then((album) => {
         setIsFetchingData(false);
         setEventAlbums(isFresh ? album : [...eventAlbums, ...album]);
@@ -93,6 +117,11 @@ export const EventAlbum = () => {
       </Modal>
       <Space direction="vertical" style={{ width: "100%" }}>
         <div>
+          {selectedImage.length ? (
+            <Text italic style={{ float: "left" }}>
+              {selectedImage?.length || 0}'s selected
+            </Text>
+          ) : null}
           <Button
             icon={<FileUploadOutlinedIcon fontSize="inherit" />}
             style={{ float: "right" }}
@@ -106,9 +135,7 @@ export const EventAlbum = () => {
             <Button
               icon={<FileUploadOutlinedIcon fontSize="inherit" />}
               style={{ float: "right", marginRight: "8px" }}
-              onClick={() => {
-                setIsUpload(true);
-              }}
+              onClick={deleteEventAlbum}
               danger
             >
               Delete

@@ -77,7 +77,7 @@ export const Dashboard = () => {
   const chartSelectionOptions = calendarEvents.map((item) => ({
     label: (
       <>
-        {CHANNEL_OPTIONS_MAP[item.channel as string]} {item.name} ({item.type})
+        {item.name} ({item.type})
       </>
     ),
     value: item.id,

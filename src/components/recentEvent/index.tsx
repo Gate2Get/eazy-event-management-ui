@@ -52,15 +52,14 @@ export const RecentEvent = (props: RecentEventType) => {
     location,
     chartSelectionOptions,
     setChartSelectionEventId,
-    channel,
-    failed,
-    success,
-    progress,
     onRefresh,
   } = props;
+  const channel = "VOICE_CALL",
+    failed = 0,
+    success = 0,
+    progress = 0;
   const { screen } = useBearStore.appStore();
   const status = eventStatusLabel[progressionStatus as string];
-  const channelLabel = CHANNEL_OPTIONS.find((item) => item.value === channel);
   const navigate = useNavigate();
 
   const colOption = (count: number) =>

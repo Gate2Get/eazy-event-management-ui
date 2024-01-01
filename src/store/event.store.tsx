@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { Events } from "../types";
 import { EventStoreType } from "./types";
 
-const initialSelectedEvent = {
+export const initialSelectedEvent = {
   id: "",
   userId: "",
   contactDirectory: [],

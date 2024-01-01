@@ -188,6 +188,7 @@ export const EventManagement = (props: EventManagementType) => {
       triggerDateTime: "",
       action: "ADD",
     });
+    setNotificationAction("ADD");
   };
 
   const onCancelEdit = () => {
@@ -243,7 +244,7 @@ export const EventManagement = (props: EventManagementType) => {
         onSearchTemplate={onSearchTemplate}
         isContactFetching={isContactFetching}
         onSearchContact={onSearchContact}
-        isEdit={notificationAction === "EDIT"}
+        isEdit={notificationAction === "EDIT" || notificationAction === "ADD"}
         getContactDirectory={getContactDirectory}
         getTemplates={getTemplates}
         onCancelEdit={onCancelEdit}

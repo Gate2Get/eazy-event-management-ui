@@ -17,7 +17,7 @@ export const InvitationAlbum = (props: InvitationAlbumType) => {
     offset: 0,
     limit: 5,
   });
-  const { selectedEvents, setEventAlbums, eventAlbums } =
+  const { selectedInvitation, setEventAlbums, eventAlbums } =
     useBearStore.eventStore();
   const { setLoading } = useBearStore.appStore();
 
@@ -34,7 +34,7 @@ export const InvitationAlbum = (props: InvitationAlbumType) => {
   const getEventInvitationAlbum = (isFresh?: boolean) => {
     setIsFetchingData(true);
     API.eventManagement
-      .getEventInvitationAlbum(selectedEvents.id as string, filter)
+      .getEventInvitationAlbum(selectedInvitation.id as string, filter)
       .then((album) => {
         setIsFetchingData(false);
         setEventAlbums(isFresh ? album : [...eventAlbums, ...album]);

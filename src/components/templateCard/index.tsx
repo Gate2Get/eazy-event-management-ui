@@ -20,7 +20,7 @@ import {
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
   TEMPLATE_STATUS_LABEL_COLOR,
-  TEMPLATE_STATUS_LABEL
+  TEMPLATE_STATUS_LABEL,
 } from "../../constants";
 
 const { Title, Text } = Typography;
@@ -32,7 +32,7 @@ type TemplateCardType = {
 };
 
 export const TemplateCard = (props: TemplateCardType) => {
-  const { template, menuItems, onClick  } = props;
+  const { template, menuItems, onClick } = props;
   const { approvalStatus } = template;
   const avatarClassName = `ee__avatar-color`;
   // -${template.name?.toString()?.[0]?.toLowerCase()}`;
@@ -79,16 +79,18 @@ export const TemplateCard = (props: TemplateCardType) => {
                     {channelComp} {channelLabel}
                   </Text>
                 </Col>
-                    {TEMPLATE_STATUS_LABEL_COLOR?.[approvalStatus] && (
-                    <Col flex={12}>
-                      <Tag
-                        bordered={false}
-                        color={EVENT_STATUS_LABEL_COLOR?.[approvalStatus]}
-                      >
-                        {TEMPLATE_STATUS_LABEL[approvalStatus]}
-                      </Tag>
-                    </Col>
-                  )}
+                {TEMPLATE_STATUS_LABEL_COLOR?.[approvalStatus as string] && (
+                  <Col flex={12}>
+                    <Tag
+                      bordered={false}
+                      color={
+                        EVENT_STATUS_LABEL_COLOR?.[approvalStatus as string]
+                      }
+                    >
+                      {TEMPLATE_STATUS_LABEL[approvalStatus as string]}
+                    </Tag>
+                  </Col>
+                )}
               </Row>
             </Space>
           </Col>
@@ -105,7 +107,6 @@ export const TemplateCard = (props: TemplateCardType) => {
               </Dropdown>
             </Col>
           )}
-          
         </Row>
       </Col>
     </Row>

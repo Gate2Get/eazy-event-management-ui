@@ -4,13 +4,11 @@ import {
   Button,
   Col,
   ColProps,
-  DatePicker,
   Row,
   Tag,
   Typography,
   Modal,
   Input,
-  InputNumber,
   Space,
   Segmented,
   Badge,
@@ -21,9 +19,7 @@ import React from "react";
 import { API } from "../../api";
 import {
   EVENT_STATUS,
-  EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
   TEMPLATE_ADMIN_ACTION,
@@ -31,13 +27,7 @@ import {
   TEMPLATE_STATUS_LABEL_COLOR,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import {
-  APPROVAL_STATUS,
-  EventType,
-  TemplateAdminType,
-  TemplateFilterType,
-  TemplateType,
-} from "../../types";
+import { TemplateAdminType, TemplateType } from "../../types";
 import "./styles.scss";
 import NoTemplates from "../../assets/svg/no-events.svg";
 import { urlhandler } from "../../utils/common.utils";
@@ -69,18 +59,20 @@ const { Title, Text } = Typography;
 
 const templateLabel: any = TEMPLATE_STATUS_LABEL;
 
-const templateStatusOptions = Object.entries(templateLabel).map((template: any) => ({
-  label: (
-    <Tag
-      color={TEMPLATE_STATUS_LABEL_COLOR?.[template[0]]}
-      className="event-status__tag"
-    >
-      {templateLabel?.[template[0]]}
-    </Tag>
-  ),
+const templateStatusOptions = Object.entries(templateLabel).map(
+  (template: any) => ({
+    label: (
+      <Tag
+        color={TEMPLATE_STATUS_LABEL_COLOR?.[template[0]]}
+        className="event-status__tag"
+      >
+        {templateLabel?.[template[0]]}
+      </Tag>
+    ),
 
-  value: template[0],
-}));
+    value: template[0],
+  })
+);
 
 export const ReviewTemplate = () => {
   const { styles } = useModalStyle();
@@ -93,7 +85,9 @@ export const ReviewTemplate = () => {
   const [adminActionStatus, setAdminActionStatus] = React.useState("");
   const [comment, setComment] = React.useState("");
   const [isError, setIsError] = React.useState(false);
-  const [statusFilter, setStatusFilter] = React.useState([EVENT_STATUS.PENDING_APPROVAL]);
+  const [statusFilter, setStatusFilter] = React.useState([
+    EVENT_STATUS.PENDING_APPROVAL,
+  ]);
   const [isFilter, setIsFilter] = React.useState(false);
   const {
     action,
@@ -108,7 +102,7 @@ export const ReviewTemplate = () => {
 
   React.useEffect(() => {
     const filters: any = {
-      approvalStatus: statusFilter.join(',')
+      approvalStatus: statusFilter.join(","),
     };
 
     urlhandler(searchParams, setAction, getTemplateById, () => {
@@ -198,7 +192,7 @@ export const ReviewTemplate = () => {
       adminTemplateAction({
         id,
         approvalStatus: adminActionStatus,
-        comment
+        comment,
       });
       onCancel();
     } else {
@@ -325,7 +319,7 @@ export const ReviewTemplate = () => {
               <Button
                 type="text"
                 icon={
-                  <Badge count={Object.values({}).filter((_) => _).length}>
+                  <Badge count={statusFilter?.length}>
                     <FilterListIcon fontSize="inherit" />
                   </Badge>
                 }
@@ -383,7 +377,7 @@ export const ReviewTemplate = () => {
                         );
                       }}
                       onChange={(status) => {
-                        setStatusFilter(status)
+                        setStatusFilter(status);
                       }}
                     />
                   </Form.Item>

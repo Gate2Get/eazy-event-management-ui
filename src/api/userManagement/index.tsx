@@ -46,7 +46,6 @@ export const userManagementAPI = {
     return await instance
       .get(userManagementEndpoint.getUserInfo)
       .then((response) => {
-        console.log(response.data.userInfo);
         const userInfo = response.data.userInfo;
         return userInfo;
       })
@@ -70,7 +69,6 @@ export const userManagementAPI = {
     return await instance
       .get(userManagementEndpoint.verifyAuth)
       .then((response) => {
-        console.log(response.data);
         const isAuthenticated = response.data.status;
         return isAuthenticated;
       })
@@ -109,6 +107,18 @@ export const userManagementAPI = {
       .post(userManagementEndpoint.deleteUserSession, { sessionId })
       .then((response) => {
         return true;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getWalletTransaction: async () => {
+    return await instance
+      .get(userManagementEndpoint.getWalletTransaction)
+      .then((response) => {
+        const transactions = response.data.result;
+        return transactions;
       })
       .catch((error) => {
         throw error;

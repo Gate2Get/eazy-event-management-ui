@@ -36,7 +36,7 @@ import { eventCreationConfig } from "../../configs/event.config";
 import { ViewEventNotification } from "../viewEventNotification";
 import { v4 as uuidV4 } from "uuid";
 import { EditEventNotification } from "../editEventNotification";
-import EditNotificationsOutlinedIcon from "@mui/icons-material/EditNotificationsOutlined";
+import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutlined";
 import "./styles.scss";
@@ -352,6 +352,7 @@ export const EventManagement = (props: EventManagementType) => {
             <Form.Item label="Notification" name="notification">
               {notifications?.map((notification: EventNotificationType) => (
                 <Space
+                  key={notification.id}
                   direction="vertical"
                   style={{ width: "100%", marginBottom: "8px" }}
                 >
@@ -396,7 +397,7 @@ export const EventManagement = (props: EventManagementType) => {
                               onClick={(event) => event.stopPropagation()}
                             />
                           </Popover>
-                          <EditNotificationsOutlinedIcon
+                          <EditNoteIcon
                             fontSize="small"
                             onClick={(event) => {
                               // If you don't want click extra trigger collapse, you can prevent this:

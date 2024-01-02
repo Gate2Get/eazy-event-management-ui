@@ -132,3 +132,13 @@ export const getBase64 = (file: RcFile): Promise<string> =>
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
+
+export const handleNumberFormatter = (value: number) => {
+  // If the value is zero or null, display an empty string
+  return value === 0 || value === null ? "" : String(value);
+};
+
+export const handleNumberParser = (value: string) => {
+  // If the input is an empty string, set the value to null
+  return value === "" ? null : value;
+};

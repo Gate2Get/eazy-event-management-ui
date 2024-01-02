@@ -17,8 +17,6 @@ import React from "react";
 import { API } from "../../api";
 import {
   EVENT_DATE_FORMAT,
-  EVENT_STATUS_LABEL,
-  EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
@@ -26,7 +24,7 @@ import {
 import { useBearStore } from "../../store";
 import { EventFilterType, EventType, MyInvitationType } from "../../types";
 import "./styles.scss";
-import NoEvents from "../../assets/svg/no-events.svg";
+import NoInvitations from "../../assets/svg/no-invitations.svg";
 import { removeFalsyValues, urlhandler } from "../../utils/common.utils";
 import { EmptyData } from "../../components/EmptyData";
 import { useSearchParams } from "react-router-dom";
@@ -178,7 +176,7 @@ export const MyInvitation = () => {
         ))
       )
     ) : (
-      <EmptyData image={NoEvents} description="No invitation to show" />
+      <EmptyData image={NoInvitations} description="No invitation to show" />
     );
   };
 

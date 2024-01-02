@@ -5,6 +5,7 @@ import { type UserType } from "./types";
 export const createUserStore = create<UserType>((set) => ({
   user: {},
   isAuthorized: null,
+  walletTransaction: [],
   setUser: (user) => {
     set((state) => ({ user }));
   },
@@ -14,5 +15,8 @@ export const createUserStore = create<UserType>((set) => ({
   sessions: [],
   setSession: (sessions) => {
     set((state) => ({ sessions }));
+  },
+  setWalletTransaction: (walletTransaction) => {
+    set((state) => ({ walletTransaction }));
   },
 }));

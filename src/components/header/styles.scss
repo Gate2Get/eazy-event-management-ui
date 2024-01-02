@@ -10,9 +10,13 @@
     font-size: 16px;
   }
 
-  .try-free__button {
-    border: 1px solid #00684a;
-    font-size: 16px;
+  .user__button {
+    float: right;
+    cursor: pointer;
+    span {
+      color: #fff;
+      font-size: 16px;
+    }
   }
 
   .app__name {

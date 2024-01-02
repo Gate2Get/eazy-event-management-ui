@@ -58,7 +58,11 @@ export const MyProfile = () => {
   }, []);
 
   React.useEffect(() => {
-    form.setFieldsValue({ ...userInfo, mobile: userInfo.mobile?.toString() });
+    form.setFieldsValue({
+      ...userInfo,
+      mobile: userInfo?.mobile ? userInfo?.mobile?.toString() : "",
+      pinCode: userInfo.pinCode || "",
+    });
   }, [userInfo]);
 
   React.useEffect(() => {
@@ -129,7 +133,7 @@ export const MyProfile = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log({ location: "getUserInfo", error });
+        console.log({ location: "logout", error });
       });
   };
 
@@ -182,7 +186,7 @@ export const MyProfile = () => {
       form.setFieldsValue({
         state: selectedPostal.statename,
         district: selectedPostal.districtname,
-        pinCode: selectedPostal.pincode,
+        pinCode: selectedPostal.pincode || "",
         postOffice: selectedPostal.officename,
       });
     } else {
@@ -239,7 +243,7 @@ export const MyProfile = () => {
                     />
                   )
                 }
-                disabled
+                disabled={userInfo.isEmailVerified}
               />
             </Form.Item>
             <Form.Item
@@ -274,6 +278,7 @@ export const MyProfile = () => {
                     />
                   )
                 }
+                disabled={userInfo.isMobileVerified}
               />
             </Form.Item>
             <Form.Item
@@ -307,14 +312,14 @@ export const MyProfile = () => {
             </Form.Item>
 
             <Form.Item
-              label="Postal office"
+              label="Postal office (eg: 600001)"
               name="postOffice"
               rules={[
                 { required: false, message: "Please input your pincode!" },
               ]}
             >
               <Select
-                placeholder="Your pincode"
+                placeholder="Your pincode (eg: 600001)"
                 allowClear
                 showSearch
                 options={locationOptions}

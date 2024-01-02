@@ -119,6 +119,7 @@ export const userManagementEndpoint = {
   deleteUserSession: "/api/v1/app/user/session",
   verifyAuth: "/api/v1/app/auth/verify-auth",
   getUserInfo: "/api/v1/app/user/info",
+  getWalletTransaction: "/api/v1/app/user/wallet-transaction",
   requestOtp: "/api/v1/app/user/request-otp",
   updateUserInfo: "/api/v1/app/user/info",
   logout: "/api/v1/app/auth/logout",

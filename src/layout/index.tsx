@@ -36,8 +36,6 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const { children } = props;
-
   let sidebarWidth = width;
   if (screen === "MOBILE") {
     sidebarWidth = width;

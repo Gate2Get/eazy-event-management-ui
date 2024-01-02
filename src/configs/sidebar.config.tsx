@@ -128,23 +128,23 @@ export const getMenuItems = (
     ..._adminMenu,
     { type: "divider" },
     {
-      label: ROUTES_MENU.MY_ACCOUNT,
-      key: ROUTES_MENU.MY_ACCOUNT,
+      label: ROUTES_MENU.SUPPORT_HELP,
+      key: ROUTES_MENU.SUPPORT_HELP,
       type: "group",
       children: [
-        {
-          key: ROUTES_URL.MY_PROFILE,
-          icon: (
-            <AccountBoxIcon
-              style={{ fontSize: "20px", fontWeight: "bolder" }}
-            />
-          ),
-          label: ROUTES_MENU.MY_PROFILE,
-          onClick: () => {
-            otherFn?.();
-            navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`);
-          },
-        },
+        // {
+        //   key: ROUTES_URL.MY_PROFILE,
+        //   icon: (
+        //     <AccountBoxIcon
+        //       style={{ fontSize: "20px", fontWeight: "bolder" }}
+        //     />
+        //   ),
+        //   label: ROUTES_MENU.MY_PROFILE,
+        //   onClick: () => {
+        //     otherFn?.();
+        //     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`);
+        //   },
+        // },
         {
           key: ROUTES_URL.FEEDBACK,
           icon: (

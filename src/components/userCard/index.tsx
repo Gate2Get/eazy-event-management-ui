@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  CheckCircleOutlined,
-  EditOutlined,
-  LogoutOutlined,
-  WarningOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import {
   Button,
   Card,

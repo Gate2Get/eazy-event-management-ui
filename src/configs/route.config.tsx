@@ -20,6 +20,7 @@ import { ReviewTemplate } from "../pages/reviewTemplate";
 import { SignIn } from "../pages/signIn";
 import { TemplateManagement } from "../pages/templateManagement";
 import { TermsOfService } from "../pages/termsOfService";
+import { Wallet } from "../pages/wallet";
 
 export const APP_ROUTES = [
   {
@@ -108,6 +109,10 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.REPORT_BUG,
     element: <ReportBug />,
+  },
+  {
+    path: ROUTES_URL.WALLET,
+    element: <Wallet />,
   },
   {
     path: ROUTES_URL.FORBIDDEN,

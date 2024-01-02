@@ -20,6 +20,16 @@ export type ActionType = "VIEW" | "ADD" | "EDIT" | "DELETE" | "";
 
 export type ScreenType = "MOBILE" | "TABLET" | "DESKTOP" | "";
 
+export enum WalletTransactionType {
+  CREDIT = "credit",
+  DEBIT = "debit",
+}
+
+export enum WalletTransactionPaymentType {
+  ONLINE = "online",
+  OFFLINE = "offline",
+}
+
 export type AttachmentType = {
   id: string;
   url: string;
@@ -55,6 +65,9 @@ export type UserInfoType = {
   isMobileVerified?: boolean;
   profileImage?: string;
   roles?: string | string[];
+  walletBalance?: number;
+  walletIsActive?: boolean;
+  walletIsTrial?: boolean;
 };
 
 export type ContactDirectoryType = {
@@ -301,4 +314,16 @@ export type EventNotificationCardType = {
 export type VirtualLoadQueryType = {
   offset?: number;
   limit?: number;
+};
+
+export type WalletType = {
+  userId: string;
+  amount: number;
+  type: WalletTransactionType;
+  transactionId: string;
+  paymentType: WalletTransactionPaymentType;
+  paymentBy?: string;
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };

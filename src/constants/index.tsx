@@ -30,6 +30,7 @@ export const ROUTES_URL = {
   REVIEW_TEMPLATES: "review-templates",
   MY_INVITATION: "my-invitation",
   CONTACT_US: "contact-us",
+  WALLET: "wallet",
 };
 
 export const ROUTES_MENU = {
@@ -45,8 +46,10 @@ export const ROUTES_MENU = {
   MY_PROFILE: "My Profile",
   MY_ACCOUNT: "My Account",
   ADMIN: "Admin",
+  SUPPORT_HELP: "Support & help",
   REVIEW_TEMPLATES: "Review Templates",
   MY_INVITATION: "My Invitation",
+  WALLET: "wallet",
 };
 
 export const SERVICE_MENU = [
@@ -61,6 +64,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.MY_PROFILE,
   ROUTES_MENU.REVIEW_TEMPLATES,
   ROUTES_MENU.MY_INVITATION,
+  ROUTES_MENU.WALLET,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -73,7 +77,7 @@ export const EVENT_STATUS = {
   ON_HOLD: "ON_HOLD",
   COMPLETED: "COMPLETED",
   IN_PROGRESS: "IN_PROGRESS",
-  APPEAL: "APPEAL"
+  APPEAL: "APPEAL",
   // DRAFT: "DRAFT",
 };
 

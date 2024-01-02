@@ -15,7 +15,6 @@ import {
 import { EventNotificationCardType, EventNotificationType } from "../../types";
 import { CHANNEL_OPTIONS, ROUTES_URL } from "../../constants";
 import { NoData } from "../noData";
-import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
 import "./styles.scss";
 import { useBearStore } from "../../store";
 import { disabledDate, disabledDateTime } from "../../utils/datePicker.utils";
@@ -51,6 +50,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
   const { screen } = useBearStore.appStore();
   const { width } = useWindowSize();
   const selectedChannel = Form.useWatch("channel", { form, preserve: true });
+
   const template = templates.find(
     (template) => template.id === messageTemplate
   );
@@ -68,14 +68,14 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
       contactDirectory,
       name,
       messageTemplate,
-      triggerDateTime: dayjs(triggerDateTime).format("YYYY-MM-DD HH:mm"),
+      triggerDateTime: dayjs(triggerDateTime),
       channel,
     });
     form.setFieldsValue({
       contactDirectory,
       name,
       messageTemplate,
-      // triggerDateTime: dayjs(triggerDateTime).format("YYYY-MM-DD HH:mm"),
+      triggerDateTime: dayjs(triggerDateTime),
       channel,
     });
   }, [contactDirectory, name, messageTemplate, triggerDateTime, channel]);
@@ -227,9 +227,9 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
           >
             {screen !== "MOBILE" ? (
               <DatePicker
-                format="YYYY-MM-DD HH:mm"
-                disabledDate={disabledDate}
-                disabledTime={disabledDateTime}
+                // format="YYYY-MM-DD HH:mm"
+                // disabledDate={disabledDate}
+                // disabledTime={disabledDateTime}
                 showTime
                 style={{ width: "100%" }}
                 popupStyle={{

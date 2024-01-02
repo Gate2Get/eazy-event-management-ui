@@ -15,10 +15,7 @@ import { TemplateType } from "../../types";
 import "./styles.scss";
 import {
   CHANNELS,
-  CHANNEL_OPTIONS,
   CHANNEL_OPTIONS_MAP,
-  EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPE_PROPS,
   TEMPLATE_STATUS_LABEL_COLOR,
   TEMPLATE_STATUS_LABEL,
 } from "../../constants";
@@ -35,7 +32,6 @@ export const TemplateCard = (props: TemplateCardType) => {
   const { template, menuItems, onClick } = props;
   const { approvalStatus } = template;
   const avatarClassName = `ee__avatar-color`;
-  // -${template.name?.toString()?.[0]?.toLowerCase()}`;
 
   const avatarIconLetter = template.name
     ?.toString()
@@ -84,7 +80,7 @@ export const TemplateCard = (props: TemplateCardType) => {
                     <Tag
                       bordered={false}
                       color={
-                        EVENT_STATUS_LABEL_COLOR?.[approvalStatus as string]
+                        TEMPLATE_STATUS_LABEL_COLOR?.[approvalStatus as string]
                       }
                     >
                       {TEMPLATE_STATUS_LABEL[approvalStatus as string]}

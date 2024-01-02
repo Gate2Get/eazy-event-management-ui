@@ -7,7 +7,7 @@ export const TEMPLATE_COLUMN_KEYS = {
   UPDATED_AT: "updatedAt",
   ACTION: "action",
   SUBMITTER: "userName",
-  MOBILE: "mobileNumber"
+  MOBILE: "mobileNumber",
 };
 
 export const TEMPLATE_COLUMN_NAME = {
@@ -19,7 +19,7 @@ export const TEMPLATE_COLUMN_NAME = {
   UPDATED_AT: "Updated at",
   ACTION: "Action",
   SUBMITTER: "Submitter Name",
-  MOBILE: "Mobile Number"
+  MOBILE: "Mobile Number",
 };
 
 export const SORT_KEYS = [

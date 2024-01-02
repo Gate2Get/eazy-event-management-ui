@@ -10,6 +10,7 @@ import {
   TemplateType,
   UserInfoType,
   AttachmentType,
+  WalletType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -21,6 +22,8 @@ export type UserType = {
   setIsAuthorized: (isAuthorized: boolean) => void;
   sessions: SessionType[];
   setSession: (sessions: SessionType[]) => void;
+  walletTransaction: WalletType[];
+  setWalletTransaction: (walletTransaction: WalletType[]) => void;
 };
 
 export type AppStoreType = {

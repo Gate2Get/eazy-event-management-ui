@@ -70,7 +70,6 @@ export const HomeLayout = (props: HomeLayoutType) => {
               ? "rgb(234, 236, 240) 0px 0px 1px, rgba(29, 41, 57, 0.08) 0px 6px 12px"
               : "none",
           }}
-          // className={headerClass}
         >
           <div>
             <HeaderHome isAuthorized={isAuthorized} />

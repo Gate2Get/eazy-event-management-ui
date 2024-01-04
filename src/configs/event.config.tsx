@@ -70,6 +70,11 @@ export const eventCreationConfig = (
           ]),
       {
         type: COMPONENT_TYPE.SWITCH,
+        label: "Enable event",
+        name: "isActive",
+      },
+      {
+        type: COMPONENT_TYPE.SWITCH,
         label: "Enable album",
         name: "isAlbumEnable",
       },
@@ -172,6 +177,11 @@ export const eventCreationConfig = (
           ]),
       {
         type: COMPONENT_TYPE.SWITCH,
+        label: "Enable event",
+        name: "isActive",
+      },
+      {
+        type: COMPONENT_TYPE.SWITCH,
         label: "Enable album",
         name: "isAlbumEnable",
       },
@@ -263,6 +273,11 @@ export const eventCreationConfig = (
               rules: [{ required: true, message: "Please select event date!" }],
             },
           ]),
+      {
+        type: COMPONENT_TYPE.SWITCH,
+        label: "Enable event",
+        name: "isActive",
+      },
       {
         type: COMPONENT_TYPE.SWITCH,
         label: "Enable album",

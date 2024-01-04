@@ -65,6 +65,7 @@ const STEPS = [
 export const MyInvitation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { screen, setLoading } = useBearStore.appStore();
+  const { user } = useBearStore.userStore();
   const [isPreview, setIsPreview] = React.useState(false);
   const {
     action,
@@ -176,7 +177,14 @@ export const MyInvitation = () => {
         ))
       )
     ) : (
-      <EmptyData image={NoInvitations} description="No invitation to show" />
+      <EmptyData
+        image={NoInvitations}
+        description={
+          user.isMobileVerified
+            ? "No invitation to show"
+            : "Click on the banner above to verify your account and access the invitation."
+        }
+      />
     );
   };
 
@@ -233,7 +241,6 @@ export const MyInvitation = () => {
   }));
 
   const renderComponent = (current: number) => {
-    console.log({ current });
     switch (current) {
       case 1: {
         return <InvitationCard {...selectedInvitation} />;

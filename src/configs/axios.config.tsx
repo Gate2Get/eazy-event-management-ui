@@ -144,7 +144,7 @@ export const eventManagementEndpoint = {
 };
 
 export const dashboardEndpoint = {
-  getRecentEvent: "/api/v1/app/event/recent-event",
+  getRecentEventNotification: "/api/v1/app/event/recent-event-notification",
   getEventStatistics: "/api/v1/app/event/statistic",
 };
 

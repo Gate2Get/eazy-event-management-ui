@@ -6,13 +6,12 @@ import { DASHBOARD_STATS } from "./constants";
 import { NoticeCalendar } from "../../components/noticeCalendar";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
-import { EventType } from "../../types";
-import illustrationReports from "../../assets/png/illustration-reports.png";
+import { EventNotificationType, EventType } from "../../types";
 import userIconAnimate from "../../assets/svg/user-icon-animate.svg";
 import "./styles.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { CHANNEL_OPTIONS_MAP, ROUTES_URL } from "../../constants";
+import { ROUTES_URL } from "../../constants";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -29,6 +28,10 @@ export const Dashboard = () => {
     setChartSelectionEventId,
     statistics,
     setStatistics,
+    setEventNotifications,
+    setSelectedEventNotification,
+    selectedEventNotification,
+    eventNotifications,
   } = useBearStore.dashboardStore();
   const { user } = useBearStore.userStore();
   const colOption = (count: number) =>
@@ -40,23 +43,38 @@ export const Dashboard = () => {
 
   React.useEffect(() => {
     getEventStatistics();
+    return () => {
+      setChartSelectionEventId("");
+    };
   }, []);
 
   React.useEffect(() => {
-    getSelectedEvent(chartSelectionEventId);
+    getSelectedEventNotification(chartSelectionEventId);
   }, [chartSelectionEventId]);
 
-  const getSelectedEvent = (id?: string): void => {
+  React.useEffect(() => {
+    if (!chartSelectionEventId) {
+      setChartSelectionEventId(eventNotifications?.[0]?.id as string);
+    }
+  }, [eventNotifications]);
+
+  const getSelectedEventNotification = (id?: string): void => {
     setLoading(true);
     API.dashboardAPI
-      .getRecentEvent(id)
-      .then((event: EventType) => {
-        setSelectedEvent(event);
+      .getRecentEventNotification(id)
+      .then((notification: EventNotificationType[]) => {
+        if (id && notification?.[0]) {
+          setSelectedEventNotification(
+            notification?.[0] as EventNotificationType
+          );
+        } else {
+          setEventNotifications(notification);
+        }
         setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "getSelectedEvent", error });
+        console.log({ location: "getSelectedEventNotification", error });
       });
   };
 
@@ -168,8 +186,11 @@ export const Dashboard = () => {
         {screen !== "MOBILE" && (
           <Col {...colOption(12)}>
             <RecentEvent
-              {...selectedEvent}
-              onRefresh={() => getSelectedEvent(chartSelectionEventId)}
+              allEventNotifications={eventNotifications}
+              selectedEventNotification={selectedEventNotification}
+              onRefresh={() =>
+                getSelectedEventNotification(chartSelectionEventId)
+              }
               chartSelectionOptions={chartSelectionOptions}
               setChartSelectionEventId={setChartSelectionEventId}
             />
@@ -196,8 +217,11 @@ export const Dashboard = () => {
       {screen === "MOBILE" && (
         <div>
           <RecentEvent
-            {...selectedEvent}
-            onRefresh={() => getSelectedEvent(chartSelectionEventId)}
+            allEventNotifications={eventNotifications}
+            selectedEventNotification={selectedEventNotification}
+            onRefresh={() =>
+              getSelectedEventNotification(chartSelectionEventId)
+            }
             chartSelectionOptions={chartSelectionOptions}
             setChartSelectionEventId={setChartSelectionEventId}
           />

@@ -28,6 +28,7 @@ import { API } from "../../api";
 import { EventManagement as EventManagementComponent } from "../../components/eventManagement";
 import {
   EVENT_DATE_FORMAT,
+  EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
@@ -206,7 +207,11 @@ export const EventManagement = () => {
       }
       return search;
     });
-    search({ name: searchTemplate, type: eventType });
+    search({
+      name: searchTemplate,
+      type: eventType,
+      approvalStatus: EVENT_STATUS.APPROVED,
+    });
   }, [searchTemplate]);
 
   React.useEffect(() => {

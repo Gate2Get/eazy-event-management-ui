@@ -273,7 +273,7 @@ export type EventManagementType = {
   isContactFetching?: boolean;
   onSearchContact: (contact: string) => void;
   getContactDirectory: () => void;
-  getTemplates: () => void;
+  getTemplates: (filter?: Record<string, string>) => void;
   handleFileUpload?: (e: UploadChangeParam<UploadFile<any>>) => void;
   action?: ActionType;
 };
@@ -286,14 +286,17 @@ export type EventNotificationType = {
   triggerDateTime?: string;
   channel?: string;
   action?: ActionType;
-  notificationStartDateTime?: Date;
-  notificationEndDateTime?: Date;
+  notificationStartDateTime?: string;
+  notificationEndDateTime?: string;
   createdAt?: string;
   updatedAt?: string;
+  notStarted?: number;
   failed?: number;
   success?: number;
   progress?: number;
+  status?: string;
   isEditAllowed?: boolean;
+  isDeleteAllowed?: boolean;
 };
 
 export type EventNotificationCardType = {
@@ -305,7 +308,7 @@ export type EventNotificationCardType = {
   onSearchTemplate: (template: string) => void;
   onSearchContact: (contact: string) => void;
   getContactDirectory: () => void;
-  getTemplates: () => void;
+  getTemplates: (filter?: Record<string, string>) => void;
   onCancelEdit?: () => void;
   handleSubmit?: (values?: any) => void;
   viewNotification?: () => void;

@@ -1,15 +1,16 @@
 import React from "react";
-import { List, Typography } from "antd";
-import { UserInfoType, WalletType } from "../../types";
+import { Col, List, Row, Typography } from "antd";
+import { WalletType } from "../../types";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import dayjs from "dayjs";
 import { DATE_TIME_FORMAT } from "../../constants";
+import WalletImg from "../../assets/svg/Wallet-bro.svg";
 
 const { Text } = Typography;
 
 export const Wallet = () => {
-  const { setLoading, screen } = useBearStore.appStore();
+  const { setLoading } = useBearStore.appStore();
   const { user, setUser, setWalletTransaction, walletTransaction } =
     useBearStore.userStore();
 
@@ -49,7 +50,15 @@ export const Wallet = () => {
     <List.Item>
       <List.Item.Meta
         title={
-          <Text strong>
+          <Text
+            strong
+            style={{
+              color:
+                item.type === "credit"
+                  ? "rgb(18, 183, 106)"
+                  : "rgb(240, 68, 56)",
+            }}
+          >
             {item.type === "credit" ? `+${item.amount}` : `-${item.amount}`}
           </Text>
         }
@@ -61,7 +70,15 @@ export const Wallet = () => {
 
   return (
     <div>
-      <h2>Wallet Balance: {user.walletBalance}</h2>
+      <Row>
+        {/* <Col>
+          <img src={WalletImg} alt="" width="30%" />
+        </Col> */}
+        <Col>
+          <h2>Wallet Balance: {user.walletBalance} (credits points)</h2>
+        </Col>
+      </Row>
+
       <List
         itemLayout="horizontal"
         dataSource={walletTransaction}

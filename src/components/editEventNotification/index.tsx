@@ -13,7 +13,7 @@ import {
   Modal,
 } from "antd";
 import { EventNotificationCardType, EventNotificationType } from "../../types";
-import { CHANNEL_OPTIONS, ROUTES_URL } from "../../constants";
+import { CHANNEL_OPTIONS, EVENT_STATUS, ROUTES_URL } from "../../constants";
 import { NoData } from "../noData";
 import "./styles.scss";
 import { useBearStore } from "../../store";
@@ -51,12 +51,12 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
   const { width } = useWindowSize();
   const selectedChannel = Form.useWatch("channel", { form, preserve: true });
 
-  const template = templates.find(
-    (template) => template.id === messageTemplate
-  );
-  const contacts = contactList.filter((contact) =>
-    contactDirectory.includes(contact.id as string)
-  );
+  // const template = templates.find(
+  //   (template) => template.id === messageTemplate
+  // );
+  // const contacts = contactList.filter((contact) =>
+  //   contactDirectory.includes(contact.id as string)
+  // );
 
   const onFinish = async (values: any) => {
     console.log({ values });
@@ -194,7 +194,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
                 value: template.id,
               }))}
               onFocus={() => {
-                getTemplates();
+                getTemplates({ approvalStatus: EVENT_STATUS.APPROVED });
               }}
               notFoundContent={
                 <NoData

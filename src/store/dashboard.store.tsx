@@ -28,6 +28,18 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
   transactionalEvents: [],
   statistics: {},
   chartSelectionEventId: "",
+  selectedEventNotification: {
+    contactDirectory: [],
+    messageTemplate: "",
+    name: "",
+  },
+  eventNotifications: [],
+  setEventNotifications: (eventNotifications) => {
+    set((state) => ({ eventNotifications }));
+  },
+  setSelectedEventNotification: (selectedEventNotification) => {
+    set((state) => ({ selectedEventNotification }));
+  },
   setStatistics: (statistics) => {
     set((state) => ({ statistics }));
   },

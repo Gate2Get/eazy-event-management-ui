@@ -11,6 +11,7 @@ import {
   UserInfoType,
   AttachmentType,
   WalletType,
+  EventNotificationType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -96,6 +97,12 @@ export type DashboardStoreType = {
   selectedEvent: EventType;
   chartSelectionEventId: string;
   statistics: GenericJsonType;
+  eventNotifications: EventNotificationType[];
+  selectedEventNotification: EventNotificationType;
+  setSelectedEventNotification: (
+    selectedEventNotification: EventNotificationType
+  ) => void;
+  setEventNotifications: (eventNotifications: EventNotificationType[]) => void;
   setStatistics: (statistics: GenericJsonType) => void;
   setChartSelectionEventId: (chartSelectionEventId: string) => void;
   setSelectedEvent: (selectedEvent: EventType) => void;

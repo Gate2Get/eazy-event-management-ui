@@ -22,7 +22,7 @@ import {
   disabledDateTime,
   disabledRangeTime,
 } from "../../utils/datePicker.utils";
-import { COMPONENT_TYPE, ROUTES_URL } from "../../constants";
+import { COMPONENT_TYPE, EVENT_STATUS, ROUTES_URL } from "../../constants";
 import {
   ActionType,
   EventManagementType,
@@ -392,23 +392,27 @@ export const EventManagement = (props: EventManagementType) => {
                               setNotificationAction("DELETE");
                             }}
                           >
-                            <DeleteOutlineOutlinedIcon
-                              fontSize="small"
-                              onClick={(event) => event.stopPropagation()}
-                            />
+                            {notification.isDeleteAllowed && (
+                              <DeleteOutlineOutlinedIcon
+                                fontSize="small"
+                                onClick={(event) => event.stopPropagation()}
+                              />
+                            )}
                           </Popover>
-                          <EditNoteIcon
-                            fontSize="small"
-                            onClick={(event) => {
-                              // If you don't want click extra trigger collapse, you can prevent this:
-                              setSelectedNotification({
-                                ...notification,
-                                action: "EDIT",
-                              });
-                              setNotificationAction("EDIT");
-                              event.stopPropagation();
-                            }}
-                          />
+                          {notification.isEditAllowed && (
+                            <EditNoteIcon
+                              fontSize="small"
+                              onClick={(event) => {
+                                // If you don't want click extra trigger collapse, you can prevent this:
+                                setSelectedNotification({
+                                  ...notification,
+                                  action: "EDIT",
+                                });
+                                setNotificationAction("EDIT");
+                                event.stopPropagation();
+                              }}
+                            />
+                          )}
                         </>
                       }
                     >

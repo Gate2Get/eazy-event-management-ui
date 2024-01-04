@@ -104,7 +104,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           <Text className="link-text" onClick={() => setIsOpen(true)}>
             Click here
           </Text>
-          <Text> to complete the profile to start events.</Text>
+          <Text> to complete the account verification to unlock more.</Text>
         </>
       );
     } else if (!user.isMobileVerified) {

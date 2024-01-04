@@ -70,13 +70,13 @@ export const TemplateCard = (props: TemplateCardType) => {
                 {template.name}
               </Text>
               <Row gutter={[16, 16]}>
-                <Col flex={12}>
+                <Col flex={8}>
                   <Text>
                     {channelComp} {channelLabel}
                   </Text>
                 </Col>
                 {TEMPLATE_STATUS_LABEL_COLOR?.[approvalStatus as string] && (
-                  <Col flex={12}>
+                  <Col flex={16}>
                     <Tag
                       bordered={false}
                       color={

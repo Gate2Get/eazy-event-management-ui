@@ -29,6 +29,7 @@ import { TemplateCard } from "../../components/templateCard";
 import { RichTextEditor } from "../../components/richTextEditor";
 import {
   CHANNEL_OPTIONS,
+  EVENT_STATUS,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
@@ -251,12 +252,16 @@ export const TemplateManagement = (): React.ReactElement => {
       onClick: () => onViewSelect(data),
       icon: <EyeOutlined />,
     },
-    {
-      label: "Edit",
-      key: "edit",
-      onClick: () => onEditSelect(data),
-      icon: <EditOutlined />,
-    },
+    ...(data.approvalStatus !== EVENT_STATUS.APPROVED
+      ? [
+          {
+            label: "Edit",
+            key: "edit",
+            onClick: () => onEditSelect(data),
+            icon: <EditOutlined />,
+          },
+        ]
+      : []),
     {
       label: "Delete",
       key: "delete",
@@ -635,17 +640,20 @@ export const TemplateManagement = (): React.ReactElement => {
             {action === "VIEW" && (
               <Col {...colOption(21)}>
                 <div style={{ float: "right" }}>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      setSearchParams({
-                        id: selectedTemplate.id as string,
-                        action: PAGE_ACTION.EDIT,
-                      });
-                    }}
-                  >
-                    Edit
-                  </Button>
+                  {selectedTemplate.approvalStatus !==
+                    EVENT_STATUS.APPROVED && (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        setSearchParams({
+                          id: selectedTemplate.id as string,
+                          action: PAGE_ACTION.EDIT,
+                        });
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  )}
                   <Button
                     danger
                     onClick={() => {

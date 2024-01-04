@@ -47,12 +47,20 @@ import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "react-router-dom";
 import NoContactList from "../../../../assets/svg/no-contact-list.svg";
 import { EmptyData } from "../../../../components/EmptyData";
+import {
+  modalClassNames,
+  modalStyles,
+  useModalStyle,
+} from "../../../../configs/antd.config";
+import { useTheme } from "antd-style";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
 
 export const AddEditContactDirectory = () => {
   const [form] = Form.useForm();
+  const { styles } = useModalStyle();
+  const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   let columns = contactListColumns;
   const { setLoading, screen, isError, setError } = useBearStore.appStore();
@@ -365,6 +373,8 @@ export const AddEditContactDirectory = () => {
         okText="Yes"
         cancelText="No"
         okType="danger"
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(token) as any}
       >
         Once deleted it cannot be undo
       </Modal>

@@ -1,10 +1,12 @@
 import { dashboardEndpoint, instance } from "../../configs/axios.config";
-import { EventType, GenericJsonType } from "../../types";
+import { EventNotificationType, EventType, GenericJsonType } from "../../types";
 
 export const dashboardAPI = {
-  getRecentEvent: async (id?: string): Promise<EventType> => {
+  getRecentEventNotification: async (
+    id?: string
+  ): Promise<EventNotificationType[]> => {
     return await instance
-      .get(dashboardEndpoint.getRecentEvent, { params: { id } })
+      .get(dashboardEndpoint.getRecentEventNotification, { params: { id } })
       .then((response) => {
         const result = response.data.result;
         return result;

@@ -6,16 +6,14 @@ import { AppRoutes } from "./routes";
 import { interceptors } from "./configs/axios.config";
 import { HomeLayout } from "./homeLayout";
 import { Helmet } from "react-helmet";
-import { PrimeReactProvider, PrimeReactContext } from "primereact/api";
+import { PrimeReactProvider } from "primereact/api";
 import "./App.scss";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
-import { Toast } from "primereact/toast";
 import { message } from "antd";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
   const { setScreen, setCollapsed, currentPage } = useBearStore.appStore();
-  const toast = React.useRef<Toast>(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
@@ -30,7 +28,7 @@ function App(): React.ReactElement {
   }, [width]);
 
   React.useEffect(() => {
-    interceptors(navigate, toast, messageApi);
+    interceptors(navigate, messageApi);
   }, []);
 
   return (
@@ -47,7 +45,6 @@ function App(): React.ReactElement {
         />
       </Helmet>
       <PrimeReactProvider>
-        <Toast ref={toast} />
         <HomeLayout>
           <AppRoutes />
         </HomeLayout>

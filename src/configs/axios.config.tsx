@@ -13,7 +13,6 @@ const snackbarAllowedMethods = ["post", "put", "delete"];
  */
 export const interceptors = (
   navigate: (url: string) => void,
-  toast: React.RefObject<Toast>,
   messageApi: MessageInstance
 ): void => {
   instance.interceptors.request.use(

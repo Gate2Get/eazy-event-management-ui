@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Toast } from "primereact/toast";
 import {
   FileUpload,
   FileUploadHeaderTemplateOptions,
@@ -28,7 +27,6 @@ type UploadAttachmentDraggerType = {
 };
 
 export const UploadAttachmentDragger = (props: UploadAttachmentDraggerType) => {
-  const toast = useRef<Toast>(null);
   const [totalSize, setTotalSize] = useState(0);
   const fileUploadRef = useRef<FileUpload>(null);
   const [messageApi, contextHolder] = message.useMessage();
@@ -182,8 +180,6 @@ export const UploadAttachmentDragger = (props: UploadAttachmentDraggerType) => {
 
   return (
     <div className="upload-drag__container">
-      <Toast ref={toast}></Toast>
-
       <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
       <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
       <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />

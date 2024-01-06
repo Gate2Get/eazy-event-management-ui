@@ -1,7 +1,6 @@
 import axios, { AxiosError, type AxiosInstance } from "axios";
 import { message, notification } from "antd";
 import { ROUTES_URL } from "../constants";
-import { Toast } from "primereact/toast";
 import { MessageInstance } from "antd/es/message/interface";
 
 export const instance: AxiosInstance = axios.create();

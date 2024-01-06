@@ -116,7 +116,15 @@ export const Header = (props: HeaderType) => {
           >
             <div className="user__button">
               <Text>
-                {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
+                <div style={{ fontSize: "16px" }}>
+                  {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
+                </div>
+                <div style={{ fontSize: "12px" }}>
+                  <span>
+                    <AccountBalanceWalletIcon fontSize="inherit" />{" "}
+                    {user.walletBalance}
+                  </span>
+                </div>
               </Text>
             </div>
           </Popover>

@@ -78,6 +78,7 @@ export const EVENT_STATUS = {
   COMPLETED: "COMPLETED",
   IN_PROGRESS: "IN_PROGRESS",
   APPEAL: "APPEAL",
+  NO_CREDITS: "NO_CREDITS",
   // DRAFT: "DRAFT",
 };
 
@@ -179,9 +180,9 @@ export const NON_PROTECTED_ROUTES = [
 ];
 
 export const CHANNELS: Record<string, string> = {
-  SMS: "SMS",
-  VOICE_CALL: "Voice call",
-  WHATSAPP: "Whatsapp",
+  SMS: " SMS",
+  VOICE_CALL: " Voice call",
+  WHATSAPP: " Whatsapp",
 };
 
 export const CHANNEL_OPTIONS = [

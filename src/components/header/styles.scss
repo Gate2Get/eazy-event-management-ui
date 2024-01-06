@@ -12,10 +12,11 @@
 
   .user__button {
     float: right;
+    position: relative;
+    top: 12px;
     cursor: pointer;
     span {
       color: #fff;
-      font-size: 16px;
     }
   }
 

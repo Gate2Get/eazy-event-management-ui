@@ -58,9 +58,11 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
       </div>
       <div>
         <Paragraph strong>
-          {status === EVENT_STATUS.NOT_STARTED
+          {[EVENT_STATUS.NOT_STARTED, EVENT_STATUS.NO_CREDITS].includes(
+            status as string
+          )
             ? "Estimated credits required to send notification"
-            : "Credit spend on this notification"}{" "}
+            : "Credit utilized on this notification"}{" "}
           : <Text style={{ color: "rgb(102, 112, 133)" }}>{price}</Text>
         </Paragraph>
 

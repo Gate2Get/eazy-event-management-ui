@@ -13,9 +13,11 @@ import {
 import { useBearStore } from "../../store";
 import EmailIcon from "@mui/icons-material/Email";
 import { ROUTES_URL } from "../../constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./styles.scss";
 import { API } from "../../api";
+import { NoData } from "../../components/noData";
+import ContactUsSubmitted from "../../assets/svg/contact-us-submitted.svg";
 
 const { Paragraph, Text, Title, Link } = Typography;
 const { TextArea } = Input;
@@ -23,9 +25,9 @@ const { TextArea } = Input;
 export const ContactUs = () => {
   const { screen, setLoading } = useBearStore.appStore();
   const [form] = Form.useForm();
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
 
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -34,45 +36,41 @@ export const ContactUs = () => {
         }
       : { span: count };
 
-  React.useEffect(() => {
-    if (isSubmitted) {
-      form.resetFields();
-    }
-    return () => {
-      form.resetFields();
-      setIsSubmitted(false);
-    };
-  }, [isSubmitted]);
-
   const handleSubmit = (values: any) => {
-    // setLoading(true);
-    // API.commonAPI
-    //   .submitFeedback(bugs)
-    //   .then((response) => {
-    //     setLoading(false);
-    //     console.log({ response });
-    //     if (response.status) setIsSubmitted(true);
-    //   })
-    //   .catch((error: Error) => {
-    //     setLoading(false);
-    //     console.log({ location: "handleSubmit", error });
-    //   });
+    setLoading(true);
+    API.commonAPI
+      .contactUs(values)
+      .then((response) => {
+        setLoading(false);
+        if (response.status) {
+          form.resetFields();
+          setSearchParams({ action: "submitted" });
+        }
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "handleSubmit", error });
+      });
   };
 
-  if (isSubmitted) {
+  if (searchParams.get("action") === "submitted") {
     return (
-      <Result
-        status="success"
-        title="Request submitted successfully"
-        extra={[
-          <Button
-            // icon={<ArrowForwardIcon fontSize="inherit" />}
-            type="primary"
-            onClick={() => navigate(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`)}
-          >
-            Go to Home
-          </Button>,
-        ]}
+      <NoData
+        image={<img src={ContactUsSubmitted} alt="" />}
+        description={
+          <>
+            <h2>Thank You for Contacting Us!</h2>
+            <p>
+              We have received your message and our team will get back to you as
+              soon as possible.
+            </p>
+            <p>
+              In the meantime, feel free to explore our website for more
+              information about our products and services.
+            </p>
+            <p>Thank you for choosing us!</p>
+          </>
+        }
       />
     );
   }
@@ -109,7 +107,7 @@ export const ContactUs = () => {
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           <Form.Item
             label="Full Name"
-            name="fullName"
+            name="name"
             rules={[
               {
                 required: true,
@@ -155,7 +153,16 @@ export const ContactUs = () => {
             <Input size="middle" type="number" placeholder="Mobile number" />
           </Form.Item>
 
-          <Form.Item label="Can You Provide Some More Details?" name="comments">
+          <Form.Item
+            label="Can You Provide Some More Details?"
+            name="notes"
+            rules={[
+              {
+                required: true,
+                message: "Please input some more details!",
+              },
+            ]}
+          >
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item>

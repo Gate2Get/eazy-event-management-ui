@@ -42,6 +42,7 @@ import NotificationAddOutlinedIcon from "@mui/icons-material/NotificationAddOutl
 import "./styles.scss";
 import { PreviewEventNotification } from "../previewEventNotification";
 import { PreviewEvent } from "../previewEvent";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -289,14 +290,16 @@ export const EventManagement = (props: EventManagementType) => {
               ]}
               extra={
                 action === "VIEW" && (
-                  <Link
+                  <Button
+                    type="link"
                     onClick={() => {
                       setPreviewEvent(true);
                     }}
                     className="app-link"
+                    icon={<OpenInNewIcon fontSize="inherit" />}
                   >
                     View contacts
-                  </Link>
+                  </Button>
                 )
               }
             >

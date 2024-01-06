@@ -295,6 +295,7 @@ export type EventNotificationType = {
   success?: number;
   progress?: number;
   status?: string;
+  price?: number;
   isEditAllowed?: boolean;
   isDeleteAllowed?: boolean;
 };
@@ -329,4 +330,12 @@ export type WalletType = {
   notes?: string;
   createdAt?: string;
   updatedAt?: string;
+};
+
+export type ContactUsType = {
+  name: string;
+  email: string;
+  mobile: number;
+  notes: string;
+  isActive?: boolean;
 };

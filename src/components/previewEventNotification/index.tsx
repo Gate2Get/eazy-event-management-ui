@@ -6,6 +6,7 @@ import { EventNotificationType, TemplateType } from "../../types";
 import { PreviewTemplate } from "../previewTemplate";
 import { PreviewContact } from "../previewContact";
 import { checkIsPdf } from "../../utils/validation.utils";
+import { EVENT_STATUS } from "../../constants";
 
 type PreviewEventType = {
   onSubmit?: () => void;
@@ -34,6 +35,7 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
     name,
     action,
     channel,
+    status,
     id: notificationId,
   } = notification;
   const { selectedEvents, isEdit, setIsEdit } = useBearStore.eventStore();
@@ -75,7 +77,7 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
           <PreviewContact
             contactList={contactList}
             setContactList={setContactList}
-            isEditable
+            isEditable={status === EVENT_STATUS.NOT_STARTED}
             onUpdateContact={updateEventNotificationContacts}
             isEdit={isEdit}
             setIsEdit={setIsEdit}

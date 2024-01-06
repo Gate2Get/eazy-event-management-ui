@@ -12,6 +12,7 @@ import { useBearStore } from "../../store";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Logo from "../../assets/png/logoEazyEvent.png";
 import CloseIcon from "@mui/icons-material/Close";
+import { homeDrawerMenu } from "../../configs/home.config";
 
 const { Text } = Typography;
 
@@ -50,7 +51,7 @@ export const HeaderHome = (props: HeaderHomeType) => {
           src={Logo}
           alt=""
           width={30}
-          style={{ position: "relative", top: "10px" }}
+          style={{ position: "relative", top: "7px" }}
         />
         Eazy Event
       </Text>
@@ -63,6 +64,9 @@ export const HeaderHome = (props: HeaderHomeType) => {
           <div className="get-started__button">
             <Button type="text" onClick={() => navigate(ROUTES_URL.PRICING)}>
               Pricing
+            </Button>
+            <Button type="text" onClick={() => navigate(ROUTES_URL.CONTACT_US)}>
+              Contact us
             </Button>
             {!NON_PROTECTED_ROUTES.includes(window.location.pathname) && (
               <Button type="primary" onClick={verifyAuth}>
@@ -81,19 +85,24 @@ export const HeaderHome = (props: HeaderHomeType) => {
         closeIcon={<CloseIcon />}
       >
         <Space direction="vertical" style={{ width: "100%" }}>
-          <Row
-            onClick={() => {
-              navigate(ROUTES_URL.PRICING);
-              onClose();
-            }}
-          >
-            <Col span={20}>
-              <Button type="text">Pricing</Button>
-            </Col>
-            <Col span={4}>
-              <ArrowForwardIcon style={{ float: "right", color: "#667085" }} />
-            </Col>
-          </Row>
+          {homeDrawerMenu.map((menu) => (
+            <Row
+              onClick={() => {
+                navigate(menu.link);
+                onClose();
+              }}
+              key={menu.label}
+            >
+              <Col span={20}>
+                <Button type="text">{menu.label}</Button>
+              </Col>
+              <Col span={4}>
+                <ArrowForwardIcon
+                  style={{ float: "right", color: "#667085" }}
+                />
+              </Col>
+            </Row>
+          ))}
 
           <Divider style={{ margin: "0px" }} />
           <Row

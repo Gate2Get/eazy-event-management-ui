@@ -1,5 +1,5 @@
 import { commonEndpoint, instance } from "../../configs/axios.config";
-import { FeedbackType, ReportBugsType, UserLocationType } from "../../types";
+import { ContactUsType, FeedbackType, ReportBugsType, UserLocationType } from "../../types";
 
 export const commonAPI = {
   getAlerts: async (): Promise<any> => {
@@ -17,6 +17,18 @@ export const commonAPI = {
   createBug: async (bug: ReportBugsType): Promise<any> => {
     return await instance
       .post(commonEndpoint.createBug, bug)
+      .then((response) => {
+        const result = response.data;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  contactUs: async (contactUs: ContactUsType): Promise<any> => {
+    return await instance
+      .post(commonEndpoint.contactUs, contactUs)
       .then((response) => {
         const result = response.data;
         return result;

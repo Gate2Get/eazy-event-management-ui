@@ -2,6 +2,7 @@ import ContactManagementImage from "../assets/svg/contact-management-home.svg";
 import TemplateManagementImage from "../assets/svg/template-management-home.svg";
 import EventManagementImage from "../assets/svg/event-home.svg";
 import DashboardHomeImage from "../assets/svg/dashboard-home.svg";
+import { ROUTES_URL } from "../constants";
 
 export const howIsItWorksContent = [
   {
@@ -28,5 +29,16 @@ export const howIsItWorksContent = [
     moduleName: "Event Management",
     title: "Effortless Event Management & Notification",
     text: "Bringing your events to life has never been smoother than with Eazy Event's Event Management module. This all-in-one solution empowers you to seamlessly coordinate, schedule, and send event notifications to your contacts via SMS, voice calls.",
+  },
+];
+
+export const homeDrawerMenu = [
+  {
+    label: "Pricing",
+    link: ROUTES_URL.PRICING,
+  },
+  {
+    label: "Contact us",
+    link: ROUTES_URL.CONTACT_US,
   },
 ];

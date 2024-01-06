@@ -151,6 +151,7 @@ export const dashboardEndpoint = {
 export const commonEndpoint = {
   getAlerts: "/api/v1/app/common/alerts",
   createBug: "/api/v1/app/common/report-bug",
+  contactUs: "/api/v1/app/common/contact-us",
   submitFeedback: "/api/v1/app/common/feedback",
   uploadFile: "/api/v1/app/file/upload-single",
   getDataByPinCode: "/api/v1/pincode/",

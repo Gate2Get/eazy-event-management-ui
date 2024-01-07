@@ -124,4 +124,16 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  generatePaymentLink: async (amount: number) => {
+    return await instance
+      .get(`${userManagementEndpoint.generatePaymentLink}/amount`)
+      .then((response) => {
+        const url = response.data.result;
+        return url;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

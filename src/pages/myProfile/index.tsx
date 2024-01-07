@@ -35,10 +35,9 @@ const { Title, Text } = Typography;
 
 export const MyProfile = () => {
   const { setLoading, screen } = useBearStore.appStore();
-  const { setIsAuthorized, sessions, setSession } = useBearStore.userStore();
+  const { setIsAuthorized, sessions, setSession, user, setUser } =
+    useBearStore.userStore();
   const [form] = Form.useForm();
-  const [userInfo, setUserInfo]: [UserInfoType, React.Dispatch<any>] =
-    React.useState({});
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLogout, setIsLogout] = React.useState(false);
   const navigate = useNavigate();
@@ -53,21 +52,21 @@ export const MyProfile = () => {
   ] = React.useState([]);
 
   React.useEffect(() => {
-    getUserInfo();
+    getuser();
     getUserSession();
   }, []);
 
   React.useEffect(() => {
     form.setFieldsValue({
-      ...userInfo,
-      mobile: userInfo?.mobile ? userInfo?.mobile?.toString() : "",
-      pinCode: userInfo.pinCode || "",
+      ...user,
+      mobile: user?.mobile ? user?.mobile?.toString() : "",
+      pinCode: user.pinCode || "",
     });
-  }, [userInfo]);
+  }, [user]);
 
   React.useEffect(() => {
     if (isEdit) {
-      getDataByPinCode(userInfo?.pinCode?.toString());
+      getDataByPinCode(user?.pinCode?.toString());
     }
   }, [isEdit]);
 
@@ -79,17 +78,17 @@ export const MyProfile = () => {
     setIsLogout(newOpen);
   };
 
-  const getUserInfo = () => {
+  const getuser = () => {
     setLoading(true);
     API.userManagement
       .getUserInfo()
-      .then((userInfo) => {
+      .then((user) => {
         setLoading(false);
-        setUserInfo(userInfo);
+        setUser(user);
       })
       .catch((error) => {
         setLoading(false);
-        console.log({ location: "getUserInfo", error });
+        console.log({ location: "getuser", error });
       });
   };
 
@@ -117,7 +116,7 @@ export const MyProfile = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log({ location: "getUserInfo", error });
+        console.log({ location: "getuser", error });
       });
   };
 
@@ -137,18 +136,18 @@ export const MyProfile = () => {
       });
   };
 
-  const updateUserInfo = (userInfo: UserInfoType) => {
+  const updateuser = (user: UserInfoType) => {
     setLoading(true);
     API.userManagement
-      .updateUserInfo(userInfo)
+      .updateUserInfo(user)
       .then((response) => {
         setLoading(false);
         setIsEdit(!isEdit);
-        getUserInfo();
+        getuser();
       })
       .catch((error) => {
         setLoading(false);
-        console.log({ location: "updateUserInfo", error });
+        console.log({ location: "updateuser", error });
       });
   };
 
@@ -207,7 +206,7 @@ export const MyProfile = () => {
         <div className="my-profile__container" style={cardStyle}>
           <Image
             width={96}
-            src={userInfo.picture || UserIcon}
+            src={user.picture || UserIcon}
             rootClassName="user-icon"
           />
           <Form
@@ -215,7 +214,7 @@ export const MyProfile = () => {
             form={form}
             name="profile"
             scrollToFirstError
-            onFinish={updateUserInfo}
+            onFinish={updateuser}
           >
             <Form.Item
               label="Email address"
@@ -231,7 +230,7 @@ export const MyProfile = () => {
                 type="email"
                 placeholder="Your email address"
                 suffix={
-                  userInfo.isEmailVerified ? (
+                  user.isEmailVerified ? (
                     <CheckCircleIcon
                       fontSize="inherit"
                       style={{ color: "rgb(18, 183, 106)" }}
@@ -243,7 +242,7 @@ export const MyProfile = () => {
                     />
                   )
                 }
-                disabled={userInfo.isEmailVerified}
+                disabled={user.isEmailVerified}
               />
             </Form.Item>
             <Form.Item
@@ -266,7 +265,7 @@ export const MyProfile = () => {
                 type="number"
                 placeholder="Mobile number"
                 suffix={
-                  userInfo.isMobileVerified ? (
+                  user.isMobileVerified ? (
                     <CheckCircleIcon
                       fontSize="inherit"
                       style={{ color: "rgb(18, 183, 106)" }}
@@ -278,7 +277,7 @@ export const MyProfile = () => {
                     />
                   )
                 }
-                disabled={userInfo.isMobileVerified}
+                disabled={user.isMobileVerified}
               />
             </Form.Item>
             <Form.Item
@@ -379,7 +378,7 @@ export const MyProfile = () => {
       ) : (
         <div className="my-profile__container">
           <UserCard
-            userInfo={userInfo}
+            userInfo={user}
             title={<Title level={3}>Personal Information</Title>}
             action={[
               <Button

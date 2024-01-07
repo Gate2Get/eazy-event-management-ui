@@ -118,6 +118,7 @@ export const userManagementEndpoint = {
   verifyAuth: "/api/v1/app/auth/verify-auth",
   getUserInfo: "/api/v1/app/user/info",
   getWalletTransaction: "/api/v1/app/user/wallet-transaction",
+  generatePaymentLink: "/api/v1/app/user/generate-payment-link",
   requestOtp: "/api/v1/app/user/request-otp",
   updateUserInfo: "/api/v1/app/user/info",
   logout: "/api/v1/app/auth/logout",
@@ -158,7 +159,10 @@ export const commonEndpoint = {
 export const adminEndpoint = {
   getTemplates: "/api/v1/app/admin/templates",
   getUser: "/api/v1/app/admin/user",
+  getAllUsers: "/api/v1/app/admin/users",
   getContacts: "/api/v1/app/admin/event",
   getTemplate: "/api/v1/app/admin/event",
   adminTemplateAction: "/api/v1/app/admin/template/action",
+  updateWallet: "/api/v1/app/admin/wallet-transaction",
+  getWalletTransaction: "/api/v1/app/admin/wallet-transaction",
 };

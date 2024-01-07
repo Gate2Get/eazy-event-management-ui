@@ -31,6 +31,7 @@ export const ROUTES_URL = {
   MY_INVITATION: "my-invitation",
   CONTACT_US: "contact-us",
   WALLET: "wallet",
+  ADD_CREDIT: "add-credit",
 };
 
 export const ROUTES_MENU = {
@@ -50,6 +51,7 @@ export const ROUTES_MENU = {
   REVIEW_TEMPLATES: "Review Templates",
   MY_INVITATION: "My Invitation",
   WALLET: "wallet",
+  ADD_CREDIT: "Add Credit",
 };
 
 export const SERVICE_MENU = [
@@ -65,6 +67,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.REVIEW_TEMPLATES,
   ROUTES_MENU.MY_INVITATION,
   ROUTES_MENU.WALLET,
+  ROUTES_MENU.ADD_CREDIT,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];

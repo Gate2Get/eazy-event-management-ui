@@ -5,29 +5,10 @@ import {
   TemplateAdminType,
   TemplateType,
   UserInfoType,
+  WalletType,
 } from "../../types";
 
 export const adminAPI = {
-  //   createEvent: async (event: EventType) => {
-  //     return await instance
-  //       .post(adminEndpoint.createEvent, event)
-  //       .then((response) => {
-  //         return true;
-  //       })
-  //       .catch((error) => {
-  //         throw error;
-  //       });
-  //   },
-  //   updateEvent: async (event: EventType) => {
-  //     return await instance
-  //       .put(adminEndpoint.updateEvent, event)
-  //       .then((response) => {
-  //         return true;
-  //       })
-  //       .catch((error) => {
-  //         throw error;
-  //       });
-  //   },
   adminTemplateAction: async (payload: TemplateAdminType) => {
     return await instance
       .put(adminEndpoint.adminTemplateAction, payload)
@@ -38,7 +19,9 @@ export const adminAPI = {
         throw error;
       });
   },
-  getTemplates: async (filters: EventFilterType = {}): Promise<TemplateType[]> => {
+  getTemplates: async (
+    filters: EventFilterType = {}
+  ): Promise<TemplateType[]> => {
     return await instance
       .get(adminEndpoint.getTemplates, { params: filters })
       .then((response) => {
@@ -74,6 +57,55 @@ export const adminAPI = {
   getUser: async (id: string): Promise<UserInfoType> => {
     return await instance
       .get(`${adminEndpoint.getUser}/${id}`)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getAllUsers: async (search: string): Promise<UserInfoType[]> => {
+    return await instance
+      .get(adminEndpoint.getAllUsers, {
+        params: {
+          search,
+        },
+      })
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  updateWallet: async (payload: WalletType) => {
+    return await instance
+      .post(adminEndpoint.updateWallet, payload)
+      .then((response) => {
+        return response.data.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getWalletTransaction: async (
+    month: string,
+    offset: number,
+    limit: number
+  ): Promise<WalletType[]> => {
+    return await instance
+      .get(adminEndpoint.getWalletTransaction, {
+        params: {
+          month,
+          offset,
+          limit,
+        },
+      })
       .then((response) => {
         const result = response.data.result;
         return result;

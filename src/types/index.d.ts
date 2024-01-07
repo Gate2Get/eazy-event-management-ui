@@ -60,6 +60,7 @@ export type UserInfoType = {
   state?: string;
   district?: string;
   pinCode?: number;
+  userId?: string;
   picture?: string;
   isEmailVerified?: boolean;
   isMobileVerified?: boolean;

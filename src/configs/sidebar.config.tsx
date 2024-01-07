@@ -10,6 +10,7 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import LocalActivityIcon from "@mui/icons-material/LocalActivity";
+import AddCardIcon from "@mui/icons-material/AddCard";
 
 const adminMenu = (
   navigate: NavigateFunction,
@@ -33,6 +34,17 @@ const adminMenu = (
           onClick: () => {
             otherFn?.();
             navigate(`${ROUTES_URL.EE}/${ROUTES_URL.REVIEW_TEMPLATES}`);
+          },
+        },
+        {
+          key: ROUTES_URL.ADD_CREDIT,
+          label: ROUTES_MENU.ADD_CREDIT,
+          icon: (
+            <AddCardIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
+          ),
+          onClick: () => {
+            otherFn?.();
+            navigate(`${ROUTES_URL.EE}/${ROUTES_URL.ADD_CREDIT}`);
           },
         },
       ],

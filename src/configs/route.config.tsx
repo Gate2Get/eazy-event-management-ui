@@ -5,6 +5,7 @@ import { App404 } from "../components/404";
 import { GoogleContactDoc } from "../components/googleContactDoc";
 import { ROUTES_URL } from "../constants";
 import { AppLayout } from "../layout";
+import { AddCreditToWallet } from "../pages/addCreditToWallet";
 import { ContactManagement } from "../pages/contactManagement";
 import { ContactUs } from "../pages/contactUs";
 import { Dashboard } from "../pages/dashboard";
@@ -113,6 +114,10 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.WALLET,
     element: <Wallet />,
+  },
+  {
+    path: ROUTES_URL.ADD_CREDIT,
+    element: <AddCreditToWallet />,
   },
   {
     path: ROUTES_URL.FORBIDDEN,

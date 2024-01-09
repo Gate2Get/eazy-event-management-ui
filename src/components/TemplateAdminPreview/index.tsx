@@ -6,6 +6,7 @@ import { UserInfoType } from "../../types";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { PreviewTemplate } from "../previewTemplate";
 import { UserCard } from "../userCard";
+import { ReviewConversation } from "../ReviewConversation";
 
 const steps = [
   {
@@ -15,7 +16,11 @@ const steps = [
   {
     title: "Template contents",
     content: "Message-content",
-  }
+  },
+  {
+    title: "Review conversation",
+    content: "Review-Conversation",
+  },
 ];
 
 type PreviewTemplateType = {
@@ -23,18 +28,18 @@ type PreviewTemplateType = {
 };
 
 export const TemplateAdminPreview = (props: PreviewTemplateType) => {
-  const { selectedTemplate } =
-  useBearStore.templateStore();
-  console.log({selectedTemplate});
+  const { selectedTemplate } = useBearStore.templateStore();
+  console.log({ selectedTemplate });
   const { setLoading } = useBearStore.appStore();
+  const { user: loggedInUser } = useBearStore.userStore();
+
   const [user, setUser]: [UserInfoType, Dispatch<any>] = React.useState({});
   const { token } = theme.useToken();
   const [current, setCurrent] = React.useState(1);
-
+  console.log({loggedInUser});
   useEffect(() => {
     getUserInfo();
-  }, [selectedTemplate])
-  
+  }, [selectedTemplate]);
 
   const onChange = (value: string) => {
     console.log("onChange:", value);
@@ -52,6 +57,16 @@ export const TemplateAdminPreview = (props: PreviewTemplateType) => {
             {...selectedTemplate}
             channel={selectedTemplate.channel}
           />
+        );
+      }
+      case 3: {
+        return (
+          <div style={{ margin: "2% 20%" }}>
+            <ReviewConversation
+              comments={selectedTemplate.comments}
+              loggedInUserId={loggedInUser.userId}
+            />
+          </div>
         );
       }
       default:

@@ -10,6 +10,7 @@ import {
   Badge,
   Button,
   Col,
+  Collapse,
   Form,
   Input,
   MenuProps,
@@ -37,7 +38,7 @@ import {
   TEMPLATE_BUTTONS,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType, TemplateType } from "../../types";
+import { ActionType, TemplateAdminType, TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
@@ -68,6 +69,8 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTable } from "../../components/dataTable";
 import { searchGrid } from "../../utils/searchGrid.utils";
+import { ReviewConversation } from "../../components/ReviewConversation";
+const { Panel } = Collapse;
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
@@ -85,6 +88,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const { setLoading, screen } = useBearStore.appStore();
+  const { user } = useBearStore.userStore();
   const {
     setTemplates,
     action,
@@ -98,9 +102,14 @@ export const TemplateManagement = (): React.ReactElement => {
 
   let filteredGrid: any[] = [];
   const [searchValue, setSearchValue] = React.useState("");
+  const [appealComments, setAppealComments] = React.useState("");
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
   const [isDeleteConfirmation, setIsDeleteConfirmation]: [
+    boolean,
+    Dispatch<any>
+  ] = React.useState(false);
+  const [isAppealActionDialogOpen, setIsAppealActionDialogOpen]: [
     boolean,
     Dispatch<any>
   ] = React.useState(false);
@@ -238,6 +247,7 @@ export const TemplateManagement = (): React.ReactElement => {
   };
 
   const onCancel = () => {
+    setIsAppealActionDialogOpen(false);
     setMessageError("");
     setIsError(false);
     stopSpeech();
@@ -391,9 +401,27 @@ export const TemplateManagement = (): React.ReactElement => {
     }
   };
 
+  const reAppealActionCall = (payload: TemplateAdminType): any => {
+    setLoading(true);
+    API.templateManagement
+      .reAppealTemplate(payload)
+      .then((response) => {
+        setLoading(false);
+        setIsAppealActionDialogOpen(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "adminTemplateAction", error });
+      });
+  };
+
   const onDeleteConfirm = () => {
     const { id } = selectedTemplate;
     deleteTemplate(id as string);
+  };
+
+  const onAppealAction = () => {
+    reAppealActionCall({ comment: appealComments, id: selectedTemplate.id });
   };
 
   const handleFormChange = (key: string, value: any) => {
@@ -566,6 +594,37 @@ export const TemplateManagement = (): React.ReactElement => {
   return (
     <div className="template-management__container">
       <Modal
+        title={<>Re - Appeal template ?</>}
+        open={!!isAppealActionDialogOpen}
+        onOk={onAppealAction}
+        onCancel={() => setIsAppealActionDialogOpen(false)}
+        okText="Yes"
+        cancelText="No"
+        okType={"primary"}
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(token) as any}
+      >
+        <Space direction="vertical" size="small" style={{ width: "100%" }}>
+          <Collapse>
+            <Panel header={`Conversation History`} key="1">
+              <ReviewConversation comments={selectedTemplate.comments} loggedInUserId={user.userId}/>
+            </Panel>
+          </Collapse>
+          <TextArea
+            showCount
+            maxLength={150}
+            value={appealComments}
+            status={!appealComments ? "error" : ""}
+            onChange={(e) => {
+              setAppealComments(e.target.value);
+            }}
+            placeholder="Comments"
+            style={{ marginBottom: "10px" }}
+          />
+        </Space>
+      </Modal>
+
+      <Modal
         title={<Title level={5}>Delete Confirmation</Title>}
         open={isDeleteConfirmation}
         onOk={onDeleteConfirm}
@@ -642,17 +701,31 @@ export const TemplateManagement = (): React.ReactElement => {
                 <div style={{ float: "right" }}>
                   {selectedTemplate.approvalStatus !==
                     EVENT_STATUS.APPROVED && (
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        setSearchParams({
-                          id: selectedTemplate.id as string,
-                          action: PAGE_ACTION.EDIT,
-                        });
-                      }}
-                    >
-                      Edit
-                    </Button>
+                    <>
+                      {selectedTemplate.approvalStatus ===
+                        EVENT_STATUS.REJECTED && (
+                        <Button
+                          type="dashed"
+                          onClick={() => {
+                            setIsAppealActionDialogOpen(true);
+                          }}
+                        >
+                          Re-Appeal
+                        </Button>
+                      )}
+                      <Button
+                        type="primary"
+                        style={{ marginLeft: ".5rem" }}
+                        onClick={() => {
+                          setSearchParams({
+                            id: selectedTemplate.id as string,
+                            action: PAGE_ACTION.EDIT,
+                          });
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </>
                   )}
                   <Button
                     danger

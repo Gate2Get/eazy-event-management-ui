@@ -102,6 +102,7 @@ export const contactManagementEndpoint = {
 
 export const templateManagementEndpoint = {
   createTemplate: "/api/v1/app/message/template",
+  reAppealTemplate: "/api/v1/app/message/template/re-appeal",
   getTemplate: "/api/v1/app/message/template",
   getTemplateById: "/api/v1/app/message/template/",
   updateTemplate: "/api/v1/app/message/template",

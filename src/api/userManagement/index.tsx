@@ -1,5 +1,5 @@
 import { instance, userManagementEndpoint } from "../../configs/axios.config";
-import { UserInfoType } from "../../types";
+import { DateFilterType, UserInfoType } from "../../types";
 
 export const userManagementAPI = {
   requestOtp: async (): Promise<any> => {
@@ -113,9 +113,11 @@ export const userManagementAPI = {
       });
   },
 
-  getWalletTransaction: async () => {
+  getWalletTransaction: async (filter: DateFilterType) => {
     return await instance
-      .get(userManagementEndpoint.getWalletTransaction)
+      .get(userManagementEndpoint.getWalletTransaction, {
+        params: filter,
+      })
       .then((response) => {
         const transactions = response.data.result;
         return transactions;

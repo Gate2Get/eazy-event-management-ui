@@ -363,6 +363,7 @@ export const EventManagement = (props: EventManagementType) => {
                     <Panel
                       header={`${notification.name || "New"}`}
                       key="1"
+                      collapsible="icon"
                       extra={
                         <>
                           <Popover
@@ -416,6 +417,17 @@ export const EventManagement = (props: EventManagementType) => {
                               }}
                             />
                           )}
+                          <Button
+                            icon={<OpenInNewIcon fontSize="inherit" />}
+                            type="link"
+                            onClick={() => {
+                              setNotificationAction("VIEW");
+                              setSelectedNotification(notification);
+                            }}
+                            // className="app-link"
+                          >
+                            {/* View notification */}
+                          </Button>
                         </>
                       }
                     >

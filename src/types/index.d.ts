@@ -340,3 +340,8 @@ export type ContactUsType = {
   notes: string;
   isActive?: boolean;
 };
+
+export type DateFilterType = {
+  month: string;
+  year: number;
+};

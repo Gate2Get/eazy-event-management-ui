@@ -378,3 +378,18 @@ export const COMPONENT_TYPE = {
   RADIO_GROUP: "RADIO_GROUP",
   SWITCH: "SWITCH",
 };
+
+export const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];

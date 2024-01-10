@@ -8,7 +8,7 @@ type WalletPaymentType = {
   handleCancel: () => void;
 };
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 export const WalletPayment = (props: WalletPaymentType) => {
   const { isEdit, handleCancel } = props;
@@ -35,17 +35,23 @@ export const WalletPayment = (props: WalletPaymentType) => {
       });
   };
 
+  const handleClose = () => {
+    setUrl("");
+    setAmount(0);
+    handleCancel();
+  };
+
   return (
     <div>
       <Modal
         open={isEdit}
         title="Add Credit"
-        onCancel={handleCancel}
+        onCancel={handleClose}
         footer={null}
       >
         <Space direction="vertical" style={{ width: "100%" }}>
           <Alert
-            message="Scan the below code to make the payment. After completing the payment, it will take one hour for the funds to be reflected in the wallet."
+            message="Scan the below code or click link to make the payment. After completing the payment, it will take one hour for the funds to be reflected in the wallet."
             type="info"
           />
           {url && (
@@ -57,8 +63,9 @@ export const WalletPayment = (props: WalletPaymentType) => {
             </div>
           )}
           {url ? (
-            <Text italic style={{ position: "relative", left: "25%" }}>
-              Scan the above code and pay ₹ {amount}
+            <Text italic style={{ position: "relative", left: "20%" }}>
+              Scan the above code or <Link href={url}>Click here</Link> and pay
+              ₹ {amount}
             </Text>
           ) : (
             <Input

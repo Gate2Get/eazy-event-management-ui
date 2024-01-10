@@ -129,6 +129,31 @@ export const AddCreditWallet = (props: AddCreditWalletType) => {
               options={paymentTypes}
             />
           </Form.Item>
+          <Form.Item
+            label="Transaction Id"
+            name="transactionId"
+            rules={[
+              {
+                required: true,
+                message: "Please input Transaction Id!",
+              },
+            ]}
+          >
+            <Input type="text" placeholder="Enter Transaction Id" />
+          </Form.Item>
+
+          <Form.Item
+            label="Notes"
+            name="notes"
+            rules={[
+              {
+                required: true,
+                message: "Please input notes!",
+              },
+            ]}
+          >
+            <Input type="text" placeholder="Enter notes" />
+          </Form.Item>
 
           <Form.Item>
             <div className="submit-button">

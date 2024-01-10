@@ -1,26 +1,43 @@
 import React from "react";
-import { Alert, Button, Col, List, Row, Typography } from "antd";
-import { WalletType } from "../../types";
+import { Alert, Button, Col, List, Row, Select, Space, Typography } from "antd";
+import { DateFilterType, WalletType } from "../../types";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import dayjs from "dayjs";
-import { DATE_TIME_FORMAT } from "../../constants";
+import { DATE_TIME_FORMAT, MONTHS } from "../../constants";
 import WalletImg from "../../assets/svg/Wallet-bro.svg";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { WalletPayment } from "../../components/walletPayment";
+import { generateYearArray } from "../../utils/common.utils";
 
 const { Text } = Typography;
+
+const yearList = generateYearArray(5).map((item) => ({
+  label: item,
+  value: item,
+}));
+const monthList = MONTHS.map((item, index) => ({
+  label: item,
+  value: index + 1,
+}));
 
 export const Wallet = () => {
   const { setLoading } = useBearStore.appStore();
   const { user, setUser, setWalletTransaction, walletTransaction } =
     useBearStore.userStore();
   const [isAddCredit, setIsAddCredit] = React.useState(false);
+  const [filter, setFilter] = React.useState<DateFilterType>({
+    month: MONTHS[new Date().getMonth()],
+    year: new Date().getFullYear(),
+  });
 
   React.useEffect(() => {
     getUserInfo();
-    getWalletTransaction();
   }, []);
+
+  React.useEffect(() => {
+    getWalletTransaction();
+  }, [filter]);
 
   const getUserInfo = () => {
     setLoading(true);
@@ -39,7 +56,7 @@ export const Wallet = () => {
   const getWalletTransaction = () => {
     setLoading(true);
     API.userManagement
-      .getWalletTransaction()
+      .getWalletTransaction(filter)
       .then((walletTransaction: WalletType[]) => {
         setLoading(false);
         setWalletTransaction(walletTransaction);
@@ -78,6 +95,7 @@ export const Wallet = () => {
         isEdit={isAddCredit}
         handleCancel={() => setIsAddCredit(false)}
       />
+
       {user.walletIsTrial && (
         <Alert
           message={
@@ -110,7 +128,26 @@ export const Wallet = () => {
           </Button>
         </Col>
       </Row>
-
+      <Row style={{ marginBottom: "8px" }}>
+        <Col span={24}>
+          <Space style={{ float: "right" }}>
+            <Select
+              onChange={(year) => {
+                setFilter({ ...filter, year });
+              }}
+              value={filter.year}
+              options={yearList}
+            />
+            <Select
+              onChange={(month) => {
+                setFilter({ ...filter, month });
+              }}
+              value={filter.month}
+              options={monthList}
+            />
+          </Space>
+        </Col>
+      </Row>
       <List
         itemLayout="horizontal"
         dataSource={walletTransaction}

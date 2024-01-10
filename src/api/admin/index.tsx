@@ -1,6 +1,7 @@
 import { adminEndpoint, instance } from "../../configs/axios.config";
 import {
   ContactListType,
+  DateFilterType,
   EventFilterType,
   TemplateAdminType,
   TemplateType,
@@ -94,14 +95,14 @@ export const adminAPI = {
   },
 
   getWalletTransaction: async (
-    month: string,
+    filter: DateFilterType,
     offset: number,
     limit: number
   ): Promise<WalletType[]> => {
     return await instance
       .get(adminEndpoint.getWalletTransaction, {
         params: {
-          month,
+          ...filter,
           offset,
           limit,
         },

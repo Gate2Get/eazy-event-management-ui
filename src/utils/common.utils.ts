@@ -142,3 +142,13 @@ export const handleNumberParser = (value: string) => {
   // If the input is an empty string, set the value to null
   return value === "" ? null : value;
 };
+
+export const generateYearArray = (count: number) => {
+  const currentYear = new Date().getFullYear();
+  const lastTenYears = Array.from(
+    { length: count },
+    (_, index) => currentYear - index
+  );
+
+  return lastTenYears;
+};

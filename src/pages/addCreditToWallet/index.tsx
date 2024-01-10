@@ -1,13 +1,29 @@
 import React from "react";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Col, DatePicker, Row, Select, Space } from "antd";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { DataTable } from "../../components/dataTable";
 import { walletTransactionColumns } from "./config";
-import { DebounceFnType, UserInfoType, WalletType } from "../../types";
+import {
+  DateFilterType,
+  DebounceFnType,
+  UserInfoType,
+  WalletType,
+} from "../../types";
 import { debounce } from "lodash";
 import { API } from "../../api";
 import { AddCreditWallet } from "../../components/addCreditWallet";
 import { useBearStore } from "../../store";
+import { generateYearArray } from "../../utils/common.utils";
+import { MONTHS } from "../../constants";
+
+const yearList = generateYearArray(5).map((item) => ({
+  label: item,
+  value: item,
+}));
+const monthList = MONTHS.map((item, index) => ({
+  label: item,
+  value: index + 1,
+}));
 
 export const AddCreditToWallet = () => {
   const [walletTransaction, setWalletTransaction] = React.useState<
@@ -21,6 +37,10 @@ export const AddCreditToWallet = () => {
   const [isUserFetching, setIsUserFetching] = React.useState(false);
   const [isAddCredit, setIsAddCredit] = React.useState(false);
   const { setLoading } = useBearStore.appStore();
+  const [filter, setFilter] = React.useState<DateFilterType>({
+    month: MONTHS[new Date().getMonth()],
+    year: new Date().getFullYear(),
+  });
 
   React.useEffect(() => {
     const search = debounce(getAllUsers, 1000);
@@ -37,7 +57,7 @@ export const AddCreditToWallet = () => {
     if (!isAddCredit) {
       getWalletTransaction();
     }
-  }, [isAddCredit]);
+  }, [isAddCredit, filter]);
 
   const getAllUsers = (search: string): any => {
     setIsUserFetching(true);
@@ -56,14 +76,14 @@ export const AddCreditToWallet = () => {
   const getWalletTransaction = (): any => {
     setLoading(true);
     API.adminAPI
-      .getWalletTransaction("", 0, 100)
+      .getWalletTransaction(filter, 0, 100)
       .then((transaction) => {
         setWalletTransaction(transaction);
         setLoading(false);
       })
       .catch((error: Error) => {
         setLoading(false);
-        console.log({ location: "getAllUsers", error });
+        console.log({ location: "getWalletTransaction", error });
       });
   };
 
@@ -93,7 +113,7 @@ export const AddCreditToWallet = () => {
           setIsAddCredit(false);
         }}
       />
-      <Space direction="vertical">
+      <Space direction="vertical" style={{ width: "100%" }}>
         <Row>
           <Col span={24}>
             <Button
@@ -108,11 +128,31 @@ export const AddCreditToWallet = () => {
             </Button>
           </Col>
         </Row>
+        <div>
+          <Space style={{ float: "right" }}>
+            <Select
+              onChange={(year) => {
+                setFilter({ ...filter, year });
+              }}
+              value={filter.year}
+              options={yearList}
+            />
+            <Select
+              onChange={(month) => {
+                setFilter({ ...filter, month });
+              }}
+              value={filter.month}
+              options={monthList}
+            />
+          </Space>
+        </div>
+      </Space>
+      <div style={{ width: "100%", paddingTop: "8px" }}>
         <DataTable
           columns={walletTransactionColumns}
           data={walletTransaction}
         />
-      </Space>
+      </div>
     </>
   );
 };

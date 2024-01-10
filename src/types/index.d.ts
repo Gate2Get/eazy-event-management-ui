@@ -88,6 +88,12 @@ export const enum APPROVAL_STATUS {
   PENDING_APPROVAL = "PENDING_APPROVAL",
   ON_HOLD = "ON_HOLD",
 }
+export type CommentsType = {
+  _id: string;
+  comment: string;
+  userId: string;
+  updatedAt: string;
+};
 
 export type TemplateType = {
   id: string;
@@ -100,7 +106,13 @@ export type TemplateType = {
   channel?: string;
   createdAt?: string;
   updatedAt?: string;
+  comments?: CommentsType[];
 };
+
+export type ReviewConversationType = {
+  comments?: CommentsType[];
+  loggedInUserId?: string;
+}
 
 type TemplateActionType = {
   speechStatus?: {
@@ -245,7 +257,7 @@ export type FeedbackType = {
 
 export type TemplateAdminType = {
   id: string;
-  approvalStatus: string;
+  approvalStatus?: string;
   comment: string;
 };
 

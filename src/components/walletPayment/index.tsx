@@ -59,6 +59,7 @@ export const WalletPayment = (props: WalletPaymentType) => {
           {url ? (
             <Text italic style={{ position: "relative", left: "25%" }}>
               Scan the above code and pay ₹ {amount}
+              <a href={url}>here</a>
             </Text>
           ) : (
             <Input

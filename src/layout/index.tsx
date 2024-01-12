@@ -34,7 +34,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   const { setUser, isAuthorized, user } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isVerificationOpen, setIsVerificationOpen] = React.useState(false);
 
   let sidebarWidth = width;
   if (screen === "MOBILE") {
@@ -93,7 +93,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   };
 
   const onCloseVerification = () => {
-    setIsOpen(false);
+    setIsVerificationOpen(false);
     getUserInfo();
   };
 
@@ -101,7 +101,10 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     if (!user.mobile) {
       return (
         <>
-          <Text className="link-text" onClick={() => setIsOpen(true)}>
+          <Text
+            className="link-text"
+            onClick={() => setIsVerificationOpen(true)}
+          >
             Click here
           </Text>
           <Text> to complete the account verification to unlock more.</Text>
@@ -110,7 +113,10 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     } else if (!user.isMobileVerified) {
       return (
         <>
-          <Text className="link-text" onClick={() => setIsOpen(true)}>
+          <Text
+            className="link-text"
+            onClick={() => setIsVerificationOpen(true)}
+          >
             Click here
           </Text>
           <Text> to verify the mobile to start sending yourself and more.</Text>
@@ -122,8 +128,8 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   return (
     <Layout className="app__layout">
       <ProfileVerification
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isVerificationOpen}
+        setIsOpen={setIsVerificationOpen}
         userInfo={user}
         onCloseVerification={onCloseVerification}
       />

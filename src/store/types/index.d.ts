@@ -19,6 +19,8 @@ import { ContactDirectoryType, GenericJsonType } from "../../types";
 export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
+  isVerificationOpen: boolean;
+  setIsVerificationOpen: (isVerificationOpen: boolean) => void;
   setUser: (user: UserInfoType) => void;
   setIsAuthorized: (isAuthorized: boolean) => void;
   sessions: SessionType[];

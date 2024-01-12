@@ -35,8 +35,14 @@ const { Title, Text } = Typography;
 
 export const MyProfile = () => {
   const { setLoading, screen } = useBearStore.appStore();
-  const { setIsAuthorized, sessions, setSession, user, setUser } =
-    useBearStore.userStore();
+  const {
+    setIsAuthorized,
+    sessions,
+    setSession,
+    user,
+    setUser,
+    setIsVerificationOpen,
+  } = useBearStore.userStore();
   const [form] = Form.useForm();
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLogout, setIsLogout] = React.useState(false);
@@ -57,9 +63,10 @@ export const MyProfile = () => {
   }, []);
 
   React.useEffect(() => {
+    console.log({ user });
     form.setFieldsValue({
       ...user,
-      mobile: user?.mobile ? user?.mobile?.toString() : "",
+      mobile: user?.mobile ? user.mobile?.toString() : "",
       pinCode: user.pinCode || "",
     });
   }, [user]);
@@ -262,7 +269,7 @@ export const MyProfile = () => {
               ]}
             >
               <Input
-                type="number"
+                // type="number"
                 placeholder="Mobile number"
                 suffix={
                   user.isMobileVerified ? (
@@ -279,6 +286,20 @@ export const MyProfile = () => {
                 }
                 disabled={user.isMobileVerified}
               />
+              {user.isMobileVerified && (
+                <>
+                  <Text
+                    className="link-text"
+                    onClick={() => setIsVerificationOpen(true)}
+                  >
+                    Click here
+                  </Text>
+                  <Text>
+                    {" "}
+                    to verify the mobile to start sending yourself and more.
+                  </Text>
+                </>
+              )}
             </Form.Item>
             <Form.Item
               label="First Name"

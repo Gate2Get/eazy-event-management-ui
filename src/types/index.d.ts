@@ -16,7 +16,7 @@ export type ContactListType = {
 
 export type GenericJsonType = Record<string, any>;
 
-export type ActionType = "VIEW" | "ADD" | "EDIT" | "DELETE" | "";
+export type ActionType = "VIEW" | "ADD" | "EDIT" | "DELETE" | "SEND" | "";
 
 export type ScreenType = "MOBILE" | "TABLET" | "DESKTOP" | "";
 
@@ -112,7 +112,7 @@ export type TemplateType = {
 export type ReviewConversationType = {
   comments?: CommentsType[];
   loggedInUserId?: string;
-}
+};
 
 type TemplateActionType = {
   speechStatus?: {
@@ -326,6 +326,7 @@ export type EventNotificationCardType = {
   onCancelEdit?: () => void;
   handleSubmit?: (values?: any) => void;
   viewNotification?: () => void;
+  action?: ActionType;
 } & EventNotificationType;
 
 export type VirtualLoadQueryType = {

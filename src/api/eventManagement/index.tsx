@@ -210,4 +210,17 @@ export const eventManagementAPI = {
         throw error;
       });
   },
+
+  sendNotificationToOrganiser: async (notificationId: string) => {
+    return await instance
+      .post(
+        `${eventManagementEndpoint.sendNotificationToOrganiser}/${notificationId}`
+      )
+      .then((response) => {
+        return response.data?.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

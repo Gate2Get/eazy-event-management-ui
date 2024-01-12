@@ -14,6 +14,9 @@ import {
   Typography,
   Switch,
   Tag,
+  theme,
+  Modal,
+  Alert,
 } from "antd";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import dayjs from "dayjs";
@@ -22,7 +25,14 @@ import {
   disabledDateTime,
   disabledRangeTime,
 } from "../../utils/datePicker.utils";
-import { COMPONENT_TYPE, EVENT_STATUS, ROUTES_URL } from "../../constants";
+import {
+  COMPONENT_TYPE,
+  EVENT_STATUS,
+  EVENT_STATUS_LABEL,
+  EVENT_STATUS_LABEL_COLOR,
+  PRICE_CONFIG,
+  ROUTES_URL,
+} from "../../constants";
 import {
   ActionType,
   EventManagementType,
@@ -43,6 +53,15 @@ import "./styles.scss";
 import { PreviewEventNotification } from "../previewEventNotification";
 import { PreviewEvent } from "../previewEvent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { CaretRightOutlined } from "@ant-design/icons";
+import SendIcon from "@mui/icons-material/Send";
+import {
+  modalClassNames,
+  modalStyles,
+  useModalStyle,
+} from "../../configs/antd.config";
+import { useTheme } from "antd-style";
+import { API } from "../../api";
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -57,6 +76,8 @@ const defaultEventNotification: EventNotificationType = {
 };
 
 export const EventManagement = (props: EventManagementType) => {
+  const { styles } = useModalStyle();
+  const tokenModal = useTheme();
   const {
     contactList,
     templates,
@@ -74,15 +95,15 @@ export const EventManagement = (props: EventManagementType) => {
     action,
   } = props;
 
-  const { width } = useWindowSize();
-  const { screen } = useBearStore.appStore();
+  const { screen, setLoading } = useBearStore.appStore();
   const { setIsEdit } = useBearStore.eventStore();
+  const { user } = useBearStore.userStore();
   const [selectedNotification, setSelectedNotification] =
     React.useState<EventNotificationType>(defaultEventNotification);
   const [isPreviewEvent, setPreviewEvent] = React.useState(false);
   const [notificationAction, setNotificationAction] =
     React.useState<ActionType>("");
-
+  const { token } = theme.useToken();
   const invitationAttachment = Form.useWatch("invitationAttachment", {
     form,
     preserve: true,
@@ -177,6 +198,21 @@ export const EventManagement = (props: EventManagementType) => {
     }
   };
 
+  const sendNotificationToOrganiser = (filters = {}): any => {
+    setLoading(true);
+    API.eventManagement
+      .sendNotificationToOrganiser(selectedNotification.id as string)
+      .then((status) => {
+        setSelectedNotification(defaultEventNotification);
+        setNotificationAction("");
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getContactDirectory", error });
+      });
+  };
+
   const handleAddNotification = () => {
     const id = uuidV4();
 
@@ -235,8 +271,67 @@ export const EventManagement = (props: EventManagementType) => {
     setNotificationAction("");
   };
 
+  const renderNotificationStatus = (notification: EventNotificationType) => {
+    return (
+      <Tag
+        color={
+          EVENT_STATUS_LABEL_COLOR[
+            EVENT_STATUS_LABEL[notification?.status as string]
+          ]
+        }
+      >
+        {EVENT_STATUS_LABEL[notification?.status as string]}
+      </Tag>
+    );
+  };
+
+  const panelStyle: React.CSSProperties = {
+    marginBottom: 8,
+    background: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    border: "none",
+  };
+
   return (
     <div className="event-creation__container">
+      <Modal
+        open={notificationAction === "SEND"}
+        title={"Send Notification to me"}
+        okText={
+          (user?.walletBalance as number) >=
+          PRICE_CONFIG[selectedNotification.channel as string] ? (
+            "Send"
+          ) : (
+            <></>
+          )
+        }
+        cancelText="Cancel"
+        onOk={sendNotificationToOrganiser}
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(tokenModal) as any}
+        onCancel={() => {
+          setNotificationAction("");
+        }}
+      >
+        <Alert
+          message={
+            (user?.walletBalance as number) >=
+            PRICE_CONFIG[selectedNotification.channel as string]
+              ? `You will be charged ${
+                  PRICE_CONFIG[selectedNotification.channel as string]
+                } credit for this notification`
+              : `You don't have enough credit to send this notification. Credit required: ${
+                  PRICE_CONFIG[selectedNotification.channel as string]
+                }`
+          }
+          type={
+            (user?.walletBalance as number) >=
+            PRICE_CONFIG[selectedNotification.channel as string]
+              ? "info"
+              : "error"
+          }
+        />
+      </Modal>
       <EditEventNotification
         {...selectedNotification}
         contactList={contactList}
@@ -250,6 +345,7 @@ export const EventManagement = (props: EventManagementType) => {
         getTemplates={getTemplates}
         onCancelEdit={onCancelEdit}
         handleSubmit={handleSubmitNotification}
+        action={notificationAction}
       />
       <PreviewEventNotification
         previewOpen={notificationAction === "VIEW"}
@@ -341,16 +437,20 @@ export const EventManagement = (props: EventManagementType) => {
               label="Invitation Attachment"
               name="invitationAttachment"
             >
-              <AttachmentDragger
-                buttonText="Upload Attachment"
-                isPreview
-                disabled={action === "VIEW"}
-                otherProps={{
-                  fileList: invitationAttachment,
-                }}
-                accept="image/*,application/pdf"
-                onAttach={(e) => handleFileUpload?.(e)}
-              />
+              {action === "VIEW" && !invitationAttachment?.length ? (
+                "NA"
+              ) : (
+                <AttachmentDragger
+                  buttonText="Upload Attachment"
+                  isPreview
+                  disabled={action === "VIEW"}
+                  otherProps={{
+                    fileList: invitationAttachment,
+                  }}
+                  accept="image/*,application/pdf"
+                  onAttach={(e) => handleFileUpload?.(e)}
+                />
+              )}
             </Form.Item>
             <Form.Item label="Notification" name="notification">
               {notifications?.map((notification: EventNotificationType) => (
@@ -359,76 +459,96 @@ export const EventManagement = (props: EventManagementType) => {
                   direction="vertical"
                   style={{ width: "100%", marginBottom: "8px" }}
                 >
-                  <Collapse>
+                  <Collapse
+                    style={panelStyle}
+                    expandIcon={({ isActive }) => (
+                      <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                    )}
+                  >
                     <Panel
                       header={`${notification.name || "New"}`}
                       key="1"
                       collapsible="icon"
                       extra={
-                        <>
-                          <Popover
-                            content={
-                              <>
-                                <Button type="link" onClick={handleDeleteEvent}>
-                                  Yes
-                                </Button>{" "}
-                                <Button
-                                  type="text"
-                                  onClick={() => {
-                                    setNotificationAction("");
-                                  }}
-                                >
-                                  No
-                                </Button>
-                              </>
-                            }
-                            title="Delete Notification"
-                            trigger="click"
-                            open={
-                              notificationAction === "DELETE" &&
-                              notification.id === selectedNotification.id
-                            }
-                            onOpenChange={() => {
-                              setSelectedNotification({
-                                ...notification,
-                                action: "DELETE",
-                              });
-                              setNotificationAction("DELETE");
-                            }}
-                          >
-                            {notification.isDeleteAllowed && (
-                              <DeleteOutlineOutlinedIcon
-                                fontSize="small"
-                                onClick={(event) => event.stopPropagation()}
-                              />
-                            )}
-                          </Popover>
-                          {notification.isEditAllowed && (
-                            <EditNoteIcon
-                              fontSize="small"
+                        <Row>
+                          <Col flex={12}>
+                            {renderNotificationStatus(notification)}
+                          </Col>
+                          <Col flex={12}>
+                            <SendIcon
+                              fontSize="inherit"
+                              className="cursor-pointer margin-right-8"
                               onClick={(event) => {
-                                // If you don't want click extra trigger collapse, you can prevent this:
-                                setSelectedNotification({
-                                  ...notification,
-                                  action: "EDIT",
-                                });
-                                setNotificationAction("EDIT");
-                                event.stopPropagation();
+                                setSelectedNotification(notification);
+                                setNotificationAction("SEND");
                               }}
                             />
-                          )}
-                          <Button
-                            icon={<OpenInNewIcon fontSize="inherit" />}
-                            type="link"
-                            onClick={() => {
-                              setNotificationAction("VIEW");
-                              setSelectedNotification(notification);
-                            }}
-                            // className="app-link"
-                          >
-                            {/* View notification */}
-                          </Button>
-                        </>
+                            <Popover
+                              content={
+                                <>
+                                  <Button
+                                    type="link"
+                                    onClick={handleDeleteEvent}
+                                  >
+                                    Yes
+                                  </Button>{" "}
+                                  <Button
+                                    type="text"
+                                    onClick={() => {
+                                      setNotificationAction("");
+                                    }}
+                                  >
+                                    No
+                                  </Button>
+                                </>
+                              }
+                              title="Delete Notification"
+                              trigger="click"
+                              open={
+                                notificationAction === "DELETE" &&
+                                notification.id === selectedNotification.id
+                              }
+                              onOpenChange={() => {
+                                setSelectedNotification({
+                                  ...notification,
+                                  action: "DELETE",
+                                });
+                                setNotificationAction("DELETE");
+                              }}
+                            >
+                              {notification.isDeleteAllowed && (
+                                <DeleteOutlineOutlinedIcon
+                                  fontSize="inherit"
+                                  className="cursor-pointer margin-right-8"
+                                  onClick={(event) => event.stopPropagation()}
+                                />
+                              )}
+                            </Popover>
+                            {notification.isEditAllowed && (
+                              <EditNoteIcon
+                                fontSize="inherit"
+                                className="cursor-pointer margin-right-8"
+                                onClick={(event) => {
+                                  // If you don't want click extra trigger collapse, you can prevent this:
+                                  setSelectedNotification({
+                                    ...notification,
+                                    action: "EDIT",
+                                  });
+                                  setNotificationAction("EDIT");
+                                  event.stopPropagation();
+                                }}
+                              />
+                            )}
+                            <OpenInNewIcon
+                              fontSize="inherit"
+                              className="cursor-pointer margin-right-8"
+                              onClick={() => {
+                                setNotificationAction("VIEW");
+                                setSelectedNotification(notification);
+                              }}
+                            />
+                          </Col>
+                        </Row>
                       }
                     >
                       <ViewEventNotification

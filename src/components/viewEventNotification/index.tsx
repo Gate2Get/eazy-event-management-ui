@@ -39,7 +39,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         <Paragraph>
           <Space wrap>
             {contacts?.map((contact) => (
-              <Tag color="success">{contact.name}</Tag>
+              <Tag bordered={false}>{contact.name}</Tag>
             ))}
           </Space>
         </Paragraph>
@@ -66,7 +66,9 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
           : <Text style={{ color: "rgb(102, 112, 133)" }}>{price}</Text>
         </Paragraph>
 
-        {status === EVENT_STATUS.NOT_STARTED &&
+        {[EVENT_STATUS.NOT_STARTED, EVENT_STATUS.NO_CREDITS].includes(
+          status as string
+        ) &&
           price > (user?.walletBalance as number) && (
             <Alert
               message={
@@ -95,6 +97,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
           type="link"
           onClick={viewNotification}
           className="app-link"
+          style={{ padding: "0px" }}
         >
           View notification
         </Button>

@@ -56,6 +56,10 @@
   padding-right: 8px;
 }
 
+.margin-right-8 {
+  margin-right: 8px;
+}
+
 .width-100 {
   width: 100%;
 }
@@ -78,6 +82,10 @@
 
 .dark-color {
   color: rgb(18, 183, 106);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .ee__avatar-color {
@@ -444,4 +452,8 @@ form {
 
 .ant-switch-checked {
   background: rgb(18, 183, 106) !important;
+}
+
+.ant-radio-button-wrapper-checked::before {
+  background-color: rgb(18, 183, 106) !important;
 }

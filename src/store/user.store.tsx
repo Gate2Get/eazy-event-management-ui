@@ -6,6 +6,10 @@ export const createUserStore = create<UserType>((set) => ({
   user: {},
   isAuthorized: null,
   walletTransaction: [],
+  isVerificationOpen: false,
+  setIsVerificationOpen: (isVerificationOpen) => {
+    set((state) => ({ isVerificationOpen }));
+  },
   setUser: (user) => {
     set((state) => ({ user }));
   },

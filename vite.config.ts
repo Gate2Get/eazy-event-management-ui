@@ -17,7 +17,7 @@ if (!process.env.REACT_APP_ENV) {
       changeOrigin: true,
       secure: false,
       ws: true,
-      rewrite: (path) => path.replace("/api/v1/app", "/api/v1"),
+      rewrite: (path) => path.replace("/api/v1/service", "/api/v1"),
     },
     "/api/v1/pincode": {
       target: "https://api.data.gov.in",

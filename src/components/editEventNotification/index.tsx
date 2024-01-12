@@ -45,6 +45,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
     templates,
     isContactFetching,
     isTemplateFetching,
+    action,
   } = props;
 
   const { screen } = useBearStore.appStore();
@@ -75,7 +76,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
       contactDirectory,
       name,
       messageTemplate,
-      triggerDateTime: dayjs(triggerDateTime),
+      triggerDateTime: triggerDateTime ? dayjs(triggerDateTime) : undefined,
       channel,
     });
   }, [contactDirectory, name, messageTemplate, triggerDateTime, channel]);
@@ -227,8 +228,8 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
           >
             {screen !== "MOBILE" ? (
               <DatePicker
-                // format="YYYY-MM-DD HH:mm"
-                // disabledDate={disabledDate}
+                format="YYYY-MM-DD HH:mm"
+                disabledDate={disabledDate}
                 // disabledTime={disabledDateTime}
                 showTime
                 style={{ width: "100%" }}
@@ -247,7 +248,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
                 Cancel
               </Button>
               <Button type="primary" htmlType="submit">
-                Create
+                {action === "EDIT" ? "Update" : "Create"}
               </Button>
             </div>
           </Form.Item>

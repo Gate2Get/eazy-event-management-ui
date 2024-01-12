@@ -141,6 +141,7 @@ export const eventManagementEndpoint = {
   deleteEventAlbum: "/api/v1/app/event/media",
   getEventAlbum: "/api/v1/app/event/media",
   getEventInvitationAlbum: "/api/v1/app/event/media",
+  sendNotificationToOrganiser: "/api/v1/service/user/send-notification-me",
 };
 
 export const dashboardEndpoint = {

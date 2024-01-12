@@ -106,6 +106,7 @@ export const EVENT_STATUS_LABEL: Record<string, string> = {
   ON_HOLD: "On-hold/More info needed",
   COMPLETED: "Completed",
   NOT_STARTED: "Not started",
+  NO_CREDITS: "No Credits",
 };
 
 export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
@@ -115,6 +116,7 @@ export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
   [EVENT_STATUS_LABEL.REJECTED]: "error",
   [EVENT_STATUS_LABEL.APPROVED]: "success",
   [EVENT_STATUS_LABEL.COMPLETED]: "success",
+  [EVENT_STATUS_LABEL.NO_CREDITS]: "error",
 };
 
 export const TEMPLATE_STATUS_LABEL: Record<string, string> = {
@@ -393,3 +395,8 @@ export const MONTHS = [
   "November",
   "December",
 ];
+
+export const PRICE_CONFIG: Record<string, number> = {
+  VOICE_CALL: 1,
+  SMS: 0.5,
+};

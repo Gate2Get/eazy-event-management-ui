@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useBearStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import SendIcon from "@mui/icons-material/Send";
 
 const { Paragraph, Link, Text } = Typography;
 
@@ -20,6 +21,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
     price = 0,
     status,
     viewNotification,
+    sendNotification,
   } = props;
 
   const navigate = useNavigate();
@@ -61,7 +63,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
           {[EVENT_STATUS.NOT_STARTED, EVENT_STATUS.NO_CREDITS].includes(
             status as string
           )
-            ? "Estimated credits required to send notification"
+            ? "Estimated credits to send notification"
             : "Credit utilized on this notification"}{" "}
           : <Text style={{ color: "rgb(102, 112, 133)" }}>{price}</Text>
         </Paragraph>
@@ -91,7 +93,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
             />
           )}
       </div>
-      <div>
+      <Space size="large">
         <Button
           icon={<OpenInNewIcon fontSize="inherit" />}
           type="link"
@@ -101,7 +103,16 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         >
           View notification
         </Button>
-      </div>
+        <Button
+          icon={<SendIcon fontSize="inherit" />}
+          type="link"
+          onClick={sendNotification}
+          className="app-link"
+          style={{ padding: "0px" }}
+        >
+          Send to me
+        </Button>
+      </Space>
     </>
   );
 };

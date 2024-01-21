@@ -51,7 +51,7 @@ export const AudioRecorder = (props: AudioRecorderType) => {
       )}
       <Button
         type="primary"
-        icon={<CloudUploadIcon fontSize="small" />}
+        icon={<CloudUploadIcon fontSize="inherit" />}
         onClick={() => onUpload?.(blob)}
       >
         Upload

@@ -70,7 +70,7 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
             </Tag>
             <Title
               className="content-title"
-              level={screen === "MOBILE" ? 2 : 1}
+              level={screen === "MOBILE" ? 2 : 3}
             >
               {title}
             </Title>

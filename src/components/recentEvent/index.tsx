@@ -112,7 +112,7 @@ export const RecentEvent = (props: RecentEventType) => {
             }}
           />
         </Col>
-        <Col {...colOption(12)} style={{ alignSelf: 'center' }}>
+        <Col {...colOption(12)} style={{ alignSelf: "center" }}>
           <div className="event-details__container">
             <Row>
               <Col span={20}>
@@ -144,7 +144,7 @@ export const RecentEvent = (props: RecentEventType) => {
                 <Text type="secondary">Inprogress</Text>
               </Col>
               <Col span={4}>
-                <Text italic>{(progress || 0)  || "-"}</Text>
+                <Text italic>{progress || 0 || "-"}</Text>
               </Col>
             </Row>
             <Row>
@@ -232,7 +232,7 @@ export const RecentEvent = (props: RecentEventType) => {
       >
         {allEventNotifications.length ? (
           <Carousel
-          showIndicators={false}
+            showIndicators={false}
             value={allEventNotifications}
             numVisible={1}
             numScroll={allEventNotifications.length}
@@ -244,7 +244,7 @@ export const RecentEvent = (props: RecentEventType) => {
         ) : (
           <div style={{ textAlign: "center" }}>
             <img src={NotFound} alt="No recent event" />
-            <Paragraph>There are no recent event to show.</Paragraph>
+            <Paragraph>There are no recent notification to show.</Paragraph>
             <Button
               type="primary"
               onClick={() => {

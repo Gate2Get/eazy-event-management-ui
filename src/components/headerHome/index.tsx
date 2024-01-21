@@ -53,7 +53,7 @@ export const HeaderHome = (props: HeaderHomeType) => {
           width={30}
           style={{ position: "relative", top: "7px" }}
         />
-        Eazy Event
+        {"  "}Eazy Event
       </Text>
       {screen === "MOBILE" ? (
         <span>

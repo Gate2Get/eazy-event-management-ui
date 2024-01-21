@@ -11,7 +11,7 @@ import userIconAnimate from "../../assets/svg/user-icon-animate.svg";
 import "./styles.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
+import { EVENT_STATUS, ROUTES_URL } from "../../constants";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -102,19 +102,19 @@ export const Dashboard = () => {
   }));
 
   const renderStatistics = () => {
-    let total = 0;
-    Object.values(statistics).forEach((stats) => {
-      total += stats;
+    const statistic: Record<string, any> = {};
+
+    Object.keys(statistics)?.forEach((stats) => {
+      let total = 0;
+      const _stats: Record<string, number> = {};
+      statistics[stats]?.forEach((element: { _id: string; count: number }) => {
+        _stats[element._id] = element.count;
+        total += element.count;
+      });
+      statistic[stats] = { ..._stats, TOTAL: total };
     });
     return DASHBOARD_STATS.map((stats) => {
-      if (stats.key === "TOTAL") {
-        stats.stats = total;
-      } else if (stats.key === "INPROGRESS") {
-        stats.stats =
-          (statistics["IN_PROGRESS"] || 0) + (statistics["NOT_STARTED"] || 0);
-      } else {
-        stats.stats = statistics[stats.key] || 0;
-      }
+      stats.stats = statistic[stats.key];
       return stats;
     });
   };

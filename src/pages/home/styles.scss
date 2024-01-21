@@ -8,7 +8,7 @@
     }
 
     .sub-heading {
-      color: #1d2b36;
+      color: rgb(100, 110, 115);
       font-weight: 400;
     }
   }
@@ -25,7 +25,8 @@
     }
 
     .notes {
-      // color: #fff;
+      color: rgb(100, 110, 115);
+      font-size: 1rem;
     }
 
     .steps {
@@ -38,28 +39,6 @@
       // );
       // -webkit-background-clip: text;
       // -webkit-text-fill-color: transparent;
-    }
-
-    .tag-module {
-      color: #fff;
-      padding: 4px 16px !important;
-    }
-
-    .content-text {
-      // color: #f9fafa;
-      padding-bottom: 3rem;
-      font-weight: 400;
-      font-size: 1.25rem;
-      line-height: 1.875rem;
-      letter-spacing: -0.4px;
-    }
-
-    .content-title {
-      // color: #fff;
-      font-size: 2rem;
-      line-height: 2.5rem;
-      font-weight: 400;
-      letter-spacing: -0.8px;
     }
   }
 

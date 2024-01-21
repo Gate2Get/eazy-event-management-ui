@@ -54,7 +54,7 @@ import { PreviewEventNotification } from "../previewEventNotification";
 import { PreviewEvent } from "../previewEvent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { CaretRightOutlined } from "@ant-design/icons";
-import SendIcon from "@mui/icons-material/Send";
+
 import {
   modalClassNames,
   modalStyles,
@@ -62,6 +62,7 @@ import {
 } from "../../configs/antd.config";
 import { useTheme } from "antd-style";
 import { API } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -95,6 +96,7 @@ export const EventManagement = (props: EventManagementType) => {
     action,
   } = props;
 
+  const navigate = useNavigate();
   const { screen, setLoading } = useBearStore.appStore();
   const { setIsEdit } = useBearStore.eventStore();
   const { user } = useBearStore.userStore();
@@ -452,7 +454,30 @@ export const EventManagement = (props: EventManagementType) => {
                 />
               )}
             </Form.Item>
+
             <Form.Item label="Notification" name="notification">
+              {user.walletIsTrial && notifications?.length && (
+                <Alert
+                  style={{ padding: "8px", margin: "0px 0px 8px 0px" }}
+                  type="warning"
+                  message={
+                    <Text>
+                      <Text strong>Upgrade Alert: </Text> Your account is in
+                      trial mode. Please{" "}
+                      <Link
+                        className="app-link"
+                        onClick={() => {
+                          navigate(`${ROUTES_URL.EE}/${ROUTES_URL.WALLET}`);
+                        }}
+                      >
+                        click here
+                      </Link>{" "}
+                      add credits to your wallet to continue sending below
+                      notifications and unlock premium features.
+                    </Text>
+                  }
+                />
+              )}
               {notifications?.map((notification: EventNotificationType) => (
                 <Space
                   key={notification.id}
@@ -475,14 +500,6 @@ export const EventManagement = (props: EventManagementType) => {
                             {renderNotificationStatus(notification)}
                           </Col>
                           <Col flex={12}>
-                            <SendIcon
-                              fontSize="inherit"
-                              className="cursor-pointer margin-right-8"
-                              onClick={(event) => {
-                                setSelectedNotification(notification);
-                                setNotificationAction("SEND");
-                              }}
-                            />
                             <Popover
                               content={
                                 <>
@@ -518,7 +535,7 @@ export const EventManagement = (props: EventManagementType) => {
                             >
                               {notification.isDeleteAllowed && (
                                 <DeleteOutlineOutlinedIcon
-                                  fontSize="inherit"
+                                  fontSize="small"
                                   className="cursor-pointer margin-right-8"
                                   onClick={(event) => event.stopPropagation()}
                                 />
@@ -526,7 +543,7 @@ export const EventManagement = (props: EventManagementType) => {
                             </Popover>
                             {notification.isEditAllowed && (
                               <EditNoteIcon
-                                fontSize="inherit"
+                                fontSize="small"
                                 className="cursor-pointer margin-right-8"
                                 onClick={(event) => {
                                   // If you don't want click extra trigger collapse, you can prevent this:
@@ -540,7 +557,7 @@ export const EventManagement = (props: EventManagementType) => {
                               />
                             )}
                             <OpenInNewIcon
-                              fontSize="inherit"
+                              fontSize="small"
                               className="cursor-pointer margin-right-8"
                               onClick={() => {
                                 setNotificationAction("VIEW");
@@ -564,6 +581,10 @@ export const EventManagement = (props: EventManagementType) => {
                         viewNotification={() => {
                           setNotificationAction("VIEW");
                           setSelectedNotification(notification);
+                        }}
+                        sendNotification={() => {
+                          setSelectedNotification(notification);
+                          setNotificationAction("SEND");
                         }}
                       />
                     </Panel>

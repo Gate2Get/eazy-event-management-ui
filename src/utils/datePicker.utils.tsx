@@ -55,3 +55,31 @@ export const handleTimeChange = (
     : dayjs().format("YYYY-MM-DD");
   // return dayjs(`${datePart} ${time.format("HH:mm")}`);
 };
+
+export const dateUtctoIstyyyyMMddThhmm = (dateString: string) => {
+  const utcDate = new Date(dateString);
+
+  // Convert to local date and time strings
+  const localDateString = utcDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const localTimeString = utcDate.toLocaleTimeString("en-US", {
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  // Extract year, month, day, hours, and minutes
+  const [month, day, year] = localDateString.split("/");
+  const [hours, minutes] = localTimeString.split(":");
+
+  // Create the formatted date string
+  const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+    2,
+    "0"
+  )}T${hours}:${minutes}`;
+
+  return formattedDate;
+};

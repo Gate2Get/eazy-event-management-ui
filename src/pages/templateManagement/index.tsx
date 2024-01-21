@@ -230,9 +230,10 @@ export const TemplateManagement = (): React.ReactElement => {
       console.log({ blob });
       const _blob: any = blob;
       _blob.name = "Record.mp3";
+      _blob.filename = "Record.mp3";
       setLoading(true);
       API.commonAPI
-        .uploadFile(blob, "audio")
+        .uploadFile(blob, "record")
         .then((blobId: string) => {
           setLoading(false);
           handleOnChangeFieldVoice(id, blobId, "AUDIO");
@@ -408,6 +409,8 @@ export const TemplateManagement = (): React.ReactElement => {
       .then((response) => {
         setLoading(false);
         setIsAppealActionDialogOpen(false);
+        setAppealComments("");
+        getTemplatesById(selectedTemplate.id);
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -607,7 +610,10 @@ export const TemplateManagement = (): React.ReactElement => {
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Collapse>
             <Panel header={`Conversation History`} key="1">
-              <ReviewConversation comments={selectedTemplate.comments} loggedInUserId={user.userId}/>
+              <ReviewConversation
+                comments={selectedTemplate.comments}
+                loggedInUserId={user.userId}
+              />
             </Panel>
           </Collapse>
           <TextArea

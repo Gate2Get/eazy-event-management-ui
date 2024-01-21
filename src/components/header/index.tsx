@@ -22,12 +22,15 @@ type HeaderType = {
 export const Header = (props: HeaderType) => {
   const { setCollapsed, collapsed, currentPage } = props;
   const { user, setIsAuthorized } = useBearStore.userStore();
-  const { setLoading, setCurrentPage } = useBearStore.appStore();
+  const { setLoading, setCurrentPage, screen } = useBearStore.appStore();
   const [open, setOpen] = React.useState(false);
 
   const navigate = useNavigate();
 
   const hide = () => {
+    if (!collapsed && screen === "MOBILE") {
+      setCollapsed(true);
+    }
     setOpen(false);
   };
 
@@ -122,7 +125,8 @@ export const Header = (props: HeaderType) => {
                 <div style={{ fontSize: "12px" }}>
                   <span>
                     <AccountBalanceWalletIcon fontSize="inherit" />{" "}
-                    {user.walletBalance}
+                    {user.walletBalance}{" "}
+                    {user.walletIsTrial && <Text italic>(Trial)</Text>}
                   </span>
                 </div>
               </Text>

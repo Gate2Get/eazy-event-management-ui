@@ -11,13 +11,18 @@ import {
   Tag,
   Space,
   Modal,
+  Alert,
 } from "antd";
 import { EventNotificationCardType, EventNotificationType } from "../../types";
 import { CHANNEL_OPTIONS, EVENT_STATUS, ROUTES_URL } from "../../constants";
 import { NoData } from "../noData";
 import "./styles.scss";
 import { useBearStore } from "../../store";
-import { disabledDate, disabledDateTime } from "../../utils/datePicker.utils";
+import {
+  dateUtctoIstyyyyMMddThhmm,
+  disabledDate,
+  disabledDateTime,
+} from "../../utils/datePicker.utils";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import dayjs from "dayjs";
 
@@ -49,15 +54,9 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
   } = props;
 
   const { screen } = useBearStore.appStore();
+  const { user } = useBearStore.userStore();
   const { width } = useWindowSize();
   const selectedChannel = Form.useWatch("channel", { form, preserve: true });
-
-  // const template = templates.find(
-  //   (template) => template.id === messageTemplate
-  // );
-  // const contacts = contactList.filter((contact) =>
-  //   contactDirectory.includes(contact.id as string)
-  // );
 
   const onFinish = async (values: any) => {
     console.log({ values });
@@ -72,11 +71,16 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
       triggerDateTime: dayjs(triggerDateTime),
       channel,
     });
+
     form.setFieldsValue({
       contactDirectory,
       name,
       messageTemplate,
-      triggerDateTime: triggerDateTime ? dayjs(triggerDateTime) : undefined,
+      triggerDateTime: triggerDateTime
+        ? screen === "MOBILE"
+          ? dateUtctoIstyyyyMMddThhmm(triggerDateTime)
+          : dayjs(triggerDateTime)
+        : undefined,
       channel,
     });
   }, [contactDirectory, name, messageTemplate, triggerDateTime, channel]);
@@ -242,6 +246,19 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
             )}
           </Form.Item>
 
+          {user.walletIsTrial && (
+            <Alert
+              style={{ padding: "0px 8px" }}
+              type="warning"
+              message={
+                <Text>
+                  <Text strong>Upgrade Alert: </Text> Your account is in trial
+                  mode. Please add credits to your wallet to continue sending
+                  notifications and unlock premium features.
+                </Text>
+              }
+            />
+          )}
           <Form.Item>
             <div className="submit-button">
               <Button type="default" onClick={handleCancel}>

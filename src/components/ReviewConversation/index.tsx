@@ -3,17 +3,19 @@ import { Card, Typography } from "antd";
 import { ReviewConversationType } from "../../types";
 import { useBearStore } from "../../store";
 import "./styles.scss";
+import dayjs from "dayjs";
+import { DATE_TIME_FORMAT } from "../../constants";
 
 const { Paragraph } = Typography;
 
 export const ReviewConversation = (props: ReviewConversationType) => {
   const { screen } = useBearStore.appStore();
-  console.log({ props });
   const { comments, loggedInUserId } = props;
   let cardStyle = {};
   if (screen === "DESKTOP") {
     cardStyle = {
       textAlign: "left",
+      margin: "2% 20%",
     };
   }
 
@@ -34,7 +36,9 @@ export const ReviewConversation = (props: ReviewConversationType) => {
                 >
                   <div style={{ float: "right" }}>{conv.comment}</div>
                   <br />
-                  <div style={{ color: "grey" }}>{conv.updatedAt}</div>
+                  <div style={{ color: "grey" }}>
+                    {dayjs(conv.updatedAt).format(DATE_TIME_FORMAT)}
+                  </div>
                 </Card>
               </Paragraph>
             );

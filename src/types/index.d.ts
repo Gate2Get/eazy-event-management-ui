@@ -326,6 +326,7 @@ export type EventNotificationCardType = {
   onCancelEdit?: () => void;
   handleSubmit?: (values?: any) => void;
   viewNotification?: () => void;
+  sendNotification?: () => void;
   action?: ActionType;
 } & EventNotificationType;
 

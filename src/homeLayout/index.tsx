@@ -104,7 +104,7 @@ export const HomeLayout = (props: HomeLayoutType) => {
                     top: "5px",
                   }}
                 />
-                ©2023 Eazy Event
+                {"  "}©2023 Eazy Event
               </Paragraph>
             </Col>
             <Col {...colOption(12)}>

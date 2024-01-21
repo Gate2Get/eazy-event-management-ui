@@ -1,5 +1,10 @@
 import { commonEndpoint, instance } from "../../configs/axios.config";
-import { ContactUsType, FeedbackType, ReportBugsType, UserLocationType } from "../../types";
+import {
+  ContactUsType,
+  FeedbackType,
+  ReportBugsType,
+  UserLocationType,
+} from "../../types";
 
 export const commonAPI = {
   getAlerts: async (): Promise<any> => {

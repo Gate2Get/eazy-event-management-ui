@@ -36,7 +36,7 @@ export const TemplateAdminPreview = (props: PreviewTemplateType) => {
   const [user, setUser]: [UserInfoType, Dispatch<any>] = React.useState({});
   const { token } = theme.useToken();
   const [current, setCurrent] = React.useState(1);
-  console.log({loggedInUser});
+  console.log({ loggedInUser });
   useEffect(() => {
     getUserInfo();
   }, [selectedTemplate]);
@@ -61,7 +61,7 @@ export const TemplateAdminPreview = (props: PreviewTemplateType) => {
       }
       case 3: {
         return (
-          <div style={{ margin: "2% 20%" }}>
+          <div>
             <ReviewConversation
               comments={selectedTemplate.comments}
               loggedInUserId={loggedInUser.userId}

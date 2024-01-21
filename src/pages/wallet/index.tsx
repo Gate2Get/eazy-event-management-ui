@@ -71,21 +71,29 @@ export const Wallet = () => {
     <List.Item>
       <List.Item.Meta
         title={
-          <Text
-            strong
-            style={{
-              color:
-                item.type === "credit"
-                  ? "rgb(18, 183, 106)"
-                  : "rgb(240, 68, 56)",
-            }}
-          >
-            {item.type === "credit" ? `+${item.amount}` : `-${item.amount}`}
-          </Text>
+          <Row>
+            <Col flex={12}>
+              <Text
+                strong
+                style={{
+                  color:
+                    item.type === "credit"
+                      ? "rgb(18, 183, 106)"
+                      : "rgb(240, 68, 56)",
+                }}
+              >
+                {item.type === "credit" ? `+${item.amount}` : `-${item.amount}`}
+              </Text>
+            </Col>
+            <Col flex={12}>
+              <Text style={{ float: "right", fontWeight: 400 }}>
+                {dayjs(item.createdAt).format(DATE_TIME_FORMAT)}
+              </Text>
+            </Col>
+          </Row>
         }
         description={item.notes}
       />
-      <div>{dayjs(item.createdAt).format(DATE_TIME_FORMAT)}</div>
     </List.Item>
   );
 

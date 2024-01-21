@@ -18,7 +18,6 @@ import { HOME_STAT, ROUTES_URL } from "../../constants";
 import { AnimatedText } from "../../components/animatedText";
 import EmailCampaign from "../../assets/svg/email-campaign.svg";
 import MailBro from "../../assets/svg/mail-bro.svg";
-import { StatisticCard } from "../../components/StatisticCard";
 import { useSpring, animated } from "react-spring";
 import { useInView } from "react-intersection-observer";
 
@@ -57,7 +56,7 @@ export const Home = () => {
     <>
       <div style={{ minHeight: 380 }} className="body-content">
         <Title className="headline" level={screen === "MOBILE" ? 2 : 1}>
-          Delivering Joyful Event Notifications
+          Creating Joyful Events & Notifications
         </Title>
         <div>
           <img
@@ -69,7 +68,7 @@ export const Home = () => {
         <Button type="primary" onClick={verifyAuth}>
           Get Started
         </Button>
-        <Title level={screen === "MOBILE" ? 4 : 2} className="sub-heading">
+        <Title level={screen === "MOBILE" ? 4 : 3} className="sub-heading">
           Make every event memorable with our voice call, SMS notification
           service.
         </Title>
@@ -78,12 +77,18 @@ export const Home = () => {
         className="how-is-it-works"
         style={{ padding: screen === "MOBILE" ? "2rem 2rem" : "2rem 6rem" }}
       >
-        <Title className="notes" level={screen === "MOBILE" ? 3 : 1}>
-          Sending event notifications has never been easier!
-        </Title>
-        {/* <Title className="steps" level={screen === "MOBILE" ? 3 : 1}>
-          Just follow these simple steps to spread happiness.
-        </Title> */}
+        <Card style={{ textAlign: "center" }} hoverable>
+          <Title level={screen === "MOBILE" ? 3 : 2}>
+            Unleash the Power of Celebration
+          </Title>
+          <Paragraph className="notes">
+            Transform your vision into reality with our event creation tool.
+            From dreamy weddings to joyful birthdays, design unforgettable
+            moments effortlessly. Set dates, manage contacts, and craft stunning
+            albums—all in one place!
+          </Paragraph>
+        </Card>
+
         {howIsItWorksContent.map((content, index) => (
           <HomeHowIsItWorks
             {...content}

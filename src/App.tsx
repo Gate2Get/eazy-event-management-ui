@@ -32,7 +32,7 @@ function App(): React.ReactElement {
   }, []);
 
   return (
-    <div>
+    <div style={{ width }}>
       {contextHolder}
       <Helmet>
         <meta charSet="utf-8" />

@@ -202,7 +202,7 @@ export const Dashboard = () => {
         <Col {...colOption(24)}>
           <Row gutter={[16, 16]}>
             {renderStatistics().map((stats) => (
-              <Col flex={statColSpan} key={stats.title}>
+              <Col {...colOption(statColSpan)} key={stats.title}>
                 <StatisticCard {...stats} />
               </Col>
             ))}

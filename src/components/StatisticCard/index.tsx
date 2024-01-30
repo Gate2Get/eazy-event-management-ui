@@ -42,7 +42,7 @@ export const StatisticCard = (props: StatisticCardType) => {
         <Col span={4}>
           <div className="stat-icon">{icon}</div>
         </Col>
-        <Col>
+        <Col span={20}>
           <Paragraph className="stat-title">{title}</Paragraph>
           <Space className="stat-value">
             {Object.keys(stats || {})?.map((stat) => (

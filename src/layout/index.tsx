@@ -170,9 +170,6 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                   // marginLeft: collapsed ? 0 : sidebarWidth,
                 }}
               >
-                {!user.mobile || !user.isMobileVerified ? (
-                  <Alert message={renderAccountWarning()} type="warning" />
-                ) : null}
                 <div className="alert-container">
                   {alerts.length
                     ? alerts.map((alert) => (
@@ -192,6 +189,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                       ))
                     : null}
                 </div>
+                {!user.mobile || !user.isMobileVerified ? (
+                  <Alert message={renderAccountWarning()} type="warning" />
+                ) : null}
                 <div className="banner-text"></div>
 
                 <ServiceRoutes />

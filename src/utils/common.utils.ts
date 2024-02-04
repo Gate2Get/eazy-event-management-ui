@@ -152,3 +152,10 @@ export const generateYearArray = (count: number) => {
 
   return lastTenYears;
 };
+
+export function convertToTitleCase(inputString: string) {
+  // Convert the first character to uppercase and the rest to lowercase
+  return (
+    inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase()
+  );
+}

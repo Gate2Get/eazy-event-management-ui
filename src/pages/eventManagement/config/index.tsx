@@ -1,4 +1,4 @@
-import { Tag } from "antd";
+import { Select, Tag } from "antd";
 import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { DataTableColumnType } from "../../../components/dataTable/types";
@@ -8,8 +8,15 @@ import {
   DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
+  EVENT_TYPES,
 } from "../../../constants";
+import { convertToTitleCase } from "../../../utils/common.utils";
 import { EVENT_COLUMN_KEYS, EVENT_COLUMN_NAME } from "../constant";
+
+const eventTypeOptions = Object.keys(EVENT_TYPES).map((types) => ({
+  label: <Tag color="processing">{convertToTitleCase(types)}</Tag>,
+  value: types,
+}));
 
 export const eventColumns: DataTableColumnType[] = [
   {
@@ -41,6 +48,24 @@ export const eventColumns: DataTableColumnType[] = [
     title: EVENT_COLUMN_NAME.TYPE,
     sortable: true,
     filterable: true,
+    render: (record) => (
+      <div className="event-status">
+        <Tag bordered={false} color="processing">
+          {convertToTitleCase(record?.[EVENT_COLUMN_KEYS.TYPE])}
+        </Tag>
+      </div>
+    ),
+    filterElement: (options) => (
+      <Select
+        value={options.value}
+        options={eventTypeOptions}
+        onChange={(value) => options.filterApplyCallback(value)}
+        placeholder="Any"
+        className="p-column-filter"
+        style={{ width: "100%" }}
+        allowClear
+      />
+    ),
   },
   {
     key: EVENT_COLUMN_KEYS.STATUS,

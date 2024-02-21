@@ -174,6 +174,7 @@ export const Dashboard = () => {
               </Col>
               <Col span={6}>
                 <img
+                  loading="lazy"
                   src={userIconAnimate}
                   alt=""
                   width={"100%"}

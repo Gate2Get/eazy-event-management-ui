@@ -118,7 +118,7 @@ export const Wallet = () => {
       )}
       <Row>
         {/* <Col>
-          <img src={WalletImg} alt="" width="30%" />
+          <img loading="lazy" src={WalletImg} alt="" width="30%" />
         </Col> */}
         <Col span={12}>
           <h2>Wallet Balance: {user.walletBalance} (credits points)</h2>

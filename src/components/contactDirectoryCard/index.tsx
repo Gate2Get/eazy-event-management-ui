@@ -27,7 +27,7 @@ export const ContactDirectoryCard = (props: ContactCardType) => {
   // - ${ cardContact.name?.toString()?.[0]?.toLowerCase()}`;
 
   const avatarIconLetter = cardContact.image ? (
-    <img src={cardContact.image} alt="" />
+    <img loading="lazy" src={cardContact.image} alt="" />
   ) : (
     cardContact.name
       ?.toString()

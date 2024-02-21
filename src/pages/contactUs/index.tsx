@@ -56,7 +56,7 @@ export const ContactUs = () => {
   if (searchParams.get("action") === "submitted") {
     return (
       <NoData
-        image={<img src={ContactUsSubmitted} alt="" />}
+        image={<img loading="lazy" src={ContactUsSubmitted} alt="" />}
         description={
           <>
             <h2>Thank You for Contacting Us!</h2>

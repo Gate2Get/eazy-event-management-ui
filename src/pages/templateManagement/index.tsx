@@ -641,7 +641,7 @@ export const TemplateManagement = (): React.ReactElement => {
         classNames={modalClassNames(styles)}
         styles={modalStyles(token) as any}
       >
-        <img src={imageUrl as any} width={"100%"} alt="" />
+        <img loading="lazy" src={imageUrl as any} width={"100%"} alt="" />
         <Text italic style={{ textAlign: "center" }}>
           Once deleted it cannot be undo
         </Text>

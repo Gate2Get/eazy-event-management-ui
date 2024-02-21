@@ -258,6 +258,7 @@ export const SignIn = () => {
       {screen !== "MOBILE" && (
         <Row style={{ position: "relative" }}>
           <img
+            loading="lazy"
             src={LoginSvg}
             alt=""
             className="login-form-svg"

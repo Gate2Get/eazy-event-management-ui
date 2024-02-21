@@ -240,6 +240,7 @@ export type SessionType = {
   sessionId?: String;
   metaData?: String;
   createdAt?: Date;
+  updatedAt?: Date;
   expiryAt?: Date;
   isCurrent?: boolean;
 };

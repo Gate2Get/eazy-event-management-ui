@@ -443,7 +443,7 @@ export const MyProfile = () => {
                     <SessionCard
                       {...session}
                       onLogout={() => {
-                        deleteUserSession(session.sessionId);
+                        deleteUserSession(session.sessionId as string);
                       }}
                     />
                   ))}

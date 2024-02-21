@@ -48,6 +48,7 @@ export const HeaderHome = (props: HeaderHomeType) => {
         }}
       >
         <img
+          loading="lazy"
           src={Logo}
           alt=""
           width={30}

@@ -53,6 +53,7 @@ export const ReportBug = () => {
       <Row gutter={[16, 16]}>
         <Col {...colOption(8)} style={{ textAlign: "center" }}>
           <img
+            loading="lazy"
             src={bugBanner}
             alt=""
             width={screen === "MOBILE" ? "70%" : "100%"}

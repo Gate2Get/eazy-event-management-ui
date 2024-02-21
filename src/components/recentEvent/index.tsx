@@ -243,7 +243,7 @@ export const RecentEvent = (props: RecentEventType) => {
           />
         ) : (
           <div style={{ textAlign: "center" }}>
-            <img src={NotFound} alt="No recent event" />
+            <img loading="lazy" src={NotFound} alt="No recent event" />
             <Paragraph>There are no recent notification to show.</Paragraph>
             <Button
               type="primary"

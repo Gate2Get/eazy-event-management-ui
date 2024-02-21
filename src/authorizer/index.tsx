@@ -54,6 +54,7 @@ export const Authorizer = () => {
       </Text>
       <div>
         <img
+          loading="lazy"
           src={AuthenticationAnimation}
           alt=""
           width={screen === "MOBILE" ? "80%" : "35%"}

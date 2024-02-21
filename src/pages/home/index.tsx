@@ -60,6 +60,7 @@ export const Home = () => {
         </Title>
         <div>
           <img
+            loading="lazy"
             src={EmailCampaign}
             alt=""
             width={screen === "MOBILE" ? "50%" : "25%"}
@@ -121,7 +122,7 @@ export const Home = () => {
             </Col>
             <Col {...colOption(4, { order: 1 })}>
               <div style={{ textAlign: "center" }}>
-                <img src={MailBro} alt="" width={"100%"} />
+                <img loading="lazy" src={MailBro} alt="" width={"100%"} />
               </div>
             </Col>
             {!isAuthorized && (

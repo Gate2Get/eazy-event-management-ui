@@ -98,7 +98,7 @@ export const Feedback = () => {
     <div>
       <Row gutter={[16, 16]}>
         <Col {...colOption(8)} style={{ textAlign: "center" }}>
-          <img src={feedbackBanner} alt="" width={"60%"} />
+          <img loading="lazy" src={feedbackBanner} alt="" width={"60%"} />
         </Col>
         <Col {...colOption(16)}>
           <Title level={3}>We value your feedback!</Title>

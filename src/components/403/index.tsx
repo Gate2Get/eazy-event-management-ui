@@ -18,6 +18,7 @@ export const App403: React.FC = () => {
     <Result
       icon={
         <img
+          loading="lazy"
           src={imageUrl as any}
           alt=""
           width={screen === "MOBILE" ? "100%" : "30%"}

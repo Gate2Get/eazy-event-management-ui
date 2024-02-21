@@ -46,7 +46,13 @@ export const EventCard = (props: EventCardType) => {
     <Space className="event-card__container" size="small" direction="vertical">
       <Row className="other-image" gutter={[8, 8]} onClick={onSelect}>
         <Col span={8} className="">
-          <img src={imageUrl as any} width={"100%"} alt="" height={100} />
+          <img
+            loading="lazy"
+            src={imageUrl as any}
+            width={"100%"}
+            alt=""
+            height={100}
+          />
         </Col>
         <Col span={16} className="event-info">
           <Space direction="vertical" style={{ width: "100%" }}>

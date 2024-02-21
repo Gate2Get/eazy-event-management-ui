@@ -21,6 +21,7 @@ export const App404: React.FC = () => {
       title={<Title level={3}>Oops! Page not found</Title>}
       icon={
         <img
+          loading="lazy"
           src={NotFound}
           alt=""
           width={screen === "MOBILE" ? "100%" : "30%"}

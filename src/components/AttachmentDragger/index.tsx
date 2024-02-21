@@ -102,6 +102,7 @@ export const AttachmentDragger = (props: AttachmentButtonType) => {
               }}
               cover={
                 <img
+                  loading="lazy"
                   alt={file.name}
                   src={checkIsPdf(file.url) ? (pdfImageUrl as any) : file.url}
                 />
@@ -125,7 +126,12 @@ export const AttachmentDragger = (props: AttachmentButtonType) => {
           {isPdf ? (
             <PdfViewer url={previewUrl} />
           ) : (
-            <img alt="example" style={{ width: "100%" }} src={previewUrl} />
+            <img
+              loading="lazy"
+              alt="example"
+              style={{ width: "100%" }}
+              src={previewUrl}
+            />
           )}
         </>
       </Modal>

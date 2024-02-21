@@ -12,6 +12,7 @@ import {
   AttachmentType,
   WalletType,
   EventNotificationType,
+  SessionType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";

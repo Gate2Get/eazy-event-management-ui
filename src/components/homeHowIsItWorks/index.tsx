@@ -54,6 +54,7 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
         >
           <animated.img
             src={image}
+            loading="lazy"
             alt=""
             width={screen === "MOBILE" ? width - 100 : width / 2}
             style={animationCol(!isOdd && screen !== "MOBILE" ? 2 : 1)}

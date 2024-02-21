@@ -11,6 +11,7 @@ type SessionCardType = {
   sessionId?: String;
   metaData?: String;
   createdAt?: Date;
+  updatedAt?: Date;
   expiryAt?: Date;
   isCurrent?: boolean;
   onLogout?: () => void;
@@ -18,7 +19,7 @@ type SessionCardType = {
 
 export const SessionCard = (props: SessionCardType) => {
   const [isLogout, setIsLogout] = React.useState(false);
-  const { createdAt, expiryAt, metaData, isCurrent, onLogout } = props;
+  const { createdAt, expiryAt, updatedAt, metaData, isCurrent, onLogout } = props;
   const { screen } = useBearStore.appStore();
   const iconSize = screen === "MOBILE" ? "32px" : "40px";
 
@@ -42,7 +43,6 @@ export const SessionCard = (props: SessionCardType) => {
     console.log({ error });
   }
 
-  console.log({ userAgent });
   return (
     <div>
       <Row>
@@ -67,7 +67,7 @@ export const SessionCard = (props: SessionCardType) => {
               : ""}
           </Paragraph>
           <Paragraph italic style={{ color: "rgba(0, 0, 0, 0.45)" }}>
-            Logged In - {dayjs(createdAt).format("ddd, MMM D, YYYY h:mm A")}{" "}
+            Last logged in - {dayjs(updatedAt).format("ddd, MMM D, YYYY h:mm A")}{" "}
             {isCurrent && `(Current User)`}
             {/* Expires In - {dayjs(expiryAt).format("ddd, MMM D, YYYY h:mm A")}{" "} */}
           </Paragraph>

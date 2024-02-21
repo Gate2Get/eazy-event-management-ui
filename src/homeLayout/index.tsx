@@ -96,6 +96,7 @@ export const HomeLayout = (props: HomeLayoutType) => {
                 }}
               >
                 <img
+                  loading="lazy"
                   src={Logo}
                   alt=""
                   width={20}

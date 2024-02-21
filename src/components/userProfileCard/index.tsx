@@ -16,7 +16,9 @@ export const UserProfileCard = (props: UserProfileCardType) => {
           <Avatar
             shape="square"
             size={48}
-            icon={<img src={picture} alt={name?.[0] as string} />}
+            icon={
+              <img loading="lazy" src={picture} alt={name?.[0] as string} />
+            }
           />
         </Col>
         <Col span={18}>

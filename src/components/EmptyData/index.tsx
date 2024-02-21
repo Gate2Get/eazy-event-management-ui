@@ -23,7 +23,7 @@ export const EmptyData = (props: EmptyDataType) => {
       size="small"
     >
       <div>
-        <img src={image} alt="" height={250} width="100%" />
+        <img loading="lazy" src={image} alt="" height={250} width="100%" />
       </div>
       <Text type="secondary" italic>
         {description}

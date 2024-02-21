@@ -113,6 +113,7 @@ export const InvitationCard = (props: MyInvitationType) => {
                   <PdfViewer url={invitation.url} />
                 ) : (
                   <img
+                    loading="lazy"
                     alt="example"
                     style={{ width: "100%" }}
                     src={invitation?.url}

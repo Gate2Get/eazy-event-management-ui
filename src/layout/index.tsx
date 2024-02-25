@@ -194,7 +194,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
                 ) : null}
                 <div className="banner-text"></div>
 
-                <ServiceRoutes />
+                <div style={{ visibility: isLoading ? "hidden" : "visible" }}>
+                  <ServiceRoutes />
+                </div>
               </Content>
             </animated.div>
           ) : null}

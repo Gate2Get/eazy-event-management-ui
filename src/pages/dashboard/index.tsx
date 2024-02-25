@@ -209,7 +209,7 @@ export const Dashboard = () => {
             ))}
           </Row>
           <br />
-          <Row gutter={[8, 8]} style={{ padding: "1rem" }}>
+          <Row gutter={[8, 8]} style={{ padding: ".5rem", borderRadius: '0.75rem' }}>
             <NoticeCalendar />
           </Row>
         </Col>

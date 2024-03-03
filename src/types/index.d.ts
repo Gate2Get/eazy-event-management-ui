@@ -100,7 +100,7 @@ export type TemplateType = {
   name: string;
   type?: string;
   userId?: string;
-  message: string;
+  message: any;
   blob?: string;
   approvalStatus?: APPROVAL_STATUS;
   channel?: string;

@@ -26,8 +26,6 @@ import {
 import { useWindowSize } from "../../hooks/useWindowSize";
 import dayjs from "dayjs";
 
-const { Panel } = Collapse;
-const { Option } = Select;
 const { Text } = Typography;
 
 export const EditEventNotification = (props: EventNotificationCardType) => {
@@ -199,7 +197,10 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
                 value: template.id,
               }))}
               onFocus={() => {
-                getTemplates({ approvalStatus: EVENT_STATUS.APPROVED });
+                getTemplates({
+                  approvalStatus: EVENT_STATUS.APPROVED,
+                  channel: selectedChannel,
+                });
               }}
               notFoundContent={
                 <NoData

@@ -1,5 +1,5 @@
 import React, { Dispatch } from "react";
-import { Avatar, Card, Divider, Typography } from "antd";
+import { Avatar, Button, Card, Divider, Space, Typography } from "antd";
 import {
   TemplatePreviewType,
   TemplateType,
@@ -13,8 +13,9 @@ import { CHANNEL_OPTIONS } from "../../constants";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
-const { Paragraph, Text, Title } = Typography;
+const { Paragraph, Text, Title, Link } = Typography;
 
 export const PreviewTemplate = (props: TemplatePreviewType) => {
   const { screen } = useBearStore.appStore();
@@ -100,8 +101,7 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
     }
     switch (channel) {
       case "VOICE_CALL": {
-        const messagesObj: Record<string, VoiceMessageTemplateType> =
-          JSON.parse(message);
+        const messagesObj: Record<string, VoiceMessageTemplateType> = message;
         return Object.values(messagesObj).map(
           (msg: VoiceMessageTemplateType) => {
             if (msg.type === "TEXT") {
@@ -164,6 +164,58 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
             }
           }
         );
+      }
+
+      case "SMS": {
+        return <div dangerouslySetInnerHTML={{ __html: message.text }} />;
+      }
+
+      case "WHATSAPP": {
+        let whatsapp = <></>;
+        if (message) {
+          console.log({ message });
+          whatsapp = message?.map((msg: any) => {
+            if (msg.type === "BODY") {
+              const htmlString = msg.text
+                .replace(/\*([^*]+)\*/g, "<strong>$1</strong>")
+                .replace(/\n/g, "<br>");
+
+              // Wrap the result in a <p> tag
+              const finalHTML = `<p>${htmlString}</p>`;
+              return <div dangerouslySetInnerHTML={{ __html: finalHTML }} />;
+            }
+            if (msg.type === "BUTTONS") {
+              return (
+                <Space
+                  direction="vertical"
+                  style={{ width: "100%" }}
+                  size="small"
+                >
+                  {msg?.buttons?.map((button: any) => (
+                    <>
+                      <Divider />
+                      <Space className="whatsapp-button">
+                        <OpenInNewIcon fontSize="inherit" />
+
+                        <Link
+                          // icon={<OpenInNewIcon fontSize="inherit" />}
+                          href={button.url}
+                          target="_blank"
+                          style={{ padding: "0px" }}
+                        >
+                          {button.text}
+                        </Link>
+                      </Space>
+                    </>
+                  ))}
+                </Space>
+              );
+            }
+          });
+        }
+
+        console.log({ whatsapp, message: message[0] });
+        return whatsapp;
       }
 
       default:

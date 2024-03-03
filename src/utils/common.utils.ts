@@ -20,10 +20,9 @@ export const removeEmptyProp = (obj: any) => {
   return parsedObj;
 };
 
-export const getFormattedMessage = (message: string, type: string) => {
+export const getFormattedMessage = (message: Record<string, VoiceMessageTemplateType>, type: string) => {
   if (type === "VOICE_CALL") {
-    const messages: Record<string, VoiceMessageTemplateType> =
-      JSON.parse(message);
+    const messages: Record<string, VoiceMessageTemplateType> =message;
     const newMessage: Record<string, VoiceMessageTemplateType> = {};
     Object.values(messages).forEach((msg: VoiceMessageTemplateType) => {
       if (msg.type === "AUDIO") {
@@ -37,7 +36,8 @@ export const getFormattedMessage = (message: string, type: string) => {
       }
       newMessage[msg.id] = msg;
     });
-    return JSON.stringify(newMessage);
+    // return JSON.stringify(newMessage);
+    return newMessage;
   }
   return message;
 };

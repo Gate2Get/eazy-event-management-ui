@@ -199,15 +199,25 @@ export const CHANNEL_OPTIONS = [
     ),
     value: "SMS",
   },
-  // @TODO: Whatsapp
-  // {
-  //   label: (
-  //     <>
-  //       <WhatsAppIcon fontSize="inherit" /> Whatsapp
-  //     </>
-  //   ),
-  //   value: "WHATSAPP",
-  // },
+  {
+    label: (
+      <>
+        <WhatsAppIcon fontSize="inherit" /> Whatsapp
+      </>
+    ),
+    value: "WHATSAPP",
+  },
+  {
+    label: (
+      <>
+        <PhoneIcon fontSize="inherit" /> Voice call
+      </>
+    ),
+    value: "VOICE_CALL",
+  },
+];
+
+export const TEMPLATE_CHANNEL_OPTIONS = [
   {
     label: (
       <>

@@ -27,21 +27,18 @@ import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import React, { Dispatch } from "react";
 import { API } from "../../api";
 import { TemplateCard } from "../../components/templateCard";
-import { RichTextEditor } from "../../components/richTextEditor";
 import {
-  CHANNEL_OPTIONS,
+  TEMPLATE_CHANNEL_OPTIONS,
   EVENT_STATUS,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
-  PAGE_QUERY_ACTIONS,
   TEMPLATE_BUTTONS,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import { ActionType, TemplateAdminType, TemplateType } from "../../types";
+import { TemplateAdminType, TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
-import { SunEditorReactProps } from "suneditor-react/dist/types/SunEditorReactProps";
 import { PreviewTemplate } from "../../components/previewTemplate";
 import {
   getFileList,
@@ -73,11 +70,6 @@ import { ReviewConversation } from "../../components/ReviewConversation";
 const { Panel } = Collapse;
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
-
-const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-  label: EVENT_TYPE_PROPS[event].label,
-  value: event,
-}));
 
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
@@ -177,7 +169,7 @@ export const TemplateManagement = (): React.ReactElement => {
   React.useEffect(() => {
     if (!action) {
       setSelectedTemplate({
-        message: "",
+        message: {},
         name: "",
         id: "",
       });
@@ -300,9 +292,12 @@ export const TemplateManagement = (): React.ReactElement => {
       .getTemplateById(id)
       .then((template: TemplateType) => {
         setSelectedTemplate(template);
-        form.setFieldsValue(template);
+
         if (template.channel === "VOICE_CALL") {
-          setMessages(JSON.parse(template.message));
+          setMessages(template.message);
+          form.setFieldsValue(template);
+        } else if (template.channel === "SMS") {
+          form.setFieldsValue({ ...template, message: template.message.text });
         }
         setLoading(false);
       })
@@ -385,7 +380,11 @@ export const TemplateManagement = (): React.ReactElement => {
     setIsError(false);
     let message = values.message;
     if (values.channel === "VOICE_CALL") {
-      message = getFormattedMessage(JSON.stringify(messages), values.channel);
+      message = getFormattedMessage(messages, values.channel);
+    } else if (values.channel === "SMS") {
+      message = {
+        text: message,
+      };
     }
 
     if (action === "ADD") {
@@ -430,15 +429,6 @@ export const TemplateManagement = (): React.ReactElement => {
   const handleFormChange = (key: string, value: any) => {
     setSelectedTemplate({ ...selectedTemplate, [key]: value });
   };
-
-  const richTextProps: SunEditorReactProps = {};
-  if (
-    (action === "VIEW" || action === "EDIT") &&
-    selectedTemplate.channel === "WHATSAPP"
-  ) {
-    richTextProps.setContents = selectedTemplate.message;
-    richTextProps.hideToolbar = action === "VIEW";
-  }
 
   templateColumns.forEach((column) => {
     if (column.key === TEMPLATE_COLUMN_KEYS.ACTION) {
@@ -827,7 +817,7 @@ export const TemplateManagement = (): React.ReactElement => {
             ]}
           >
             <Radio.Group
-              options={CHANNEL_OPTIONS}
+              options={TEMPLATE_CHANNEL_OPTIONS}
               optionType="button"
               buttonStyle="solid"
               onChange={(e) => {
@@ -846,15 +836,15 @@ export const TemplateManagement = (): React.ReactElement => {
               <Input />
             </Form.Item>
           )}
-          {form.getFieldValue("channel") === "WHATSAPP" && (
+          {/* {form.getFieldValue("channel") === "WHATSAPP" && (
             <Form.Item
               label="Enter message"
               name="message"
               rules={[{ required: true, message: "Please input your message" }]}
             >
-              <RichTextEditor {...richTextProps} />
+              <WhatsappEditor message={selectedTemplate.message} />
             </Form.Item>
-          )}
+          )} */}
           {form.getFieldValue("channel") === "VOICE_CALL" && (
             <>
               <Paragraph strong style={{}}>

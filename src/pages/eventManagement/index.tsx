@@ -641,7 +641,12 @@ export const EventManagement = () => {
             isEdit={action === "EDIT"}
             action={action}
             getContactDirectory={getContactDirectory}
-            getTemplates={getTemplates}
+            getTemplates={(filter) =>
+              getTemplates({
+                ...filter,
+                type: selectedEvents.type,
+              })
+            }
             handleFileUpload={handleFileUpload}
             handleUpdateEventNotification={handleUpdateEventNotification}
           />

@@ -74,6 +74,11 @@ const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 const { Title, Text, Paragraph } = Typography;
 const { Search } = Input;
 
+const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
+  label: EVENT_TYPE_PROPS[event].label,
+  value: event,
+}));
+
 export const TemplateManagement = (): React.ReactElement => {
   const [form] = Form.useForm();
   const { styles } = useModalStyle();
@@ -836,6 +841,19 @@ export const TemplateManagement = (): React.ReactElement => {
               <Input />
             </Form.Item>
           )}
+          <Form.Item
+            label="Select Event"
+            name="type"
+            rules={[{ required: true, message: "Please select template type" }]}
+          >
+            <Select
+              style={{ width: "100%" }}
+              allowClear
+              placeholder="Select a event"
+              optionFilterProp="children"
+              options={eventTypeOptions}
+            />
+          </Form.Item>
           {/* {form.getFieldValue("channel") === "WHATSAPP" && (
             <Form.Item
               label="Enter message"

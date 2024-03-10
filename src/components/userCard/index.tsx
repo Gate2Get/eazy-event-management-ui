@@ -24,7 +24,8 @@ type UserCardType = {
 
 export const UserCard = (props: UserCardType) => {
   const { userInfo, action, title } = props;
-  const { setIsAuthorized, sessions, setSession } = useBearStore.userStore();
+  const { setIsAuthorized, sessions, setSession, setIsVerificationOpen } =
+    useBearStore.userStore();
   const { screen } = useBearStore.appStore();
 
   let cardStyle = {};
@@ -96,6 +97,20 @@ export const UserCard = (props: UserCardType) => {
                     </Tag>
                   ) : null}
                 </Space>
+                {!userInfo.isMobileVerified ? (
+                  <p>
+                    <Text
+                      className="link-text"
+                      onClick={() => setIsVerificationOpen(true)}
+                    >
+                      Click here
+                    </Text>
+                    <Text>
+                      {" "}
+                      to verify the mobile to start sending yourself and more.
+                    </Text>
+                  </p>
+                ) : null}
               </p>
               <p>
                 <Title level={5}>District</Title>

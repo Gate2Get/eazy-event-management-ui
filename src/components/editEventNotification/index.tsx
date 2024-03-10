@@ -81,6 +81,12 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
         : undefined,
       channel,
     });
+    if (channel) {
+      getTemplates({
+        approvalStatus: EVENT_STATUS.APPROVED,
+        channel,
+      });
+    }
   }, [contactDirectory, name, messageTemplate, triggerDateTime, channel]);
 
   const handleCancel = () => {

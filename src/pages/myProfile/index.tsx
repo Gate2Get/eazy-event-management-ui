@@ -66,7 +66,7 @@ export const MyProfile = () => {
     console.log({ user });
     form.setFieldsValue({
       ...user,
-      mobile: user?.mobile ? user.mobile?.toString() : "",
+      mobile: user?.mobile,
       pinCode: user.pinCode || "",
     });
   }, [user]);
@@ -207,6 +207,8 @@ export const MyProfile = () => {
     };
   }
 
+  console.log({ form: form.getFieldsValue() });
+
   return (
     <>
       {isEdit ? (
@@ -269,7 +271,7 @@ export const MyProfile = () => {
               ]}
             >
               <Input
-                // type="number"
+                name="mobile"
                 placeholder="Mobile number"
                 suffix={
                   user.isMobileVerified ? (
@@ -284,22 +286,8 @@ export const MyProfile = () => {
                     />
                   )
                 }
-                disabled={user.isMobileVerified}
+                // disabled={user.isMobileVerified}
               />
-              {user.isMobileVerified && (
-                <>
-                  <Text
-                    className="link-text"
-                    onClick={() => setIsVerificationOpen(true)}
-                  >
-                    Click here
-                  </Text>
-                  <Text>
-                    {" "}
-                    to verify the mobile to start sending yourself and more.
-                  </Text>
-                </>
-              )}
             </Form.Item>
             <Form.Item
               label="First Name"

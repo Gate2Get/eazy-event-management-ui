@@ -31,10 +31,15 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     setCollapsed,
     setLoading,
   } = useBearStore.appStore();
-  const { setUser, isAuthorized, user } = useBearStore.userStore();
+  const {
+    setUser,
+    isAuthorized,
+    user,
+    isVerificationOpen,
+    setIsVerificationOpen,
+  } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isVerificationOpen, setIsVerificationOpen] = React.useState(false);
 
   let sidebarWidth = width;
   if (screen === "MOBILE") {

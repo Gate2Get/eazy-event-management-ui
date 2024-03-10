@@ -59,13 +59,19 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
   });
 
   React.useEffect(() => {
-    setPayload({
-      ...payload,
-      mobile: userInfo.mobile as number,
-    });
-    form.setFieldValue("mobile", userInfo.mobile);
-    if (!userInfo.mobile) {
-      setIsEdit(true);
+    if (isOpen) {
+      setOtpEnabled(false);
+      form.resetFields();
+      setPayload({
+        ...payload,
+        mobile: userInfo.mobile as number,
+      });
+      form.setFieldValue("mobile", userInfo.mobile);
+      if (!userInfo.mobile) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
     }
 
     () => {
@@ -73,7 +79,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
       setOtpEnabled(false);
       form.resetFields();
     };
-  }, []);
+  }, [isOpen]);
 
   const requestOtp = () => {
     setLoading(true);

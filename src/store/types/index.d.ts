@@ -13,6 +13,7 @@ import {
   WalletType,
   EventNotificationType,
   SessionType,
+  UserPricingPlanType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -21,6 +22,7 @@ export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
   isVerificationOpen: boolean;
+  activePlan?: UserPricingPlanType;
   setIsVerificationOpen: (isVerificationOpen: boolean) => void;
   setUser: (user: UserInfoType) => void;
   setIsAuthorized: (isAuthorized: boolean) => void;
@@ -28,6 +30,7 @@ export type UserType = {
   setSession: (sessions: SessionType[]) => void;
   walletTransaction: WalletType[];
   setWalletTransaction: (walletTransaction: WalletType[]) => void;
+  setActivePlan: (activePlan: UserPricingPlanType) => void;
 };
 
 export type AppStoreType = {

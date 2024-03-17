@@ -1,5 +1,5 @@
 import { EditOutlined, EyeOutlined } from "@ant-design/icons";
-import { Col, Input, MenuProps, Row, Space, Typography } from "antd";
+import { Alert, Col, Input, MenuProps, Row, Space, Typography } from "antd";
 import React from "react";
 import { ContactDirectoryCard } from "../../../../components/contactDirectoryCard";
 import { DataTable } from "../../../../components/dataTable";
@@ -23,6 +23,7 @@ export const ListContactDirectory = () => {
   const { directoryList, setSelectedDirectory, setAction, isListView } =
     useBearStore.contactStore();
   const { screen } = useBearStore.appStore();
+  const { activePlan } = useBearStore.userStore();
   const [searchValue, setSearchValue] = React.useState("");
   let filteredGrid: any[] = [];
 
@@ -134,6 +135,23 @@ export const ListContactDirectory = () => {
           )}
         </Col>
       </Row>
+      <div className="padding-bottom-8">
+        <Alert
+          message={
+            (activePlan?.contactDirectoryCount as number) <= 0
+              ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.contactDirectoryCount} contact directories allowed.`
+              : `According to your plan, you have currently created ${
+                  (activePlan?.pricingPlan?.contactDirectoryCount as number) -
+                  (activePlan?.contactDirectoryCount as number)
+                } out of ${
+                  activePlan?.pricingPlan?.contactDirectoryCount
+                } contact directories.`
+          }
+          type="info"
+          showIcon
+          closable
+        />
+      </div>
       {(searchValue ? filteredGrid : directoryList)?.length ? (
         <Row gutter={[16, 16]}>
           {isListView ? (
@@ -187,7 +205,11 @@ export const ListContactDirectory = () => {
               "No contact to show"
             )
           }
-          buttonText="Create Contact"
+          buttonText={
+            (activePlan?.contactDirectoryCount as number) > 0
+              ? "Create Contact"
+              : undefined
+          }
         />
       )}
     </div>

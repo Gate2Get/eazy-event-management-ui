@@ -37,6 +37,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     user,
     isVerificationOpen,
     setIsVerificationOpen,
+    setActivePlan,
   } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -72,11 +73,26 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     getAlerts();
   }, []);
 
+  React.useEffect(() => {
+    getActiveUserPricingPlan();
+  }, [currentPage]);
+
   const getAlerts = (): any => {
     API.commonAPI
       .getAlerts()
       .then((alert: AlertType[]) => {
         setAlerts(alert);
+      })
+      .catch((error: Error) => {
+        console.log({ location: "getAlerts", error });
+      });
+  };
+
+  const getActiveUserPricingPlan = (): any => {
+    API.userManagement
+      .getActiveUserPricingPlan()
+      .then((plan) => {
+        setActivePlan(plan);
       })
       .catch((error: Error) => {
         console.log({ location: "getAlerts", error });

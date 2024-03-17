@@ -138,4 +138,16 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  getActiveUserPricingPlan: async () => {
+    return await instance
+      .get(userManagementEndpoint.getActiveUserPricingPlan)
+      .then((response) => {
+        const plan = response.data.result;
+        return plan;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

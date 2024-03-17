@@ -360,3 +360,39 @@ export type DateFilterType = {
   month: string;
   year: number;
 };
+
+export type PricingPlanType = {
+  id: string;
+  name: string;
+  type: string;
+  albumCount: number;
+  eventCount: number;
+  contactDirectoryCount: number;
+  contactCount: number;
+  templateCount: number;
+  notificationCredit: number;
+  price: number;
+  whatsAppPrice: number;
+  smsPrice: number;
+  voiceCallPrice: number;
+  isActive: boolean;
+  validity: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UserPricingPlanType = {
+  id: string;
+  planId: string;
+  userId: string;
+  albumCount: number;
+  eventCount: number;
+  contactDirectoryCount: number;
+  templateCount: number;
+  notificationCredit: number;
+  isActive: boolean;
+  expiryAt: string;
+  createdAt: string;
+  updatedAt: string;
+  pricingPlan: PricingPlanType;
+};

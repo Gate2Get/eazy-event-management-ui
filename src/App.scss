@@ -314,10 +314,15 @@ form {
 }
 
 .ant-alert-info {
-  background: rgba(18, 183, 106, 0.12) !important;
+  // background: rgba(18, 183, 106, 0.12) !important;
+  // border-left: 3px solid rgb(18, 183, 106) !important;
+  border: 0 !important;
+  border-left: 3px solid #1677ff !important;
+  border-radius: 0;
 
   svg {
-    color: rgb(18, 183, 106) !important;
+    // color: rgb(18, 183, 106) !important;
+    // color: rgb(18, 183, 106) !important;
   }
 }
 

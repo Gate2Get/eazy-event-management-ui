@@ -31,6 +31,7 @@ export const ROUTES_URL = {
   MY_INVITATION: "my-invitation",
   CONTACT_US: "contact-us",
   WALLET: "wallet",
+  MY_PLAN: "my-plan",
   ADD_CREDIT: "add-credit",
 };
 
@@ -51,6 +52,7 @@ export const ROUTES_MENU = {
   REVIEW_TEMPLATES: "Review Templates",
   MY_INVITATION: "My Invitation",
   WALLET: "wallet",
+  MY_PLAN: "My Plan",
   ADD_CREDIT: "Add Credit",
 };
 
@@ -68,6 +70,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.MY_INVITATION,
   ROUTES_MENU.WALLET,
   ROUTES_MENU.ADD_CREDIT,
+  ROUTES_MENU.MY_PLAN,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -230,8 +233,7 @@ export const TEMPLATE_CHANNEL_OPTIONS = [
 
 export const CHANNEL_OPTIONS_MAP: Record<string, React.ReactNode> = {
   VOICE_CALL: <PhoneIcon fontSize="inherit" />,
-  // @TODO: Whatsapp
-  // WHATSAPP: <WhatsAppIcon fontSize="inherit" />,
+  WHATSAPP: <WhatsAppIcon fontSize="inherit" />,
   SMS: <SmsIcon fontSize="inherit" />,
 };
 
@@ -406,7 +408,8 @@ export const MONTHS = [
   "December",
 ];
 
-export const PRICE_CONFIG: Record<string, number> = {
-  VOICE_CALL: 1,
-  SMS: 0.5,
+export const PRICE_CONFIG: Record<string, string> = {
+  VOICE_CALL: "voiceCallPrice",
+  SMS: "smsPrice",
+  WHATSAPP: "whatsAppPrice",
 };

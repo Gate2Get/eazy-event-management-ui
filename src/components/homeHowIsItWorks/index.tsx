@@ -47,7 +47,7 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
     <div className="home-how-is-it-works__container">
       <Row gutter={[64, 64]} className="content-row">
         <Col
-          {...colOption(14)}
+          {...colOption(12)}
           order={!isOdd && screen !== "MOBILE" ? 2 : 1}
           className="how-is-it-works__image"
           ref={ref} // Attach the ref here
@@ -56,11 +56,11 @@ export const HomeHowIsItWorks = (props: HomeHowIsItWorksType) => {
             src={image}
             loading="lazy"
             alt=""
-            width={screen === "MOBILE" ? width - 100 : width / 2}
+            width={screen === "MOBILE" ? width - 100 : width / 3}
             style={animationCol(!isOdd && screen !== "MOBILE" ? 2 : 1)}
           />
         </Col>
-        <Col {...colOption(10)} order={!isOdd && screen !== "MOBILE" ? 1 : 2}>
+        <Col {...colOption(12)} order={!isOdd && screen !== "MOBILE" ? 1 : 2}>
           <animated.div
             style={animationCol(!isOdd && screen !== "MOBILE" ? 2 : 1)}
           >

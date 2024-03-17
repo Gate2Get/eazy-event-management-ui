@@ -1,7 +1,12 @@
 import React from "react";
 import { Typography, Tag, Space, Alert, Button } from "antd";
 import { EventNotificationCardType } from "../../types";
-import { DATE_TIME_FORMAT, EVENT_STATUS, ROUTES_URL } from "../../constants";
+import {
+  CHANNEL_OPTIONS,
+  DATE_TIME_FORMAT,
+  EVENT_STATUS,
+  ROUTES_URL,
+} from "../../constants";
 import "./styles.scss";
 import dayjs from "dayjs";
 import { useBearStore } from "../../store";
@@ -10,6 +15,11 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import SendIcon from "@mui/icons-material/Send";
 
 const { Paragraph, Link, Text } = Typography;
+
+const channelMap: any = {};
+CHANNEL_OPTIONS.forEach((channel) => {
+  channelMap[channel.value] = channel.label;
+});
 
 export const ViewEventNotification = (props: EventNotificationCardType) => {
   const {
@@ -20,6 +30,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
     templates,
     price = 0,
     status,
+    channel,
     viewNotification,
     sendNotification,
   } = props;
@@ -50,6 +61,12 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         <Paragraph strong>Message</Paragraph>
         <Paragraph style={{ color: "rgb(102, 112, 133)" }}>
           {template?.name}
+        </Paragraph>
+      </div>
+      <div>
+        <Paragraph strong>Channel</Paragraph>
+        <Paragraph style={{ color: "rgb(102, 112, 133)" }}>
+          {channelMap[channel as string]}
         </Paragraph>
       </div>
       <div>

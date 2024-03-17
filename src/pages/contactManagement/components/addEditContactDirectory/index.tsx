@@ -72,6 +72,7 @@ export const AddEditContactDirectory = () => {
     setIsListView,
     isListView,
   } = useBearStore.contactStore();
+  const { activePlan } = useBearStore.userStore();
 
   const [directoryContactList, setDirectoryContactList]: [
     ContactListType[],
@@ -522,11 +523,13 @@ export const AddEditContactDirectory = () => {
             ) : null}
 
             <>
-              {(action === "EDIT" || action === "ADD") && (
-                <Button onClick={onAddContact} style={{ marginTop: "9px" }}>
-                  Add New
-                </Button>
-              )}
+              {(action === "EDIT" || action === "ADD") &&
+                (activePlan?.pricingPlan.contactCount as number) >
+                  directoryContactList.length && (
+                  <Button onClick={onAddContact} style={{ marginTop: "9px" }}>
+                    Add New
+                  </Button>
+                )}
               <Segmented
                 value={isListView ? "List" : "Card"}
                 options={[

@@ -85,7 +85,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const { setLoading, screen } = useBearStore.appStore();
-  const { user } = useBearStore.userStore();
+  const { user, activePlan } = useBearStore.userStore();
   const {
     setTemplates,
     action,
@@ -661,16 +661,18 @@ export const TemplateManagement = (): React.ReactElement => {
                     <Title level={3}> Template</Title>
                   </Col>
                   <Col span={12} className="template__pagination">
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        setSearchParams({
-                          action: PAGE_ACTION.ADD,
-                        });
-                      }}
-                    >
-                      Create Template
-                    </Button>
+                    {(activePlan?.templateCount as number) > 0 && (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          setSearchParams({
+                            action: PAGE_ACTION.ADD,
+                          });
+                        }}
+                      >
+                        Create Template
+                      </Button>
+                    )}
                     <Segmented
                       style={{ margin: "10px" }}
                       value={isListView ? "List" : "Card"}
@@ -772,6 +774,23 @@ export const TemplateManagement = (): React.ReactElement => {
           </Col>
         </Row>
       )}
+
+      <div className="padding-bottom-8">
+        <Alert
+          message={
+            (activePlan?.templateCount as number) <= 0
+              ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.templateCount} templates allowed.`
+              : `According to your plan, you have currently created ${
+                  (activePlan?.pricingPlan?.templateCount as number) -
+                  (activePlan?.templateCount as number)
+                } out of ${activePlan?.pricingPlan?.templateCount} templates.`
+          }
+          type="info"
+          showIcon
+          closable
+        />
+      </div>
+
       {(!action || action === "DELETE") && (
         <Row gutter={[16, 16]}>
           {(searchValue ? filteredGrid : templates).length ? (
@@ -801,7 +820,11 @@ export const TemplateManagement = (): React.ReactElement => {
               }}
               image={NoTemplate}
               description="No template to show"
-              buttonText="Create Template"
+              buttonText={
+                (activePlan?.templateCount as number) > 0
+                  ? "Create Template"
+                  : undefined
+              }
             />
           )}
         </Row>

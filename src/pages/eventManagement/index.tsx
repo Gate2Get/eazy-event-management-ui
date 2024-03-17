@@ -21,6 +21,7 @@ import {
   Space,
   Segmented,
   Tabs,
+  Alert,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
@@ -112,6 +113,7 @@ export const EventManagement = () => {
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const { screen, setLoading } = useBearStore.appStore();
+  const { activePlan } = useBearStore.userStore();
   const [isPreview, setIsPreview] = React.useState(false);
   const { setDirectoryList, directoryList, contactList } =
     useBearStore.contactStore();
@@ -408,7 +410,9 @@ export const EventManagement = () => {
         }}
         image={NoEvents}
         description="No events to show"
-        buttonText="Create Event"
+        buttonText={
+          (activePlan?.templateCount as number) > 0 ? "Create Event" : undefined
+        }
       />
     );
   };
@@ -689,16 +693,18 @@ export const EventManagement = () => {
               <Title level={3}> Events</Title>
             </Col>
             <Col span={12} className="upcoming-event__pagination">
-              <Button
-                type="primary"
-                onClick={() => {
-                  setSearchParams({
-                    action: PAGE_ACTION.ADD,
-                  });
-                }}
-              >
-                Create Event
-              </Button>
+              {(activePlan?.eventCount as number) > 0 && (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setSearchParams({
+                      action: PAGE_ACTION.ADD,
+                    });
+                  }}
+                >
+                  Create Event
+                </Button>
+              )}
               <Button
                 type="text"
                 icon={
@@ -813,6 +819,21 @@ export const EventManagement = () => {
               </Col>
             </Row>
           )}
+          <div className="padding-bottom-8">
+            <Alert
+              message={
+                (activePlan?.eventCount as number) <= 0
+                  ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.eventCount} events allowed.`
+                  : `According to your plan, you have currently created ${
+                      (activePlan?.pricingPlan?.eventCount as number) -
+                      (activePlan?.eventCount as number)
+                    } out of ${activePlan?.pricingPlan?.eventCount} events.`
+              }
+              type="info"
+              showIcon
+              closable
+            />
+          </div>
           <Row gutter={[16, 16]}>{renderEvents()}</Row>
         </>
       )}

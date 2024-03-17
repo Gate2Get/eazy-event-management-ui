@@ -7,6 +7,7 @@ export const createUserStore = create<UserType>((set) => ({
   isAuthorized: null,
   walletTransaction: [],
   isVerificationOpen: false,
+  activePlan: undefined,
   setIsVerificationOpen: (isVerificationOpen) => {
     set((state) => ({ isVerificationOpen }));
   },
@@ -22,5 +23,8 @@ export const createUserStore = create<UserType>((set) => ({
   },
   setWalletTransaction: (walletTransaction) => {
     set((state) => ({ walletTransaction }));
+  },
+  setActivePlan: (activePlan) => {
+    set((state) => ({ activePlan }));
   },
 }));

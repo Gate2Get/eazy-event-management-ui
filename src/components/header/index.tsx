@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PersonIcon from "@mui/icons-material/Person";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import ArticleIcon from "@mui/icons-material/Article";
 
 const { Text } = Typography;
 
@@ -21,7 +21,7 @@ type HeaderType = {
 
 export const Header = (props: HeaderType) => {
   const { setCollapsed, collapsed, currentPage } = props;
-  const { user, setIsAuthorized } = useBearStore.userStore();
+  const { user, setIsAuthorized, activePlan } = useBearStore.userStore();
   const { setLoading, setCurrentPage, screen } = useBearStore.appStore();
   const [open, setOpen] = React.useState(false);
 
@@ -60,9 +60,9 @@ export const Header = (props: HeaderType) => {
     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`);
   };
 
-  const handleWalletClick = () => {
+  const handleMyPlanClick = () => {
     hide();
-    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.WALLET}`);
+    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN}`);
   };
 
   return (
@@ -97,12 +97,13 @@ export const Header = (props: HeaderType) => {
                 >
                   My profile
                 </Button>
+
                 <Button
                   type="text"
-                  icon={<AccountBalanceWalletIcon fontSize="inherit" />}
-                  onClick={handleWalletClick}
+                  icon={<ArticleIcon fontSize="inherit" />}
+                  onClick={handleMyPlanClick}
                 >
-                  Wallet : {user.walletBalance}
+                  My plan
                 </Button>
                 <Button
                   type="text"
@@ -123,11 +124,7 @@ export const Header = (props: HeaderType) => {
                   {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
                 </div>
                 <div style={{ fontSize: "12px" }}>
-                  <span>
-                    <AccountBalanceWalletIcon fontSize="inherit" />{" "}
-                    {user.walletBalance}{" "}
-                    {user.walletIsTrial && <Text italic>(Trial)</Text>}
-                  </span>
+                  <span>{activePlan?.pricingPlan.name}</span>
                 </div>
               </Text>
             </div>

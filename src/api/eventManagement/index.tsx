@@ -147,8 +147,9 @@ export const eventManagementAPI = {
   },
   addEventAlbum: async (eventId: string, attachments: AttachmentType[]) => {
     return await instance
-      .post(`${eventManagementEndpoint.addEventAlbum}/${eventId}/album`, {
+      .post(eventManagementEndpoint.addEventAlbum, {
         attachments,
+        eventId,
       })
       .then((response) => {
         return response.data?.status;
@@ -162,8 +163,8 @@ export const eventManagementAPI = {
     filter: VirtualLoadQueryType
   ): Promise<AttachmentType[]> => {
     return await instance
-      .get(`${eventManagementEndpoint.getEventAlbum}/${eventId}/album`, {
-        params: filter,
+      .get(eventManagementEndpoint.getEventAlbum, {
+        params: { ...filter, eventId },
       })
       .then((response) => {
         const result = response.data.result;
@@ -178,9 +179,13 @@ export const eventManagementAPI = {
     id: string[]
   ): Promise<AttachmentType[]> => {
     return await instance
-      .delete(`${eventManagementEndpoint.deleteEventAlbum}/${eventId}/album`, {
+      .delete(eventManagementEndpoint.deleteEventAlbum, {
         data: {
           id,
+        },
+
+        params: {
+          eventId,
         },
       })
       .then((response) => {
@@ -196,12 +201,9 @@ export const eventManagementAPI = {
     filter: VirtualLoadQueryType
   ): Promise<AttachmentType[]> => {
     return await instance
-      .get(
-        `${eventManagementEndpoint.getEventInvitationAlbum}/${eventId}/invitation/album`,
-        {
-          params: filter,
-        }
-      )
+      .get(eventManagementEndpoint.getEventInvitationAlbum, {
+        params: { ...filter, eventId },
+      })
       .then((response) => {
         const result = response.data.result;
         return result;

@@ -99,7 +99,7 @@ export const EventManagement = (props: EventManagementType) => {
   const navigate = useNavigate();
   const { screen, setLoading } = useBearStore.appStore();
   const { setIsEdit } = useBearStore.eventStore();
-  const { user } = useBearStore.userStore();
+  const { user, activePlan } = useBearStore.userStore();
   const [selectedNotification, setSelectedNotification] =
     React.useState<EventNotificationType>(defaultEventNotification);
   const [isPreviewEvent, setPreviewEvent] = React.useState(false);
@@ -294,14 +294,17 @@ export const EventManagement = (props: EventManagementType) => {
     border: "none",
   };
 
+  const channelPriceMap: any = activePlan?.pricingPlan;
   return (
     <div className="event-creation__container">
       <Modal
         open={notificationAction === "SEND"}
         title={"Send Notification to me"}
         okText={
-          (user?.walletBalance as number) >=
-          PRICE_CONFIG[selectedNotification.channel as string] ? (
+          (activePlan?.notificationCredit as number) >=
+          channelPriceMap[
+            PRICE_CONFIG[selectedNotification.channel as string]
+          ] ? (
             "Send"
           ) : (
             <></>
@@ -317,18 +320,26 @@ export const EventManagement = (props: EventManagementType) => {
       >
         <Alert
           message={
-            (user?.walletBalance as number) >=
-            PRICE_CONFIG[selectedNotification.channel as string]
+            (activePlan?.notificationCredit as number) >=
+            channelPriceMap[
+              PRICE_CONFIG[selectedNotification.channel as string]
+            ]
               ? `You will be charged ${
-                  PRICE_CONFIG[selectedNotification.channel as string]
+                  channelPriceMap[
+                    PRICE_CONFIG[selectedNotification.channel as string]
+                  ]
                 } credit for this notification`
               : `You don't have enough credit to send this notification. Credit required: ${
-                  PRICE_CONFIG[selectedNotification.channel as string]
+                  channelPriceMap[
+                    PRICE_CONFIG[selectedNotification.channel as string]
+                  ]
                 }`
           }
           type={
-            (user?.walletBalance as number) >=
-            PRICE_CONFIG[selectedNotification.channel as string]
+            (activePlan?.notificationCredit as number) >=
+            channelPriceMap[
+              PRICE_CONFIG[selectedNotification.channel as string]
+            ]
               ? "info"
               : "error"
           }

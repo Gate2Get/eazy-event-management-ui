@@ -27,6 +27,7 @@ export const ContactManagement = () => {
     setSelectedDirectory,
     setContactList,
   } = useBearStore.contactStore();
+  const { activePlan } = useBearStore.userStore();
 
   React.useEffect(() => {
     setIsListView(
@@ -87,23 +88,25 @@ export const ContactManagement = () => {
             <Col span={12} className="contact__pagination">
               <Row>
                 <Col flex={12} className="create-directory__button">
-                  <Button
-                    type="primary"
-                    className="dark-color-bg"
-                    onClick={() => {
-                      setSearchParams({
-                        action: PAGE_ACTION.ADD,
-                      });
-                    }}
-                    icon={
-                      <FontAwesomeIcon
-                        icon={faAddressBook}
-                        className="padding-right-8"
-                      />
-                    }
-                  >
-                    Create Directory
-                  </Button>
+                  {(activePlan?.contactDirectoryCount as number) > 0 && (
+                    <Button
+                      type="primary"
+                      className="dark-color-bg"
+                      onClick={() => {
+                        setSearchParams({
+                          action: PAGE_ACTION.ADD,
+                        });
+                      }}
+                      icon={
+                        <FontAwesomeIcon
+                          icon={faAddressBook}
+                          className="padding-right-8"
+                        />
+                      }
+                    >
+                      Create Directory
+                    </Button>
+                  )}
                 </Col>
                 <Col className="list__grid-view">
                   <Segmented

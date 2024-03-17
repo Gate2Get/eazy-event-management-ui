@@ -20,6 +20,7 @@ export const EventAlbum = () => {
   const { selectedEvents, setEventAlbums, eventAlbums } =
     useBearStore.eventStore();
   const { setLoading } = useBearStore.appStore();
+  const { activePlan } = useBearStore.userStore();
 
   React.useEffect(() => {
     return () => {
@@ -122,15 +123,17 @@ export const EventAlbum = () => {
               {selectedImage?.length || 0}'s selected
             </Text>
           ) : null}
-          <Button
-            icon={<FileUploadOutlinedIcon fontSize="inherit" />}
-            style={{ float: "right" }}
-            onClick={() => {
-              setIsUpload(true);
-            }}
-          >
-            Upload
-          </Button>
+          {(activePlan?.albumCount as number) > eventAlbums.length && (
+            <Button
+              icon={<FileUploadOutlinedIcon fontSize="inherit" />}
+              style={{ float: "right" }}
+              onClick={() => {
+                setIsUpload(true);
+              }}
+            >
+              Upload
+            </Button>
+          )}
           {selectedImage.length ? (
             <Button
               icon={<FileUploadOutlinedIcon fontSize="inherit" />}

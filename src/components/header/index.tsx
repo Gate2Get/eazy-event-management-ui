@@ -124,7 +124,9 @@ export const Header = (props: HeaderType) => {
                   {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
                 </div>
                 <div style={{ fontSize: "12px" }}>
-                  <span>{activePlan?.pricingPlan.name}</span>
+                  <span>
+                    {activePlan?.pricingPlan?.name || "No active plan"}
+                  </span>
                 </div>
               </Text>
             </div>

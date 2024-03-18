@@ -524,7 +524,7 @@ export const AddEditContactDirectory = () => {
 
             <>
               {(action === "EDIT" || action === "ADD") &&
-                (activePlan?.pricingPlan.contactCount as number) >
+                (activePlan?.pricingPlan?.contactCount as number) >
                   directoryContactList.length && (
                   <Button onClick={onAddContact} style={{ marginTop: "9px" }}>
                     Add New

@@ -1,4 +1,4 @@
-import axios, { AxiosError, type AxiosInstance } from "axios";
+import axios, { AxiosError, type AxiosInstance, HttpStatusCode } from "axios";
 import { message, notification } from "antd";
 import { ROUTES_URL } from "../constants";
 import { MessageInstance } from "antd/es/message/interface";
@@ -63,13 +63,16 @@ export const interceptors = (
       const method = config?.method;
       const url = config?.url;
 
-      if (error?.response?.status === 401) {
+      if (error?.response?.status === HttpStatusCode.Unauthorized) {
         navigate(ROUTES_URL.LOGIN);
-      } else if (error?.response?.status === 403) {
+      } else if (error?.response?.status === HttpStatusCode.Forbidden) {
         navigate(`/${ROUTES_URL.FORBIDDEN}`);
-      } else if (error?.response?.status === 404) {
+      } else if (error?.response?.status === HttpStatusCode.NotFound) {
         navigate("/404");
-      } else if (error?.response?.status === 400) {
+      } else if (
+        error?.response?.status === HttpStatusCode.BadRequest ||
+        error?.response?.status === HttpStatusCode.ExpectationFailed
+      ) {
         console.log({ error });
         // notification.success({
         //   message: error?.response?.data?.message || "Something went wrong!",

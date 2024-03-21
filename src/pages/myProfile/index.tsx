@@ -66,7 +66,7 @@ export const MyProfile = () => {
     console.log({ user });
     form.setFieldsValue({
       ...user,
-      mobile: user?.mobile,
+      mobile: user?.mobile || "",
       pinCode: user.pinCode || "",
     });
   }, [user]);

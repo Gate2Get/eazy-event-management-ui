@@ -36,17 +36,17 @@ const adminMenu = (
             navigate(`${ROUTES_URL.EE}/${ROUTES_URL.REVIEW_TEMPLATES}`);
           },
         },
-        {
-          key: ROUTES_URL.ADD_CREDIT,
-          label: ROUTES_MENU.ADD_CREDIT,
-          icon: (
-            <AddCardIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
-          ),
-          onClick: () => {
-            otherFn?.();
-            navigate(`${ROUTES_URL.EE}/${ROUTES_URL.ADD_CREDIT}`);
-          },
-        },
+        // {
+        //   key: ROUTES_URL.ADD_CREDIT,
+        //   label: ROUTES_MENU.ADD_CREDIT,
+        //   icon: (
+        //     <AddCardIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
+        //   ),
+        //   onClick: () => {
+        //     otherFn?.();
+        //     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.ADD_CREDIT}`);
+        //   },
+        // },
       ],
     },
   ];

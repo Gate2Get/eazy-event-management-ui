@@ -66,7 +66,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
         ...payload,
         mobile: userInfo.mobile as number,
       });
-      form.setFieldValue("mobile", userInfo.mobile);
+      form.setFieldValue("mobile", userInfo.mobile || "");
       if (!userInfo.mobile) {
         setIsEdit(true);
       } else {
@@ -264,6 +264,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
                       ]}
                     >
                       <Input
+                        type="text"
                         addonBefore={prefixSelector}
                         style={{ width: "100%" }}
                       />

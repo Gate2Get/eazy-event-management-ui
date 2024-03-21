@@ -120,10 +120,10 @@ export const SERVICE_ROUTES = [
     path: ROUTES_URL.MY_PLAN,
     element: <MyPlans />,
   },
-  {
-    path: ROUTES_URL.ADD_CREDIT,
-    element: <AddCreditToWallet />,
-  },
+  // {
+  //   path: ROUTES_URL.ADD_CREDIT,
+  //   element: <AddCreditToWallet />,
+  // },
   {
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,

@@ -35,6 +35,7 @@ import {
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
+  TEMPLATE_URL_PATH_ACTION,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import {
@@ -411,7 +412,7 @@ export const EventManagement = () => {
         image={NoEvents}
         description="No events to show"
         buttonText={
-          (activePlan?.templateCount as number) > 0 ? "Create Event" : undefined
+          (activePlan?.templateCount as number) > 0 ? "Create" : undefined
         }
       />
     );
@@ -495,7 +496,7 @@ export const EventManagement = () => {
   const getTemplates = (filters = {}): void => {
     setIsTemplateFetching(true);
     API.templateManagement
-      .getTemplate(filters)
+      .getTemplate(TEMPLATE_URL_PATH_ACTION.ALL, filters)
       .then((templates: TemplateType[]) => {
         setTemplates(templates);
         setIsTemplateFetching(false);
@@ -692,7 +693,9 @@ export const EventManagement = () => {
             <Col span={12}>
               <Title level={3}> Events</Title>
             </Col>
-            <Col span={12} className="upcoming-event__pagination">
+          </Row>
+          <Row wrap gutter={[8, 8]} className="upcoming-event__pagination">
+            <Col span={24}>
               {(activePlan?.eventCount as number) > 0 && (
                 <Button
                   type="primary"
@@ -702,7 +705,7 @@ export const EventManagement = () => {
                     });
                   }}
                 >
-                  Create Event
+                  Create
                 </Button>
               )}
               <Button

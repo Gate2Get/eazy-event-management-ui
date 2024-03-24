@@ -150,4 +150,16 @@ export const userManagementAPI = {
         throw error;
       });
   },
+
+  getServiceTransactionLogs: async () => {
+    return await instance
+      .get(userManagementEndpoint.getServiceTransactionLogs)
+      .then((response) => {
+        const logs = response.data.result;
+        return logs;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

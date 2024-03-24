@@ -9,7 +9,7 @@ import { useBearStore } from "../../store";
 import { getFormattedMessage } from "../../utils/common.utils";
 import { UserOutlined } from "@ant-design/icons";
 import "./styles.scss";
-import { CHANNEL_OPTIONS } from "../../constants";
+import { CHANNEL_OPTIONS, EVENT_STATUS } from "../../constants";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
@@ -25,6 +25,7 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
     type,
     name,
     channel,
+    approvalStatus,
     // speechStatus,
     // pauseSpeech,
     // playSpeech,
@@ -171,6 +172,9 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
       }
 
       case "WHATSAPP": {
+        if (approvalStatus !== EVENT_STATUS.APPROVED) {
+          return <div dangerouslySetInnerHTML={{ __html: message.text }} />;
+        }
         let whatsapp = <></>;
         if (message) {
           console.log({ message });
@@ -224,37 +228,6 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
   };
   return (
     <div>
-      {/* <Card style={cardStyle} bordered={false}>
-        <Meta
-          description={
-            <div>
-              {name && (
-                <p>
-                  <Title level={5}>Name</Title>
-                  <Text italic>{name || ""}</Text>
-                </p>
-              )}
-              {channel && (
-                <p>
-                  <Title level={5}>Channel</Title>
-                  <Text italic>{channel || ""}</Text>
-                </p>
-              )}
-              {type && (
-                <p>
-                  <Title level={5}>Type</Title>
-                  <Text italic>{type || ""}</Text>
-                </p>
-              )}
-              <p>
-                <Title level={5}>Message</Title>
-                <Text>{renderTemplate()}</Text>
-              </p>
-            </div>
-          }
-        />
-      </Card> */}
-
       <div className="phone">
         <Card style={cardStyle} className="chat-container">
           <Card.Meta

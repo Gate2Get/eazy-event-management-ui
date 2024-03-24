@@ -462,3 +462,9 @@ form {
 .ant-radio-button-wrapper-checked::before {
   background-color: rgb(18, 183, 106) !important;
 }
+
+.ant-segmented-item.ant-segmented-item-selected {
+  .ant-segmented-item-label {
+    font-weight: 400;
+  }
+}

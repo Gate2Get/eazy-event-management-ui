@@ -7,6 +7,9 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import TextFieldsIcon from "@mui/icons-material/TextFields";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import ChromeReaderModeIcon from "@mui/icons-material/ChromeReaderMode";
+import EventNoteIcon from "@mui/icons-material/EventNote";
 
 export const ROUTES_URL = {
   DASHBOARD: "dashboard",
@@ -33,6 +36,7 @@ export const ROUTES_URL = {
   WALLET: "wallet",
   MY_PLAN: "my-plan",
   ADD_CREDIT: "add-credit",
+  SERVICE_TRANSACTION_LOGS: "service-transaction-logs",
 };
 
 export const ROUTES_MENU = {
@@ -54,6 +58,7 @@ export const ROUTES_MENU = {
   WALLET: "wallet",
   MY_PLAN: "My Plan",
   ADD_CREDIT: "Add Credit",
+  SERVICE_TRANSACTION_LOGS: "Transaction Logs",
 };
 
 export const SERVICE_MENU = [
@@ -71,6 +76,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.WALLET,
   ROUTES_MENU.ADD_CREDIT,
   ROUTES_MENU.MY_PLAN,
+  ROUTES_MENU.SERVICE_TRANSACTION_LOGS,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -224,10 +230,45 @@ export const TEMPLATE_CHANNEL_OPTIONS = [
   {
     label: (
       <>
+        <SmsIcon fontSize="inherit" /> SMS
+      </>
+    ),
+    value: "SMS",
+  },
+  {
+    label: (
+      <>
+        <WhatsAppIcon fontSize="inherit" /> Whatsapp
+      </>
+    ),
+    value: "WHATSAPP",
+  },
+  {
+    label: (
+      <>
         <PhoneIcon fontSize="inherit" /> Voice call
       </>
     ),
     value: "VOICE_CALL",
+  },
+];
+
+export const TEMPLATE_REQUEST_CHANNEL_OPTIONS = [
+  {
+    label: (
+      <>
+        <SmsIcon fontSize="inherit" /> SMS
+      </>
+    ),
+    value: "SMS",
+  },
+  {
+    label: (
+      <>
+        <WhatsAppIcon fontSize="inherit" /> Whatsapp
+      </>
+    ),
+    value: "WHATSAPP",
   },
 ];
 
@@ -413,3 +454,37 @@ export const PRICE_CONFIG: Record<string, string> = {
   SMS: "smsPrice",
   WHATSAPP: "whatsAppPrice",
 };
+
+export const SERVICE_TRANSACTION_LOGS_MAP: Record<string, string> = {
+  TEMPLATE: "Template",
+  CONTACT_DIRECTORY: "Contact Directory",
+  EVENT: "Event",
+};
+
+export const SERVICE_TRANSACTION_LOGS_ICONS: Record<string, React.ReactNode> = {
+  TEMPLATE: <ContactsIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />,
+  CONTACT_DIRECTORY: (
+    <ChromeReaderModeIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />
+  ),
+  EVENT: <EventNoteIcon style={{ fontSize: "20px", fontWeight: "bolder" }} />,
+};
+
+export const SERVICE_TRANSACTION_LOGS_URL: Record<string, string> = {
+  TEMPLATE: ROUTES_URL.TEMPLATE_MANAGEMENT,
+  CONTACT_DIRECTORY: ROUTES_URL.CONTACT_MANAGEMENT,
+  EVENT: ROUTES_URL.EVENT_MANAGEMENT,
+};
+
+export const TEMPLATE_URL_PATH_ACTION = {
+  USER: "user",
+  ALL: "all",
+  STANDARD: "standard",
+};
+
+export const TEMPLATE_ACTION_TAB = [
+  { label: "Mine", value: TEMPLATE_URL_PATH_ACTION.USER },
+  {
+    label: "Standard",
+    value: TEMPLATE_URL_PATH_ACTION.STANDARD,
+  },
+];

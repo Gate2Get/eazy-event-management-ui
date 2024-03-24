@@ -106,7 +106,7 @@ export const contactManagementEndpoint = {
 export const templateManagementEndpoint = {
   createTemplate: "/api/v1/app/message/template",
   reAppealTemplate: "/api/v1/app/message/template/re-appeal",
-  getTemplate: "/api/v1/app/message/template",
+  getTemplate: "/api/v1/app/message",
   getTemplateById: "/api/v1/app/message/template/",
   updateTemplate: "/api/v1/app/message/template",
   deleteTemplate: "/api/v1/app/message/template/",
@@ -127,6 +127,7 @@ export const userManagementEndpoint = {
   requestOtp: "/api/v1/app/user/request-otp",
   updateUserInfo: "/api/v1/app/user/info",
   logout: "/api/v1/app/auth/logout",
+  getServiceTransactionLogs: "/api/v1/app/service-transaction/logs",
 };
 
 export const eventManagementEndpoint = {

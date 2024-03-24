@@ -23,6 +23,7 @@ import { TemplateManagement } from "../pages/templateManagement";
 import { TermsOfService } from "../pages/termsOfService";
 import { Wallet } from "../pages/wallet";
 import { MyPlans } from "../pages/myPlans";
+import { ServiceTransactionLogs } from "../pages/serviceTransactionLogs";
 
 export const APP_ROUTES = [
   {
@@ -120,6 +121,11 @@ export const SERVICE_ROUTES = [
     path: ROUTES_URL.MY_PLAN,
     element: <MyPlans />,
   },
+  {
+    path: ROUTES_URL.SERVICE_TRANSACTION_LOGS,
+    element: <ServiceTransactionLogs />,
+  },
+
   // {
   //   path: ROUTES_URL.ADD_CREDIT,
   //   element: <AddCreditToWallet />,

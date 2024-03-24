@@ -34,6 +34,9 @@ import {
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
   TEMPLATE_BUTTONS,
+  TEMPLATE_URL_PATH_ACTION,
+  TEMPLATE_ACTION_TAB,
+  ROUTES_URL,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import { TemplateAdminType, TemplateType } from "../../types";
@@ -54,7 +57,7 @@ import {
 } from "../../configs/antd.config";
 import { EmptyData } from "../../components/EmptyData";
 import NoTemplate from "../../assets/svg/no-template.svg";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { AudioRecorder } from "../../components/audioRecorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -71,7 +74,7 @@ const { Panel } = Collapse;
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text, Paragraph, Link } = Typography;
 const { Search } = Input;
 
 const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
@@ -97,10 +100,12 @@ export const TemplateManagement = (): React.ReactElement => {
     templates,
   } = useBearStore.templateStore();
 
+  const navigate = useNavigate();
   let filteredGrid: any[] = [];
   const [searchValue, setSearchValue] = React.useState("");
   const [appealComments, setAppealComments] = React.useState("");
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
+  const [tab, setTab] = React.useState(TEMPLATE_URL_PATH_ACTION.USER);
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
   const [isDeleteConfirmation, setIsDeleteConfirmation]: [
     boolean,
@@ -180,11 +185,19 @@ export const TemplateManagement = (): React.ReactElement => {
       });
       form.resetFields();
     }
+    console.log({ action, TEMPLATE_CHANNEL_OPTIONS });
+    if (action === "ADD" && TEMPLATE_CHANNEL_OPTIONS.length === 1) {
+      form.setFieldValue("channel", TEMPLATE_CHANNEL_OPTIONS[0].value);
+    }
   }, [action, form]);
 
   React.useEffect(() => {
     urlhandler(searchParams, setAction, getTemplatesById, getTemplates);
   }, [searchParams]);
+
+  React.useEffect(() => {
+    getTemplates();
+  }, [tab]);
 
   React.useEffect(() => {
     setIsListView(localStorage.getItem(LOCAL_STORAGE_VIEW.TEMPLATE) === "List");
@@ -260,7 +273,9 @@ export const TemplateManagement = (): React.ReactElement => {
       onClick: () => onViewSelect(data),
       icon: <EyeOutlined />,
     },
-    ...(data.approvalStatus !== EVENT_STATUS.APPROVED
+    ...(tab === TEMPLATE_URL_PATH_ACTION.STANDARD
+      ? []
+      : data.approvalStatus !== EVENT_STATUS.APPROVED
       ? [
           {
             label: "Edit",
@@ -270,12 +285,16 @@ export const TemplateManagement = (): React.ReactElement => {
           },
         ]
       : []),
-    {
-      label: "Delete",
-      key: "delete",
-      onClick: () => onDeleteSelect(data),
-      icon: <DeleteOutlined />,
-    },
+    ...(tab !== TEMPLATE_URL_PATH_ACTION.STANDARD
+      ? [
+          {
+            label: "Delete",
+            key: "delete",
+            onClick: () => onDeleteSelect(data),
+            icon: <DeleteOutlined />,
+          },
+        ]
+      : []),
   ];
 
   const onViewSelect = (record: TemplateType) => {
@@ -301,7 +320,10 @@ export const TemplateManagement = (): React.ReactElement => {
         if (template.channel === "VOICE_CALL") {
           setMessages(template.message);
           form.setFieldsValue(template);
-        } else if (template.channel === "SMS") {
+        } else if (
+          template.channel === "SMS" ||
+          template.channel === "WHATSAPP"
+        ) {
           form.setFieldsValue({ ...template, message: template.message.text });
         }
         setLoading(false);
@@ -315,7 +337,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const getTemplates = (): void => {
     setLoading(true);
     API.templateManagement
-      .getTemplate()
+      .getTemplate(tab)
       .then((templates: TemplateType[]) => {
         setTemplates(templates);
         setLoading(false);
@@ -386,7 +408,7 @@ export const TemplateManagement = (): React.ReactElement => {
     let message = values.message;
     if (values.channel === "VOICE_CALL") {
       message = getFormattedMessage(messages, values.channel);
-    } else if (values.channel === "SMS") {
+    } else if (values.channel === "SMS" || values.channel === "WHATSAPP") {
       message = {
         text: message,
       };
@@ -439,13 +461,17 @@ export const TemplateManagement = (): React.ReactElement => {
     if (column.key === TEMPLATE_COLUMN_KEYS.ACTION) {
       column.render = (record) => (
         <Space>
-          <EditOutlinedIcon
-            fontSize="inherit"
-            onClick={() => {
-              onEditSelect(record);
-            }}
-            style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
-          />
+          {tab === TEMPLATE_URL_PATH_ACTION.STANDARD ? (
+            <></>
+          ) : record.approvalStatus !== EVENT_STATUS.APPROVED ? (
+            <EditOutlinedIcon
+              fontSize="inherit"
+              onClick={() => {
+                onEditSelect(record);
+              }}
+              style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+            />
+          ) : null}
           <VisibilityIcon
             fontSize="inherit"
             onClick={() => {
@@ -657,10 +683,21 @@ export const TemplateManagement = (): React.ReactElement => {
             ) : (
               <Col {...colOption(24)}>
                 <Row wrap gutter={[8, 8]}>
-                  <Col span={12}>
+                  <Col flex={12}>
                     <Title level={3}> Template</Title>
                   </Col>
-                  <Col span={12} className="template__pagination">
+                </Row>
+                <Row wrap gutter={[8, 8]}>
+                  <Col flex={12} className="template__pagination">
+                    <Segmented
+                      style={{ float: "left" }}
+                      options={TEMPLATE_ACTION_TAB}
+                      onChange={(tab) => {
+                        setTab(tab);
+                      }}
+                    />
+                  </Col>
+                  <Col flex={12} className="template__pagination">
                     {(activePlan?.templateCount as number) > 0 && (
                       <Button
                         type="primary"
@@ -670,7 +707,7 @@ export const TemplateManagement = (): React.ReactElement => {
                           });
                         }}
                       >
-                        Create Template
+                        Create
                       </Button>
                     )}
                     <Segmented
@@ -696,6 +733,7 @@ export const TemplateManagement = (): React.ReactElement => {
                     />
                   </Col>
                 </Row>
+                <Row></Row>
               </Col>
             )}
 
@@ -730,15 +768,17 @@ export const TemplateManagement = (): React.ReactElement => {
                       </Button>
                     </>
                   )}
-                  <Button
-                    danger
-                    onClick={() => {
-                      onDeleteSelect(selectedTemplate);
-                    }}
-                    style={{ marginLeft: ".5rem" }}
-                  >
-                    Delete
-                  </Button>
+                  {tab === TEMPLATE_URL_PATH_ACTION.USER && (
+                    <Button
+                      danger
+                      onClick={() => {
+                        onDeleteSelect(selectedTemplate);
+                      }}
+                      style={{ marginLeft: ".5rem" }}
+                    >
+                      Delete
+                    </Button>
+                  )}
                 </div>
               </Col>
             )}
@@ -821,9 +861,7 @@ export const TemplateManagement = (): React.ReactElement => {
               image={NoTemplate}
               description="No template to show"
               buttonText={
-                (activePlan?.templateCount as number) > 0
-                  ? "Create Template"
-                  : undefined
+                (activePlan?.templateCount as number) > 0 ? "Create" : undefined
               }
             />
           )}
@@ -930,7 +968,8 @@ export const TemplateManagement = (): React.ReactElement => {
             </>
           )}
 
-          {form.getFieldValue("channel") === "SMS" ? (
+          {form.getFieldValue("channel") === "SMS" ||
+          form.getFieldValue("channel") === "WHATSAPP" ? (
             <Form.Item
               label="Enter message"
               name="message"

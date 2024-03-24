@@ -38,7 +38,10 @@ export const PreviewContact = (props: PreviewContactType) => {
   } = props;
   const { screen, isError, setError } = useBearStore.appStore();
   const { setIsListView, isListView } = useBearStore.contactStore();
-  const [selectedKey, setSelectedKey] = React.useState<ContactListType[]>([]);
+  const [selectedContactList, setSelectedContactList] = React.useState<
+    ContactListType[]
+  >([]);
+  const [selectedKeys, setSelectedKeys] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     setIsListView(
@@ -125,13 +128,18 @@ export const PreviewContact = (props: PreviewContactType) => {
   };
 
   const onSelectCard = (record: ContactListType, isChecked: boolean) => {
-    let _selectedKeys = [...selectedKey];
+    console.log({ record, isChecked });
+    let _selectedKeys = [...selectedContactList];
     if (isChecked) {
       _selectedKeys.push(record);
+      setSelectedKeys((selectedKeys) => [...selectedKeys, record.id]);
     } else {
       _selectedKeys = _selectedKeys.filter((item) => item.id !== record.id);
+      setSelectedKeys((selectedKeys) =>
+        selectedKeys.filter((item) => item !== record.id)
+      );
     }
-    setSelectedKey(_selectedKeys);
+    setSelectedContactList(_selectedKeys);
   };
 
   const onAddNewContct = () => {
@@ -146,7 +154,7 @@ export const PreviewContact = (props: PreviewContactType) => {
   };
 
   const onRemoveContact = () => {
-    const _selectedKeys = selectedKey.map((item) => item.id);
+    const _selectedKeys = selectedContactList.map((item) => item.id);
     const contacts = contactList.map((contact) => {
       if (_selectedKeys.includes(contact.id)) {
         contact.action = "DELETE";
@@ -154,7 +162,7 @@ export const PreviewContact = (props: PreviewContactType) => {
       return contact;
     });
     setContactList?.(contacts);
-    setSelectedKey([]);
+    setSelectedContactList([]);
   };
 
   const onSaveClick = async () => {
@@ -175,8 +183,11 @@ export const PreviewContact = (props: PreviewContactType) => {
   if (isEditable && isEdit) {
     otherProps = {
       selectionMode: "checkbox",
-      selection: selectedKey,
-      onSelectionChange: (e: any) => setSelectedKey(e.value),
+      selection: selectedContactList,
+      onSelectionChange: (e: { value: ContactListType[] }) => {
+        setSelectedContactList(e.value);
+        setSelectedKeys(e.value.map((record) => record.id));
+      },
       dataKey: "id",
     };
   }
@@ -224,7 +235,7 @@ export const PreviewContact = (props: PreviewContactType) => {
                     Add new
                   </Button>
                 ) : null}
-                {selectedKey?.length ? (
+                {selectedContactList?.length ? (
                   <Button
                     style={{ float: "right", marginRight: "0.5rem" }}
                     danger
@@ -273,9 +284,11 @@ export const PreviewContact = (props: PreviewContactType) => {
                 id={contact.id}
                 status={contact.status}
                 editable={isEdit}
+                isSelected={selectedKeys.includes(contact.id)}
                 onSelectCard={(id, isChecked) =>
                   onSelectCard(contact, isChecked)
                 }
+                onContactChange={onContactChange}
               />
             </Col>
           ))}

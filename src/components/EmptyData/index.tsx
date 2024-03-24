@@ -21,6 +21,7 @@ export const EmptyData = (props: EmptyDataType) => {
       className={`empty-data__container ${screen}`}
       direction="vertical"
       size="small"
+      style={{ width: "100%" }}
     >
       <div>
         <img loading="lazy" src={image} alt="" height={250} width="100%" />

@@ -273,7 +273,9 @@ export const MyInvitation = () => {
             <Col span={12}>
               <Title level={3}> My Invitation</Title>
             </Col>
-            <Col span={12} className="upcoming-event__pagination">
+          </Row>
+          <Row wrap gutter={[8, 8]}>
+            <Col span={24} className="upcoming-event__pagination">
               <Button
                 type="text"
                 icon={

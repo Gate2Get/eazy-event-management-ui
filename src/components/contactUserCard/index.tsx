@@ -65,6 +65,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     </Avatar>
   );
 
+  console.log({ props });
   return (
     <Badge.Ribbon
       className={!status ? "contact-card__no-status" : ""}
@@ -80,9 +81,10 @@ export const ContactUserCard = (props: ContactUserCardType) => {
             {editable && (
               <div>
                 <Checkbox
+                  checked={isSelected}
                   style={{ position: "relative", left: "20%" }}
-                  onChange={() => {
-                    onSelectCard?.(id, !isSelected);
+                  onChange={(e) => {
+                    onSelectCard?.(id, e.target.checked);
                   }}
                 />
               </div>

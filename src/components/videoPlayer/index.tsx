@@ -20,7 +20,7 @@ export const VideoPlayer = (props: VideoPlayerType) => {
           <ReactPlayer {...props} />
         </div>
       )}
-      ;
+
       {(!isVideoEnable || !url) && (
         <NoData
           description={
@@ -44,7 +44,6 @@ export const VideoPlayer = (props: VideoPlayerType) => {
           }
         />
       )}
-      ;
     </div>
   );
 };

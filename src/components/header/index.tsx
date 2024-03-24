@@ -10,6 +10,7 @@ import { ROUTES_URL } from "../../constants";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const { Text } = Typography;
 
@@ -65,6 +66,11 @@ export const Header = (props: HeaderType) => {
     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN}`);
   };
 
+  const handleServiceTransactionLogsClick = () => {
+    hide();
+    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.SERVICE_TRANSACTION_LOGS}`);
+  };
+
   return (
     <div className="header__container">
       <Row>
@@ -104,6 +110,13 @@ export const Header = (props: HeaderType) => {
                   onClick={handleMyPlanClick}
                 >
                   My plan
+                </Button>
+                <Button
+                  type="text"
+                  icon={<ReceiptLongIcon fontSize="inherit" />}
+                  onClick={handleServiceTransactionLogsClick}
+                >
+                  Transaction logs
                 </Button>
                 <Button
                   type="text"

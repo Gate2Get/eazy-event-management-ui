@@ -396,3 +396,13 @@ export type UserPricingPlanType = {
   updatedAt: string;
   pricingPlan: PricingPlanType;
 };
+
+export type ServiceTransactionLogsType = {
+  id?: number;
+  transactionId?: string;
+  transactionType?: string;
+  userId?: String;
+  userPlanId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};

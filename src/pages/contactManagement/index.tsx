@@ -85,55 +85,52 @@ export const ContactManagement = () => {
             <Col span={12}>
               <Title level={3}> Contact</Title>
             </Col>
-            <Col span={12} className="contact__pagination">
-              <Row>
-                <Col flex={12} className="create-directory__button">
-                  {(activePlan?.contactDirectoryCount as number) > 0 && (
-                    <Button
-                      type="primary"
-                      className="dark-color-bg"
-                      onClick={() => {
-                        setSearchParams({
-                          action: PAGE_ACTION.ADD,
-                        });
-                      }}
-                      icon={
-                        <FontAwesomeIcon
-                          icon={faAddressBook}
-                          className="padding-right-8"
-                        />
-                      }
-                    >
-                      Create Directory
-                    </Button>
-                  )}
-                </Col>
-                <Col className="list__grid-view">
-                  <Segmented
-                    value={isListView ? "List" : "Card"}
-                    options={[
-                      {
-                        value: "List",
-                        icon: <BarsOutlined />,
-                      },
-                      {
-                        value: "Card",
-                        icon: <AppstoreOutlined />,
-                      },
-                    ]}
-                    onChange={(value) => {
-                      localStorage.setItem(
-                        LOCAL_STORAGE_VIEW.CONTACT_DIRECTORY,
-                        value.toString()
-                      );
-                      setIsListView(value === "List");
-                    }}
-                  />
-                </Col>
-              </Row>
+          </Row>
+          <Row wrap gutter={[8, 8]}>
+            <Col flex={12} className="contact__pagination">
+              {(activePlan?.contactDirectoryCount as number) > 0 && (
+                <Button
+                  type="primary"
+                  className="dark-color-bg"
+                  onClick={() => {
+                    setSearchParams({
+                      action: PAGE_ACTION.ADD,
+                    });
+                  }}
+                  icon={
+                    <FontAwesomeIcon
+                      icon={faAddressBook}
+                      className="padding-right-8"
+                    />
+                  }
+                >
+                  Create
+                </Button>
+              )}
+            </Col>
+            <Col className="list__grid-view contact__pagination">
+              <Segmented
+                value={isListView ? "List" : "Card"}
+                options={[
+                  {
+                    value: "List",
+                    icon: <BarsOutlined />,
+                  },
+                  {
+                    value: "Card",
+                    icon: <AppstoreOutlined />,
+                  },
+                ]}
+                onChange={(value) => {
+                  localStorage.setItem(
+                    LOCAL_STORAGE_VIEW.CONTACT_DIRECTORY,
+                    value.toString()
+                  );
+                  setIsListView(value === "List");
+                }}
+              />
             </Col>
           </Row>
-
           <ListContactDirectory />
         </>
       )}

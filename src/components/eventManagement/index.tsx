@@ -166,7 +166,7 @@ export const EventManagement = (props: EventManagementType) => {
         return (
           <RangePicker
             disabledDate={disabledDate}
-            disabledTime={disabledRangeTime}
+            // disabledTime={disabledRangeTime}
             showTime={{
               hideDisabledOptions: true,
               defaultValue: [dayjs("00:00", "HH:mm"), dayjs("11:59", "HH:mm")],

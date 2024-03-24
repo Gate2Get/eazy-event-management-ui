@@ -2,7 +2,7 @@ import {
   templateManagementEndpoint,
   instance,
 } from "../../configs/axios.config";
-import {  TemplateAdminType, TemplateType } from "../../types";
+import { TemplateAdminType, TemplateType } from "../../types";
 
 const apiTimer = 1000;
 
@@ -46,10 +46,11 @@ export const templateManagementAPI = {
         throw error;
       });
   },
-  getTemplate: async (filters = {}) => {
-    console.log({ filters });
+  getTemplate: async (action: string, filters = {}) => {
     return await instance
-      .get(templateManagementEndpoint.getTemplate, { params: filters })
+      .get(`${templateManagementEndpoint.getTemplate}/${action}/template`, {
+        params: filters,
+      })
       .then((response) => {
         const result = response.data.result;
         return result;
@@ -61,7 +62,8 @@ export const templateManagementAPI = {
   reAppealTemplate: async (template: TemplateAdminType) => {
     const { comment, id } = template;
     const toUpdate = {
-      id, comment
+      id,
+      comment,
     };
     return await instance
       .put(templateManagementEndpoint.reAppealTemplate, toUpdate)

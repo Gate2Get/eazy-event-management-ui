@@ -60,12 +60,15 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       if (searchParams.get("returnTo")) {
         returnTo = searchParams.get("returnTo");
       } else if (window.location.pathname === ROUTES_URL.AUTHORIZER) {
-        returnTo = `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
+        returnTo = btoa(`${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`);
       } else {
         returnTo =
-          window.location.pathname === "/"
-            ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
-            : window.location.pathname;
+          window.location.pathname ===
+          btoa(
+            "/"
+              ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
+              : window.location.pathname
+          );
       }
       navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${returnTo}`);
     }

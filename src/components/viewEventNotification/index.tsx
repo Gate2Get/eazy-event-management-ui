@@ -5,6 +5,7 @@ import {
   CHANNEL_OPTIONS,
   DATE_TIME_FORMAT,
   EVENT_STATUS,
+  PRICE_CONFIG,
   ROUTES_URL,
 } from "../../constants";
 import "./styles.scss";
@@ -37,13 +38,15 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
 
   const navigate = useNavigate();
 
-  const { user } = useBearStore.userStore();
+  const { user, activePlan } = useBearStore.userStore();
   const template = templates.find(
     (template) => template.id === messageTemplate
   );
   const contacts = contactList.filter((contact) =>
     contactDirectory.includes(contact.id as string)
   );
+
+  const channelPriceMap: any = activePlan?.pricingPlan;
 
   return (
     <>
@@ -88,7 +91,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         {[EVENT_STATUS.NOT_STARTED, EVENT_STATUS.NO_CREDITS].includes(
           status as string
         ) &&
-          price > (user?.walletBalance as number) && (
+          price > (activePlan?.notificationCredit as number) && (
             <Alert
               message={
                 <>
@@ -102,7 +105,7 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
                   >
                     Click here
                   </Button>
-                  to add credit to the wallet.
+                  to buy a new plan.
                 </>
               }
               type="error"
@@ -120,15 +123,18 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
         >
           View notification
         </Button>
-        <Button
-          icon={<SendIcon fontSize="inherit" />}
-          type="link"
-          onClick={sendNotification}
-          className="app-link"
-          style={{ padding: "0px" }}
-        >
-          Send to me
-        </Button>
+        {(activePlan?.notificationCredit as number) >=
+          channelPriceMap?.[PRICE_CONFIG[channel as string]] && (
+          <Button
+            icon={<SendIcon fontSize="inherit" />}
+            type="link"
+            onClick={sendNotification}
+            className="app-link"
+            style={{ padding: "0px" }}
+          >
+            Send to me
+          </Button>
+        )}
       </Space>
     </>
   );

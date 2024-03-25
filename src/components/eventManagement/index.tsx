@@ -500,11 +500,13 @@ export const EventManagement = (props: EventManagementType) => {
                     expandIcon={({ isActive }) => (
                       <CaretRightOutlined rotate={isActive ? 90 : 0} />
                     )}
+                    className="notification-collapse"
                   >
                     <Panel
                       header={`${notification.name || "New"}`}
                       key="1"
                       collapsible="icon"
+                      className={`notification-collapse-${notification.status?.toLowerCase()}`}
                       extra={
                         <Row>
                           <Col flex={12}>
@@ -602,12 +604,20 @@ export const EventManagement = (props: EventManagementType) => {
                   </Collapse>
                 </Space>
               ))}
-              <Button
-                icon={<NotificationAddOutlinedIcon fontSize="inherit" />}
-                onClick={handleAddNotification}
-              >
-                Add Notification
-              </Button>
+              {(activePlan?.notificationCredit as number) > 0 ? (
+                <Button
+                  icon={<NotificationAddOutlinedIcon fontSize="inherit" />}
+                  onClick={handleAddNotification}
+                >
+                  Add Notification
+                </Button>
+              ) : (
+                <Alert
+                  message={`You do not have sufficient notification credits available with your current plan to create notifications.`}
+                  type="error"
+                  showIcon
+                />
+              )}
             </Form.Item>
             {["EDIT", "ADD"].includes(action as string) && (
               <Form.Item>

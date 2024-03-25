@@ -29,9 +29,9 @@ export const Authorizer = () => {
         setLoading(false);
         setIsAuthorized(isAuthenticated);
         if (isAuthenticated) {
-          const url =
-            searchParams.get("returnTo") ||
-            `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
+          const url = searchParams.get("returnTo")
+            ? atob(searchParams.get("returnTo") as string)
+            : `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
           console.log({ url });
           navigate(url);
         } else {

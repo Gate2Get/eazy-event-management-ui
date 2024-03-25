@@ -70,8 +70,8 @@ export const Home = () => {
           Get Started
         </Button>
         <Title level={screen === "MOBILE" ? 4 : 3} className="sub-heading">
-          Make every event memorable with our voice call, SMS notification
-          service.
+          Make every event memorable with our voice call, SMS and whatsapp
+          notification service.
         </Title>
       </div>
       <div

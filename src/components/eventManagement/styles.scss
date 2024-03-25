@@ -42,4 +42,23 @@
       display: none;
     }
   }
+
+  .notification-collapse-no_credits, .notification-collapse-free_credits {
+    border-left: 3px solid #ff4d4f !important;
+    border-radius: 0;
+  }
+
+  .notification-collapse-in_progress {
+    border-left: 3px solid #1677ff !important;
+    border-radius: 0;
+  }
+
+  .notification-collapse-completed {
+    border-left: 3px solid rgb(18, 183, 106) !important;
+    border-radius: 0;
+  }
+
+  .notification-collapse-not_started {
+    border-radius: 0;
+  }
 }

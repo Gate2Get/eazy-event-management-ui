@@ -91,6 +91,7 @@ export const EVENT_STATUS = {
   IN_PROGRESS: "IN_PROGRESS",
   APPEAL: "APPEAL",
   NO_CREDITS: "NO_CREDITS",
+  FREE_CREDITS: "FREE_CREDITS",
   // DRAFT: "DRAFT",
 };
 
@@ -116,6 +117,7 @@ export const EVENT_STATUS_LABEL: Record<string, string> = {
   COMPLETED: "Completed",
   NOT_STARTED: "Not started",
   NO_CREDITS: "No Credits",
+  FREE_CREDITS: "Free plan",
 };
 
 export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
@@ -126,6 +128,7 @@ export const EVENT_STATUS_LABEL_COLOR: Record<string, string> = {
   [EVENT_STATUS_LABEL.APPROVED]: "success",
   [EVENT_STATUS_LABEL.COMPLETED]: "success",
   [EVENT_STATUS_LABEL.NO_CREDITS]: "error",
+  [EVENT_STATUS_LABEL.FREE_CREDITS]: "error",
 };
 
 export const TEMPLATE_STATUS_LABEL: Record<string, string> = {

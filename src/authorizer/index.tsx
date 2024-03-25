@@ -29,11 +29,11 @@ export const Authorizer = () => {
         setLoading(false);
         setIsAuthorized(isAuthenticated);
         if (isAuthenticated) {
-          const url = searchParams.get("returnTo")
-            ? (searchParams.get("returnTo") as string)
-            : `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
+          const url =
+            searchParams.get("returnTo") ||
+            `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
           console.log({ url });
-          navigate(decodeURIComponent(url));
+          navigate(url);
         } else {
           navigate(ROUTES_URL.LOGIN);
         }

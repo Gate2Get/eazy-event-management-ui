@@ -68,11 +68,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
             ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
             : window.location.pathname);
       }
-      navigate(
-        `${ROUTES_URL.AUTHORIZER}?returnTo=${encodeURIComponent(
-          returnTo as string
-        )}`
-      );
+      navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${returnTo}`);
     }
     getUserInfo();
     getAlerts();

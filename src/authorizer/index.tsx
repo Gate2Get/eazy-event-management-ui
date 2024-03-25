@@ -30,10 +30,10 @@ export const Authorizer = () => {
         setIsAuthorized(isAuthenticated);
         if (isAuthenticated) {
           const url = searchParams.get("returnTo")
-            ? atob(searchParams.get("returnTo") as string)
+            ? (searchParams.get("returnTo") as string)
             : `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`;
           console.log({ url });
-          navigate(url);
+          navigate(decodeURIComponent(url));
         } else {
           navigate(ROUTES_URL.LOGIN);
         }

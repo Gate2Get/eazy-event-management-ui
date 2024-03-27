@@ -21,7 +21,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Remove default nginx index page
 RUN rm -f /usr/share/nginx/html/index.html
 
-# Copy custom nginx configuration
+# Copy custom nginx configurations
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80

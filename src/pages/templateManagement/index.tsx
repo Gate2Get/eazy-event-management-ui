@@ -105,7 +105,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const [searchValue, setSearchValue] = React.useState("");
   const [appealComments, setAppealComments] = React.useState("");
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
-  const [tab, setTab] = React.useState(TEMPLATE_URL_PATH_ACTION.USER);
+  const [tab, setTab] = React.useState<string>(TEMPLATE_URL_PATH_ACTION.USER);
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
   const [isDeleteConfirmation, setIsDeleteConfirmation]: [
     boolean,
@@ -693,7 +693,7 @@ export const TemplateManagement = (): React.ReactElement => {
                       style={{ float: "left" }}
                       options={TEMPLATE_ACTION_TAB}
                       onChange={(tab) => {
-                        setTab(tab);
+                        setTab(tab as string);
                       }}
                     />
                   </Col>

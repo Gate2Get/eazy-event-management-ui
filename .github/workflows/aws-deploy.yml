@@ -53,6 +53,8 @@ jobs:
             sudo yum update
             sudo yum install -y docker
             sudo yum install awscli -y
+            sudo service docker start
+            sudo usermod -aG docker ec2-user  # Add ec2-user to the docker group to avoid needing sudo for docker commands
             sudo $(aws ecr get-login --no-include-email --region ap-south-1);
             sudo docker stop eazy-event-management-ui || true
             sudo docker rm eazy-event-management-ui || true

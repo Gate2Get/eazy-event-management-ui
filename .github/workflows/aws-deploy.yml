@@ -1,8 +1,10 @@
-name: Deploy to AWS
+name: Deploy React App to AWS
+
 on:
   push:
     branches:
       - "dev"
+
 env:
   AWS_REGION: ap-south-1
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
@@ -16,18 +18,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install Node.js and npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: Install dependencies and build React app
+        run: |
+          npm install
+          npm run build
       - name: Login to AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - name: Build, push docker image
+      - name: Build, tag, and push Docker image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: eazy-event-management-ui
           IMAGE_TAG: ${{ github.sha }}
-        run: |-
+        run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-      - name: Deploy docker image to EC2
+      - name: Deploy Docker image to EC2
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: eazy-event-management-ui
@@ -39,7 +49,7 @@ jobs:
           username: ubuntu
           key: ${{ env.PRIVATE_SSH_KEY }}
           envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_DEFAULT_REGION,AWS_REGION
-          script: |-
+          script: |
             sudo apt update
             sudo apt install docker.io -y
             sudo apt install awscli -y

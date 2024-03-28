@@ -5,8 +5,13 @@ on:
     branches:
       - main
 
+env:
+  AWS_REGION: ap-south-1
+  REGISTRY: eazyevent
+  REPOSITORY: eazy-event-management-ui
+
 jobs:
-  build:
+  Build:
     runs-on: [ubuntu-latest]
 
     steps:
@@ -16,26 +21,50 @@ jobs:
       - name: Login to docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Build Docker image from Docker Hub
-        run: docker build -t eazyevent/eazy-event-management-ui .
-
-      - name: Publish image to docker hub
-        run: docker push eazyevent/eazy-event-management-ui:latest
-
-  deploy:
-    needs: build
-    runs-on: [aws-ec2]
-    steps:
-      - name: Remove unused image from ec2
-        run: docker image prune -af
-      - name: Pull image from docker hub
-        run: docker pull eazyevent/eazy-event-management-ui:latest
-      - name: Delete old containers
-        run: docker rm -f eazy-event-management-ui-container
-      - name: Run docker container
+      - name: Build and publish Docker image to Docker Hub
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          REPOSITORY: ${{ env.REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker run -d -p 80:80 --name eazy-event-management-ui-container \
-          -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
-          eazyevent/eazy-event-management-ui
-      - name: Remove unused image from ec2
-        run: docker image prune -af
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+  ProductionDeploy:
+    name: Deploy to production
+    if: github.event_name == 'refs/heads/main'
+    needs: Build
+    runs-on: [ubuntu-latest]
+    environment:
+      name: Production
+      url: "https://eazy-event.com"
+    steps:
+      - name: Deploy Docker image to EC2
+        env:
+          REGISTRY: ${{ env.REGISTRY }}
+          REPOSITORY: ${{ env.REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+          AWS_DEFAULT_REGION: ap-south-1
+          PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+          SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY }}
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SERVER_PUBLIC_IP }}
+          username: ec2-user
+          key: ${{ env.PRIVATE_SSH_KEY }}
+          envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_DEFAULT_REGION,AWS_REGION
+          script: |
+            sudo yum update
+            sudo yum install -y docker
+            sudo yum install awscli -y
+            sudo service docker start
+            sudo usermod -aG docker ec2-user  # Add ec2-user to the docker group to avoid needing sudo for docker commands
+            sudo docker image prune -af
+            sudo docker rm -f eazy-event-management-ui-container
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker rm -f eazy-event-management-ui-container
+            docker run -d -p 80:80 --name eazy-event-management-ui-container \
+            -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
+            $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker image prune -af

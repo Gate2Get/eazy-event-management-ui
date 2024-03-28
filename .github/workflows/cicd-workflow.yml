@@ -31,7 +31,6 @@ jobs:
 
   ProductionDeploy:
     name: Deploy to production
-    if: github.event_name == 'refs/heads/main'
     needs: Build
     runs-on: [ubuntu-latest]
     environment:

@@ -262,6 +262,19 @@ export type TemplateAdminType = {
   comment: string;
 };
 
+export type PlanType = {
+  id: string;
+  name: string;
+  type: string;
+  eventCount: number;
+  contactDirectoryCount: number;
+  contactCount: number;
+  templateCount: number;
+  notificationCredit: number;
+  price: number;
+  isActive: boolean;
+};
+
 export type UserLocationType = {
   officename: string;
   pincode: string;

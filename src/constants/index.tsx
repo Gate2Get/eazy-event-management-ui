@@ -35,6 +35,7 @@ export const ROUTES_URL = {
   CONTACT_US: "contact-us",
   WALLET: "wallet",
   MY_PLAN: "my-plan",
+  MY_PLAN_DETAILS: "my-plan-details",
   ADD_CREDIT: "add-credit",
   SERVICE_TRANSACTION_LOGS: "service-transaction-logs",
 };
@@ -57,6 +58,7 @@ export const ROUTES_MENU = {
   MY_INVITATION: "My Invitation",
   WALLET: "wallet",
   MY_PLAN: "My Plan",
+  MY_PLAN_DETAILS: "My Plan Details",
   ADD_CREDIT: "Add Credit",
   SERVICE_TRANSACTION_LOGS: "Transaction Logs",
 };
@@ -76,6 +78,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.WALLET,
   ROUTES_MENU.ADD_CREDIT,
   ROUTES_MENU.MY_PLAN,
+  ROUTES_MENU.MY_PLAN_DETAILS,
   ROUTES_MENU.SERVICE_TRANSACTION_LOGS,
 ];
 

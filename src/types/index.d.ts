@@ -272,6 +272,7 @@ export type PlanType = {
   templateCount: number;
   notificationCredit: number;
   price: number;
+  discountPrice?: number;
   isActive: boolean;
 };
 
@@ -385,6 +386,7 @@ export type PricingPlanType = {
   templateCount: number;
   notificationCredit: number;
   price: number;
+  discountPrice?: number;
   whatsAppPrice: number;
   smsPrice: number;
   voiceCallPrice: number;

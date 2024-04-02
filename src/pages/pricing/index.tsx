@@ -12,7 +12,7 @@ const cardCount = 24 / PRICING_CARDS.length;
 export const Pricing = () => {
   const { screen } = useBearStore.appStore();
   const { activePlan } = useBearStore.userStore();
-  console.log({activePlan})
+  console.log({ activePlan });
   const [plans, setPlans] = useState<any>([]);
 
   React.useEffect(() => {
@@ -44,7 +44,7 @@ export const Pricing = () => {
         {(plans as PlanType[]).map((plan) => (
           <Col {...colOption(8)}>
             <PricingPage
-              isActive={plan.id===activePlan?.planId} // get user active plan from user plan api
+              isActive={plan.id === activePlan?.planId} // get user active plan from user plan api
               actualCost={plan.price}
               contactDirCount={plan.contactDirectoryCount}
               contactsCount={plan.contactCount}
@@ -52,7 +52,7 @@ export const Pricing = () => {
               notificationsCount={plan.notificationCredit}
               planName={plan.type}
               templatesCount={plan.templateCount}
-              discountCost={300}
+              discountCost={plan.discountPrice}
             />
           </Col>
         ))}

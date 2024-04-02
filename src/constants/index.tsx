@@ -488,7 +488,7 @@ export const TEMPLATE_URL_PATH_ACTION = {
 };
 
 export const TEMPLATE_ACTION_TAB = [
-  { label: "Mine", value: TEMPLATE_URL_PATH_ACTION.USER },
+  { label: "Yours", value: TEMPLATE_URL_PATH_ACTION.USER },
   {
     label: "Standard",
     value: TEMPLATE_URL_PATH_ACTION.STANDARD,

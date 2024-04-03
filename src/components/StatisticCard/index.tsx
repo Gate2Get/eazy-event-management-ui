@@ -44,7 +44,7 @@ export const StatisticCard = (props: StatisticCardType) => {
         </Col>
         <Col span={20}>
           <Paragraph className="stat-title">{title}</Paragraph>
-          <Space className="stat-value">
+          <Space className="stat-value" wrap>
             {Object.keys(stats || {})?.map((stat) => (
               <Tag
                 color={statusLabelColor?.[statusLabel?.[stat]]}

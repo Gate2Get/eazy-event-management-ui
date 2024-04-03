@@ -203,13 +203,19 @@ export const Dashboard = () => {
         <Col {...colOption(24)}>
           <Row gutter={[16, 16]}>
             {renderStatistics().map((stats) => (
-              <Col {...colOption(statColSpan)} key={stats.title}>
+              <Col
+                span={screen === "MOBILE" ? 24 : statColSpan}
+                key={stats.title}
+              >
                 <StatisticCard {...stats} />
               </Col>
             ))}
           </Row>
           <br />
-          <Row gutter={[8, 8]} style={{ padding: ".5rem", borderRadius: '0.75rem' }}>
+          <Row
+            gutter={[8, 8]}
+            style={{ padding: ".5rem", borderRadius: "0.75rem" }}
+          >
             <NoticeCalendar />
           </Row>
         </Col>

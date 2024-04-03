@@ -82,6 +82,7 @@ export const AddEditContactDirectory = () => {
     ContactListType[],
     Dispatch<any>
   ] = React.useState([]);
+  const [selectedKeys, setSelectedKeys] = React.useState<string[]>([]);
   const [isDeleteConfirmation, setIsDeleteConfirmation] = React.useState("");
   const [searchValue, setSearchValue] = React.useState("");
   let filteredGrid: any[] = [];
@@ -281,8 +282,12 @@ export const AddEditContactDirectory = () => {
     let _selectedKeys = [...selectedRowKeys];
     if (isChecked) {
       _selectedKeys.push(record);
+      setSelectedKeys((selectedKeys) => [...selectedKeys, record.id]);
     } else {
       _selectedKeys = _selectedKeys.filter((item) => item.id !== record.id);
+      setSelectedKeys((selectedKeys) =>
+        selectedKeys.filter((item) => item !== record.id)
+      );
     }
     setSelectedRowKeys(_selectedKeys);
   };
@@ -626,7 +631,10 @@ export const AddEditContactDirectory = () => {
               ? {
                   selectionMode: "checkbox",
                   selection: selectedRowKeys,
-                  onSelectionChange: (e: any) => setSelectedRowKeys(e.value),
+                  onSelectionChange: (e: { value: ContactListType[] }) => {
+                    setSelectedRowKeys(e.value);
+                    setSelectedKeys(e.value.map((record) => record.id));
+                  },
                   dataKey: "id",
                 }
               : {}
@@ -645,7 +653,7 @@ export const AddEditContactDirectory = () => {
                   senderId={contact.senderId}
                   name={contact.name}
                   id={contact.id}
-                  isSelected={selectedRowKeys.includes(contact.id)}
+                  isSelected={selectedKeys.includes(contact.id)}
                   onSelectCard={(id, isChecked) =>
                     onSelectCard(contact, isChecked)
                   }

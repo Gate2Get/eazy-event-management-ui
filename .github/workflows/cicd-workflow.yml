@@ -45,7 +45,7 @@ jobs:
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY }}
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ec2-user

@@ -97,7 +97,7 @@ export const EventManagement = (props: EventManagementType) => {
   } = props;
 
   const navigate = useNavigate();
-  const { screen, setLoading } = useBearStore.appStore();
+  const { screen, setLoading, isLoading } = useBearStore.appStore();
   const { setIsEdit } = useBearStore.eventStore();
   const { user, activePlan } = useBearStore.userStore();
   const [selectedNotification, setSelectedNotification] =
@@ -317,6 +317,7 @@ export const EventManagement = (props: EventManagementType) => {
         onCancel={() => {
           setNotificationAction("");
         }}
+        confirmLoading={isLoading}
       >
         <Alert
           message={

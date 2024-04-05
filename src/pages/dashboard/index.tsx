@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Typography } from "antd";
+import { Button, Card, Col, Divider, Row, Space, Typography } from "antd";
 import React from "react";
 import { RecentEvent } from "../../components/recentEvent";
 import { StatisticCard } from "../../components/StatisticCard";
@@ -6,12 +6,21 @@ import { DASHBOARD_STATS } from "./constants";
 import { NoticeCalendar } from "../../components/noticeCalendar";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
-import { EventNotificationType, EventType } from "../../types";
+import {
+  EventNotificationType,
+  EventType,
+  MyInvitationType,
+} from "../../types";
 import userIconAnimate from "../../assets/svg/user-icon-animate.svg";
 import "./styles.scss";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { EVENT_STATUS, ROUTES_URL } from "../../constants";
+import { InvitationCalendar } from "../../components/invitationCalendar";
+import dayjs from "dayjs";
+import RsvpIcon from "@mui/icons-material/Rsvp";
+import { CalendarInvitationCard } from "../../components/calendarInvitationCard";
+import NotFound from "../../assets/svg/illustration-not-found.svg";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -32,8 +41,11 @@ export const Dashboard = () => {
     setSelectedEventNotification,
     selectedEventNotification,
     eventNotifications,
+    setTodaysInvitations,
+    todaysInvitations,
   } = useBearStore.dashboardStore();
   const { user } = useBearStore.userStore();
+  const [iframeUrl, setIframeUrl] = React.useState("");
   const colOption = (count: number) =>
     screen === "MOBILE"
       ? {
@@ -43,6 +55,7 @@ export const Dashboard = () => {
 
   React.useEffect(() => {
     getEventStatistics();
+    getTodaysInvitations();
     return () => {
       setChartSelectionEventId("");
     };
@@ -57,6 +70,26 @@ export const Dashboard = () => {
       setChartSelectionEventId(eventNotifications?.[0]?.id as string);
     }
   }, [eventNotifications]);
+
+  const getTodaysInvitations = (): void => {
+    setLoading(true);
+    const currentDate = dayjs().format("YYYY-MM-DD");
+    API.eventManagement
+      .getMyInvitation({
+        fromDate: currentDate,
+        toDate: currentDate,
+      })
+      .then((invitations) => {
+        if (invitations.length) {
+          setTodaysInvitations(invitations);
+        }
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getInvitations", error });
+      });
+  };
 
   const getSelectedEventNotification = (id?: string): void => {
     setLoading(true);
@@ -200,6 +233,52 @@ export const Dashboard = () => {
       </Row>
       <br />
       <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Card
+            hoverable
+            title={
+              <Row>
+                <Col span={12}>
+                  <Space>
+                    <RsvpIcon style={{ position: "relative", top: "5px" }} />
+                    Today's Invitation's
+                  </Space>
+                </Col>
+              </Row>
+            }
+            bordered={false}
+            style={{
+              width: "100%",
+              boxShadow:
+                "rgb(234, 236, 240) 0px 0px 1px, rgba(29, 41, 57, 0.08) 0px 6px 12px",
+              margin: "0px 4px",
+            }}
+            // className="recent-event__container"
+            styles={{
+              body: {
+                overflow: "auto",
+                height: "36vh",
+                padding: "0px",
+              },
+            }}
+          >
+            {todaysInvitations.length ? (
+              todaysInvitations.map((invitation) => (
+                <>
+                  <CalendarInvitationCard {...invitation} />
+                </>
+              ))
+            ) : (
+              <div style={{ textAlign: "center" }}>
+                <img loading="lazy" src={NotFound} alt="No recent event" />
+                <Paragraph>No Invitation today!</Paragraph>
+              </div>
+            )}
+          </Card>
+        </Col>
+      </Row>
+      <br />
+      <Row gutter={[16, 16]}>
         <Col {...colOption(24)}>
           <Row gutter={[16, 16]}>
             {renderStatistics().map((stats) => (
@@ -216,7 +295,7 @@ export const Dashboard = () => {
             gutter={[8, 8]}
             style={{ padding: ".5rem", borderRadius: "0.75rem" }}
           >
-            <NoticeCalendar />
+            <InvitationCalendar />
           </Row>
         </Col>
       </Row>

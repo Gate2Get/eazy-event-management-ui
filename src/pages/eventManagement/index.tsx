@@ -113,7 +113,7 @@ export const EventManagement = () => {
   const { styles } = useModalStyle();
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { screen, setLoading } = useBearStore.appStore();
+  const { screen, setLoading, isLoading } = useBearStore.appStore();
   const { activePlan } = useBearStore.userStore();
   const [isPreview, setIsPreview] = React.useState(false);
   const { setDirectoryList, directoryList, contactList } =
@@ -681,6 +681,7 @@ export const EventManagement = () => {
         okType="danger"
         classNames={modalClassNames(styles)}
         styles={modalStyles(token) as any}
+        confirmLoading={isLoading}
       >
         <img loading="lazy" src={imageUrl as any} width={"100%"} alt="" />
         <Text italic style={{ textAlign: "center" }}>

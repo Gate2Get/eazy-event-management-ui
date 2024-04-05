@@ -105,6 +105,8 @@ export type DashboardStoreType = {
   statistics: GenericJsonType;
   eventNotifications: EventNotificationType[];
   selectedEventNotification: EventNotificationType;
+  todaysInvitations: MyInvitationType[];
+  setTodaysInvitations: (todaysInvitations: MyInvitationType[]) => void;
   setSelectedEventNotification: (
     selectedEventNotification: EventNotificationType
   ) => void;

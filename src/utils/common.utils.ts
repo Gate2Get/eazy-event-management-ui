@@ -2,6 +2,7 @@ import { RcFile } from "antd/es/upload";
 import { SetURLSearchParams } from "react-router-dom";
 import { PAGE_ACTION, PAGE_QUERY_ACTIONS } from "../constants";
 import { ActionType, VoiceMessageTemplateType } from "../types";
+import dayjs from "dayjs";
 
 //  "+91 77777 77777";
 const mobileRegex = /^\+91\s\d{5}\s\d{5}/;
@@ -162,3 +163,10 @@ export function convertToTitleCase(inputString: string) {
     inputString.charAt(0).toUpperCase() + inputString.slice(1).toLowerCase()
   );
 }
+
+export const isToday = (dateString: string) => {
+  const dateToCheck = dayjs(dateString);
+  const today = dayjs();
+
+  return dateToCheck.isSame(today, "day");
+};

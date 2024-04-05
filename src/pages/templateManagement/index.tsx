@@ -87,7 +87,7 @@ export const TemplateManagement = (): React.ReactElement => {
   const { styles } = useModalStyle();
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setLoading, screen } = useBearStore.appStore();
+  const { setLoading, screen, isLoading } = useBearStore.appStore();
   const { user, activePlan } = useBearStore.userStore();
   const {
     setTemplates,
@@ -661,6 +661,7 @@ export const TemplateManagement = (): React.ReactElement => {
         okType="danger"
         classNames={modalClassNames(styles)}
         styles={modalStyles(token) as any}
+        confirmLoading={isLoading}
       >
         <img loading="lazy" src={imageUrl as any} width={"100%"} alt="" />
         <Text italic style={{ textAlign: "center" }}>

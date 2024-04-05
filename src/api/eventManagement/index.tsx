@@ -131,7 +131,7 @@ export const eventManagementAPI = {
   },
   getMyInvitation: async (
     filters: EventFilterType = {}
-  ): Promise<MyInvitationType[] | MyInvitationType> => {
+  ): Promise<MyInvitationType[] & MyInvitationType> => {
     return await instance
       .get(eventManagementEndpoint.getMyInvitation, { params: filters })
       .then((response) => {

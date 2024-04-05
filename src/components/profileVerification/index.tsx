@@ -47,7 +47,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
   const [form] = Form.useForm();
   const { styles } = useModalStyle();
   const token = useTheme();
-  const { screen } = useBearStore.appStore();
+  const { screen, isLoading } = useBearStore.appStore();
   const [loading, setLoading] = React.useState(false);
   const [isOtpEnabled, setOtpEnabled] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
@@ -175,6 +175,7 @@ export const ProfileVerification = (props: ProfileVerificationType) => {
       okType="danger"
       classNames={modalClassNames(styles)}
       styles={modalStyles(token) as any}
+      confirmLoading={isLoading}
     >
       <div className="profile-verification__container">
         <Row className="login-form">

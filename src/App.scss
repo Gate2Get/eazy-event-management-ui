@@ -378,24 +378,30 @@ form {
   background-color: #fff;
 }
 
+.ant-tag {
+  border: none !important;
+  padding: 4px 12px 4px 12px;
+}
+
 .ant-tag-success {
-  color: rgb(18, 183, 106);
-  background-color: rgba(18, 183, 106, 0.12) !important;
+  color: #1D5F02 !important;
+  background-color: #EAF3E6 !important;
 }
 
 .ant-tag-processing {
-  color: rgb(6, 174, 212);
-  background-color: rgba(6, 174, 212, 0.12);
+  color: #004F9A !important;
+  background-color: #E6F1FC !important;
 }
 
 .ant-tag-error {
-  color: rgb(240, 68, 56);
-  background-color: rgba(240, 68, 56, 0.12);
+  color: #FCE8E9 !important;
+  background-color: #9B1419 !important;
 }
 
 .ant-tag-warning {
-  color: rgb(247, 144, 9);
-  background-color: rgba(247, 144, 9, 0.12);
+  color: #FFF9E9 !important;
+  background-color: #995213 !important;
+  
 }
 
 .ant-picker-dropdown {

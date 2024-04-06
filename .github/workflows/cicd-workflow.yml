@@ -20,7 +20,7 @@ jobs:
       - name: Login to docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Build and publish Docker image to Docker Hub
+      - name: Build and publish image to Docker Hub
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}

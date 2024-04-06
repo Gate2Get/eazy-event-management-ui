@@ -107,6 +107,8 @@ export const TemplateManagement = (): React.ReactElement => {
   const [messages, setMessages]: [any, Dispatch<any>] = React.useState({});
   const [tab, setTab] = React.useState(TEMPLATE_URL_PATH_ACTION.USER);
   const [isError, setIsError]: [boolean, Dispatch<any>] = React.useState(false);
+  const [isSubmitConfirmation, setIsSubmitConfirmation] =
+    React.useState<boolean>(false);
   const [isDeleteConfirmation, setIsDeleteConfirmation]: [
     boolean,
     Dispatch<any>
@@ -264,6 +266,7 @@ export const TemplateManagement = (): React.ReactElement => {
     stopSpeech();
     setMessages({});
     setSearchParams({});
+    onCloseModal();
   };
 
   const getMenuItems = (data: TemplateType): MenuProps["items"] => [
@@ -391,20 +394,27 @@ export const TemplateManagement = (): React.ReactElement => {
       });
   };
 
-  const onSubmit = (values: any) => {
+  const onValidateForm = () => {
+    const values: any = form.getFieldsValue();
     console.log(values);
     if (values.channel === "VOICE_CALL" && !Object.values(messages).length) {
-      setMessageError("Please add message!");
+      setMessageError("Please add text message. record/upload audio!");
       console.log({ messages });
       return;
     }
     if (Object.values(messages).find((item: any) => !item.value)) {
       setIsError(true);
+      setMessageError("Please add text message. record/upload audio!");
       console.log({ messages: true });
       return;
     }
     setMessageError("");
     setIsError(false);
+    setIsSubmitConfirmation(true);
+  };
+
+  const onSubmit = () => {
+    const values: any = form.getFieldsValue();
     let message = values.message;
     if (values.channel === "VOICE_CALL") {
       message = getFormattedMessage(messages, values.channel);
@@ -602,6 +612,7 @@ export const TemplateManagement = (): React.ReactElement => {
 
   const onCloseModal = () => {
     setIsDeleteConfirmation(false);
+    setIsSubmitConfirmation(false);
   };
 
   const onSearch = (searchValue: string) => {
@@ -666,6 +677,25 @@ export const TemplateManagement = (): React.ReactElement => {
         <img loading="lazy" src={imageUrl as any} width={"100%"} alt="" />
         <Text italic style={{ textAlign: "center" }}>
           Once deleted it cannot be undo
+        </Text>
+      </Modal>
+
+      <Modal
+        title={<Title level={5}>Confirmation</Title>}
+        open={isSubmitConfirmation}
+        onOk={onSubmit}
+        onCancel={onCloseModal}
+        okText="Yes"
+        cancelText="No"
+        // okType="danger"
+        classNames={modalClassNames(styles)}
+        styles={modalStyles(token) as any}
+        confirmLoading={isLoading}
+      >
+        {/* <img loading="lazy" src={imageUrl as any} width={"100%"} alt="" /> */}
+        <Text italic style={{ textAlign: "center" }}>
+          Upon confirmation, the message will be sent for review. Once approved,
+          you can utilize this message for sending.
         </Text>
       </Modal>
       <Row gutter={[16, 16]} className="header__row sticky-header">
@@ -871,7 +901,7 @@ export const TemplateManagement = (): React.ReactElement => {
       {(action === "ADD" || action === "EDIT") && (
         <Form
           layout="vertical"
-          onFinish={onSubmit}
+          onFinish={onValidateForm}
           form={form}
           name="template"
           scrollToFirstError

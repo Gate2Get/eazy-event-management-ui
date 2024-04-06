@@ -233,7 +233,7 @@ export const Dashboard = () => {
       </Row>
       <br />
       <Row gutter={[16, 16]}>
-        <Col span={12}>
+        <Col {...colOption(12)}>
           <Card
             hoverable
             title={

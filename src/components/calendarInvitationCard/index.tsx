@@ -74,7 +74,7 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
               {type === EVENT_TYPES.MARRIAGE
                 ? `${groomName} & ${brideName}`
                 : type === EVENT_TYPES.BIRTHDAY
-                ? `Person: ${personName}`
+                ? `${personName}`
                 : ""}
             </Typography>
             <Typography variant="body2" color="text.secondary">

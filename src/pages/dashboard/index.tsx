@@ -46,6 +46,8 @@ export const Dashboard = () => {
   } = useBearStore.dashboardStore();
   const { user } = useBearStore.userStore();
   const [iframeUrl, setIframeUrl] = React.useState("");
+  const [isFetchingRecentEvent, setIsFetchingRecentEvent] =
+    React.useState(false);
   const colOption = (count: number) =>
     screen === "MOBILE"
       ? {
@@ -92,7 +94,7 @@ export const Dashboard = () => {
   };
 
   const getSelectedEventNotification = (id?: string): void => {
-    setLoading(true);
+    setIsFetchingRecentEvent(true);
     API.dashboardAPI
       .getRecentEventNotification(id)
       .then((notification: EventNotificationType[]) => {
@@ -103,10 +105,10 @@ export const Dashboard = () => {
         } else {
           setEventNotifications(notification);
         }
-        setLoading(false);
+        setIsFetchingRecentEvent(false);
       })
       .catch((error: Error) => {
-        setLoading(false);
+        setIsFetchingRecentEvent(false);
         console.log({ location: "getSelectedEventNotification", error });
       });
   };
@@ -220,6 +222,7 @@ export const Dashboard = () => {
         {screen !== "MOBILE" && (
           <Col {...colOption(12)}>
             <RecentEvent
+              isFetching={isFetchingRecentEvent}
               allEventNotifications={eventNotifications}
               selectedEventNotification={selectedEventNotification}
               onRefresh={() =>
@@ -241,7 +244,7 @@ export const Dashboard = () => {
                 <Col span={12}>
                   <Space>
                     <RsvpIcon style={{ position: "relative", top: "5px" }} />
-                    Today's Invitation's
+                    Today's Invitation<span>({todaysInvitations.length})</span>
                   </Space>
                 </Col>
               </Row>
@@ -257,8 +260,8 @@ export const Dashboard = () => {
             styles={{
               body: {
                 overflow: "auto",
-                height: "36vh",
-                padding: "0px",
+                maxHeight: "36vh",
+                // padding: "0px",
               },
             }}
           >
@@ -303,6 +306,7 @@ export const Dashboard = () => {
       {screen === "MOBILE" && (
         <div>
           <RecentEvent
+            isFetching={isFetchingRecentEvent}
             allEventNotifications={eventNotifications}
             selectedEventNotification={selectedEventNotification}
             onRefresh={() =>

@@ -65,10 +65,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
         console.log("returnTo 2", returnTo);
       } else {
         returnTo =
-          window.location.pathname ===
-          ("/"
+          window.location.pathname === "/"
             ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
-            : window.location.pathname);
+            : window.location.pathname;
         console.log("returnTo 3", returnTo);
       }
       navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${btoa(returnTo as string)}`);

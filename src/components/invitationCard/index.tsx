@@ -5,7 +5,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
 import MapIcon from "@mui/icons-material/Map";
-import { CHANNEL_OPTIONS } from "../../constants";
+import { CHANNEL_OPTIONS, EVENT_TYPES } from "../../constants";
 import { useBearStore } from "../../store";
 import { checkIsPdf } from "../../utils/validation.utils";
 import { PdfViewer } from "../pdfViewer";
@@ -22,6 +22,9 @@ export const InvitationCard = (props: MyInvitationType) => {
     invitationAttachment,
     locationUrl,
     invitedByInfo,
+    brideName,
+    groomName,
+    personName,
   } = props;
 
   const { screen } = useBearStore.appStore();
@@ -39,7 +42,13 @@ export const InvitationCard = (props: MyInvitationType) => {
 
   return (
     <Card
-      title="Event Details"
+      title={
+        type === EVENT_TYPES.MARRIAGE
+          ? `${groomName} & ${brideName}`
+          : type === EVENT_TYPES.BIRTHDAY
+          ? personName
+          : ""
+      }
       extra={
         <Tag bordered={false} color="success">
           {type}

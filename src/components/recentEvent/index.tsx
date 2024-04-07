@@ -6,6 +6,7 @@ import {
   Divider,
   Row,
   Select,
+  Skeleton,
   Space,
   Tag,
   Typography,
@@ -38,6 +39,7 @@ type RecentEventType = {
   setChartSelectionEventId: (value: string) => void;
   allEventNotifications: EventNotificationType[];
   selectedEventNotification: EventNotificationType;
+  isFetching: boolean;
 };
 
 export const RecentEvent = (props: RecentEventType) => {
@@ -47,6 +49,7 @@ export const RecentEvent = (props: RecentEventType) => {
     chartSelectionOptions,
     setChartSelectionEventId,
     onRefresh,
+    isFetching,
   } = props;
   const { screen } = useBearStore.appStore();
   const {
@@ -230,7 +233,13 @@ export const RecentEvent = (props: RecentEventType) => {
         }}
         className="recent-event__container"
       >
-        {allEventNotifications.length ? (
+        {isFetching ? (
+          <Skeleton
+            style={{ padding: "0rem 1rem" }}
+            active
+            paragraph={{ rows: 5 }}
+          />
+        ) : allEventNotifications.length ? (
           <Carousel
             showIndicators={false}
             value={allEventNotifications}

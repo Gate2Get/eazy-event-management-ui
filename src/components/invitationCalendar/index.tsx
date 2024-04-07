@@ -9,6 +9,7 @@ import {
   Modal,
   Card,
   Divider,
+  Skeleton,
 } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
@@ -25,7 +26,7 @@ import { isToday } from "../../utils/common.utils";
 const { Paragraph, Title } = Typography;
 
 export const InvitationCalendar = () => {
-  const { setLoading } = useBearStore.appStore();
+  const [isFetchingInvitation, setIsFetchingInvitation] = React.useState(false);
   const { setCalendarEvents, setTodaysInvitations } =
     useBearStore.dashboardStore();
   const [eventMonthMap, setEventMonthMap]: [
@@ -94,15 +95,15 @@ export const InvitationCalendar = () => {
     filter = {},
     callback?: (events: MyInvitationType[]) => void
   ): void => {
-    setLoading(true);
+    setIsFetchingInvitation(true);
     API.eventManagement
       .getMyInvitation(filter)
       .then((invitations) => {
         callback?.(invitations);
-        setLoading(false);
+        setIsFetchingInvitation(false);
       })
       .catch((error: Error) => {
-        setLoading(false);
+        setIsFetchingInvitation(false);
         console.log({ location: "getInvitations", error });
       });
   };
@@ -110,9 +111,16 @@ export const InvitationCalendar = () => {
   const monthCellRender = (value: Dayjs) => {
     const month = value.month() + 1;
     const listData = eventYearMap[month];
-    // console.log({ listData, eventYearMap, month: value.month() });
+    const day = value.format("M");
     return (
-      <Space className="events-date" direction="vertical">
+      <Space
+        className="events-date"
+        direction="vertical"
+        onClick={() => {
+          setCurrentSelection(day);
+        }}
+        style={{ width: "100%" }}
+      >
         {listData?.map((item: any) => (
           <Tag
             bordered={false}
@@ -131,8 +139,15 @@ export const InvitationCalendar = () => {
     const monthYear = value.format("YYYY-MM");
     const listData =
       monthYear === selectedMonthYear ? eventMonthMap[value.date()] : [];
+    const day = value.format("D");
+
     return (
-      <Space className="events-date" direction="vertical">
+      <Space
+        className="events-date"
+        direction="vertical"
+        style={{ width: "100%" }}
+        onClick={() => setCurrentSelection(day)}
+      >
         {listData?.map((item: any) => (
           <Tag
             bordered={false}
@@ -183,9 +198,10 @@ export const InvitationCalendar = () => {
 
   const onSelectDate = (date: Dayjs, selectInfo: SelectInfo) => {
     setCurrentDate(date);
+    console.log({ date, selectInfo });
     if (selectInfo.source === "date") {
       const day = date.format("D");
-      setCurrentSelection(day);
+      // setCurrentSelection(day);
       const filter = {
         fromDate: day,
         toDate: `${day}T23:59:59.000Z`,
@@ -195,7 +211,7 @@ export const InvitationCalendar = () => {
       // );
     } else if (selectInfo.source === "month") {
       const day = date.format("M");
-      setCurrentSelection(day);
+      // setCurrentSelection(day);
       console.log({ day });
       // const filter = {
       //   fromDate: `${day}-01`,
@@ -237,7 +253,9 @@ export const InvitationCalendar = () => {
         open={!!currentSelection}
         footer={<></>}
         onOk={() => setCurrentSelection("")}
-        onCancel={() => setCurrentSelection("")}
+        onCancel={() => {
+          setCurrentSelection("");
+        }}
         width={"100%"}
         style={{ height }}
         styles={{
@@ -264,15 +282,22 @@ export const InvitationCalendar = () => {
       <Paragraph strong style={{ fontSize: "16px" }}>
         My Calendar
       </Paragraph>
-      <Calendar
-        mode={mode}
-        cellRender={cellRender}
-        onChange={onDateChange}
-        onSelect={onSelectDate}
-        value={currentDate}
-        disabledDate={onDisableDate}
-        onPanelChange={onPanelChange}
-      />
+      <Skeleton
+        paragraph={{ rows: 10 }}
+        loading={isFetchingInvitation}
+        style={{ width: "100%" }}
+        active
+      >
+        <Calendar
+          mode={mode}
+          cellRender={cellRender}
+          onChange={onDateChange}
+          onSelect={onSelectDate}
+          value={currentDate}
+          disabledDate={onDisableDate}
+          onPanelChange={onPanelChange}
+        />
+      </Skeleton>
     </div>
   );
 };

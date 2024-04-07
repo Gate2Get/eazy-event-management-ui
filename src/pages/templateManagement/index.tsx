@@ -862,6 +862,16 @@ export const TemplateManagement = (): React.ReactElement => {
         />
       </div>
 
+      {tab === TEMPLATE_URL_PATH_ACTION.STANDARD && (
+        <div className="padding-bottom-8">
+          <Alert
+            description="This is a sample template, Some of the information is auto-filled based on the details entered when creating an event"
+            type="info"
+            showIcon
+          />
+        </div>
+      )}
+
       {(!action || action === "DELETE") && (
         <Row gutter={[16, 16]}>
           {(searchValue ? filteredGrid : templates).length ? (

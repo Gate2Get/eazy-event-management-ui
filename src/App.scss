@@ -317,12 +317,18 @@ form {
   // background: rgba(18, 183, 106, 0.12) !important;
   // border-left: 3px solid rgb(18, 183, 106) !important;
   border: 0 !important;
-  border-left: 3px solid #1677ff !important;
+  border-left: 3px solid #004f9a !important;
   border-radius: 0;
+  background-color: #e6f1fc !important;
+  color: #004f9a !important;
 
   svg {
+    color: #004f9a !important;
     // color: rgb(18, 183, 106) !important;
-    // color: rgb(18, 183, 106) !important;
+  }
+
+  .ant-alert-description {
+    color: #004f9a !important;
   }
 }
 
@@ -330,11 +336,41 @@ form {
   // background: rgba(18, 183, 106, 0.12) !important;
   // border-left: 3px solid rgb(18, 183, 106) !important;
   border: 0 !important;
-  border-left: 3px solid #ff4d4f !important;
+  border-left: 3px solid #9b1419 !important;
   border-radius: 0;
+  background-color: #fce8e9 !important;
 
   svg {
+    color: #9b1419 !important;
     // color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-alert-warning {
+  // background: rgba(18, 183, 106, 0.12) !important;
+  // border-left: 3px solid rgb(18, 183, 106) !important;
+  border: 0 !important;
+  border-left: 3px solid #fff9e9 !important;
+  border-radius: 0;
+  color: #995213 !important;
+
+  svg {
+    color: #995213 !important;
+    // color: rgb(18, 183, 106) !important;
+  }
+}
+
+.ant-alert-success {
+  // background: rgba(18, 183, 106, 0.12) !important;
+  // border-left: 3px solid rgb(18, 183, 106) !important;
+  border: 0 !important;
+  border-left: 3px solid #1d5f02 !important;
+  border-radius: 0;
+  background-color: #eaf3e6;
+  color: #1d5f02 !important;
+
+  svg {
+    color: #1d5f02 !important;
     // color: rgb(18, 183, 106) !important;
   }
 }

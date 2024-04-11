@@ -167,6 +167,7 @@ export const EventManagement = (props: EventManagementType) => {
           <RangePicker
             disabledDate={disabledDate}
             // disabledTime={disabledRangeTime}
+
             showTime={{
               hideDisabledOptions: true,
               defaultValue: [dayjs("00:00", "HH:mm"), dayjs("11:59", "HH:mm")],
@@ -302,7 +303,7 @@ export const EventManagement = (props: EventManagementType) => {
         title={"Send Notification to me"}
         okText={
           (activePlan?.notificationCredit as number) >=
-          channelPriceMap[
+          channelPriceMap?.[
             PRICE_CONFIG[selectedNotification.channel as string]
           ] ? (
             "Send"
@@ -322,23 +323,23 @@ export const EventManagement = (props: EventManagementType) => {
         <Alert
           message={
             (activePlan?.notificationCredit as number) >=
-            channelPriceMap[
+            channelPriceMap?.[
               PRICE_CONFIG[selectedNotification.channel as string]
             ]
               ? `You will be charged ${
-                  channelPriceMap[
+                  channelPriceMap?.[
                     PRICE_CONFIG[selectedNotification.channel as string]
                   ]
                 } credit for this notification`
               : `You don't have enough credit to send this notification. Credit required: ${
-                  channelPriceMap[
+                  channelPriceMap?.[
                     PRICE_CONFIG[selectedNotification.channel as string]
                   ]
                 }`
           }
           type={
             (activePlan?.notificationCredit as number) >=
-            channelPriceMap[
+            channelPriceMap?.[
               PRICE_CONFIG[selectedNotification.channel as string]
             ]
               ? "info"
@@ -490,6 +491,14 @@ export const EventManagement = (props: EventManagementType) => {
                   }
                 />
               )}
+              {!((activePlan?.notificationCredit as number) > 0) ? (
+                <Alert
+                  message={`You do not have sufficient notification credits available with your current plan to create notifications.`}
+                  type="error"
+                  showIcon
+                  className="margin-bottom-8"
+                />
+              ) : null}
               {notifications?.map((notification: EventNotificationType) => (
                 <Space
                   key={notification.id}
@@ -612,23 +621,8 @@ export const EventManagement = (props: EventManagementType) => {
                 >
                   Add Notification
                 </Button>
-              ) : (
-                <Alert
-                  message={`You do not have sufficient notification credits available with your current plan to create notifications.`}
-                  type="error"
-                  showIcon
-                />
-              )}
+              ) : null}
             </Form.Item>
-            {["EDIT", "ADD"].includes(action as string) && (
-              <Form.Item>
-                <Space>
-                  <Button type="primary" htmlType="submit">
-                    {isEdit ? "Update" : "Create"} Event
-                  </Button>
-                </Space>
-              </Form.Item>
-            )}
           </Form>
         </Col>
       </Row>

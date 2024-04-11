@@ -126,7 +126,7 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
   const header = renderHeader();
 
   return (
-    <div style={{ overflowX: "auto", paddingLeft: "10px" }}>
+    <div style={{ overflowX: "auto", paddingLeft: "10px", width: "100%" }}>
       <PrimeDataTable
         value={data}
         sortMode="multiple"

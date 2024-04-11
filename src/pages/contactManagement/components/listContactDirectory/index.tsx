@@ -11,9 +11,10 @@ import { contactDirectoryColumns } from "./config";
 import { CONTACT_DIRECTORY_COLUMN_KEYS, SORT_KEYS } from "./constant";
 import NoContact from "../../../../assets/svg/no-contact.svg";
 import { useSearchParams } from "react-router-dom";
-import { PAGE_ACTION } from "../../../../constants";
+import { NO_PLAN_ASSIGNED_MESSAGE, PAGE_ACTION } from "../../../../constants";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 const { Link, Text } = Typography;
 const { Search } = Input;
@@ -138,18 +139,21 @@ export const ListContactDirectory = () => {
       <div className="padding-bottom-8">
         <Alert
           message={
-            (activePlan?.contactDirectoryCount as number) <= 0
-              ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.contactDirectoryCount} contact directories allowed.`
-              : `According to your plan, you have currently created ${
-                  (activePlan?.pricingPlan?.contactDirectoryCount as number) -
-                  (activePlan?.contactDirectoryCount as number)
-                } out of ${
-                  activePlan?.pricingPlan?.contactDirectoryCount
-                } contact directories.`
+            activePlan?.isActive
+              ? (activePlan?.contactDirectoryCount as number) <= 0
+                ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.contactDirectoryCount} contact directories allowed.`
+                : `According to your plan, you have currently created ${
+                    (activePlan?.pricingPlan?.contactDirectoryCount as number) -
+                    (activePlan?.contactDirectoryCount as number)
+                  } out of ${
+                    activePlan?.pricingPlan?.contactDirectoryCount
+                  } contact directories.`
+              : NO_PLAN_ASSIGNED_MESSAGE("contact directories")
           }
-          type="info"
+          type={activePlan?.isActive ? "info" : "warning"}
+          icon={<PriorityHighIcon />}
+          closable={activePlan?.isActive}
           showIcon
-          closable
         />
       </div>
       {(searchValue ? filteredGrid : directoryList)?.length ? (

@@ -425,6 +425,16 @@ export const AddEditContactDirectory = () => {
               {DIRECTORY_ACTIONS[action].deleteButtonText}
             </Button>
           )}
+
+          {(action === "ADD" || action === "EDIT") && (
+            <Button
+              type="default"
+              style={{ marginLeft: ".5rem" }}
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
+          )}
         </Col>
       </Row>
 

@@ -238,7 +238,16 @@ export const MyInvitation = () => {
     key: `${index + 1}`,
     label: item.title,
     title: item.title,
-  }));
+  })).filter((item) => {
+    if (
+      (item.title === "Video" && !selectedInvitation.isVideoEnable) ||
+      (item.title === "Album" && !selectedInvitation.isAlbumEnable)
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  });
 
   const renderComponent = (current: number) => {
     switch (current) {

@@ -34,6 +34,7 @@ import {
   EVENT_STATUS_LABEL_COLOR,
   EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
+  NO_PLAN_ASSIGNED_MESSAGE,
   PAGE_ACTION,
   TEMPLATE_URL_PATH_ACTION,
 } from "../../constants";
@@ -72,6 +73,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { DataTable } from "../../components/dataTable";
 import { EventAlbum } from "../../components/eventAlbum";
 import { initialSelectedEvent } from "../../store/event.store";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -826,16 +828,19 @@ export const EventManagement = () => {
           <div className="padding-bottom-8">
             <Alert
               message={
-                (activePlan?.eventCount as number) <= 0
-                  ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.eventCount} events allowed.`
-                  : `According to your plan, you have currently created ${
-                      (activePlan?.pricingPlan?.eventCount as number) -
-                      (activePlan?.eventCount as number)
-                    } out of ${activePlan?.pricingPlan?.eventCount} events.`
+                activePlan?.isActive
+                  ? (activePlan?.eventCount as number) <= 0
+                    ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.eventCount} events allowed.`
+                    : `According to your plan, you have currently created ${
+                        (activePlan?.pricingPlan?.eventCount as number) -
+                        (activePlan?.eventCount as number)
+                      } out of ${activePlan?.pricingPlan?.eventCount} events.`
+                  : NO_PLAN_ASSIGNED_MESSAGE("event")
               }
-              type="info"
+              type={activePlan?.isActive ? "info" : "warning"}
               showIcon
-              closable
+              icon={<PriorityHighIcon />}
+              closable={activePlan?.isActive}
             />
           </div>
           <Row gutter={[16, 16]}>{renderEvents()}</Row>
@@ -859,7 +864,7 @@ export const EventManagement = () => {
 
               {current === 1 && (
                 <Col {...colOption(20)}>
-                  <div style={{ float: "right" }}>
+                  <Space style={{ float: "right" }}>
                     {selectedEvents.isEditable && (
                       <Button
                         type={action === "VIEW" ? "primary" : "default"}
@@ -883,7 +888,17 @@ export const EventManagement = () => {
                         Delete
                       </Button>
                     )}
-                  </div>
+                    {["EDIT", "ADD"].includes(action as string) && (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          form.submit();
+                        }}
+                      >
+                        {action === "EDIT" ? "Save Changes" : "Create Event"}
+                      </Button>
+                    )}
+                  </Space>
                 </Col>
               )}
             </Row>

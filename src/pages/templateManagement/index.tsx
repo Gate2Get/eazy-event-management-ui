@@ -37,6 +37,7 @@ import {
   TEMPLATE_URL_PATH_ACTION,
   TEMPLATE_ACTION_TAB,
   ROUTES_URL,
+  NO_PLAN_ASSIGNED_MESSAGE,
 } from "../../constants";
 import { useBearStore } from "../../store";
 import { TemplateAdminType, TemplateType } from "../../types";
@@ -70,6 +71,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { DataTable } from "../../components/dataTable";
 import { searchGrid } from "../../utils/searchGrid.utils";
 import { ReviewConversation } from "../../components/ReviewConversation";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 const { Panel } = Collapse;
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
@@ -813,6 +815,27 @@ export const TemplateManagement = (): React.ReactElement => {
                 </div>
               </Col>
             )}
+            {(action === "ADD" || action === "EDIT") && (
+              <Col {...colOption(21)}>
+                <Space style={{ float: "right" }}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      form.submit();
+                    }}
+                  >
+                    {action === "ADD" ? "Create" : "Save Changes"}
+                  </Button>
+                  <Button
+                    type="default"
+                    style={{ marginLeft: ".5rem" }}
+                    onClick={onCancel}
+                  >
+                    Cancel
+                  </Button>
+                </Space>
+              </Col>
+            )}
           </Row>
         </Col>
       </Row>
@@ -849,16 +872,19 @@ export const TemplateManagement = (): React.ReactElement => {
       <div className="padding-bottom-8">
         <Alert
           message={
-            (activePlan?.templateCount as number) <= 0
-              ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.templateCount} templates allowed.`
-              : `According to your plan, you have currently created ${
-                  (activePlan?.pricingPlan?.templateCount as number) -
-                  (activePlan?.templateCount as number)
-                } out of ${activePlan?.pricingPlan?.templateCount} templates.`
+            activePlan?.isActive
+              ? (activePlan?.templateCount as number) <= 0
+                ? `According to your plan, you have successfully created all ${activePlan?.pricingPlan?.templateCount} templates allowed.`
+                : `According to your plan, you have currently created ${
+                    (activePlan?.pricingPlan?.templateCount as number) -
+                    (activePlan?.templateCount as number)
+                  } out of ${activePlan?.pricingPlan?.templateCount} templates.`
+              : NO_PLAN_ASSIGNED_MESSAGE("template")
           }
-          type="info"
+          type={activePlan?.isActive ? "info" : "warning"}
+          icon={<PriorityHighIcon />}
           showIcon
-          closable
+          closable={activePlan?.isActive}
         />
       </div>
 
@@ -1019,20 +1045,6 @@ export const TemplateManagement = (): React.ReactElement => {
               <TextArea style={{ minHeight: "40vh" }} />
             </Form.Item>
           ) : null}
-          {(action === "ADD" || action === "EDIT") && (
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                {action === "ADD" ? "Create" : "Update"}
-              </Button>
-              <Button
-                type="default"
-                style={{ marginLeft: ".5rem" }}
-                onClick={onCancel}
-              >
-                Cancel
-              </Button>
-            </Form.Item>
-          )}
         </Form>
       )}
       {action === "VIEW" && (

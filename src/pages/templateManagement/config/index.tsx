@@ -1,4 +1,4 @@
-import { Tag } from "antd";
+import { DatePicker, Tag } from "antd";
 import dayjs from "dayjs";
 import { DataTableColumnType } from "../../../components/dataTable/types";
 import {
@@ -73,6 +73,16 @@ export const templateColumns: DataTableColumnType[] = [
       dayjs(record?.[TEMPLATE_COLUMN_KEYS.CREATED_AT]).format(DATE_FORMAT),
     sortable: true,
     filterable: true,
+    // filterElement: (options) => (
+    //   <DatePicker
+    //     onChange={(value) => {
+    //       console.log({ value });
+    //       options.filterApplyCallback(value ? dayjs(value) : value);
+    //     }}
+    //     value={options.value}
+    //     format="YYYY-MM-DD"
+    //   />
+    // ),
   },
   {
     key: TEMPLATE_COLUMN_KEYS.UPDATED_AT,

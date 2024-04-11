@@ -494,3 +494,20 @@ export const TEMPLATE_ACTION_TAB = [
     value: TEMPLATE_URL_PATH_ACTION.STANDARD,
   },
 ];
+
+export const NO_PLAN_ASSIGNED_MESSAGE = (section: string) => {
+  return (
+    <>
+      <p>
+        There are currently no active plans assigned to your account. To create{" "}
+        {section}, unlock more features and enhance your experience, consider
+        purchasing a plan. Explore our range of plans to find the one that best
+        suits your needs.
+      </p>
+      <p>
+        Need assistance or have questions? Our support team is here to help. Buy
+        a plan today and take your experience to the next level!
+      </p>
+    </>
+  );
+};

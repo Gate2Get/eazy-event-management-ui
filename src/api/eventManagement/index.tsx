@@ -3,7 +3,9 @@ import {
   AttachmentType,
   ContactListType,
   EventFilterType,
+  EventFormType,
   EventType,
+  EventTypeType,
   MyInvitationType,
   TemplateType,
   VirtualLoadQueryType,
@@ -220,6 +222,33 @@ export const eventManagementAPI = {
       )
       .then((response) => {
         return response.data?.status;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getEventForm: async (
+    eventType: string,
+    screen: string
+  ): Promise<EventFormType> => {
+    return await instance
+      .get(`${eventManagementEndpoint.getEventForm}/${screen}/${eventType}`)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getEventType: async (): Promise<EventTypeType[]> => {
+    return await instance
+      .get(eventManagementEndpoint.getEventType)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
       })
       .catch((error) => {
         throw error;

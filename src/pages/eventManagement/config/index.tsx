@@ -3,22 +3,17 @@ import { ColumnsType } from "antd/es/table";
 import dayjs from "dayjs";
 import { DataTableColumnType } from "../../../components/dataTable/types";
 import {
-  CHANNELS,
-  CHANNEL_OPTIONS_MAP,
   DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPES,
 } from "../../../constants";
 import { convertToTitleCase } from "../../../utils/common.utils";
 import { EVENT_COLUMN_KEYS, EVENT_COLUMN_NAME } from "../constant";
+import { EventTypeType } from "../../../types";
 
-const eventTypeOptions = Object.keys(EVENT_TYPES).map((types) => ({
-  label: <Tag color="processing">{convertToTitleCase(types)}</Tag>,
-  value: types,
-}));
-
-export const eventColumns: DataTableColumnType[] = [
+export const eventColumns = (
+  eventTypeOptions: EventTypeType[]
+): DataTableColumnType[] => [
   {
     key: EVENT_COLUMN_KEYS.NAME,
     dataIndex: EVENT_COLUMN_KEYS.NAME,

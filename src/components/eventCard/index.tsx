@@ -3,7 +3,6 @@ import {
   DATE_FORMAT,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPE_PROPS,
   ILLUSTRATION_ASSETS,
 } from "../../constants";
 import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +11,7 @@ import { EventCardType, GenericJsonType } from "../../types";
 import dayjs from "dayjs";
 import React from "react";
 import "./styles.scss";
+import { useBearStore } from "../../store";
 
 const { Text, Paragraph } = Typography;
 const eventStatusLabel: GenericJsonType = EVENT_STATUS_LABEL;
@@ -29,18 +29,25 @@ export const EventCard = (props: EventCardType) => {
     onSelect,
   } = props;
 
+  const { eventTypes } = useBearStore.eventStore();
+
   const status = eventStatusLabel[progressionStatus as string];
+  const illustration =
+    ILLUSTRATION_ASSETS?.[eventType?.toLowerCase() as string];
   const randomIndex = Math.ceil(
-    Math.random() *
-      (ILLUSTRATION_ASSETS?.[eventType?.toLowerCase() as string] - 1)
+    Math.random() * ((illustration || ILLUSTRATION_ASSETS.others) - 1)
   );
 
   const imageUrl = React.useMemo(() => {
     return new URL(
-      `../../assets/svg/${eventType?.toLowerCase()}/card-${randomIndex}.svg`,
+      `../../assets/svg/${
+        illustration ? eventType?.toLowerCase() : "others"
+      }/card-${randomIndex}.svg`,
       import.meta.url
     );
   }, []);
+
+  const eventTypeLabel = eventTypes.find((item) => item.value === eventType);
 
   return (
     <Space className="event-card__container" size="small" direction="vertical">
@@ -50,7 +57,7 @@ export const EventCard = (props: EventCardType) => {
             loading="lazy"
             src={imageUrl as any}
             width={"100%"}
-            alt=""
+            alt={""}
             height={100}
           />
         </Col>
@@ -76,7 +83,7 @@ export const EventCard = (props: EventCardType) => {
             <Row className="event-type">
               <Col span={12}>
                 <Text strong className="event-type__label">
-                  {EVENT_TYPE_PROPS?.[eventType as string]?.label}
+                  {eventTypeLabel?.value}
                 </Text>
               </Col>
               <Col span={10}>

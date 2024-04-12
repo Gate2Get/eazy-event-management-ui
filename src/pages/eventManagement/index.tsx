@@ -32,7 +32,6 @@ import {
   EVENT_STATUS,
   EVENT_STATUS_LABEL,
   EVENT_STATUS_LABEL_COLOR,
-  EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   NO_PLAN_ASSIGNED_MESSAGE,
   PAGE_ACTION,
@@ -44,8 +43,9 @@ import {
   ContactDirectoryType,
   DebounceFnType,
   EventFilterType,
-  Events,
+  EventFormType,
   EventType,
+  EventTypeType,
   TemplateType,
 } from "../../types";
 import "./styles.scss";
@@ -93,10 +93,10 @@ const STEPS = [
   },
 ];
 
-const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-  label: EVENT_TYPE_PROPS[event].label,
-  value: event,
-}));
+// const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
+//   label: EVENT_TYPE_PROPS[event].label,
+//   value: event,
+// }));
 
 const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
   label: (
@@ -127,6 +127,7 @@ export const EventManagement = () => {
     filters,
     selectedEvents,
     isListView,
+    eventTypes,
     setIsListView,
     setAction,
     setEvents,
@@ -148,6 +149,7 @@ export const EventManagement = () => {
   ] = React.useState({});
   const [isFilter, setIsFilter] = React.useState(false);
   const [current, setCurrent] = React.useState(1);
+  const [formFields, setFormFields] = React.useState<any[]>([]);
 
   const channel = Form.useWatch("channel", { form, preserve: true });
   const eventType = Form.useWatch("eventType", {
@@ -165,6 +167,14 @@ export const EventManagement = () => {
   React.useEffect(() => {
     getTemplates({ channel });
   }, [channel]);
+
+  React.useEffect(() => {
+    if (eventType) {
+      getEventForm(eventType, screen);
+    } else {
+      setFormFields([]);
+    }
+  }, [eventType]);
 
   React.useEffect(() => {
     const filters: EventFilterType = {
@@ -266,7 +276,7 @@ export const EventManagement = () => {
     const selectedEvent = {
       ...selectedEvents,
       ...event,
-      type: eventType as Events,
+      type: eventType,
     };
     setSelectedEvents(selectedEvent);
     handleSubmitEvent(selectedEvent);
@@ -357,7 +367,7 @@ export const EventManagement = () => {
     });
   };
 
-  eventColumns.forEach((column) => {
+  eventColumns(eventTypes).forEach((column) => {
     if (column.key === EVENT_COLUMN_KEYS.ACTION) {
       column.render = (record) => (
         <Space>
@@ -396,7 +406,11 @@ export const EventManagement = () => {
   const renderEvents = (): React.ReactNode => {
     return events.length ? (
       isListView ? (
-        <DataTable columns={eventColumns} data={events} sortKeys={SORT_KEYS} />
+        <DataTable
+          columns={eventColumns(eventTypes)}
+          data={events}
+          sortKeys={SORT_KEYS}
+        />
       ) : (
         events?.map((event) => (
           <Col {...colProps}>
@@ -436,12 +450,12 @@ export const EventManagement = () => {
     setSelectedEvents({
       ...selectedEvents,
       ...event,
-      type: eventType as Events,
+      type: eventType,
     });
     handleSubmitEvent({
       ...selectedEvents,
       ...event,
-      type: eventType as Events,
+      type: eventType,
     });
     // setIsPreview(true);
   };
@@ -512,7 +526,7 @@ export const EventManagement = () => {
   const createEvent = (event: EventType): void => {
     setLoading(true);
     API.eventManagement
-      .createEvent({ ...event, type: eventType as Events })
+      .createEvent({ ...event, type: eventType })
       .then(() => {
         onCancel(true);
         setLoading(false);
@@ -570,6 +584,22 @@ export const EventManagement = () => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "getEvents", error });
+      });
+  };
+
+  const getEventForm = (eventType: string, screen: string): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEventForm(eventType, screen)
+      .then((form: EventFormType) => {
+        if (form.fields) {
+          setFormFields(form.fields);
+        }
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEventForm", error });
       });
   };
 
@@ -640,6 +670,7 @@ export const EventManagement = () => {
             contactList={directoryList}
             templates={templates}
             form={form}
+            formFields={formFields}
             isTemplateFetching={isTemplateFetching}
             onSearchTemplate={(value) => setSearchTemplate(value)}
             onHandleEvent={handleEvent}
@@ -757,7 +788,7 @@ export const EventManagement = () => {
                       allowClear
                       placeholder="Select a event"
                       optionFilterProp="children"
-                      options={eventTypeOptions}
+                      options={eventTypes}
                       value={filters.type}
                       onChange={(type) => {
                         handleFilterChange({ type });
@@ -918,7 +949,7 @@ export const EventManagement = () => {
                 allowClear
                 placeholder="Select a event"
                 optionFilterProp="children"
-                options={eventTypeOptions}
+                options={eventTypes}
               />
             </Form.Item>
           </Form>

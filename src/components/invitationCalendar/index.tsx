@@ -16,12 +16,9 @@ import { API } from "../../api";
 import { MyInvitationType } from "../../types";
 import dayjs from "dayjs";
 import { CalendarMode, SelectInfo } from "antd/es/calendar/generateCalendar";
-import { useNavigate } from "react-router-dom";
-import { ROUTES_URL } from "../../constants";
 import "./styles.scss";
 import { CalendarInvitationCard } from "../calendarInvitationCard";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { isToday } from "../../utils/common.utils";
 
 const { Paragraph, Title } = Typography;
 
@@ -125,7 +122,7 @@ export const InvitationCalendar = () => {
           <Tag
             bordered={false}
             key={item.name}
-            color="success"
+            color="processing"
             style={{ width: "100%" }}
           >
             {item.name}
@@ -152,7 +149,7 @@ export const InvitationCalendar = () => {
           <Tag
             bordered={false}
             key={item.name}
-            color="success"
+            color="processing"
             style={{ width: "100%" }}
           >
             {item.name}

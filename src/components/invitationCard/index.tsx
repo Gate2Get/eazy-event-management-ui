@@ -5,7 +5,6 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonIcon from "@mui/icons-material/Person";
 import MapIcon from "@mui/icons-material/Map";
-import { CHANNEL_OPTIONS, EVENT_TYPES } from "../../constants";
 import { useBearStore } from "../../store";
 import { checkIsPdf } from "../../utils/validation.utils";
 import { PdfViewer } from "../pdfViewer";
@@ -42,13 +41,7 @@ export const InvitationCard = (props: MyInvitationType) => {
 
   return (
     <Card
-      title={
-        type === EVENT_TYPES.MARRIAGE
-          ? `${groomName} & ${brideName}`
-          : type === EVENT_TYPES.BIRTHDAY
-          ? personName
-          : ""
-      }
+      title={type === "MARRIAGE" ? `${groomName} & ${brideName}` : personName}
       extra={
         <Tag bordered={false} color="success">
           {type}

@@ -10,10 +10,11 @@ import {
 } from "@mui/material";
 import { MyInvitationType } from "../../types";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import { EVENT_TYPE_PROPS, EVENT_TYPES, ROUTES_URL } from "../../constants";
+import { ROUTES_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 import { Tag, Typography as AntdTypography, Row, Col } from "antd";
 import MapIcon from "@mui/icons-material/Map";
+import { useBearStore } from "../../store";
 
 const { Link } = AntdTypography;
 
@@ -37,6 +38,8 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
   ).toLocaleString();
   const formattedEndDateTime = new Date(endDateTime as string).toLocaleString();
   const navigate = useNavigate();
+  const { eventTypes } = useBearStore.eventStore();
+  const eventTypeLabel = eventTypes.find((item) => item.value === type);
 
   return (
     <Card
@@ -57,7 +60,7 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
             color="text.secondary"
             style={{ textAlign: "end" }}
           >
-            <Tag color="success">{EVENT_TYPE_PROPS[type as string].label}</Tag>
+            <Tag color="success">{eventTypeLabel?.label}</Tag>
           </Typography>
         }
         title={
@@ -71,11 +74,7 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
               {formattedStartDateTime} - {formattedEndDateTime}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {type === EVENT_TYPES.MARRIAGE
-                ? `${groomName} & ${brideName}`
-                : type === EVENT_TYPES.BIRTHDAY
-                ? `${personName}`
-                : ""}
+              {type === "MARRIAGE" ? `${groomName} & ${brideName}` : personName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               <MapIcon

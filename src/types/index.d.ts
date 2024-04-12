@@ -127,12 +127,6 @@ type TemplateActionType = {
 
 export type TemplatePreviewType = TemplateType & TemplateActionType;
 
-export enum Events {
-  MARRIAGE = "MARRIAGE",
-  BIRTHDAY = "BIRTHDAY",
-  OTHERS = "OTHERS",
-}
-
 export enum Channels {
   SMS = "SMS",
   WHATSAPP = "WHATSAPP",
@@ -150,7 +144,7 @@ export type EventType = {
   id?: string;
   name?: string;
   userId?: string;
-  type?: Events;
+  type?: string;
   groomName?: string;
   brideName?: string;
   startDateTime?: string;
@@ -304,6 +298,7 @@ export type EventManagementType = {
   getTemplates: (filter?: Record<string, string>) => void;
   handleFileUpload?: (e: UploadChangeParam<UploadFile<any>>) => void;
   action?: ActionType;
+  formFields: any[];
 };
 
 export type EventNotificationType = {
@@ -420,4 +415,15 @@ export type ServiceTransactionLogsType = {
   userPlanId?: string;
   createdAt?: Date;
   updatedAt?: Date;
+};
+
+export type EventFormType = {
+  fields?: any[];
+};
+
+export type EventTypeType = {
+  fields: string[];
+  _id: string;
+  label: string;
+  value: string;
 };

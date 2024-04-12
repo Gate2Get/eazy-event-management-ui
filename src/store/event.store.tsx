@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { Events } from "../types";
 import { EventStoreType } from "./types";
 
 export const initialSelectedEvent = {
@@ -9,7 +8,7 @@ export const initialSelectedEvent = {
   endDateTime: "",
   name: "",
   startDateTime: "",
-  type: "OTHERS" as Events,
+  type: "",
 };
 
 export const createEventStore = create<EventStoreType>((set) => ({
@@ -26,11 +25,15 @@ export const createEventStore = create<EventStoreType>((set) => ({
     ...initialSelectedEvent,
     invitedByInfo: {},
   },
+  eventTypes: [],
   isListView: false,
   isEdit: false,
   eventAlbums: [],
   setEventAlbums: (eventAlbums) => {
     set((state) => ({ eventAlbums }));
+  },
+  setEventTypes: (eventTypes) => {
+    set((state) => ({ eventTypes }));
   },
   setIsEdit: (isEdit: boolean) => {
     set((state) => ({ isEdit }));

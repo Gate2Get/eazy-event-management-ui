@@ -39,6 +39,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     setIsVerificationOpen,
     setActivePlan,
   } = useBearStore.userStore();
+  const { eventTypes, setEventTypes } = useBearStore.eventStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -74,6 +75,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     }
     getUserInfo();
     getAlerts();
+    getEventTypes();
   }, []);
 
   React.useEffect(() => {
@@ -88,6 +90,20 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       })
       .catch((error: Error) => {
         console.log({ location: "getAlerts", error });
+      });
+  };
+
+  const getEventTypes = (): void => {
+    setLoading(true);
+    API.eventManagement
+      .getEventType()
+      .then((eventTypes) => {
+        setEventTypes(eventTypes);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getEventTypes", error });
       });
   };
 

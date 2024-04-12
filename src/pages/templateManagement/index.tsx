@@ -30,7 +30,6 @@ import { TemplateCard } from "../../components/templateCard";
 import {
   TEMPLATE_CHANNEL_OPTIONS,
   EVENT_STATUS,
-  EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
   TEMPLATE_BUTTONS,
@@ -40,7 +39,7 @@ import {
   NO_PLAN_ASSIGNED_MESSAGE,
 } from "../../constants";
 import { useBearStore } from "../../store";
-import { TemplateAdminType, TemplateType } from "../../types";
+import { EventTypeType, TemplateAdminType, TemplateType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import "./styles.scss";
 import { PreviewTemplate } from "../../components/previewTemplate";
@@ -79,11 +78,6 @@ const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
 const { Title, Text, Paragraph, Link } = Typography;
 const { Search } = Input;
 
-const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-  label: EVENT_TYPE_PROPS[event].label,
-  value: event,
-}));
-
 export const TemplateManagement = (): React.ReactElement => {
   const [form] = Form.useForm();
   const { styles } = useModalStyle();
@@ -101,8 +95,8 @@ export const TemplateManagement = (): React.ReactElement => {
     setSelectedTemplate,
     templates,
   } = useBearStore.templateStore();
+  const { eventTypes } = useBearStore.eventStore();
 
-  const navigate = useNavigate();
   let filteredGrid: any[] = [];
   const [searchValue, setSearchValue] = React.useState("");
   const [appealComments, setAppealComments] = React.useState("");
@@ -972,14 +966,16 @@ export const TemplateManagement = (): React.ReactElement => {
           <Form.Item
             label="Select Event"
             name="type"
-            rules={[{ required: true, message: "Please select template type" }]}
+            rules={[
+              { required: true, message: "Please select template event type" },
+            ]}
           >
             <Select
               style={{ width: "100%" }}
               allowClear
               placeholder="Select a event"
               optionFilterProp="children"
-              options={eventTypeOptions}
+              options={eventTypes}
             />
           </Form.Item>
           {/* {form.getFieldValue("channel") === "WHATSAPP" && (

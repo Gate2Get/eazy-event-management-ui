@@ -17,7 +17,6 @@ import React from "react";
 import { API } from "../../api";
 import {
   EVENT_DATE_FORMAT,
-  EVENT_TYPE_PROPS,
   LOCAL_STORAGE_VIEW,
   PAGE_ACTION,
 } from "../../constants";
@@ -41,11 +40,6 @@ import { InvitationAlbum } from "../../components/invitationAlbum";
 
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
-
-const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-  label: EVENT_TYPE_PROPS[event].label,
-  value: event,
-}));
 
 const STEPS = [
   {
@@ -74,6 +68,7 @@ export const MyInvitation = () => {
     selectedInvitation,
     myInvitations,
     isListView,
+    eventTypes,
     setIsListView,
     setAction,
     setFilters,
@@ -332,7 +327,7 @@ export const MyInvitation = () => {
                       allowClear
                       placeholder="Select a event"
                       optionFilterProp="children"
-                      options={eventTypeOptions}
+                      options={eventTypes}
                       value={filters.type}
                       onChange={(type) => {
                         handleFilterChange({ type });

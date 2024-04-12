@@ -14,6 +14,7 @@ import {
   EventNotificationType,
   SessionType,
   UserPricingPlanType,
+  EventTypeType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -72,6 +73,7 @@ export type EventStoreType = {
   isListView: boolean;
   isEdit: boolean;
   eventAlbums: AttachmentType[];
+  eventTypes: EventTypeType[];
   setEventAlbums: (eventAlbums: AttachmentType[]) => void;
   setIsListView: (isListView: boolean) => void;
   setIsEdit: (isEdit: boolean) => void;
@@ -82,6 +84,7 @@ export type EventStoreType = {
   setEventType: (eventType?: string) => void;
   setEvents: (events: EventType[]) => void;
   setFilters: (filters: EventFilterType) => void;
+  setEventTypes: (eventTypes: EventTypeType[]) => void;
 };
 
 export type TemplateStoreType = {

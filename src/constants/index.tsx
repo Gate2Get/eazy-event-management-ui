@@ -148,24 +148,6 @@ export const TEMPLATE_STATUS_LABEL_COLOR: Record<string, string> = {
   [EVENT_STATUS.APPEAL]: "processing",
 };
 
-export const EVENT_TYPES = {
-  MARRIAGE: "MARRIAGE",
-  BIRTHDAY: "BIRTHDAY",
-  OTHERS: "OTHERS",
-};
-
-export const EVENT_TYPE_PROPS = {
-  [EVENT_TYPES.MARRIAGE]: {
-    label: "Marriage",
-  },
-  [EVENT_TYPES.BIRTHDAY]: {
-    label: "Birthday",
-  },
-  [EVENT_TYPES.OTHERS]: {
-    label: "Others",
-  },
-};
-
 export const TEMPLATE_ADMIN_ACTION = [
   {
     label: "Reject",

@@ -1,6 +1,4 @@
 import { create } from "zustand";
-import { EVENT_TYPES } from "../constants";
-import { Events } from "../types";
 import { DashboardStoreType } from "./types";
 
 export const createDashboardStore = create<DashboardStoreType>((set) => ({
@@ -11,7 +9,7 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     messageTemplate: "",
     name: "",
     startDateTime: "",
-    type: EVENT_TYPES.OTHERS as Events,
+    type: "",
     userId: "",
   },
   selectedEvent: {
@@ -21,7 +19,7 @@ export const createDashboardStore = create<DashboardStoreType>((set) => ({
     messageTemplate: "",
     name: "",
     startDateTime: "",
-    type: EVENT_TYPES.OTHERS as Events,
+    type: "",
     userId: "",
   },
   upcomingEvents: [],

@@ -42,7 +42,6 @@ import { NoData } from "../noData";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { useBearStore } from "../../store";
 import { AttachmentDragger } from "../AttachmentDragger";
-import { eventCreationConfig } from "../../configs/event.config";
 import { ViewEventNotification } from "../viewEventNotification";
 import { v4 as uuidV4 } from "uuid";
 import { EditEventNotification } from "../editEventNotification";
@@ -82,7 +81,7 @@ export const EventManagement = (props: EventManagementType) => {
   const {
     contactList,
     templates,
-    isEdit,
+    formFields,
     form,
     onHandleEvent,
     onSearchTemplate,
@@ -120,11 +119,6 @@ export const EventManagement = (props: EventManagementType) => {
     form,
     preserve: true,
   });
-
-  let fields: any[] = [];
-  if (eventType) {
-    fields = eventCreationConfig(screen, form)[eventType];
-  }
 
   const renderFields = (props: any) => {
     switch (props.type) {
@@ -380,7 +374,7 @@ export const EventManagement = (props: EventManagementType) => {
             onFinish={onHandleEvent}
             className={action === "VIEW" ? "view-mode" : "edit-mode"}
           >
-            {fields.map((field) => (
+            {formFields.map((field) => (
               <Form.Item
                 label={field.label}
                 name={field.name}

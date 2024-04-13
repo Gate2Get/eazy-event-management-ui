@@ -58,6 +58,9 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
 
   const onFinish = async (values: any) => {
     console.log({ values });
+    if (screen === "MOBILE") {
+      values.triggerDateTime = dayjs(values.triggerDateTime).format();
+    }
     handleSubmit?.(values);
   };
 
@@ -76,7 +79,7 @@ export const EditEventNotification = (props: EventNotificationCardType) => {
       messageTemplate,
       triggerDateTime: triggerDateTime
         ? screen === "MOBILE"
-          ? dateUtctoIstyyyyMMddThhmm(triggerDateTime)
+          ? dayjs(triggerDateTime).format("YYYY-MM-DDTHH:mm")
           : dayjs(triggerDateTime)
         : undefined,
       channel,

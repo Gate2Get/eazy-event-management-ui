@@ -266,7 +266,7 @@ export const EventManagement = () => {
       }
     } else {
       event.startDateTime = dayjs(event.startDateTime).format();
-      event.endDateTime = dayjs(event.startDateTime).format();
+      event.endDateTime = dayjs(event.endDateTime).format();
     }
     if (triggerDateTime) {
       event.triggerDateTime = dayjs(triggerDateTime).format();

@@ -146,7 +146,11 @@ export const EventManagement = (props: EventManagementType) => {
       case COMPONENT_TYPE.INPUT_DATETIME_LOCAL:
         return action === "VIEW" ? (
           <Text className="text-view">
-            {form.getFieldValue(props.name) || "NA"}
+            {form.getFieldValue(props.name)
+              ? dayjs(form.getFieldValue(props.name)).format(
+                  "DD MMM, YYYY HH:mm"
+                )
+              : "NA"}
           </Text>
         ) : (
           <Input type="datetime-local" allowClear />

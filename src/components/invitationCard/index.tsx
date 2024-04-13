@@ -27,6 +27,7 @@ export const InvitationCard = (props: MyInvitationType) => {
   } = props;
 
   const { screen } = useBearStore.appStore();
+  const { eventTypes } = useBearStore.eventStore();
   const colOption = (count: number) =>
     screen === "MOBILE"
       ? {
@@ -38,13 +39,14 @@ export const InvitationCard = (props: MyInvitationType) => {
     startDateTime as string
   ).toLocaleString();
   const formattedEndDateTime = new Date(endDateTime as string).toLocaleString();
+  const eventTypeLabel = eventTypes.find((item) => item.value === type);
 
   return (
     <Card
       title={type === "MARRIAGE" ? `${groomName} & ${brideName}` : personName}
       extra={
-        <Tag bordered={false} color="success">
-          {type}
+        <Tag bordered={false} color="processing">
+          {eventTypeLabel?.label || type}
         </Tag>
       }
     >

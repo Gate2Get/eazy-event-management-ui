@@ -83,7 +83,7 @@ export const EventCard = (props: EventCardType) => {
             <Row className="event-type">
               <Col span={12}>
                 <Text strong className="event-type__label">
-                  {eventTypeLabel?.value}
+                  {eventTypeLabel?.label}
                 </Text>
               </Col>
               <Col span={10}>

@@ -55,7 +55,9 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     marginLeft: collapsed ? 0 : sidebarWidth,
   });
 
+  console.log({ isAuthorized, lo: "layout" });
   React.useEffect(() => {
+    console.log({ isAuthorized, lo: "useEffect" });
     if (!isAuthorized) {
       let returnTo;
       if (searchParams.get("returnTo")) {
@@ -68,7 +70,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
         returnTo =
           window.location.pathname === "/"
             ? `${ROUTES_URL.EE}/${ROUTES_URL.DASHBOARD}`
-            : window.location.pathname;
+            : `${window.location.pathname}${window.location.search}`;
         console.log("returnTo 3", returnTo);
       }
       navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${btoa(returnTo as string)}`);

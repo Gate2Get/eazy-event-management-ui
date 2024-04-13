@@ -8,15 +8,18 @@ import {
   Rate,
   Button,
   Select,
+  Alert,
 } from "antd";
 import bugBanner from "../../assets/svg/bug-banner.svg";
 import { TOPIC_OPTIONS } from "./constant";
 import TextArea from "antd/es/input/TextArea";
 import { AttachmentButton } from "../../components/AttachmentButton";
-import { ReportBugsType } from "../../types";
+import { AttachmentType, ReportBugsType } from "../../types";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
+import { UploadChangeParam, UploadFile } from "antd/es/upload";
+import { useSearchParams } from "react-router-dom";
 
 const { Title, Text } = Typography;
 const topicOptions = TOPIC_OPTIONS.map((topic) => ({
@@ -27,6 +30,11 @@ const topicOptions = TOPIC_OPTIONS.map((topic) => ({
 export const ReportBug = () => {
   const [form] = Form.useForm();
   const { setLoading, screen } = useBearStore.appStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const attachments = Form.useWatch("attachment", {
+    form,
+    preserve: true,
+  });
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -39,8 +47,11 @@ export const ReportBug = () => {
     setLoading(true);
     API.commonAPI
       .createBug(bugs)
-      .then(() => {
+      .then((response) => {
         setLoading(false);
+        form.resetFields();
+        if (response?.result?._id)
+          setSearchParams({ id: response?.result?._id });
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -48,8 +59,54 @@ export const ReportBug = () => {
       });
   };
 
+  const handleFileUpload = async (e: any): Promise<void> => {
+    const { file } = e;
+    console.log({ file });
+    const { status, preview, uid, id, name } = file;
+    if (file.status === "removed") {
+      const attachment: AttachmentType[] =
+        form.getFieldValue("attachment") || [];
+      const _attachment = attachment.filter(
+        (invitation: AttachmentType) => invitation.id !== id
+      );
+      form.setFieldValue("attachment", _attachment);
+    } else if (file?.size && file.size < 5000000) {
+      setLoading(true);
+      API.commonAPI
+        .uploadFile(file, "invitation")
+        .then((blobId: string) => {
+          setLoading(false);
+          const attachment: AttachmentType[] =
+            form.getFieldValue("attachment") || [];
+          attachment.push({
+            id: uid,
+            name,
+            url: blobId,
+          });
+          form.setFieldValue("attachment", attachment);
+        })
+        .catch((error: Error) => {
+          setLoading(false);
+          console.log({ location: "handleFileUpload", error });
+        });
+    } else {
+      console.error("Upload file error", file);
+    }
+  };
+
   return (
     <div>
+      {searchParams.get("id") && (
+        <Alert
+          message={`Bug reported with reference no: ${searchParams.get("id")}`}
+          banner
+          closable
+          type="success"
+          onClose={() => {
+            setSearchParams({});
+          }}
+        />
+      )}
       <Row gutter={[16, 16]}>
         <Col {...colOption(8)} style={{ textAlign: "center" }}>
           <img
@@ -97,7 +154,15 @@ export const ReportBug = () => {
               <TextArea rows={4} />
             </Form.Item>
             <Form.Item label="Attachment" name="attachment">
-              <AttachmentDragger buttonText="Upload Attachment" />
+              <AttachmentDragger
+                buttonText="Upload Attachment"
+                otherProps={{
+                  fileList: attachments,
+                }}
+                isPreview
+                accept="image/*,application/pdf"
+                onAttach={(e) => handleFileUpload?.(e)}
+              />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">

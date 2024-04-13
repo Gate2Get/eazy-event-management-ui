@@ -31,6 +31,7 @@ function App(): React.ReactElement {
     interceptors(navigate, messageApi);
   }, []);
 
+  console.log("App comp render");
   return (
     <div style={{ width }}>
       {contextHolder}

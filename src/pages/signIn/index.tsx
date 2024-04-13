@@ -56,7 +56,10 @@ export const SignIn = () => {
   };
 
   const loginGoogleUser = () => {
-    window.location.href = userManagementEndpoint.loginGoogleUser;
+    const search = window.location.search;
+    window.location.href = search
+      ? `${userManagementEndpoint.loginGoogleUser}${search}`
+      : userManagementEndpoint.loginGoogleUser;
   };
 
   const verifyOTP = (otp: number) => {

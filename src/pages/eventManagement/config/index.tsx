@@ -21,22 +21,6 @@ export const eventColumns = (
     sortable: true,
     filterable: true,
   },
-  // {
-  //   key: EVENT_COLUMN_KEYS.CHANNEL,
-  //   dataIndex: EVENT_COLUMN_KEYS.CHANNEL,
-  //   title: EVENT_COLUMN_NAME.CHANNEL,
-  //   render: (record) => (
-  //     <Tag
-  //       bordered={false}
-  //       icon={CHANNEL_OPTIONS_MAP[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
-  //     >
-  //       {" "}
-  //       {CHANNELS[record?.[EVENT_COLUMN_KEYS.CHANNEL]]}
-  //     </Tag>
-  //   ),
-  //   sortable: true,
-  //   filterable: true,
-  // },
   {
     key: EVENT_COLUMN_KEYS.TYPE,
     dataIndex: EVENT_COLUMN_KEYS.TYPE,
@@ -59,6 +43,7 @@ export const eventColumns = (
         className="p-column-filter"
         style={{ width: "100%" }}
         allowClear
+        dropdownStyle={{ overflow: "auto", minWidth: 200 }}
       />
     ),
   },

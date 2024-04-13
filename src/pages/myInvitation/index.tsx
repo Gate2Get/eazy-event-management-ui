@@ -141,26 +141,31 @@ export const MyInvitation = () => {
     });
   };
 
-  invitationColumns.forEach((column) => {
-    if (column.key === INVITATION_COLUMN_KEYS.NAME) {
-      column.render = (record) => (
-        <Text
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            onViewSelect(record);
-          }}
-        >
-          {record.name}
-        </Text>
-      );
-    }
-  });
+  const gridColumns = React.useMemo(
+    () =>
+      invitationColumns(eventTypes).map((column) => {
+        if (column.key === INVITATION_COLUMN_KEYS.NAME) {
+          column.render = (record) => (
+            <Text
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                onViewSelect(record);
+              }}
+            >
+              {record.name}
+            </Text>
+          );
+        }
+        return column;
+      }),
+    [eventTypes, myInvitations]
+  );
 
   const renderEvents = (): React.ReactNode => {
     return myInvitations.length ? (
       isListView ? (
         <DataTable
-          columns={invitationColumns}
+          columns={gridColumns}
           data={myInvitations}
           sortKeys={SORT_KEYS}
         />

@@ -46,6 +46,7 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
       style={{
         boxShadow: "none",
         borderRadius: "0.75rem",
+        cursor: "pointer",
       }}
       onClick={() => {
         navigate(
@@ -60,7 +61,7 @@ export const CalendarInvitationCard = (props: MyInvitationType) => {
             color="text.secondary"
             style={{ textAlign: "end" }}
           >
-            <Tag color="success">{eventTypeLabel?.label}</Tag>
+            <Tag color="processing">{eventTypeLabel?.label}</Tag>
           </Typography>
         }
         title={

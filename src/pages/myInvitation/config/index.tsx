@@ -1,17 +1,14 @@
-import { Tag } from "antd";
 import dayjs from "dayjs";
 import { DataTableColumnType } from "../../../components/dataTable/types";
-import {
-  CHANNELS,
-  CHANNEL_OPTIONS_MAP,
-  DATE_FORMAT,
-  EVENT_STATUS_LABEL,
-  EVENT_STATUS_LABEL_COLOR,
-} from "../../../constants";
-import { MyInvitationType } from "../../../types";
+import { DATE_FORMAT } from "../../../constants";
+import { EventTypeType, MyInvitationType } from "../../../types";
 import { INVITATION_COLUMN_KEYS, INVITATION_COLUMN_NAME } from "../constant";
+import { convertToTitleCase } from "../../../utils/common.utils";
+import { Select, Tag } from "antd";
 
-export const invitationColumns: DataTableColumnType[] = [
+export const invitationColumns = (
+  eventTypeOptions: EventTypeType[]
+): DataTableColumnType[] => [
   {
     key: INVITATION_COLUMN_KEYS.NAME,
     dataIndex: INVITATION_COLUMN_KEYS.NAME,
@@ -23,6 +20,25 @@ export const invitationColumns: DataTableColumnType[] = [
     key: INVITATION_COLUMN_KEYS.TYPE,
     dataIndex: INVITATION_COLUMN_KEYS.TYPE,
     title: INVITATION_COLUMN_NAME.TYPE,
+    render: (record) => (
+      <div className="event-status">
+        <Tag bordered={false} color="processing">
+          {convertToTitleCase(record?.[INVITATION_COLUMN_KEYS.TYPE])}
+        </Tag>
+      </div>
+    ),
+    filterElement: (options) => (
+      <Select
+        value={options.value}
+        options={eventTypeOptions}
+        onChange={(value) => options.filterApplyCallback(value)}
+        placeholder="Any"
+        className="p-column-filter"
+        style={{ width: "100%" }}
+        allowClear
+        dropdownStyle={{ overflow: "auto", minWidth: 200 }}
+      />
+    ),
     sortable: true,
     filterable: true,
   },

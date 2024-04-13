@@ -44,18 +44,12 @@ export const NoticeCalendar = () => {
     const eventMonthMap: any = {};
     events.forEach((event) => {
       const day = dayjs(event.startDateTime).format("D");
-      console.log({
-        "dayjs(event.startDateTime)": dayjs(event.startDateTime),
-        day,
-        "event.startDateTime": event.startDateTime,
-      });
       if (eventMonthMap[day]) {
         eventMonthMap[day].push(event);
       } else {
         eventMonthMap[day] = [event];
       }
     });
-    console.log({ eventMonthMap });
     setEventMonthMap(eventMonthMap);
   };
 

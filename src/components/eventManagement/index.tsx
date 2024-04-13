@@ -115,11 +115,6 @@ export const EventManagement = (props: EventManagementType) => {
       preserve: true,
     }) || [];
 
-  const eventType = Form.useWatch("eventType", {
-    form,
-    preserve: true,
-  });
-
   const renderFields = (props: any) => {
     switch (props.type) {
       case COMPONENT_TYPE.INPUT_TEXT: {

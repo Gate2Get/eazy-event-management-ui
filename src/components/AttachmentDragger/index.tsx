@@ -96,10 +96,12 @@ export const AttachmentDragger = (props: AttachmentButtonType) => {
           <Col {...colOption(6)}>
             <Card
               hoverable
-              style={{
-                width:
-                  screen === "MOBILE" ? width * 0.75 : width / 3 - sidebarWidth,
-              }}
+              style={
+                {
+                  // width:
+                  //   screen === "MOBILE" ? width * 0.75 : width / 3 - sidebarWidth,
+                }
+              }
               cover={
                 <img
                   loading="lazy"

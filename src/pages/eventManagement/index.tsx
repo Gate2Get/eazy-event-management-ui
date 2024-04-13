@@ -93,11 +93,6 @@ const STEPS = [
   },
 ];
 
-// const eventTypeOptions = Object.keys(EVENT_TYPE_PROPS).map((event: string) => ({
-//   label: EVENT_TYPE_PROPS[event].label,
-//   value: event,
-// }));
-
 const eventStatusOptions = Object.entries(eventLabel).map((event: any) => ({
   label: (
     <Tag
@@ -367,50 +362,51 @@ export const EventManagement = () => {
     });
   };
 
-  eventColumns(eventTypes).forEach((column) => {
-    if (column.key === EVENT_COLUMN_KEYS.ACTION) {
-      column.render = (record) => (
-        <Space>
-          {record.isEditable && (
-            <EditOutlinedIcon
-              fontSize="inherit"
-              onClick={() => {
-                onEditSelect(record);
-              }}
-              style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
-            />
-          )}
-          {/* <VisibilityIcon
+  const gridColumns = React.useMemo(
+    () =>
+      eventColumns(eventTypes).map((column) => {
+        if (column.key === EVENT_COLUMN_KEYS.ACTION) {
+          column.render = (record) => (
+            <Space>
+              {record.isEditable && (
+                <EditOutlinedIcon
+                  fontSize="inherit"
+                  onClick={() => {
+                    onEditSelect(record);
+                  }}
+                  style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
+                />
+              )}
+              {/* <VisibilityIcon
             fontSize="inherit"
             onClick={() => {
               onViewSelect(record);
             }}
             style={{ color: "rgb(102, 112, 133)", cursor: "pointer" }}
           /> */}
-        </Space>
-      );
-    } else if (column.key === EVENT_COLUMN_KEYS.NAME) {
-      column.render = (record) => (
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            onViewSelect(record);
-          }}
-        >
-          {record.name}
-        </div>
-      );
-    }
-  });
+            </Space>
+          );
+        } else if (column.key === EVENT_COLUMN_KEYS.NAME) {
+          column.render = (record) => (
+            <div
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                onViewSelect(record);
+              }}
+            >
+              {record.name}
+            </div>
+          );
+        }
+        return column;
+      }),
+    [eventTypes, events]
+  );
 
   const renderEvents = (): React.ReactNode => {
     return events.length ? (
       isListView ? (
-        <DataTable
-          columns={eventColumns(eventTypes)}
-          data={events}
-          sortKeys={SORT_KEYS}
-        />
+        <DataTable columns={gridColumns} data={events} sortKeys={SORT_KEYS} />
       ) : (
         events?.map((event) => (
           <Col {...colProps}>

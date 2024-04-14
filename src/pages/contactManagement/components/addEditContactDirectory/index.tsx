@@ -30,13 +30,15 @@ import {
 import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { parseXlsx } from "../../../../utils/parseXlsx.utils";
 import { ContactUserCard } from "../../../../components/contactUserCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import GoogleIcon from "@mui/icons-material/Google";
 import { searchGrid } from "../../../../utils/searchGrid.utils";
 import { saveAs } from "file-saver";
 import { eventManagementEndpoint } from "../../../../configs/axios.config";
-import { phoneNumberParser } from "../../../../utils/common.utils";
+import {
+  phoneNumberParser,
+  readFileAsText,
+} from "../../../../utils/common.utils";
 import { contactValidator } from "../../../../utils/validation.utils";
 import {
   LOCAL_STORAGE_VIEW,
@@ -53,6 +55,9 @@ import {
   useModalStyle,
 } from "../../../../configs/antd.config";
 import { useTheme } from "antd-style";
+// import { parse as parseVCard } from "vcard4";
+// import { parse as parseVCard } from "../../../../utils/vcardParser.utils";
+import { VCard } from "../../../../utils/vcardParser.utils";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -73,6 +78,8 @@ export const AddEditContactDirectory = () => {
     isListView,
   } = useBearStore.contactStore();
   const { activePlan } = useBearStore.userStore();
+
+  // vcard.p
 
   const [directoryContactList, setDirectoryContactList]: [
     ContactListType[],
@@ -188,7 +195,8 @@ export const AddEditContactDirectory = () => {
       .createContactDirectory(directory)
       .then((response) => {
         setLoading(false);
-        onCancel();
+        // onCancel();
+        setSearchParams({ creation: "DONE" });
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -202,7 +210,8 @@ export const AddEditContactDirectory = () => {
       .updateContactDirectory(directory)
       .then((response) => {
         setLoading(false);
-        onCancel();
+        // onCancel();
+        setSearchParams({ creation: "DONE" });
       })
       .catch((error: Error) => {
         setLoading(false);
@@ -296,37 +305,64 @@ export const AddEditContactDirectory = () => {
     e: UploadChangeParam<UploadFile<any>>
   ): Promise<void> => {
     const { file } = e;
-    console.log(file);
+    console.log(file, e);
     if (file.status === "removed") {
       setDirectoryContactList([]);
       form.setFieldValue("contacts", undefined);
     } else if (file?.size && file.size < 50000) {
-      const { uid, name } = file;
+      const { uid, name, type } = file;
 
-      const data = await parseXlsx(file);
-      const contactList: ContactListType[] = [];
-      data.forEach((contact: any, index: number) => {
-        const _contact = {
-          id: (index + 1).toString(),
-          name: contact.Name?.trim(),
-          senderId: (
-            contact.Mobile ||
-            contact["Phone 1 - Value"] ||
-            contact["Phone 2 - Value"]
-          )
-            ?.toString()
-            ?.trim(),
-          image: contact.Photo?.trim(),
-        };
-        if (_contact.name && _contact.senderId) {
-          _contact.senderId = phoneNumberParser(_contact.senderId);
-          contactList.push(_contact);
-        }
-      });
+      if (type === "text/vcard") {
+        const content = await readFileAsText(file);
+        const vcard = new VCard();
+        const vcf = new Promise((resolve, reject) => {
+          vcard.readData(content, (err, data) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(data);
+            }
+          });
+        });
+        const data: any = await vcf;
+        data.forEach((contact: any, index: number) => {
+          const _contact = {
+            id: (index + 1).toString(),
+            name: contact?.FN?.replace(",", "").trim(),
+            senderId: contact?.TEL?.value,
+            image: contact.Photo?.trim(),
+          };
+          if (_contact.name && _contact.senderId) {
+            _contact.senderId = phoneNumberParser(_contact.senderId);
+            contactList.push(_contact);
+          }
+        });
+        console.log({ vcf, data, contactList });
+      } else {
+        const data = await parseXlsx(file);
+        const contactList: ContactListType[] = [];
+        data.forEach((contact: any, index: number) => {
+          const _contact = {
+            id: (index + 1).toString(),
+            name: contact.Name?.trim(),
+            senderId: (
+              contact.Mobile ||
+              contact["Phone 1 - Value"] ||
+              contact["Phone 2 - Value"]
+            )
+              ?.toString()
+              ?.trim(),
+            image: contact.Photo?.trim(),
+          };
+          if (_contact.name && _contact.senderId) {
+            _contact.senderId = phoneNumberParser(_contact.senderId);
+            contactList.push(_contact);
+          }
+        });
+      }
       console.log({ contactList });
       setDirectoryContactList(contactList);
       form.setFieldValue("contacts", contactList);
-      console.log({ data });
     } else {
     }
     form.validateFields();
@@ -425,16 +461,6 @@ export const AddEditContactDirectory = () => {
               {DIRECTORY_ACTIONS[action].deleteButtonText}
             </Button>
           )}
-
-          {(action === "ADD" || action === "EDIT") && (
-            <Button
-              type="default"
-              style={{ marginLeft: ".5rem" }}
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-          )}
         </Col>
       </Row>
 
@@ -476,9 +502,10 @@ export const AddEditContactDirectory = () => {
               ]}
               getValueFromEvent={normFile}
               valuePropName="fileList"
+              help="Supported file formats are .xlsx, .csv, .vcf"
             >
               <AttachmentButton
-                accept=".xlsx, .csv"
+                accept=".xlsx, .csv, .vcf"
                 buttonText="Upload"
                 otherProps={{ maxCount: 1 }}
                 onAttach={handleFileUpload}

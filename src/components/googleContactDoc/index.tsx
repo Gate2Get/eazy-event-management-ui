@@ -39,7 +39,8 @@ export const GoogleContactDoc = () => {
 
       <Title level={3}>Step 4: Choose Export Format</Title>
       <Paragraph className="doc-paragraph">
-        You can export in various formats in Google CSV.
+        You can export in various formats in <b>Google CSV</b> or{" "}
+        <b>vCard (for iOS Contacts)</b>.
       </Paragraph>
 
       <Title level={3}>Step 5: Download</Title>

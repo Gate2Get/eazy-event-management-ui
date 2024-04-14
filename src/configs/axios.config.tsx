@@ -40,21 +40,12 @@ export const interceptors = (
       const { url, method } = config;
 
       if (snackbarAllowedMethods.includes(method as string)) {
-        // toast.current?.show({
-        //   severity: "success",
-        //   detail: data?.message || "Operation completed successfully",
-        //   life: 3000,
-        // });
         messageApi.open({
           key: `${method}-${url}`,
           type: "success",
           content: data?.message || "Operation completed successfully",
           duration: 5,
         });
-        // notification.success({
-        //   message: data?.message || "Operation completed successfully",
-        //   className: "eazy__event-snackbar success",
-        // });
       }
       return response;
     },
@@ -69,26 +60,21 @@ export const interceptors = (
         navigate(`/${ROUTES_URL.FORBIDDEN}`);
       } else if (error?.response?.status === HttpStatusCode.NotFound) {
         navigate("/404");
-      } else if (
-        error?.response?.status === HttpStatusCode.BadRequest ||
-        error?.response?.status === HttpStatusCode.ExpectationFailed
-      ) {
-        console.log({ error });
-        // notification.success({
-        //   message: error?.response?.data?.message || "Something went wrong!",
-        //   className: "eazy__event-snackbar success",
-        // });
-        // toast.current?.show({
-        //   severity: "error",
-        //   detail: error?.response?.data?.message || "Something went wrong!",
-        //   life: 3000,
-        // });
+      } else if (error?.response?.status === HttpStatusCode.BadRequest) {
         const data: any = response?.data;
         messageApi.open({
           key: `${method}-${url}`,
           type: "error",
           content: data?.message || "Something went wrong!",
           duration: 5,
+        });
+      } else if (error?.response?.status === HttpStatusCode.ExpectationFailed) {
+        const data: any = response?.data;
+        messageApi.open({
+          key: `${method}-${url}`,
+          type: "warning",
+          content: data?.message || "Something went wrong!",
+          duration: 10,
         });
       }
     }

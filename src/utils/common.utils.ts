@@ -170,3 +170,25 @@ export const isToday = (dateString: string) => {
 
   return dateToCheck.isSame(today, "day");
 };
+
+export const readFileAsText = (file: any): Promise<string> => {
+  console.log({ file });
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    // Setup onload callback to resolve with the file content
+    reader.onload = () => {
+      const content = reader.result as string;
+      resolve(content);
+    };
+
+    // Setup onerror callback to reject with the error
+    reader.onerror = () => {
+      reader.abort();
+      reject(new Error("Failed to read file as text."));
+    };
+
+    // Read file as text
+    reader.readAsText(file);
+  });
+};

@@ -43,6 +43,8 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const creation = searchParams.get("creation");
+
   let sidebarWidth = width;
   if (screen === "MOBILE") {
     sidebarWidth = width;
@@ -82,7 +84,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
 
   React.useEffect(() => {
     getActiveUserPricingPlan();
-  }, [currentPage]);
+  }, [currentPage, creation]);
 
   const getAlerts = (): any => {
     API.commonAPI
@@ -161,7 +163,11 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
           >
             Click here
           </Text>
-          <Text> to verify the mobile to start sending yourself and more.</Text>
+          <Text>
+            {" "}
+            to verify your mobile number to unlock the ability to send messages,
+            create contact directories, templates, events, and more!
+          </Text>
         </>
       );
     }

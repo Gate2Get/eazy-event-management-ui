@@ -32,8 +32,10 @@
 
       .ant-select-selection-overflow-item {
         .ant-select-selection-item {
-          color: rgb(18, 183, 106);
-          background-color: rgba(18, 183, 106, 0.12);
+          // color: rgb(18, 183, 106);
+          color: #004f9a;
+          background-color: #e6f1fc !important;
+          // background-color: rgba(18, 183, 106, 0.12);
         }
       }
     }
@@ -43,7 +45,8 @@
     }
   }
 
-  .notification-collapse-no_credits, .notification-collapse-free_credits {
+  .notification-collapse-no_credits,
+  .notification-collapse-free_credits {
     border-left: 3px solid #ff4d4f !important;
     border-radius: 0;
   }
@@ -60,5 +63,11 @@
 
   .notification-collapse-not_started {
     border-radius: 0;
+  }
+
+  .video-collapse {
+    .ant-collapse-header {
+      padding-left: 0;
+    }
   }
 }

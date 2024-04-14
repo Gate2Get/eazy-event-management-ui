@@ -53,6 +53,7 @@ import { PreviewEventNotification } from "../previewEventNotification";
 import { PreviewEvent } from "../previewEvent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { CaretRightOutlined } from "@ant-design/icons";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
 
 import {
   modalClassNames,
@@ -62,6 +63,7 @@ import {
 import { useTheme } from "antd-style";
 import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
+import { VideoPlayer } from "../videoPlayer";
 
 const { RangePicker } = DatePicker;
 dayjs.extend(customParseFormat);
@@ -129,13 +131,35 @@ export const EventManagement = (props: EventManagementType) => {
       case COMPONENT_TYPE.INPUT_URL: {
         return action === "VIEW" ? (
           form.getFieldValue(props.name) ? (
-            <a
-              target="_blank"
-              className="app-link"
-              href={form.getFieldValue(props.name)}
-            >
-              {form.getFieldValue(props.name)}
-            </a>
+            <>
+              {props.name === "videoUrl" && form.getFieldValue(props.name) ? (
+                <Collapse
+                  bordered={false}
+                  defaultActiveKey={["1"]}
+                  expandIcon={() => false}
+                  items={[
+                    {
+                      children: (
+                        <VideoPlayer
+                          url={form.getFieldValue(props.name)}
+                          isVideoEnable
+                        />
+                      ),
+                      label: form.getFieldValue(props.name),
+                      className: "video-collapse",
+                    },
+                  ]}
+                />
+              ) : (
+                <a
+                  target="_blank"
+                  className="app-link"
+                  href={form.getFieldValue(props.name)}
+                >
+                  {form.getFieldValue(props.name)}
+                </a>
+              )}
+            </>
           ) : (
             "NA"
           )
@@ -388,7 +412,7 @@ export const EventManagement = (props: EventManagementType) => {
               name="contactDirectory"
               rules={[
                 {
-                  required: true,
+                  required: false,
                   message: "Please choose contact directory!",
                 },
               ]}
@@ -401,16 +425,50 @@ export const EventManagement = (props: EventManagementType) => {
                     }}
                     className="app-link"
                     icon={<OpenInNewIcon fontSize="inherit" />}
+                    style={{ paddingLeft: 0 }}
                   >
                     View contacts
                   </Button>
                 )
               }
+              help={
+                action !== "VIEW" && (
+                  <Row>
+                    <Col flex={18} order={screen === "MOBILE" ? 2 : 1}>
+                      <Text
+                        style={{ float: "left" }}
+                        italic
+                        className="secondary-color"
+                      >
+                        Choose a contact directory from the list, or
+                        alternatively, add contacts individually while in view
+                        mode.
+                      </Text>
+                    </Col>
+                    <Col flex={6} order={screen === "MOBILE" ? 1 : 2}>
+                      <Button
+                        icon={<ContactPageIcon fontSize="inherit" />}
+                        type="link"
+                        size="large"
+                        style={{ float: "right" }}
+                        href={`${ROUTES_URL.EE}/${ROUTES_URL.CONTACT_MANAGEMENT}`}
+                        target="_blank"
+                      >
+                        Create Directory
+                      </Button>
+                    </Col>
+                  </Row>
+                )
+              }
             >
               <Select
-                placeholder="Select the contact directory"
+                placeholder={
+                  action === "VIEW"
+                    ? "No contact directory selected"
+                    : "Select the contact directory"
+                }
                 allowClear
-                showSearch
+                showSearch={action !== "VIEW"}
                 mode="multiple"
                 disabled={action === "VIEW"}
                 options={contactList?.map((contact) => ({
@@ -439,6 +497,7 @@ export const EventManagement = (props: EventManagementType) => {
                     }
                   />
                 }
+                style={{ width: "100%" }}
               />
             </Form.Item>
             <Form.Item

@@ -1,3 +1,7 @@
+.secondary-color {
+  color: rgba(0, 0, 0, 0.45);
+}
+
 .font-weight-700 {
   font-weight: 700;
 }
@@ -207,7 +211,8 @@
 }
 
 .ant-btn-link {
-  color: rgb(18, 183, 106);
+  // color: rgb(18, 183, 106);
+  color: #004f9a;
 }
 
 .__account__login {
@@ -506,7 +511,8 @@ form {
 }
 
 .app-link {
-  color: rgb(18, 183, 106) !important;
+  // color: rgb(18, 183, 106) !important;
+  color: #004f9a !important;
 }
 
 .ant-collapse {

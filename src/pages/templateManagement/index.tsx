@@ -255,13 +255,17 @@ export const TemplateManagement = (): React.ReactElement => {
     }
   };
 
-  const onCancel = () => {
+  const onCancel = (isClearAction = false) => {
     setIsAppealActionDialogOpen(false);
     setMessageError("");
     setIsError(false);
     stopSpeech();
     setMessages({});
-    setSearchParams({});
+    if (isClearAction) {
+      setSearchParams({ creation: "DONE" });
+    } else {
+      setSearchParams({});
+    }
     onCloseModal();
   };
 
@@ -352,7 +356,7 @@ export const TemplateManagement = (): React.ReactElement => {
     API.templateManagement
       .createTemplate(template)
       .then(() => {
-        onCancel();
+        onCancel(true);
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -701,7 +705,9 @@ export const TemplateManagement = (): React.ReactElement => {
               <Col {...colOption(3)} className="back-icon__container">
                 <Button
                   type="text"
-                  onClick={onCancel}
+                  onClick={() => {
+                    onCancel();
+                  }}
                   icon={<KeyboardBackspaceIcon className="back-icon" />}
                 >
                   back
@@ -823,7 +829,7 @@ export const TemplateManagement = (): React.ReactElement => {
                   <Button
                     type="default"
                     style={{ marginLeft: ".5rem" }}
-                    onClick={onCancel}
+                    onClick={() => onCancel()}
                   >
                     Cancel
                   </Button>

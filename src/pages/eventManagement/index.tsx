@@ -321,7 +321,7 @@ export const EventManagement = () => {
   const onCancel = (isClearAction?: boolean) => {
     setIsPreview(false);
     if (!isPreview || isClearAction) {
-      setSearchParams({});
+      setSearchParams({ creation: "DONE" });
       form.resetFields();
     }
     if (action === "DELETE") {

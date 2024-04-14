@@ -16,30 +16,26 @@ export const PrivacyPolicy = () => {
     >
       <Title level={2}>Privacy Policy</Title>
       <Paragraph className="policy-paragraph">
-        This Privacy Policy governs the manner in which Eazy Event ("we," "us,"
-        or "our") collects, uses, maintains, and discloses information collected
-        from users ("you" or "your") of the Eazy Event application
-        ("Application"). By using the Application, you agree to the practices
-        described in this Privacy Policy.
+      Respecting your privacy and protecting it is our commitment.
+      <br/>When using Eazy Event, you consent to the practices detailed in this privacy policy.
       </Paragraph>
       {privacyPolicyConfig.map((policy, index) => (
-        <Paragraph>
+        <Paragraph key={index}>
+          <br />
           <strong className="policy-title">
-            {index + 1}. {policy.title}
+            {index + 1}. {policy.section}
           </strong>
-          <br />
-          <br />
-          {policy.information.map((info, subIndex) => (
-            <p className="policy-paragraph">
+          {policy.content.map((info, subIndex) => (
+            <p className="policy-paragraph" key={subIndex}>
               {index + 1}.{subIndex + 1}. <strong>{info.title}:</strong>{" "}
-              {info.information}
-              <br />
+              {info.description}
+              
             </p>
           ))}
         </Paragraph>
       ))}
-      <strong className="policy-title">Modification of this Privacy</strong>
       <br />
+      <strong className="policy-title">Modification of this Privacy</strong>
       <br />
       <p className="policy-paragraph">
         Policy We reserve the right to change this Privacy Policy from time to

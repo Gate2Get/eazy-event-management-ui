@@ -92,6 +92,9 @@ export const urlhandler = (
       ? actionType
       : PAGE_ACTION.VIEW;
     setAction(action as ActionType);
+  } else if (id) {
+    apiCallFilter(id);
+    setAction(PAGE_ACTION.VIEW);
   } else {
     setAction("");
     apiCallAll();

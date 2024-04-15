@@ -55,7 +55,12 @@ export const interceptors = (
       const url = config?.url;
 
       if (error?.response?.status === HttpStatusCode.Unauthorized) {
-        navigate(ROUTES_URL.LOGIN);
+        console.log("window.location.search", window.location.search);
+        navigate(
+          window.location.search
+            ? `${ROUTES_URL.LOGIN}${window.location.search}`
+            : ROUTES_URL.LOGIN
+        );
       } else if (error?.response?.status === HttpStatusCode.Forbidden) {
         navigate(`/${ROUTES_URL.FORBIDDEN}`);
       } else if (error?.response?.status === HttpStatusCode.NotFound) {
@@ -68,7 +73,10 @@ export const interceptors = (
           content: data?.message || "Something went wrong!",
           duration: 5,
         });
-      } else if (error?.response?.status === HttpStatusCode.ExpectationFailed) {
+      } else if (
+        error?.response?.status === HttpStatusCode.ExpectationFailed ||
+        error?.response?.status === HttpStatusCode.NotAcceptable
+      ) {
         const data: any = response?.data;
         messageApi.open({
           key: `${method}-${url}`,

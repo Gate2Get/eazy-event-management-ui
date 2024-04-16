@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <!-- Homepage -->
+    <url>
+        <loc>https://www.eazy-event.com/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Event Creation -->
+    <url>
+        <loc>https://www.eazy-event.com/console/event-management</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Template Creation -->
+    <url>
+        <loc>https://www.eazy-event.com/console/template-management</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Contact Management -->
+    <url>
+        <loc>https://www.eazy-event.com/console/contact-management</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- My Invitations -->
+    <url>
+        <loc>https://www.eazy-event.com/console/my-invitation</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- My Profile -->
+    <url>
+        <loc>https://www.eazy-event.com/console/my-profile</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- My Plan -->
+    <url>
+        <loc>https://www.eazy-event.com/console/my-plan</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- My plan info -->
+    <url>
+        <loc>https://www.eazy-event.com/console/my-plan-details</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- My Transaction logs -->
+    <url>
+        <loc>https://www.eazy-event.com/console/service-transaction-logs</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Pricing -->
+    <url>
+        <loc>https://www.eazy-event.com/pricing</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Contact us -->
+    <url>
+        <loc>https://www.eazy-event.com/contact-us</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Privacy policy -->
+    <url>
+        <loc>https://www.eazy-event.com/privacy-policy</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Terms of service -->
+    <url>
+        <loc>https://www.eazy-event.com/terms-of-service</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+</urlset>

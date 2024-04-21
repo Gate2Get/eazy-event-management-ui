@@ -80,7 +80,7 @@ jobs:
       deployments: write
     steps:
       - name: Wait for approval
-        uses: reviewdog/action-github-pr-check@v1
+        uses: reviewdog/action-github-pr-check@v1.0
         with:
           approval_required: true
       - name: Deploy Docker image to EC2

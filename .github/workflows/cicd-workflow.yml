@@ -29,6 +29,40 @@ jobs:
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
+  DevelopmentDeploy:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    environment: Dev
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Dev
+        uses: appleboy/ssh-action@master
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+          PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY_DEV }}
+          SERVER_PUBLIC_IP: ${{ secrets.PUBLIC_IP_DEV }}
+        with:
+          host: ${{ secrets.PUBLIC_IP_DEV }}
+          key: ${{ secrets.PRIVATE_SSH_KEY_DEV }}
+          script: |
+            sudo yum update
+            sudo yum install -y docker
+            sudo yum install awscli -y
+            sudo service docker start
+            sudo usermod -aG docker ec2-user  # Add ec2-user to the docker group to avoid needing sudo for docker commands
+            sudo docker image prune -af
+            sudo docker rm -f eazy-event-management-ui-container
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            sudo docker pull $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker rm -f eazy-event-management-ui-container
+            docker run -d -p 80:80 --name eazy-event-management-ui-container \
+            -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
+            -e PUBLIC_IP=${{ secrets.PUBLIC_IP_DEV }} \
+            $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker image prune -af
+
   ProductionDeploy:
     name: Deploy to production
     needs: Build
@@ -36,7 +70,13 @@ jobs:
     environment:
       name: Production
       url: "https://eazy-event.com"
+    permissions:
+      deployments: write
     steps:
+      - name: Wait for approval
+        uses: reviewdog/action-github-pr-check@v1
+        with:
+          approval_required: true
       - name: Deploy Docker image to EC2
         env:
           REGISTRY: ${{ env.REGISTRY }}
@@ -64,5 +104,6 @@ jobs:
             docker rm -f eazy-event-management-ui-container
             docker run -d -p 80:80 --name eazy-event-management-ui-container \
             -e REACT_APP_ENV=${{ vars.REACT_APP_ENV }} \
+            -e PUBLIC_IP=${{ secrets.PUBLIC_IP }} \
             $REGISTRY/$REPOSITORY:$IMAGE_TAG
             docker image prune -af

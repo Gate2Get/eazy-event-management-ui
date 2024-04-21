@@ -42,11 +42,13 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
-          PRIVATE_SSH_KEY: ${{ secrets.PRIVATE_SSH_KEY_DEV }}
-          SERVER_PUBLIC_IP: ${{ secrets.PUBLIC_IP_DEV }}
+          PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_DEV }}
+          SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY_DEV }}
         with:
-          host: ${{ secrets.PUBLIC_IP_DEV }}
-          key: ${{ secrets.PRIVATE_SSH_KEY_DEV }}
+          host: ${{ secrets.AWS_SSH_KEY_DEV }}
+          username: ec2-user
+          key: ${{ secrets.AWS_PUBLIC_KEY_DEV }}
+          envs: PRIVATE_SSH_KEY,REGISTRY,REPOSITORY,IMAGE_TAG,AWS_DEFAULT_REGION,AWS_REGION
           script: |
             sudo yum update
             sudo yum install -y docker
@@ -66,7 +68,7 @@ jobs:
 
   ProductionDeploy:
     name: Deploy to production
-    needs: Build
+    needs: DevelopmentDeploy
     runs-on: [ubuntu-latest]
     environment:
       name: Production

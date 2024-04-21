@@ -30,7 +30,7 @@ import { useBearStore } from "../../store";
 import { TemplateAdminType, TemplateType } from "../../types";
 import "./styles.scss";
 import NoTemplates from "../../assets/svg/no-events.svg";
-import { urlhandler } from "../../utils/common.utils";
+import { urlHandler } from "../../utils/common.utils";
 import { EmptyData } from "../../components/EmptyData";
 import {
   modalClassNames,
@@ -105,7 +105,7 @@ export const ReviewTemplate = () => {
       approvalStatus: statusFilter.join(","),
     };
 
-    urlhandler(searchParams, setAction, getTemplateById, () => {
+    urlHandler(searchParams, setAction, getTemplateById, () => {
       getTemplates(filters);
     });
   }, [searchParams, statusFilter]);

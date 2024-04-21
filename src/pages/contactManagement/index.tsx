@@ -9,7 +9,7 @@ import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
-import { urlhandler } from "../../utils/common.utils";
+import { urlHandler } from "../../utils/common.utils";
 import { useSearchParams } from "react-router-dom";
 import { LOCAL_STORAGE_VIEW, PAGE_ACTION } from "../../constants";
 
@@ -41,7 +41,7 @@ export const ContactManagement = () => {
   }, []);
 
   React.useEffect(() => {
-    urlhandler(searchParams, setAction, getContactList, getContactDirectory);
+    urlHandler(searchParams, setAction, getContactList, getContactDirectory);
   }, [searchParams]);
 
   const getContactDirectory = (): any => {

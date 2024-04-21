@@ -24,7 +24,7 @@ import { useBearStore } from "../../store";
 import { EventFilterType, EventType, MyInvitationType } from "../../types";
 import "./styles.scss";
 import NoInvitations from "../../assets/svg/no-invitations.svg";
-import { removeFalsyValues, urlhandler } from "../../utils/common.utils";
+import { removeFalsyValues, urlHandler } from "../../utils/common.utils";
 import { EmptyData } from "../../components/EmptyData";
 import { useSearchParams } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
@@ -95,7 +95,7 @@ export const MyInvitation = () => {
       toDate: searchParams.get("toDate") as string,
     };
 
-    urlhandler(
+    urlHandler(
       searchParams,
       setAction,
       (id) => {

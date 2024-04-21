@@ -18,6 +18,7 @@ import {
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
+import { MessageInstance } from "antd/es/message/interface";
 
 export type UserType = {
   user: UserInfoType;
@@ -41,6 +42,8 @@ export type AppStoreType = {
   currentPage: string;
   alerts: AlertType[];
   collapsed: boolean;
+  snackbar?: MessageInstance;
+  setSnackbar: (snackbar: MessageInstance) => void;
   setCollapsed: (collapsed: boolean) => void;
   setAlerts: (alerts: AlertType[]) => void;
   setCurrentPage: (currentPage: string) => void;

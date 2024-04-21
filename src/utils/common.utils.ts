@@ -59,15 +59,26 @@ export const phoneNumberParser = (text: string) => {
     const phoneNmbr = typeof phn == "object" ? phn[0] : phoneNumbers;
     console.log({ phoneNmbr });
     if (phoneNmbr.length === 10) {
+      console.log("1");
       return Number(phoneNmbr);
     } else if (mobileRegex.test(phoneNmbr)) {
-      return Number(phoneNmbr.replace("+91", "").replaceAll(" ", ""));
+      console.log("2");
+      return Number(
+        phoneNmbr.replace("+91", "").replaceAll(" ", "").replaceAll("-", "")
+      );
     } else if (phoneNmbr.startsWith("+91")) {
-      return Number(phoneNmbr.replace("+91", "").replaceAll(" ", ""));
+      console.log("3");
+      return Number(
+        phoneNmbr.replace("+91", "").replaceAll(" ", "").replaceAll("-", "")
+      );
     } else if (phoneNmbr.startsWith("91")) {
-      return Number(phoneNmbr.replace("91", "").replaceAll(" ", ""));
+      console.log("4");
+      return Number(
+        phoneNmbr.replace("91", "").replaceAll(" ", "").replaceAll("-", "")
+      );
     } else {
-      return Number(phoneNmbr.replaceAll(" ", ""));
+      console.log("5");
+      return Number(phoneNmbr.replaceAll(" ", "").replaceAll("-", ""));
     }
   } catch (error) {
     console.error({ location: "phoneNumberParser", error, text });
@@ -75,7 +86,7 @@ export const phoneNumberParser = (text: string) => {
   }
 };
 
-export const urlhandler = (
+export const urlHandler = (
   searchParams: URLSearchParams,
   setAction: React.Dispatch<any>,
   apiCallFilter: (id: string) => void,
@@ -175,7 +186,7 @@ export const isToday = (dateString: string) => {
 };
 
 export const readFileAsText = (file: any): Promise<string> => {
-  console.log({ file });
+  console.log({ filesssss: file });
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 

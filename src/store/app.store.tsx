@@ -8,6 +8,10 @@ export const createAppStore = create<AppStoreType>((set) => ({
   currentPage: "",
   alerts: [],
   collapsed: false,
+  snackbar: undefined,
+  setSnackbar: (snackbar) => {
+    set((state) => ({ snackbar }));
+  },
   setCollapsed: (collapsed) => {
     set((state) => ({ collapsed }));
   },

@@ -13,7 +13,8 @@ import { message } from "antd";
 
 function App(): React.ReactElement {
   const { width } = useWindowSize();
-  const { setScreen, setCollapsed, currentPage } = useBearStore.appStore();
+  const { setScreen, setCollapsed, currentPage, setSnackbar } =
+    useBearStore.appStore();
   const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function App(): React.ReactElement {
 
   React.useEffect(() => {
     interceptors(navigate, messageApi);
+    setSnackbar(messageApi);
   }, []);
 
   console.log("App comp render");

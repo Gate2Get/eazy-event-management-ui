@@ -55,8 +55,6 @@ import {
   useModalStyle,
 } from "../../../../configs/antd.config";
 import { useTheme } from "antd-style";
-// import { parse as parseVCard } from "vcard4";
-// import { parse as parseVCard } from "../../../../utils/vcardParser.utils";
 import { VCard } from "../../../../utils/vcardParser.utils";
 
 const { Title, Text, Link } = Typography;
@@ -68,7 +66,8 @@ export const AddEditContactDirectory = () => {
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   let columns = contactListColumns;
-  const { setLoading, screen, isError, setError } = useBearStore.appStore();
+  const { setLoading, screen, isError, setError, snackbar } =
+    useBearStore.appStore();
   const {
     action,
     contactList,
@@ -78,8 +77,6 @@ export const AddEditContactDirectory = () => {
     isListView,
   } = useBearStore.contactStore();
   const { activePlan } = useBearStore.userStore();
-
-  // vcard.p
 
   const [directoryContactList, setDirectoryContactList]: [
     ContactListType[],
@@ -239,6 +236,9 @@ export const AddEditContactDirectory = () => {
 
   const onCancel = () => {
     setSearchParams({});
+    if (directoryContactList.length) {
+      setDirectoryContactList([]);
+    }
   };
 
   const onActionClick = async () => {
@@ -309,14 +309,18 @@ export const AddEditContactDirectory = () => {
     if (file.status === "removed") {
       setDirectoryContactList([]);
       form.setFieldValue("contacts", undefined);
-    } else if (file?.size && file.size < 50000) {
+    } else if (file?.size && file.size / 1024 / 1024 <= 1) {
       const { uid, name, type } = file;
 
+      const contactList: ContactListType[] = [];
+      console.log("type", type);
       if (type === "text/vcard") {
+        console.log({ fileyyyy: file });
         const content = await readFileAsText(file);
-        const vcard = new VCard();
+        console.log({ content });
+        const vCard = new VCard();
         const vcf = new Promise((resolve, reject) => {
-          vcard.readData(content, (err, data) => {
+          vCard.readData(content, (err, data) => {
             if (err) {
               reject(err);
             } else {
@@ -363,7 +367,15 @@ export const AddEditContactDirectory = () => {
       console.log({ contactList });
       setDirectoryContactList(contactList);
       form.setFieldValue("contacts", contactList);
-    } else {
+    } else if (file?.size && file.size / 1024 / 1024 > 1) {
+      console.log("Upload file size must be smaller than 1MB!");
+      form.setFieldValue("contacts", undefined);
+      snackbar?.open({
+        key: `contact-file-upload-error`,
+        type: "error",
+        content: "Upload file must be smaller than 1MB!",
+        duration: 10,
+      });
     }
     form.validateFields();
   };
@@ -502,7 +514,12 @@ export const AddEditContactDirectory = () => {
               ]}
               getValueFromEvent={normFile}
               valuePropName="fileList"
-              help="Supported file formats are .xlsx, .csv, .vcf"
+              help={
+                <>
+                  <p>Upload file must be smaller than 1MB!</p>
+                  <p>Supported file formats are .xlsx, .csv, .vcf</p>
+                </>
+              }
             >
               <AttachmentButton
                 accept=".xlsx, .csv, .vcf"

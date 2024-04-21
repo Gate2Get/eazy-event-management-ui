@@ -46,7 +46,7 @@ import { PreviewTemplate } from "../../components/previewTemplate";
 import {
   getFileList,
   getFormattedMessage,
-  urlhandler,
+  urlHandler,
 } from "../../utils/common.utils";
 import { AttachmentDragger } from "../../components/AttachmentDragger";
 import { useTheme } from "antd-style";
@@ -190,7 +190,7 @@ export const TemplateManagement = (): React.ReactElement => {
   }, [action, form]);
 
   React.useEffect(() => {
-    urlhandler(searchParams, setAction, getTemplatesById, getTemplates);
+    urlHandler(searchParams, setAction, getTemplatesById, getTemplates);
   }, [searchParams]);
 
   React.useEffect(() => {

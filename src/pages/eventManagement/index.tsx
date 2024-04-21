@@ -54,7 +54,7 @@ import { debounce } from "lodash";
 import {
   removeEmptyProp,
   removeFalsyValues,
-  urlhandler,
+  urlHandler,
 } from "../../utils/common.utils";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { EmptyData } from "../../components/EmptyData";
@@ -179,7 +179,7 @@ export const EventManagement = () => {
       toDate: searchParams.get("toDate") as string,
     };
 
-    urlhandler(searchParams, setAction, getEventById, () => {
+    urlHandler(searchParams, setAction, getEventById, () => {
       getEvents(filters);
     });
     return () => {

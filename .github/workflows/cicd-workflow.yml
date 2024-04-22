@@ -10,33 +10,39 @@ env:
   REPOSITORY: eazy-event-management-ui
 
 jobs:
+  GetLatestDockerTag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      - name: Get Latest Tag from Docker Hub
+        id: get_latest_tag
+        run: |
+          # List all tags for the repository, extract version-like tags, and sort to get the latest
+          latest_tag=$(docker search ${REGISTRY}/${REPOSITORY} --format '{{.Name}}' \
+            | grep -oP '[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
+          echo "::set-output name=latest_tag::$latest_tag"
+
+      - name: Increment Version
+        id: increment_version
+        run: |
+          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
+          if [ -z "$latest_tag" ]; then
+            new_version="1.0.0"
+          else
+            IFS='.' read -r -a parts <<< "$latest_tag"
+            parts[2]=$((parts[2] + 1))  # Increment the patch version
+            new_version="${parts[0]}.${parts[1]}.${parts[2]}"
+          fi
+          echo "::set-output name=new_version::$new_version"
+
   Build:
     runs-on: [ubuntu-latest]
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-
-      # Get the previous tag
-      - name: Get previous tag
-        id: previous_tag
-        uses: WyriHaximus/github-action-get-previous-tag@v1
-
-      # Set the new version by incrementing the patch version
-      - name: Set new version
-        id: new_version
-        run: |
-          previous_tag=${{ steps.previous_tag.outputs.tag }}
-          if [ -z "$previous_tag" ]; then
-            # No previous tag, start at 1.0.0
-            new_version="1.0.0"
-          else
-            # Increment the patch version
-            IFS='.' read -r -a parts <<< "$previous_tag"
-            parts[2]=$((parts[2] + 1))  # Increment the patch
-            new_version="${parts[0]}.${parts[1]}.${parts[2]}"
-          fi
-          echo "::set-output name=version::$new_version"
 
       - name: Login to docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -45,7 +51,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.new_version.outputs.version }}
+          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -64,7 +70,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.new_version.outputs.version }}
+          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_DEV }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY_DEV }}
@@ -116,7 +122,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.new_version.outputs.version }}
+          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY }}

@@ -10,39 +10,19 @@ env:
   REPOSITORY: eazy-event-management-ui
 
 jobs:
-  GetLatestDockerTag:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login to Docker Hub
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-
-      - name: Get Latest Tag from Docker Hub
-        id: get_latest_tag
-        run: |
-          # List all tags for the repository, extract version-like tags, and sort to get the latest
-          latest_tag=$(docker search ${REGISTRY}/${REPOSITORY} --format '{{.Name}}' \
-            | grep -oP '[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -n 1)
-          echo "::set-output name=latest_tag::$latest_tag"
-
-      - name: Increment Version
-        id: increment_version
-        run: |
-          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
-          if [ -z "$latest_tag" ]; then
-            new_version="1.0.0"
-          else
-            IFS='.' read -r -a parts <<< "$latest_tag"
-            parts[2]=$((parts[2] + 1))  # Increment the patch version
-            new_version="${parts[0]}.${parts[1]}.${parts[2]}"
-          fi
-          echo "::set-output name=new_version::$new_version"
-
   Build:
     runs-on: [ubuntu-latest]
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
+
+      - name: Generate Version Number
+        id: generate_version
+        run: |
+          # Get the current date and time in YYYY.MM.DD.HH.MM format
+          version=$(date "+%Y.%m.%d.%H.%M")
+          echo "::set-output name=version::$version"
 
       - name: Login to docker Hub
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
@@ -51,7 +31,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
+          IMAGE_TAG: ${{ steps.generate_version.outputs.version }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -70,7 +50,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
+          IMAGE_TAG: ${{ steps.generate_version.outputs.version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_DEV }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY_DEV }}
@@ -111,18 +91,18 @@ jobs:
         uses: trstringer/manual-approval@v1
         with:
           secret: ${{ secrets.APPROVAL_GITHUB_TOKEN }}
-          approvers: Saravananslb
+          approvers: Saravananslb, srgun95, Gate2Get
           minimum-approvals: 1
-          issue-title: "Deploying v1.3.5 to prod from staging"
-          issue-body: "Please approve or deny the deployment of version v1.3.5."
+          issue-title: "Deploying version ${{ steps.generate_version.outputs.version }} to prod from dev"
+          issue-body: "Please approve or deny the deployment of version ${{ steps.generate_version.outputs.version }}."
           exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ""
+          additional-approved-words: "approve, approved, yes, deploy"
           additional-denied-words: ""
       - name: Deploy Docker image to EC2
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.increment_version.outputs.new_version }}
+          IMAGE_TAG: ${{ steps.generate_version.outputs.version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY }}

@@ -50,7 +50,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.generate_version.outputs.version }}
+          IMAGE_TAG: ${{ needs.Build.outputs.version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY_DEV }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY_DEV }}
@@ -78,7 +78,7 @@ jobs:
 
   ProductionDeploy:
     name: Deploy to production
-    needs: DevelopmentDeploy
+    needs: [Build, DevelopmentDeploy]
     runs-on: [ubuntu-latest]
     environment:
       name: Production
@@ -91,13 +91,13 @@ jobs:
         uses: trstringer/manual-approval@v1
         timeout-minutes: 15
         env:
-          VERSION: ${{ steps.generate_version.outputs.version }}
+          VERSION: ${{ needs.Build.outputs.version }}
         with:
           secret: ${{ secrets.APPROVAL_GITHUB_TOKEN }}
           approvers: Saravananslb, srgun95, Gate2Get
           minimum-approvals: 1
-          issue-title: "Deploying version ${{ steps.generate_version.outputs.version }} to prod from dev"
-          issue-body: "Please approve or deny the deployment of version ${{ steps.generate_version.outputs.version }}."
+          issue-title: "Deploying Eazy Event UI version ${{ needs.Build.outputs.version }} to prod from dev"
+          issue-body: "Please approve or deny the deployment of version ${{ needs.Build.outputs.version }} Eazy Event UI."
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: "Approve, Approved, Yes, Deploy"
           additional-denied-words: ""
@@ -105,7 +105,7 @@ jobs:
         env:
           REGISTRY: ${{ env.REGISTRY }}
           REPOSITORY: ${{ env.REPOSITORY }}
-          IMAGE_TAG: ${{ steps.generate_version.outputs.version }}
+          IMAGE_TAG: ${{ needs.Build.outputs.version }}
           AWS_DEFAULT_REGION: ap-south-1
           PRIVATE_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
           SERVER_PUBLIC_IP: ${{ secrets.AWS_PUBLIC_KEY }}

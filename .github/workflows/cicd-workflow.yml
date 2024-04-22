@@ -96,8 +96,8 @@ jobs:
           secret: ${{ secrets.APPROVAL_GITHUB_TOKEN }}
           approvers: Saravananslb, srgun95, Gate2Get
           minimum-approvals: 1
-          issue-title: "Deploying version $VERSION to prod from dev"
-          issue-body: "Please approve or deny the deployment of version $VERSION."
+          issue-title: "Deploying version ${{ steps.generate_version.outputs.version }} to prod from dev"
+          issue-body: "Please approve or deny the deployment of version ${{ steps.generate_version.outputs.version }}."
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: "Approve, Approved, Yes, Deploy"
           additional-denied-words: ""

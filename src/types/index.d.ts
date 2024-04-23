@@ -256,20 +256,6 @@ export type TemplateAdminType = {
   comment: string;
 };
 
-export type PlanType = {
-  id: string;
-  name: string;
-  type: string;
-  eventCount: number;
-  contactDirectoryCount: number;
-  contactCount: number;
-  templateCount: number;
-  notificationCredit: number;
-  price: number;
-  discountPrice?: number;
-  isActive: boolean;
-};
-
 export type UserLocationType = {
   officename: string;
   pincode: string;
@@ -386,6 +372,7 @@ export type PricingPlanType = {
   smsPrice: number;
   voiceCallPrice: number;
   isActive: boolean;
+  order?: number;
   validity: number;
   createdAt: string;
   updatedAt: string;

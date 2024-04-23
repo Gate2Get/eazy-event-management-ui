@@ -5,12 +5,17 @@ import { PRICING_CARDS } from "../../constants";
 import { useBearStore } from "../../store";
 import PricingPage from "../../components/PricingCard";
 import { API } from "../../api";
-import { PlanType } from "../../types";
+import { PricingPlanType } from "../../types";
 const { Text, Title, Paragraph } = Typography;
 const cardCount = 24 / PRICING_CARDS.length;
 
-export const Pricing = () => {
-  const { screen } = useBearStore.appStore();
+type PricingType = {
+  isPricingPage?: boolean;
+};
+
+export const Pricing = (props: PricingType) => {
+  const { isPricingPage } = props;
+  const { screen, currentPage } = useBearStore.appStore();
   const { activePlan } = useBearStore.userStore();
   console.log({ activePlan });
   const [plans, setPlans] = useState<any>([]);
@@ -28,8 +33,16 @@ export const Pricing = () => {
   const getPlans = (): void => {
     API.commonAPI
       .getPricingPlans()
-      .then((data: PlanType[]) => {
-        setPlans(data);
+      .then((data: PricingPlanType[]) => {
+        if (isPricingPage) {
+          setPlans(data);
+        } else {
+          const plan = data.filter((item) => item.id !== activePlan?.planId);
+          const _activePlan = data.find(
+            (item) => item.id === activePlan?.planId
+          );
+          setPlans([_activePlan, ...plan]);
+        }
       })
       .catch((error: Error) => {
         console.log({ location: "getPlans", error });
@@ -41,7 +54,7 @@ export const Pricing = () => {
         Communication Channels Pricing Plans
       </Title>
       <Row gutter={[16, 16]}>
-        {(plans as PlanType[]).map((plan) => (
+        {(plans as PricingPlanType[]).map((plan) => (
           <Col {...colOption(8)}>
             <PricingPage
               isActive={plan.id === activePlan?.planId} // get user active plan from user plan api
@@ -60,5 +73,3 @@ export const Pricing = () => {
     </div>
   );
 };
-
-// ecf3ff

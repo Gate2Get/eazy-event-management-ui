@@ -33,4 +33,5 @@ export type DataTableProps = {
     (a: any, b: any, sortOrder?: SortOrder) => number
   >;
   handleInfiniteScroll?: (item: GridOnItemsRenderedProps) => void;
+  styles?: React.CSSProperties;
 };

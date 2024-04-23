@@ -16,7 +16,11 @@ import { AttachmentButton } from "../../../../components/AttachmentButton";
 import { useBearStore } from "../../../../store";
 import "../../styles.scss";
 import { DataTable } from "../../../../components/dataTable";
-import { contactListColumns, SORT_KEYS } from "./config";
+import {
+  contactListColumns,
+  contactUploadPreviewColumns,
+  SORT_KEYS,
+} from "./config";
 import { API } from "../../../../api";
 import { ContactDirectoryType, ContactListType } from "../../../../types";
 import { CONTACT_LIST_COLUMN_KEYS, DIRECTORY_ACTIONS } from "./constants";
@@ -56,6 +60,8 @@ import {
 } from "../../../../configs/antd.config";
 import { useTheme } from "antd-style";
 import { VCard } from "../../../../utils/vcardParser.utils";
+import { concat } from "lodash";
+import { useWindowSize } from "../../../../hooks/useWindowSize";
 
 const { Title, Text, Link } = Typography;
 const { Search } = Input;
@@ -65,6 +71,7 @@ export const AddEditContactDirectory = () => {
   const { styles } = useModalStyle();
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { height } = useWindowSize();
   let columns = contactListColumns;
   const { setLoading, screen, isError, setError, snackbar } =
     useBearStore.appStore();
@@ -82,14 +89,20 @@ export const AddEditContactDirectory = () => {
     ContactListType[],
     Dispatch<any>
   ] = React.useState([]);
-  const [selectedRowKeys, setSelectedRowKeys]: [
-    ContactListType[],
-    Dispatch<any>
-  ] = React.useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState<
+    ContactListType[]
+  >([]);
+  const [selectedUploadedContactRowKeys, setSelectedUploadedContactRowKeys] =
+    React.useState<ContactListType[]>([]);
   const [selectedKeys, setSelectedKeys] = React.useState<string[]>([]);
   const [isDeleteConfirmation, setIsDeleteConfirmation] = React.useState("");
   const [searchValue, setSearchValue] = React.useState("");
-  let filteredGrid: any[] = [];
+  const [uploadedContact, setUploadedContact] = React.useState<
+    ContactListType[]
+  >([]);
+  const [isUploadContactPreview, setIsUploadContactPreview] =
+    React.useState(false);
+  let filteredContactGrid: any[] = [];
 
   const colOption = (count: number) =>
     screen === "MOBILE"
@@ -365,8 +378,8 @@ export const AddEditContactDirectory = () => {
         });
       }
       console.log({ contactList });
-      setDirectoryContactList(contactList);
-      form.setFieldValue("contacts", contactList);
+      setIsUploadContactPreview(true);
+      setUploadedContact(contactList);
     } else if (file?.size && file.size / 1024 / 1024 > 1) {
       console.log("Upload file size must be smaller than 1MB!");
       form.setFieldValue("contacts", undefined);
@@ -404,6 +417,13 @@ export const AddEditContactDirectory = () => {
     const contactList = directoryContactList.filter(
       (contact) => !_selectedKeys.includes(contact.id)
     );
+    if (selectedUploadedContactRowKeys.length) {
+      const _selectedUploadedContactRowKeys =
+        selectedUploadedContactRowKeys.filter(
+          (contact) => !_selectedKeys.includes(contact.id)
+        );
+      setSelectedUploadedContactRowKeys(_selectedUploadedContactRowKeys);
+    }
     setDirectoryContactList(contactList);
     setSelectedRowKeys([]);
     form.setFieldValue("contacts", contactList);
@@ -413,8 +433,41 @@ export const AddEditContactDirectory = () => {
     setSearchValue(searchValue);
   };
 
+  const addContactFromPreview = () => {
+    const directoryContactMap: Record<string, ContactListType> = {};
+    const uploadedContactMap: Record<string, ContactListType> = {};
+    uploadedContact.forEach(
+      (item) => (uploadedContactMap[item.senderId] = item)
+    );
+    const manualAddedContact: ContactListType[] = [];
+    directoryContactList.forEach((item) => {
+      directoryContactMap[item.senderId] = item;
+      if (!uploadedContactMap[item.senderId]) {
+        manualAddedContact.push(item);
+      }
+    });
+    console.log({ selectedUploadedContactRowKeys });
+    const _selectedUploadedContactRowKeys = selectedUploadedContactRowKeys.map(
+      (item) => {
+        if (directoryContactMap[item.senderId]) {
+          item.name = directoryContactMap[item.senderId]?.name;
+        }
+        return item;
+      }
+    );
+
+    // Merge the unique part of array1 with array2
+    const contactList = concat(
+      _selectedUploadedContactRowKeys,
+      manualAddedContact
+    );
+    setDirectoryContactList(contactList);
+    form.setFieldValue("contacts", contactList);
+    setIsUploadContactPreview(false);
+  };
+
   if (searchValue) {
-    filteredGrid = searchGrid(searchValue, directoryContactList);
+    filteredContactGrid = searchGrid(searchValue, directoryContactList);
   }
 
   return (
@@ -431,6 +484,41 @@ export const AddEditContactDirectory = () => {
         styles={modalStyles(token) as any}
       >
         Once deleted it cannot be undo
+      </Modal>
+      <Modal
+        title={<>Preview upload contact</>}
+        open={isUploadContactPreview}
+        onOk={addContactFromPreview}
+        onCancel={() => {
+          setIsUploadContactPreview(false);
+        }}
+        okText="Add contact"
+        cancelText="Cancel"
+        okType="primary"
+        // classNames={modalClassNames(styles)}
+        width={"100%"}
+        styles={modalStyles(token) as any}
+      >
+        <Space direction="vertical" style={{ width: "100%" }}>
+          <Text italic style={{ float: "left" }}>
+            {selectedUploadedContactRowKeys.length} contact's selected
+          </Text>
+          <div>
+            <DataTable
+              columns={contactUploadPreviewColumns}
+              data={uploadedContact}
+              otherProps={{
+                selectionMode: "checkbox",
+                selection: selectedUploadedContactRowKeys,
+                onSelectionChange: (e: { value: ContactListType[] }) => {
+                  setSelectedUploadedContactRowKeys(e.value);
+                },
+                dataKey: "id",
+              }}
+              styles={{ height: height - 200 }}
+            />
+          </div>
+        </Space>
       </Modal>
       <Row gutter={[16, 16]} className="header__row sticky-header">
         <Col flex={12}>
@@ -637,7 +725,7 @@ export const AddEditContactDirectory = () => {
         <Col {...colOption(12)}>
           {searchValue ? (
             <Text italic className="float-right">
-              Showing <Text strong>{filteredGrid.length}</Text> of
+              Showing <Text strong>{filteredContactGrid.length}</Text> of
               <Text strong>{directoryContactList.length}</Text> contact's
             </Text>
           ) : (
@@ -650,8 +738,23 @@ export const AddEditContactDirectory = () => {
       </Row>
 
       <br />
+      {uploadedContact?.length ? (
+        <>
+          <Row gutter={[8, 8]} style={{ float: "right" }}>
+            <Button
+              type="text"
+              onClick={() => {
+                setIsUploadContactPreview(true);
+              }}
+            >
+              Click here to select contact from uploaded list
+            </Button>
+          </Row>
+          <br />
+        </>
+      ) : null}
       <br />
-      {!(filteredGrid.length || directoryContactList.length) ? (
+      {!(filteredContactGrid.length || directoryContactList.length) ? (
         <EmptyData
           onClickAction={onAddContact}
           image={NoContactList}
@@ -675,10 +778,11 @@ export const AddEditContactDirectory = () => {
           buttonText="Add Contact"
         />
       ) : null}
-      {isListView && (filteredGrid.length || directoryContactList.length) ? (
+      {isListView &&
+      (filteredContactGrid.length || directoryContactList.length) ? (
         <DataTable
           columns={columns}
-          data={searchValue ? filteredGrid : directoryContactList}
+          data={searchValue ? filteredContactGrid : directoryContactList}
           sortKeys={SORT_KEYS}
           otherProps={
             action === "EDIT" || action === "ADD"
@@ -696,7 +800,7 @@ export const AddEditContactDirectory = () => {
         />
       ) : (
         <Row gutter={[16, 16]}>
-          {(searchValue ? filteredGrid : directoryContactList).map(
+          {(searchValue ? filteredContactGrid : directoryContactList).map(
             (contact) => (
               <Col span={screen === "MOBILE" ? 24 : 8} key={contact.id}>
                 <ContactUserCard

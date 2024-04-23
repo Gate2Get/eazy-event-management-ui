@@ -2,7 +2,7 @@ import { commonEndpoint, instance } from "../../configs/axios.config";
 import {
   ContactUsType,
   FeedbackType,
-  PlanType,
+  PricingPlanType,
   ReportBugsType,
   UserLocationType,
 } from "../../types";
@@ -84,11 +84,11 @@ export const commonAPI = {
         throw error;
       });
   },
-  getPricingPlans: async (): Promise<PlanType[]> => {
+  getPricingPlans: async (): Promise<PricingPlanType[]> => {
     return await instance
       .get(commonEndpoint.getPricingPlans)
       .then((response) => {
-        console.log({response});
+        console.log({ response });
         return response.data.result;
       })
       .catch((error) => {

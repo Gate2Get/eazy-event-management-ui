@@ -25,6 +25,7 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
     otherProps = {},
     comparatorFn,
     isSearch,
+    styles = {},
     handleInfiniteScroll,
   } = props;
 
@@ -126,7 +127,14 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
   const header = renderHeader();
 
   return (
-    <div style={{ overflowX: "auto", paddingLeft: "10px", width: "100%" }}>
+    <div
+      style={{
+        overflowX: "auto",
+        paddingLeft: "10px",
+        width: "100%",
+        ...styles,
+      }}
+    >
       <PrimeDataTable
         value={data}
         sortMode="multiple"

@@ -47,7 +47,9 @@ export const invitationColumns = (
     dataIndex: INVITATION_COLUMN_KEYS.INVITED_BY,
     title: INVITATION_COLUMN_NAME.INVITED_BY,
     render: (record: MyInvitationType) =>
-      `${record?.invitedByInfo?.firstName} ${record?.invitedByInfo?.lastName}`,
+      `${record?.invitedByInfo?.firstName || ""} ${
+        record?.invitedByInfo?.lastName || ""
+      }`,
     sortable: true,
     filterable: true,
   },

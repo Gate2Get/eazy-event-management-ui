@@ -380,6 +380,14 @@ export const AddEditContactDirectory = () => {
       console.log({ contactList });
       setIsUploadContactPreview(true);
       setUploadedContact(contactList);
+      const directoryContactMap: Record<string, ContactListType> = {};
+      directoryContactList.forEach((item) => {
+        directoryContactMap[item.senderId] = item;
+      });
+      const selectedUploadedContactRowKeys = contactList.filter(
+        (item) => directoryContactMap[item.senderId]
+      );
+      setSelectedUploadedContactRowKeys(selectedUploadedContactRowKeys);
     } else if (file?.size && file.size / 1024 / 1024 > 1) {
       console.log("Upload file size must be smaller than 1MB!");
       form.setFieldValue("contacts", undefined);
@@ -424,9 +432,14 @@ export const AddEditContactDirectory = () => {
         );
       setSelectedUploadedContactRowKeys(_selectedUploadedContactRowKeys);
     }
-    setDirectoryContactList(contactList);
+    const _contactList = contactList.map((contact, index) => ({
+      ...contact,
+      key: index + 1,
+      id: index + 1,
+    }));
+    setDirectoryContactList(_contactList);
     setSelectedRowKeys([]);
-    form.setFieldValue("contacts", contactList);
+    form.setFieldValue("contacts", _contactList);
   };
 
   const onSearch = (searchValue: string) => {
@@ -461,8 +474,14 @@ export const AddEditContactDirectory = () => {
       _selectedUploadedContactRowKeys,
       manualAddedContact
     );
-    setDirectoryContactList(contactList);
-    form.setFieldValue("contacts", contactList);
+    const _contactList = contactList.map((contact, index) => ({
+      ...contact,
+      key: index + 1,
+      id: index + 1,
+    }));
+    setDirectoryContactList(_contactList);
+    form.setFieldValue("contacts", _contactList);
+    console.log({ _contactList });
     setIsUploadContactPreview(false);
   };
 
@@ -495,7 +514,6 @@ export const AddEditContactDirectory = () => {
         okText="Add contact"
         cancelText="Cancel"
         okType="primary"
-        // classNames={modalClassNames(styles)}
         width={"100%"}
         styles={modalStyles(token) as any}
       >
@@ -643,7 +661,7 @@ export const AddEditContactDirectory = () => {
       )}
       {isError && (
         <Alert
-          message="Atleast one contact is required in the directory"
+          message="At least one contact is required in the directory"
           type="error"
           showIcon
           style={{ margin: "1rem 0rem 0rem 0rem" }}
@@ -741,18 +759,32 @@ export const AddEditContactDirectory = () => {
       {uploadedContact?.length ? (
         <>
           <Row gutter={[8, 8]} style={{ float: "right" }}>
-            <Button
-              type="text"
-              onClick={() => {
-                setIsUploadContactPreview(true);
-              }}
-            >
-              Click here to select contact from uploaded list
-            </Button>
+            <Text italic>
+              {/* Template file?{" "} */}
+              <Link
+                href="#"
+                onClick={() => {
+                  setIsUploadContactPreview(true);
+                }}
+              >
+                Click here to select contact from uploaded list
+              </Link>
+            </Text>
           </Row>
           <br />
         </>
       ) : null}
+      {(activePlan?.pricingPlan?.contactCount as number) <=
+        directoryContactList.length && (
+        <>
+          <br />
+          <Alert
+            style={{ width: "100%" }}
+            message={`Your contact directory has reached the limit of ${activePlan?.pricingPlan?.contactCount} contacts for the current ${activePlan?.pricingPlan?.name} plan. To add more contacts, please upgrade your plan.`}
+            type="warning"
+          />
+        </>
+      )}
       <br />
       {!(filteredContactGrid.length || directoryContactList.length) ? (
         <EmptyData
@@ -790,6 +822,7 @@ export const AddEditContactDirectory = () => {
                   selectionMode: "checkbox",
                   selection: selectedRowKeys,
                   onSelectionChange: (e: { value: ContactListType[] }) => {
+                    console.log({ e });
                     setSelectedRowKeys(e.value);
                     setSelectedKeys(e.value.map((record) => record.id));
                   },

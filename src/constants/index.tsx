@@ -61,6 +61,8 @@ export const ROUTES_MENU = {
   MY_PLAN_DETAILS: "My Plan Details",
   ADD_CREDIT: "Add Credit",
   SERVICE_TRANSACTION_LOGS: "Transaction Logs",
+  FORBIDDEN: "Forbidden",
+  NOT_FOUND: "*",
 };
 
 export const SERVICE_MENU = [
@@ -80,6 +82,8 @@ export const SERVICE_MENU = [
   ROUTES_MENU.MY_PLAN,
   ROUTES_MENU.MY_PLAN_DETAILS,
   ROUTES_MENU.SERVICE_TRANSACTION_LOGS,
+  ROUTES_MENU.FORBIDDEN,
+  ROUTES_MENU.NOT_FOUND,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];

@@ -3,7 +3,6 @@ import { Tabs, theme } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
 import { UserInfoType } from "../../types";
-import { useWindowSize } from "../../hooks/useWindowSize";
 import { PreviewTemplate } from "../previewTemplate";
 import { UserCard } from "../userCard";
 import { ReviewConversation } from "../ReviewConversation";
@@ -65,6 +64,7 @@ export const TemplateAdminPreview = (props: PreviewTemplateType) => {
             <ReviewConversation
               comments={selectedTemplate.comments}
               loggedInUserId={loggedInUser.userId}
+              isAdminScreen
             />
           </div>
         );

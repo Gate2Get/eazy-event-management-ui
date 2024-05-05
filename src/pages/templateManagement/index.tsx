@@ -638,10 +638,11 @@ export const TemplateManagement = (): React.ReactElement => {
         okType={"primary"}
         classNames={modalClassNames(styles)}
         styles={modalStyles(token) as any}
+        width={screen === "MOBILE" ? "100%" : "50%"}
       >
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Collapse>
-            <Panel header={`Conversation History`} key="1">
+            <Panel header={<b>Conversation History</b>} key="1">
               <ReviewConversation
                 comments={selectedTemplate.comments}
                 loggedInUserId={user.userId}
@@ -656,6 +657,7 @@ export const TemplateManagement = (): React.ReactElement => {
             onChange={(e) => {
               setAppealComments(e.target.value);
             }}
+            rows={3}
             placeholder="Comments"
             style={{ marginBottom: "10px" }}
           />

@@ -36,11 +36,10 @@ export const getFormattedMessage = (
         if (file.startsWith("/")) {
           file = file.substring(1);
         }
-        msg.value = file;
+        msg.value = decodeURIComponent(file);
       }
       newMessage[msg.id] = msg;
     });
-    // return JSON.stringify(newMessage);
     return newMessage;
   }
   return message;

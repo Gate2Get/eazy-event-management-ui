@@ -10,9 +10,10 @@ const { Paragraph } = Typography;
 
 export const ReviewConversation = (props: ReviewConversationType) => {
   const { screen } = useBearStore.appStore();
-  const { comments, loggedInUserId } = props;
+  const { comments, loggedInUserId, isAdminScreen } = props;
+
   let cardStyle = {};
-  if (screen === "DESKTOP") {
+  if (screen === "DESKTOP" && isAdminScreen) {
     cardStyle = {
       textAlign: "left",
       margin: "2% 20%",

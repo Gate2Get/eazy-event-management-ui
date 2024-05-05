@@ -85,7 +85,10 @@ export const ViewEventNotification = (props: EventNotificationCardType) => {
           )
             ? "Estimated credits to send notification"
             : "Credit utilized on this notification"}{" "}
-          : <Text style={{ color: "rgb(102, 112, 133)" }}>{price}</Text>
+          :{" "}
+          <Text style={{ color: "rgb(102, 112, 133)" }}>
+            {parseFloat(price?.toString())}
+          </Text>
         </Paragraph>
 
         {[EVENT_STATUS.NOT_STARTED, EVENT_STATUS.NO_CREDITS].includes(

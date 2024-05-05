@@ -112,6 +112,7 @@ export type TemplateType = {
 export type ReviewConversationType = {
   comments?: CommentsType[];
   loggedInUserId?: string;
+  isAdminScreen?: boolean;
 };
 
 type TemplateActionType = {

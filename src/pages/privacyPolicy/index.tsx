@@ -4,7 +4,7 @@ import { useBearStore } from "../../store";
 import { privacyPolicyConfig } from "../../configs/privacyPolicy.config";
 import "./styles.scss";
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 export const PrivacyPolicy = () => {
   const { screen } = useBearStore.appStore();
@@ -16,8 +16,10 @@ export const PrivacyPolicy = () => {
     >
       <Title level={2}>Privacy Policy</Title>
       <Paragraph className="policy-paragraph">
-      Respecting your privacy and protecting it is our commitment.
-      <br/>When using Eazy Event, you consent to the practices detailed in this privacy policy.
+        Respecting your privacy and protecting it is our commitment.
+        <br />
+        When using Eazy Event, you consent to the practices detailed in this
+        privacy policy.
       </Paragraph>
       {privacyPolicyConfig.map((policy, index) => (
         <Paragraph key={index}>
@@ -29,7 +31,6 @@ export const PrivacyPolicy = () => {
             <p className="policy-paragraph" key={subIndex}>
               {index + 1}.{subIndex + 1}. <strong>{info.title}:</strong>{" "}
               {info.description}
-              
             </p>
           ))}
         </Paragraph>
@@ -44,7 +45,9 @@ export const PrivacyPolicy = () => {
         introducing new services. Your new visit will be subject to the new
         privacy policy.
       </p>
-      <p className="policy-paragraph">Last Updated: 10th Dec, 2023</p>
+      <p className="policy-paragraph">
+        Last Updated: <Text italic>10th May, 2024</Text>
+      </p>
     </div>
   );
 };

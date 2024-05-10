@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Avatar, Col, Divider, Row, Space, Typography } from "antd";
+import { Alert, Avatar, Col, Divider, Row, Space, Typography } from "antd";
 import "./styles.scss";
 import { PRICING_CARDS } from "../../constants";
 import { useBearStore } from "../../store";
 import PricingPage from "../../components/PricingCard";
 import { API } from "../../api";
 import { PricingPlanType } from "../../types";
-const { Text, Title, Paragraph } = Typography;
+const { Text, Title, Paragraph, Link } = Typography;
 const cardCount = 24 / PRICING_CARDS.length;
 
 type PricingType = {
@@ -53,6 +53,23 @@ export const Pricing = (props: PricingType) => {
       <Title level={2} className="pricing-title">
         Communication Channels Pricing Plans
       </Title>
+      <Alert
+        type="info"
+        message={
+          <Title level={5}>
+            Are the following plans not suitable for your case?
+          </Title>
+        }
+        description={
+          <Text italic>
+            If you're seeking a customized plan, please contact us at{" "}
+            <Link href="mailto:admin@eazy-event.com?subject=Custom%20Plan%20&body=Hi%20Team,%0D%0A%0D%0AI%20am%20interested%20in%20a%20customized%20plan%20for%20my%20event.%20Please%20find%20the%20below%20requirement%0D%0AAlbum%20Count%20-%20%0D%0AEvent%20Count%20-%20%0D%0AContact%20Directory%20-%20%0D%0AContact%20Count%20(each%20directory)%20-%20%0D%0ATemplate%20Count%20-%20%0D%0ANotification%20Credit%20-%20%0D%0A%0D%0AThanks.">
+              Eazy Event
+            </Link>{" "}
+            and fill the required values and send it .
+          </Text>
+        }
+      />
       <Row gutter={[16, 16]}>
         {(plans as PricingPlanType[]).map((plan) => (
           <Col {...colOption(8)}>

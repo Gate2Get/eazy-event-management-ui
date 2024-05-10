@@ -4,6 +4,7 @@ import { Badge, Row, Col, Card, Space, Button } from "antd";
 import { useBearStore } from "../../store";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 type PricingPageType = {
   planName: string;
@@ -41,7 +42,7 @@ const PricingPage = (props: PricingPageType) => {
           text={"Active Plan"}
           style={!isActive ? { visibility: "hidden" } : {}}
         >
-          <div className="pricing-plan">
+          <div className={`pricing-plan ${isActive ? "active-plan" : ""}`}>
             <h2 className="pricing-plan-title">{planName}</h2>
             <p className="pricing-plan-price">
               {discountCost && (
@@ -81,18 +82,23 @@ const PricingPage = (props: PricingPageType) => {
                 </div>
               </Col>
             </Row>
-            <Row style={{ paddingTop: "20px" }}>
-              <Col span={24}>
-                <Button
-                  type="link"
-                  onClick={() => {
-                    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN_DETAILS}`);
-                  }}
-                >
-                  {isActive && <span>Current Plan details</span>}
-                </Button>
-              </Col>
-            </Row>
+            {isActive && (
+              <Row style={{ paddingTop: "20px" }}>
+                <Col span={24}>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      navigate(
+                        `${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN_DETAILS}`
+                      );
+                    }}
+                    icon={<ArrowForwardIcon fontSize="inherit" />}
+                  >
+                    <span>View plan info</span>
+                  </Button>
+                </Col>
+              </Row>
+            )}
           </div>
         </Badge.Ribbon>
       </div>

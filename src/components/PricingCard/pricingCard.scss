@@ -2,31 +2,35 @@
   .pricing-page {
     text-align: center;
   }
-  
+
   .pricing-page-title {
     font-size: 36px;
     margin-bottom: 50px;
     color: #2ecc71; /* Green color */
     font-weight: 700; /* Bold */
   }
-  
+
   .pricing-plan {
     border-radius: 12px;
-    box-shadow: 0 0 12px #12b76a;
+
     padding: 40px;
     margin: 0 auto;
     /* max-width: 600px; */
     border-color: #12b76a;
     border: 2px solid #12b76a;
-}
-  
+  }
+
+  .active-plan {
+    box-shadow: 0 0 12px #12b76a;
+  }
+
   .pricing-plan-title {
     font-size: 24px;
     margin-bottom: 20px;
     color: #27ae60; /* Dark green color */
     font-weight: 700; /* Bold */
   }
-  
+
   .pricing-plan-price {
     font-size: 20px;
     margin-bottom: 40px;
@@ -34,25 +38,25 @@
     justify-content: center;
     color: #27ae60; /* Dark green color */
   }
-  
+
   .original-price {
     margin-right: 10px;
     color: rgba(0, 0, 0, 0.45);
     text-decoration: line-through;
   }
-  
+
   .pricing-plan-features {
     list-style: none;
     padding: 0;
     margin-bottom: 40px;
   }
-  
+
   .pricing-plan-features li {
     margin-bottom: 20px;
     font-size: 18px;
     color: #333; /* Dark text color */
   }
-  
+
   .pricing-plan-button {
     background-color: #27ae60; /* Dark green button */
     color: white;
@@ -61,9 +65,8 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  
+
   .pricing-plan-button:hover {
     background-color: #219653; /* Darker green on hover */
   }
-
-} 
+}

@@ -4,7 +4,7 @@ import { useBearStore } from "../../store";
 import { termsOfServiceConfig } from "../../configs/termsOfService.config";
 import "./styles.scss";
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 export const TermsOfService = () => {
   const { screen } = useBearStore.appStore();
@@ -37,7 +37,9 @@ export const TermsOfService = () => {
         right to update or modify these Terms at any time without prior notice.
         It is your responsibility to review these Terms periodically.
       </p>
-      <p className="terms-paragraph">Last Updated: 10th Dec, 2023</p>
+      <p className="terms-paragraph">
+        Last Updated: <Text italic>10th May, 2024</Text>
+      </p>
     </div>
   );
 };

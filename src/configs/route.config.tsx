@@ -56,7 +56,7 @@ export const APP_ROUTES = [
   },
   {
     path: ROUTES_URL.PRICING,
-    element: <Pricing />,
+    element: <Pricing isPricingPage />,
   },
   {
     path: ROUTES_URL.CONTACT_US,
@@ -119,7 +119,7 @@ export const SERVICE_ROUTES = [
   // },
   {
     path: ROUTES_URL.MY_PLAN,
-    element: <Pricing isPricingPage />,
+    element: <Pricing />,
   },
   {
     path: ROUTES_URL.MY_PLAN_DETAILS,

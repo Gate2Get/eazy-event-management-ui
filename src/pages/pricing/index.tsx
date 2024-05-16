@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Alert, Avatar, Col, Divider, Row, Space, Typography } from "antd";
 import "./styles.scss";
-import { PRICING_CARDS } from "../../constants";
+import { PRICING_CARDS, ROUTES_URL } from "../../constants";
 import { useBearStore } from "../../store";
 import PricingPage from "../../components/PricingCard";
 import { API } from "../../api";
 import { PricingPlanType } from "../../types";
+import { useNavigate } from "react-router-dom";
 const { Text, Title, Paragraph, Link } = Typography;
 const cardCount = 24 / PRICING_CARDS.length;
 
@@ -15,10 +16,11 @@ type PricingType = {
 
 export const Pricing = (props: PricingType) => {
   const { isPricingPage } = props;
-  const { screen, currentPage } = useBearStore.appStore();
+  const { screen, setLoading } = useBearStore.appStore();
   const { activePlan } = useBearStore.userStore();
   console.log({ activePlan });
   const [plans, setPlans] = useState<any>([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     getPlans();
@@ -37,17 +39,47 @@ export const Pricing = (props: PricingType) => {
         if (isPricingPage) {
           setPlans(data);
         } else {
+          const _plan = [];
           const plan = data.filter((item) => item.id !== activePlan?.planId);
           const _activePlan = data.find(
             (item) => item.id === activePlan?.planId
           );
-          setPlans([_activePlan, ...plan]);
+          console.log({ _activePlan, data });
+          if (_activePlan) {
+            _plan.push(_activePlan);
+          }
+          _plan.push(...plan);
+          console.log({ _plan });
+          setPlans(_plan);
         }
       })
       .catch((error: Error) => {
         console.log({ location: "getPlans", error });
       });
   };
+
+  const buyPlanPayment = (planId: string): void => {
+    setLoading(true);
+    API.paymentAPI
+      .buyPlanPayment(planId)
+      .then((data) => {
+        setLoading(false);
+        const { status, url } = data;
+        if (status) {
+          // navigate(
+          //   `${ROUTES_URL.EE}/${ROUTES_URL.BUY_PLAN}?paymentUrl=${btoa(url)}`
+          // );
+          window.location.href = url;
+        }
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "buyPlanPayment", error });
+      });
+  };
+
+  console.log({ plans, activePlan });
+
   return (
     <div className="pricing__container">
       <Title level={2} className="pricing-title">
@@ -83,6 +115,10 @@ export const Pricing = (props: PricingType) => {
               planName={plan.type}
               templatesCount={plan.templateCount}
               discountCost={plan.discountPrice}
+              isBuy={plan.type !== "FREE"}
+              onBuy={() => {
+                buyPlanPayment(plan.id);
+              }}
             />
           </Col>
         ))}

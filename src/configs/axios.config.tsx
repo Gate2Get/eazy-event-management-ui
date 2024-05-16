@@ -170,3 +170,8 @@ export const adminEndpoint = {
   updateWallet: "/api/v1/app/admin/wallet-transaction",
   getWalletTransaction: "/api/v1/app/admin/wallet-transaction",
 };
+
+export const paymentEndpoint = {
+  buyPlanPayment: "/api/v1/payment/buy-plan/pay",
+  checkPlanPaymentAndAssignPlan: "/api/v1/payment/buy-plan/status",
+};

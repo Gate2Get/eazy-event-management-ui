@@ -19,6 +19,13 @@ if (!process.env.REACT_APP_ENV) {
       ws: true,
       rewrite: (path) => path.replace("/api/v1/service", "/api/v1"),
     },
+    "/api/v1/payment": {
+      target: "http://localhost:5005",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+      rewrite: (path) => path.replace("/api/v1/payment", "/api/v1"),
+    },
     "/api/v1/pincode": {
       target: "https://api.data.gov.in",
       changeOrigin: true,
@@ -57,6 +64,13 @@ if (!process.env.REACT_APP_ENV) {
           "/api/v1/pincode/",
           "/resource/6176ee09-3d56-4a3b-8115-21841576b2f6?api-key=579b464db66ec23bdd00000158c795c365854bf0760494d1528908d5&format=json&filters%5Bpincode%5D="
         ),
+    },
+    "/api/v1/payment": {
+      target: `http://${process.env.PUBLIC_IP}:5005`,
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+      rewrite: (path) => path.replace("/api/v1/payment", "/api/v1"),
     },
   };
 }

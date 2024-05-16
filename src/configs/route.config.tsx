@@ -24,6 +24,7 @@ import { TermsOfService } from "../pages/termsOfService";
 import { Wallet } from "../pages/wallet";
 import { MyPlans } from "../pages/myPlans";
 import { ServiceTransactionLogs } from "../pages/serviceTransactionLogs";
+import { BuyPlan } from "../pages/buyPlan";
 
 export const APP_ROUTES = [
   {
@@ -61,6 +62,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.CONTACT_US,
     element: <ContactUs />,
+  },
+  {
+    path: ROUTES_URL.BUY_PLAN,
+    element: <BuyPlan />,
   },
   {
     path: ROUTES_URL.FORBIDDEN,
@@ -113,10 +118,7 @@ export const SERVICE_ROUTES = [
     path: ROUTES_URL.REPORT_BUG,
     element: <ReportBug />,
   },
-  // {
-  //   path: ROUTES_URL.WALLET,
-  //   element: <Wallet />,
-  // },
+
   {
     path: ROUTES_URL.MY_PLAN,
     element: <Pricing />,

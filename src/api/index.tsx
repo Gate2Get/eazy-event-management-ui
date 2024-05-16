@@ -3,6 +3,7 @@ import { commonAPI } from "./common";
 import { contactManagementAPI } from "./contactManagement";
 import { dashboardAPI } from "./dashboard";
 import { eventManagementAPI } from "./eventManagement";
+import { paymentAPI } from "./payment";
 import { templateManagementAPI } from "./templateManagement";
 import { userManagementAPI } from "./userManagement";
 
@@ -14,6 +15,7 @@ const appAPI = {
   dashboardAPI,
   commonAPI,
   adminAPI,
+  paymentAPI,
 };
 
 const IS_MOCK = true;

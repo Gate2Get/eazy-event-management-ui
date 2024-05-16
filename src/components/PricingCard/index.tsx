@@ -16,6 +16,8 @@ type PricingPageType = {
   templatesCount: number;
   notificationsCount: number;
   isActive?: boolean;
+  isBuy?: boolean;
+  onBuy?: () => void;
 };
 
 const PricingPage = (props: PricingPageType) => {
@@ -31,6 +33,8 @@ const PricingPage = (props: PricingPageType) => {
     templatesCount,
     discountCost,
     isActive,
+    isBuy,
+    onBuy,
   } = props;
   return (
     <span className="pricing__card">
@@ -73,15 +77,17 @@ const PricingPage = (props: PricingPageType) => {
                 <strong>up to {notificationsCount} notifications</strong>
               </li>
             </ul>
-            <Row>
-              <Col span={24}>
-                <div>
-                  <Button type="primary" size="large">
-                    Purchase
-                  </Button>
-                </div>
-              </Col>
-            </Row>
+            {isBuy && (
+              <Row>
+                <Col span={24}>
+                  <div>
+                    <Button type="primary" size="large" onClick={onBuy}>
+                      Buy plan
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            )}
             {isActive && (
               <Row style={{ paddingTop: "20px" }}>
                 <Col span={24}>

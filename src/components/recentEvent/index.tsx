@@ -27,7 +27,6 @@ import { DefaultOptionType } from "antd/es/select";
 import NotFound from "../../assets/svg/illustration-not-found.svg";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Carousel } from "primereact/carousel";
 
 const { Text, Paragraph } = Typography;

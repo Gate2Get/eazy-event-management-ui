@@ -122,6 +122,8 @@ export const userManagementEndpoint = {
   updateUserInfo: "/api/v1/app/user/info",
   logout: "/api/v1/app/auth/logout",
   getServiceTransactionLogs: "/api/v1/app/service-transaction/logs",
+  getPlanPaymentTransactions: "/api/v1/app/plan/transactions",
+  getPlanPaymentTransactionById: "/api/v1/app/plan/transaction",
 };
 
 export const eventManagementEndpoint = {

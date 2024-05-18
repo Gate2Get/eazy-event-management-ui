@@ -1,0 +1,16 @@
+.invoice-container {
+  padding: 8px;
+  .app__name {
+    margin-left: 1px;
+    color: #12b76a;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .payment-details {
+    background-color: rgb(243, 244, 246);
+    padding: 24px;
+    border-radius: 8px;
+  }
+}

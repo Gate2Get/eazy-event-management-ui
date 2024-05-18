@@ -36,6 +36,8 @@ export const ROUTES_URL = {
   WALLET: "wallet",
   MY_PLAN: "my-plan",
   MY_PLAN_DETAILS: "my-plan-details",
+  MY_PLAN_TRANSACTION_HISTORY: "my-plan-transaction-history",
+  MY_PLAN_INVOICE: "my-plan-invoice",
   ADD_CREDIT: "add-credit",
   SERVICE_TRANSACTION_LOGS: "service-transaction-logs",
   BUY_PLAN: "buy-plan",
@@ -64,6 +66,8 @@ export const ROUTES_MENU = {
   SERVICE_TRANSACTION_LOGS: "Transaction Logs",
   FORBIDDEN: "Forbidden",
   BUY_PLAN: "Buy Plan",
+  MY_PLAN_TRANSACTION_HISTORY: "My Plan Transaction History",
+  MY_PLAN_INVOICE: "My Plan Invoice",
   NOT_FOUND: "*",
 };
 
@@ -86,6 +90,8 @@ export const SERVICE_MENU = [
   ROUTES_MENU.SERVICE_TRANSACTION_LOGS,
   ROUTES_MENU.FORBIDDEN,
   ROUTES_MENU.NOT_FOUND,
+  ROUTES_MENU.MY_PLAN_TRANSACTION_HISTORY,
+  ROUTES_MENU.MY_PLAN_INVOICE,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];
@@ -185,6 +191,7 @@ export const NON_PROTECTED_ROUTES = [
   ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC,
   `/${ROUTES_URL.FORBIDDEN}`,
   `${ROUTES_URL.EE}/${ROUTES_URL.FORBIDDEN}`,
+  ROUTES_URL.BUY_PLAN,
 ];
 
 export const CHANNELS: Record<string, string> = {
@@ -499,3 +506,35 @@ export const NO_PLAN_ASSIGNED_MESSAGE = (section: string) => {
     </>
   );
 };
+
+export const PAYMENT_TYPE = {
+  UPI: "UPI",
+  CARD: "CARD",
+  NETBANKING: "NETBANKING",
+};
+
+export const PAYMENT_STATUS: Record<string, string> = {
+  BAD_REQUEST: "Bad request",
+  AUTHORIZATION_FAILED: "Authorization failed",
+  INTERNAL_SERVER_ERROR: "Internal server error",
+  TRANSACTION_NOT_FOUND: "Transaction not found",
+  PAYMENT_ERROR: "Payment error",
+  PAYMENT_PENDING: "Payment pending",
+  PAYMENT_DECLINED: "Payment declined",
+  TIMED_OUT: "Timed out",
+  PAYMENT_SUCCESS: "Payment success",
+};
+
+export const PAYMENT_STATUS_COLOR: Record<string, string> = {
+  BAD_REQUEST: "error",
+  AUTHORIZATION_FAILED: "error",
+  INTERNAL_SERVER_ERROR: "error",
+  TRANSACTION_NOT_FOUND: "error",
+  PAYMENT_ERROR: "error",
+  PAYMENT_PENDING: "processing",
+  PAYMENT_DECLINED: "error",
+  TIMED_OUT: "error",
+  PAYMENT_SUCCESS: "success",
+};
+
+export const GST_PERCENTAGE = 18;

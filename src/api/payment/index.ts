@@ -1,9 +1,12 @@
 import { instance, paymentEndpoint } from "../../configs/axios.config";
 
 export const paymentAPI = {
-  buyPlanPayment: async (planId: string): Promise<any> => {
+  buyPlanPayment: async (
+    planId: string,
+    transactionId?: string
+  ): Promise<any> => {
     return await instance
-      .post(paymentEndpoint.buyPlanPayment, { planId })
+      .post(paymentEndpoint.buyPlanPayment, { planId, transactionId })
       .then((response) => {
         const result = response.data;
         return result;

@@ -66,6 +66,11 @@ export const Header = (props: HeaderType) => {
     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN}`);
   };
 
+  const handleMyPlanPurchaseHistoryClick = () => {
+    hide();
+    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN_TRANSACTION_HISTORY}`);
+  };
+
   const handleServiceTransactionLogsClick = () => {
     hide();
     navigate(`${ROUTES_URL.EE}/${ROUTES_URL.SERVICE_TRANSACTION_LOGS}`);
@@ -110,6 +115,13 @@ export const Header = (props: HeaderType) => {
                   onClick={handleMyPlanClick}
                 >
                   My plan
+                </Button>
+                <Button
+                  type="text"
+                  icon={<ArticleIcon fontSize="inherit" />}
+                  onClick={handleMyPlanPurchaseHistoryClick}
+                >
+                  Plan transactions
                 </Button>
                 <Button
                   type="text"

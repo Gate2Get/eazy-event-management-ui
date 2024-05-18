@@ -1,5 +1,9 @@
 import { instance, userManagementEndpoint } from "../../configs/axios.config";
-import { DateFilterType, UserInfoType } from "../../types";
+import {
+  DateFilterType,
+  PlanPaymentTransactionType,
+  UserInfoType,
+} from "../../types";
 
 export const userManagementAPI = {
   requestOtp: async (): Promise<any> => {
@@ -157,6 +161,34 @@ export const userManagementAPI = {
       .then((response) => {
         const logs = response.data.result;
         return logs;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getPlanPaymentTransactions: async (): Promise<any> => {
+    return await instance
+      .get(userManagementEndpoint.getPlanPaymentTransactions)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+
+  getPlanPaymentTransactionById: async (
+    transactionId: string
+  ): Promise<PlanPaymentTransactionType> => {
+    return await instance
+      .get(
+        `${userManagementEndpoint.getPlanPaymentTransactionById}/${transactionId}`
+      )
+      .then((response) => {
+        const result = response.data.result;
+        return result;
       })
       .catch((error) => {
         throw error;

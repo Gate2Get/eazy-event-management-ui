@@ -415,3 +415,50 @@ export type EventTypeType = {
   label: string;
   value: string;
 };
+
+export type PaymentInstrumentType = {
+  // Common fields
+  type?: string;
+  // UPI
+  utr?: string;
+  // Card
+  cardType?: string;
+  pgTransactionId?: string;
+  bankTransactionId?: string;
+  pgAuthorizationCode?: string;
+  arn?: string;
+  bankId?: string;
+  brn?: string;
+  // Net banking
+  pgServiceTransactionId?: string;
+};
+
+export type PaymentTransactionLogType = {
+  success?: boolean;
+  code?: string;
+  message?: string;
+  data?: {
+    merchantId?: string;
+    merchantTransactionId?: string;
+    transactionId?: string;
+    amount?: number;
+    state?: string;
+    responseCode?: string;
+    paymentInstrument?: PaymentInstrumentType;
+  };
+};
+
+export type PlanPaymentTransactionLogType = {
+  userId: string;
+  planId: string;
+  transactionId: string;
+  logs?: PaymentTransactionLogType;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+export type PlanPaymentTransactionType = {
+  transaction?: PlanPaymentTransactionLogType;
+  plan?: PricingPlanType;
+  userInfo?: UserInfoType;
+};

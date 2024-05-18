@@ -25,6 +25,8 @@ import { Wallet } from "../pages/wallet";
 import { MyPlans } from "../pages/myPlans";
 import { ServiceTransactionLogs } from "../pages/serviceTransactionLogs";
 import { BuyPlan } from "../pages/buyPlan";
+import { PlanPurchaseHistory } from "../pages/planPurchaseHistory";
+import { PlanInvoice } from "../pages/planInvoice";
 
 export const APP_ROUTES = [
   {
@@ -67,6 +69,7 @@ export const APP_ROUTES = [
     path: ROUTES_URL.BUY_PLAN,
     element: <BuyPlan />,
   },
+
   {
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
@@ -131,11 +134,14 @@ export const SERVICE_ROUTES = [
     path: ROUTES_URL.SERVICE_TRANSACTION_LOGS,
     element: <ServiceTransactionLogs />,
   },
-
-  // {
-  //   path: ROUTES_URL.ADD_CREDIT,
-  //   element: <AddCreditToWallet />,
-  // },
+  {
+    path: ROUTES_URL.MY_PLAN_TRANSACTION_HISTORY,
+    element: <PlanPurchaseHistory />,
+  },
+  {
+    path: `${ROUTES_URL.MY_PLAN_INVOICE}/:transactionId`,
+    element: <PlanInvoice />,
+  },
   {
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,

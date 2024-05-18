@@ -82,4 +82,10 @@ export default defineConfig({
     port: 3000,
     ...serverConfig,
   },
+  optimizeDeps: {
+    include: [
+      "html2canvas", // Ensure html2canvas is included here if it's a direct import
+      "jspdf", // Ensure jspdf is included here if it's a direct import
+    ],
+  },
 });

@@ -27,6 +27,7 @@ import { ServiceTransactionLogs } from "../pages/serviceTransactionLogs";
 import { BuyPlan } from "../pages/buyPlan";
 import { PlanPurchaseHistory } from "../pages/planPurchaseHistory";
 import { PlanInvoice } from "../pages/planInvoice";
+import { App429 } from "../components/429";
 
 export const APP_ROUTES = [
   {
@@ -73,6 +74,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
+  },
+  {
+    path: ROUTES_URL.TOO_MANY_REQUEST,
+    element: <App429 />,
   },
   {
     path: "*",
@@ -145,6 +150,10 @@ export const SERVICE_ROUTES = [
   {
     path: ROUTES_URL.FORBIDDEN,
     element: <App403 />,
+  },
+  {
+    path: ROUTES_URL.TOO_MANY_REQUEST,
+    element: <App429 />,
   },
   {
     path: "*",

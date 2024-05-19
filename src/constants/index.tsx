@@ -27,6 +27,7 @@ export const ROUTES_URL = {
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_OF_SERVICE: "/terms-of-service",
   FORBIDDEN: "forbidden",
+  TOO_MANY_REQUEST: "too-many-request",
   PRICING: "pricing",
   HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
@@ -68,6 +69,7 @@ export const ROUTES_MENU = {
   BUY_PLAN: "Buy Plan",
   MY_PLAN_TRANSACTION_HISTORY: "My Plan Transaction History",
   MY_PLAN_INVOICE: "My Plan Invoice",
+  TOO_MANY_REQUEST: "Too Many Request",
   NOT_FOUND: "*",
 };
 

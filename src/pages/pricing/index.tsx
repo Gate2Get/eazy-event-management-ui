@@ -136,8 +136,8 @@ export const Pricing = (props: PricingType) => {
           complete your payment.
         </Text>
       </Modal>
-      <Title level={2} className="pricing-title">
-        Communication Channels Pricing Plans
+      <Title level={3} className={isPricingPage ? "pricing-title" : ""}>
+        Pricing Plans
       </Title>
       <Alert
         type="info"
@@ -156,6 +156,21 @@ export const Pricing = (props: PricingType) => {
           </Text>
         }
       />
+      {!isPricingPage && (
+        <>
+          <br />
+          <Alert
+            type="error"
+            message={<Title level={5}>No active plan</Title>}
+            description={
+              <Text italic>
+                You don't have an active plan. Please choose from the plans
+                below to start enjoying our services.
+              </Text>
+            }
+          />
+        </>
+      )}
       <Row gutter={[16, 16]}>
         {(plans as PricingPlanType[]).map((plan) => (
           <Col {...colOption(8)}>

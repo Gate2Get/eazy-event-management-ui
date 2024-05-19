@@ -11,6 +11,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PersonIcon from "@mui/icons-material/Person";
 import ArticleIcon from "@mui/icons-material/Article";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 
 const { Text } = Typography;
 
@@ -118,7 +119,7 @@ export const Header = (props: HeaderType) => {
                 </Button>
                 <Button
                   type="text"
-                  icon={<ArticleIcon fontSize="inherit" />}
+                  icon={<HistoryEduIcon fontSize="inherit" />}
                   onClick={handleMyPlanPurchaseHistoryClick}
                 >
                   Plan transactions

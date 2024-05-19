@@ -133,7 +133,7 @@ export const PlanInvoice = () => {
       {
         name: "Payment Amount",
         value: transaction.transaction?.logs?.data?.amount
-          ? `₹${transaction.transaction?.logs?.data?.amount}`
+          ? `₹${transaction.transaction?.logs?.data?.amount / 100}`
           : "-",
       },
       {
@@ -142,20 +142,21 @@ export const PlanInvoice = () => {
       },
     ];
 
+    const gstPercentage = GST_PERCENTAGE / 2;
     const gstAmount =
       (transaction.plan?.discountPrice || (transaction.plan?.price as number)) *
-      (GST_PERCENTAGE / 100);
+      (gstPercentage / 100);
     gstDetails = [
       {
         name: "Sub total",
         value: `₹${transaction.plan?.discountPrice || transaction.plan?.price}`,
       },
       {
-        name: `CGST ${GST_PERCENTAGE}%`,
+        name: `CGST ${gstPercentage}%`,
         value: `₹${gstAmount}`,
       },
       {
-        name: `CGST ${GST_PERCENTAGE}%`,
+        name: `CGST ${gstPercentage}%`,
         value: `₹${gstAmount}`,
       },
       {

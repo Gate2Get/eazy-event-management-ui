@@ -62,9 +62,25 @@ export const interceptors = (
             : ROUTES_URL.LOGIN
         );
       } else if (error?.response?.status === HttpStatusCode.Forbidden) {
+        const data: any = response?.data;
+        messageApi.open({
+          key: `${method}-${url}`,
+          type: "error",
+          content: data?.message || "Unauthorized user!",
+          duration: 5,
+        });
         navigate(`/${ROUTES_URL.FORBIDDEN}`);
       } else if (error?.response?.status === HttpStatusCode.NotFound) {
         navigate("/404");
+      } else if (error?.response?.status === HttpStatusCode.TooManyRequests) {
+        const data: any = response?.data;
+        messageApi.open({
+          key: `${method}-${url}`,
+          type: "error",
+          content: data?.message || "Too many requests!",
+          duration: 5,
+        });
+        navigate(`/${ROUTES_URL.TOO_MANY_REQUEST}`);
       } else if (error?.response?.status === HttpStatusCode.BadRequest) {
         const data: any = response?.data;
         messageApi.open({

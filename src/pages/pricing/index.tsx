@@ -181,7 +181,7 @@ export const Pricing = (props: PricingType) => {
               contactsCount={plan.contactCount}
               eventCount={plan.eventCount}
               notificationsCount={plan.notificationCredit}
-              planName={plan.type}
+              planName={plan.name}
               templatesCount={plan.templateCount}
               discountCost={plan.discountPrice}
               isBuy={plan.type !== "FREE"}

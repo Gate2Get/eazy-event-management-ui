@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
+    "@breezystack/lamejs": "^1.2.7",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
@@ -33,6 +34,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "primereact": "^10.2.1",
+    "lamejs": "github:zhuker/lamejs",
     "rc-texty": "^0.2.0",
     "rc-tween-one": "^3.0.6",
     "react": "^18.2.0",

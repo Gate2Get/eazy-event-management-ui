@@ -11,6 +11,7 @@ import {
   Button,
   Col,
   Collapse,
+  FloatButton,
   Form,
   Input,
   MenuProps,
@@ -71,6 +72,7 @@ import { DataTable } from "../../components/dataTable";
 import { searchGrid } from "../../utils/searchGrid.utils";
 import { ReviewConversation } from "../../components/ReviewConversation";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { useWindowSize } from "../../hooks/useWindowSize";
 const { Panel } = Collapse;
 
 const imageUrl = new URL(`../../assets/svg/trash-event.svg`, import.meta.url);
@@ -122,6 +124,7 @@ export const TemplateManagement = (): React.ReactElement => {
     id: "",
     status: "",
   });
+  const { height } = useWindowSize();
 
   const playSpeech = (text: string, id: string) => {
     stopSpeech();
@@ -733,18 +736,19 @@ export const TemplateManagement = (): React.ReactElement => {
                     />
                   </Col>
                   <Col flex={12} className="template__pagination">
-                    {(activePlan?.templateCount as number) > 0 && (
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          setSearchParams({
-                            action: PAGE_ACTION.ADD,
-                          });
-                        }}
-                      >
-                        Create
-                      </Button>
-                    )}
+                    {screen !== "MOBILE" &&
+                      (activePlan?.templateCount as number) > 0 && (
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            setSearchParams({
+                              action: PAGE_ACTION.ADD,
+                            });
+                          }}
+                        >
+                          Create
+                        </Button>
+                      )}
                     <Segmented
                       style={{ margin: "10px" }}
                       value={isListView ? "List" : "Card"}
@@ -817,7 +821,7 @@ export const TemplateManagement = (): React.ReactElement => {
                 </div>
               </Col>
             )}
-            {(action === "ADD" || action === "EDIT") && (
+            {(action === "ADD" || action === "EDIT") && screen !== "MOBILE" && (
               <Col {...colOption(21)}>
                 <Space style={{ float: "right" }}>
                   <Button
@@ -943,6 +947,7 @@ export const TemplateManagement = (): React.ReactElement => {
           form={form}
           name="template"
           scrollToFirstError
+          style={{ minHeight: height }}
         >
           <Form.Item
             label="Select the channel"
@@ -1060,6 +1065,47 @@ export const TemplateManagement = (): React.ReactElement => {
           resumeSpeech={resumeSpeech}
           stopSpeech={stopSpeech}
         />
+      )}
+      {!action &&
+        screen === "MOBILE" &&
+        (activePlan?.templateCount as number) > 0 && (
+          <FloatButton
+            shape="square"
+            style={{ right: 24 }}
+            icon={
+              <Button
+                size="large"
+                type="primary"
+                onClick={() => {
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
+                }}
+              >
+                Create Template
+              </Button>
+            }
+          />
+        )}
+
+      {(action === "ADD" || action === "EDIT") && screen === "MOBILE" && (
+        <Space
+          direction="vertical"
+          style={{ width: "100%" }}
+          className="eazy-event__bottom-fixed-btn"
+        >
+          <Button type="default" onClick={() => onCancel()}>
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => {
+              form.submit();
+            }}
+          >
+            {action === "ADD" ? "Create" : "Save Changes"}
+          </Button>
+        </Space>
       )}
     </div>
   );

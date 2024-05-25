@@ -1,14 +1,22 @@
 import React from "react";
 import "./styles.scss";
-import { Button, Col, Divider, Row, Segmented, Space, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Divider,
+  FloatButton,
+  Row,
+  Segmented,
+  Space,
+  Typography,
+} from "antd";
 import { API } from "../../api";
 import { useBearStore } from "../../store";
 import { ContactDirectoryType, ContactListType } from "../../types";
 import { ListContactDirectory } from "./components/listContactDirectory";
 import { AddEditContactDirectory } from "./components/addEditContactDirectory";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressBook } from "@fortawesome/free-solid-svg-icons";
+import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import { urlHandler } from "../../utils/common.utils";
 import { useSearchParams } from "react-router-dom";
 import { LOCAL_STORAGE_VIEW, PAGE_ACTION } from "../../constants";
@@ -17,7 +25,7 @@ const { Title } = Typography;
 
 export const ContactManagement = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { setLoading } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
   const {
     setDirectoryList,
     action,
@@ -78,7 +86,6 @@ export const ContactManagement = () => {
 
   return (
     <div className="contact-management__container">
-      {/* <Divider /> */}
       {!action && (
         <>
           <Row wrap gutter={[8, 8]}>
@@ -88,26 +95,23 @@ export const ContactManagement = () => {
           </Row>
           <Row wrap gutter={[8, 8]}>
             <Col flex={12} className="contact__pagination">
-              {(activePlan?.contactDirectoryCount as number) > 0 && (
-                <Button
-                  type="primary"
-                  className="dark-color-bg"
-                  onClick={() => {
-                    setSearchParams({
-                      action: PAGE_ACTION.ADD,
-                    });
-                  }}
-                  icon={
-                    <FontAwesomeIcon
-                      icon={faAddressBook}
-                      className="padding-right-8"
-                    />
-                  }
-                >
-                  Create
-                </Button>
-              )}
+              {screen !== "MOBILE" &&
+                (activePlan?.contactDirectoryCount as number) > 0 && (
+                  <Button
+                    type="primary"
+                    className="dark-color-bg"
+                    onClick={() => {
+                      setSearchParams({
+                        action: PAGE_ACTION.ADD,
+                      });
+                    }}
+                    icon={<CreateNewFolderIcon fontSize="inherit" />}
+                  >
+                    Create
+                  </Button>
+                )}
             </Col>
+
             <Col className="list__grid-view contact__pagination">
               <Segmented
                 value={isListView ? "List" : "Card"}
@@ -135,6 +139,30 @@ export const ContactManagement = () => {
         </>
       )}
       {action && <AddEditContactDirectory />}
+      {!action &&
+        screen === "MOBILE" &&
+        (activePlan?.contactDirectoryCount as number) > 0 && (
+          <FloatButton
+            shape="square"
+            style={{ right: 24 }}
+            icon={
+              <Button
+                size="large"
+                type="primary"
+                style={{ width: "100%" }}
+                className="dark-color-bg"
+                onClick={() => {
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
+                }}
+                icon={<CreateNewFolderIcon fontSize="inherit" />}
+              >
+                Create Directory
+              </Button>
+            }
+          />
+        )}
     </div>
   );
 };

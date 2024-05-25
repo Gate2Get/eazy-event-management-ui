@@ -40,6 +40,10 @@
   margin-top: 16px;
 }
 
+.margin-top-8 {
+  margin-top: 8px;
+}
+
 .margin-bottom-16 {
   margin-bottom: 16px;
 }
@@ -546,5 +550,29 @@ form {
 .ant-segmented-item.ant-segmented-item-selected {
   .ant-segmented-item-label {
     font-weight: 400;
+  }
+}
+
+.ant-float-btn {
+  width: auto;
+  background-color: transparent !important;
+  box-shadow: none;
+
+  .ant-float-btn-body {
+    background-color: transparent !important;
+    .ant-float-btn-content {
+      .ant-float-btn-icon {
+        width: 100% !important;
+      }
+    }
+  }
+}
+
+.eazy-event__bottom-fixed-btn {
+  position: sticky;
+  padding-top: 10px;
+  bottom: 10px;
+  button {
+    width: 100%;
   }
 }

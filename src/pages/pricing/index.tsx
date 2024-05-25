@@ -53,9 +53,11 @@ export const Pricing = (props: PricingType) => {
       : { span: count };
 
   const getPlans = (): void => {
+    setLoading(true);
     API.commonAPI
       .getPricingPlans()
       .then((data: PricingPlanType[]) => {
+        setLoading(false);
         if (isPricingPage) {
           setPlans(data);
         } else {
@@ -76,6 +78,7 @@ export const Pricing = (props: PricingType) => {
         }
       })
       .catch((error: Error) => {
+        setLoading(false);
         console.log({ location: "getPlans", error });
       });
   };
@@ -156,7 +159,7 @@ export const Pricing = (props: PricingType) => {
           </Text>
         }
       />
-      {!isPricingPage && (
+      {!isPricingPage && !activePlan?.planId && (
         <>
           <br />
           <Alert

@@ -1,4 +1,4 @@
-import { Typography, Col, Row, Popover, Space, Button } from "antd";
+import { Typography, Col, Row, Popover, Space, Button, Avatar } from "antd";
 import React from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./styles.scss";
@@ -7,11 +7,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { API } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { ROUTES_URL } from "../../constants";
+import { userMenuConfig } from "../../configs/userMenu.config";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PersonIcon from "@mui/icons-material/Person";
-import ArticleIcon from "@mui/icons-material/Article";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
 
 const { Text } = Typography;
 
@@ -102,39 +99,24 @@ export const Header = (props: HeaderType) => {
             placement="bottomRight"
             content={
               <Space direction="vertical">
-                <Button
-                  type="text"
-                  icon={<PersonIcon fontSize="inherit" />}
-                  onClick={handleProfileClick}
-                >
-                  My profile
-                </Button>
-
-                <Button
-                  type="text"
-                  icon={<ArticleIcon fontSize="inherit" />}
-                  onClick={handleMyPlanClick}
-                >
-                  My plan
-                </Button>
-                <Button
-                  type="text"
-                  icon={<HistoryEduIcon fontSize="inherit" />}
-                  onClick={handleMyPlanPurchaseHistoryClick}
-                >
-                  Plan transactions
-                </Button>
-                <Button
-                  type="text"
-                  icon={<ReceiptLongIcon fontSize="inherit" />}
-                  onClick={handleServiceTransactionLogsClick}
-                >
-                  Transaction logs
-                </Button>
+                {userMenuConfig.map((item) => (
+                  <Button
+                    type="text"
+                    icon={item.icon}
+                    onClick={() => {
+                      hide();
+                      navigate(item.href);
+                    }}
+                    style={{ width: "100%", textAlign: "start" }}
+                  >
+                    {item.name}
+                  </Button>
+                ))}
                 <Button
                   type="text"
                   icon={<LogoutIcon fontSize="inherit" />}
                   onClick={logout}
+                  style={{ width: "100%", textAlign: "start" }}
                 >
                   Logout
                 </Button>
@@ -144,18 +126,21 @@ export const Header = (props: HeaderType) => {
             open={open}
             onOpenChange={handleOpenChange}
           >
-            <div className="user__button">
-              <Text>
-                <div style={{ fontSize: "16px" }}>
-                  {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
-                </div>
-                <div style={{ fontSize: "12px" }}>
-                  <span>
-                    {activePlan?.pricingPlan?.name || "No active plan"}
-                  </span>
-                </div>
-              </Text>
-            </div>
+            <Space className="float-right">
+              <Avatar src={user.picture} />
+              <div className="user__button">
+                <Text>
+                  <div style={{ fontSize: "16px" }}>
+                    {user.firstName} <ArrowDropDownIcon fontSize="inherit" />
+                  </div>
+                  <div style={{ fontSize: "12px" }}>
+                    <span>
+                      {activePlan?.pricingPlan?.name || "No active plan"}
+                    </span>
+                  </div>
+                </Text>
+              </div>
+            </Space>
           </Popover>
         </Col>
       </Row>

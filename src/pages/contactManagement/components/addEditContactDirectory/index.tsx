@@ -557,29 +557,31 @@ export const AddEditContactDirectory = () => {
             </Col>
           </Row>
         </Col>
-        <Col className="action__button-groups">
-          {DIRECTORY_ACTIONS[action].secondaryButtonText && (
-            <Button onClick={onCancel}>
-              {DIRECTORY_ACTIONS[action].secondaryButtonText}
-            </Button>
-          )}
-          {DIRECTORY_ACTIONS[action].primaryButtonText && (
-            <Button type="primary" onClick={onActionClick}>
-              {DIRECTORY_ACTIONS[action].primaryButtonText}
-            </Button>
-          )}
-          {DIRECTORY_ACTIONS[action].deleteButtonText && (
-            <Button
-              type="default"
-              danger
-              onClick={() => {
-                setIsDeleteConfirmation("DIRECTORY");
-              }}
-            >
-              {DIRECTORY_ACTIONS[action].deleteButtonText}
-            </Button>
-          )}
-        </Col>
+        {screen !== "MOBILE" && (
+          <Col className="action__button-groups">
+            {DIRECTORY_ACTIONS[action].secondaryButtonText && (
+              <Button onClick={onCancel}>
+                {DIRECTORY_ACTIONS[action].secondaryButtonText}
+              </Button>
+            )}
+            {DIRECTORY_ACTIONS[action].primaryButtonText && (
+              <Button type="primary" onClick={onActionClick}>
+                {DIRECTORY_ACTIONS[action].primaryButtonText}
+              </Button>
+            )}
+            {DIRECTORY_ACTIONS[action].deleteButtonText && (
+              <Button
+                type="default"
+                danger
+                onClick={() => {
+                  setIsDeleteConfirmation("DIRECTORY");
+                }}
+              >
+                {DIRECTORY_ACTIONS[action].deleteButtonText}
+              </Button>
+            )}
+          </Col>
+        )}
       </Row>
 
       {action !== "VIEW" && (
@@ -853,6 +855,35 @@ export const AddEditContactDirectory = () => {
             )
           )}
         </Row>
+      )}
+      {screen === "MOBILE" && (
+        <Space
+          direction="vertical"
+          style={{ width: "100%" }}
+          className="eazy-event__bottom-fixed-btn"
+        >
+          {DIRECTORY_ACTIONS[action].secondaryButtonText && (
+            <Button onClick={onCancel}>
+              {DIRECTORY_ACTIONS[action].secondaryButtonText}
+            </Button>
+          )}
+          {DIRECTORY_ACTIONS[action].primaryButtonText && (
+            <Button type="primary" onClick={onActionClick}>
+              {DIRECTORY_ACTIONS[action].primaryButtonText}
+            </Button>
+          )}
+          {DIRECTORY_ACTIONS[action].deleteButtonText && (
+            <Button
+              type="default"
+              danger
+              onClick={() => {
+                setIsDeleteConfirmation("DIRECTORY");
+              }}
+            >
+              {DIRECTORY_ACTIONS[action].deleteButtonText}
+            </Button>
+          )}
+        </Space>
       )}
     </div>
   );

@@ -359,6 +359,7 @@ export type DateFilterType = {
 
 export type PricingPlanType = {
   id: string;
+  invoiceNo: string;
   name: string;
   type: string;
   albumCount: number;

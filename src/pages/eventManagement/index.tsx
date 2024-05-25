@@ -22,10 +22,12 @@ import {
   Segmented,
   Tabs,
   Alert,
+  FloatButton,
 } from "antd";
 import dayjs from "dayjs";
 import React, { Dispatch, useState } from "react";
 import { API } from "../../api";
+import CreateIcon from "@mui/icons-material/Create";
 import { EventManagement as EventManagementComponent } from "../../components/eventManagement";
 import {
   EVENT_DATE_FORMAT,
@@ -74,6 +76,7 @@ import { DataTable } from "../../components/dataTable";
 import { EventAlbum } from "../../components/eventAlbum";
 import { initialSelectedEvent } from "../../store/event.store";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 const imageUrl = new URL(`../../assets/svg/vaccum-event.svg`, import.meta.url);
 
@@ -145,6 +148,7 @@ export const EventManagement = () => {
   const [isFilter, setIsFilter] = React.useState(false);
   const [current, setCurrent] = React.useState(1);
   const [formFields, setFormFields] = React.useState<any[]>([]);
+  const { height } = useWindowSize();
 
   const channel = Form.useWatch("channel", { form, preserve: true });
   const eventType = Form.useWatch("eventType", {
@@ -729,18 +733,19 @@ export const EventManagement = () => {
           </Row>
           <Row wrap gutter={[8, 8]} className="upcoming-event__pagination">
             <Col span={24}>
-              {(activePlan?.eventCount as number) > 0 && (
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    setSearchParams({
-                      action: PAGE_ACTION.ADD,
-                    });
-                  }}
-                >
-                  Create
-                </Button>
-              )}
+              {screen !== "MOBILE" &&
+                (activePlan?.eventCount as number) > 0 && (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setSearchParams({
+                        action: PAGE_ACTION.ADD,
+                      });
+                    }}
+                  >
+                    Create
+                  </Button>
+                )}
               <Button
                 type="text"
                 icon={
@@ -892,7 +897,7 @@ export const EventManagement = () => {
                 </Button>
               </Col>
 
-              {current === 1 && (
+              {screen !== "MOBILE" && current === 1 && (
                 <Col {...colOption(20)}>
                   <Space style={{ float: "right" }}>
                     {selectedEvents.isEditable && (
@@ -936,6 +941,7 @@ export const EventManagement = () => {
         </Row>
       )}
       <div
+        style={{ minHeight: height }}
         className={
           screen === "MOBILE" ? "creation-form-senderId" : "creation-form"
         }
@@ -973,6 +979,81 @@ export const EventManagement = () => {
             </>
           )}
       </div>
+
+      {!action &&
+        screen === "MOBILE" &&
+        (activePlan?.eventCount as number) > 0 && (
+          <FloatButton
+            shape="square"
+            style={{ right: 24 }}
+            icon={
+              <Button
+                size="large"
+                type="primary"
+                onClick={() => {
+                  setSearchParams({
+                    action: PAGE_ACTION.ADD,
+                  });
+                }}
+                icon={<CreateIcon fontSize="inherit" />}
+              >
+                Create Event
+              </Button>
+            }
+          />
+        )}
+
+      {screen === "MOBILE" && current === 1 && (
+        <Space
+          direction="vertical"
+          style={{ width: "100%" }}
+          className="eazy-event__bottom-fixed-btn"
+        >
+          {selectedEvents.isEditable && (
+            <Button
+              type={action === "VIEW" ? "primary" : "default"}
+              onClick={() => {
+                action === "VIEW"
+                  ? onEditSelect(selectedEvents)
+                  : onCancelSelect();
+              }}
+            >
+              {action === "VIEW" ? "Edit" : "Cancel"}
+            </Button>
+          )}
+          {selectedEvents.isDeleteAllowed && action === "VIEW" && (
+            <Button
+              danger
+              onClick={() => {
+                onDeleteSelect(selectedEvents);
+              }}
+              style={{ marginLeft: ".5rem" }}
+            >
+              Delete
+            </Button>
+          )}
+          {["EDIT", "ADD"].includes(action as string) && (
+            <>
+              <Button
+                type="default"
+                onClick={() => {
+                  onCancel();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  form.submit();
+                }}
+              >
+                {action === "EDIT" ? "Save Changes" : "Create Event"}
+              </Button>
+            </>
+          )}
+        </Space>
+      )}
     </div>
   );
 };

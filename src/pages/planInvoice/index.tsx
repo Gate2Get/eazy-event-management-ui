@@ -69,7 +69,7 @@ const columns = [
 ];
 
 export const PlanInvoice = () => {
-  const { setLoading, currentPage } = useBearStore.appStore();
+  const { setLoading, screen } = useBearStore.appStore();
 
   const { transactionId } = useParams();
   const navigate = useNavigate();
@@ -303,18 +303,21 @@ export const PlanInvoice = () => {
                           {"  "}Eazy Event
                         </Text>
                       </Col>
-                      <Col span={12}>
-                        <div className="float-right">
-                          <Title level={5}>Invoice #</Title>
-                          <Paragraph>
-                            {transaction.transaction?.transactionId}{" "}
-                          </Paragraph>
-                        </div>
-                      </Col>
+                      {transaction.plan?.invoiceNo && (
+                        <Col span={12}>
+                          <div className="float-right">
+                            <Title level={5}>Invoice #</Title>
+                            <Paragraph>
+                              {transaction.plan?.invoiceNo}{" "}
+                            </Paragraph>
+                          </div>
+                        </Col>
+                      )}
                     </Row>
                   </div>
                   {!transaction.transaction?.logs && (
                     <Alert
+                      className="margin-top-8"
                       message="Pending payment"
                       description={`You've initiated the payment process for the ${transaction.plan?.name} plan. Please complete your payment to start enjoying our services.`}
                       type="info"
@@ -419,28 +422,28 @@ export const PlanInvoice = () => {
                   </div>
                 </span>
                 {transaction.transaction?.logs?.code === "PAYMENT_SUCCESS" && (
-                  <Space direction="vertical" style={{ width: "100%" }}>
-                    <div className="d-print-none mt-4">
-                      <div className="float-right">
-                        <Button
-                          type="primary"
-                          icon={<DownloadIcon fontSize="inherit" />}
-                          onClick={() => {
-                            handleGeneratePdf(transactionId as string);
-                          }}
-                        >
-                          Download
-                        </Button>
-                        <Button
-                          type="primary"
-                          icon={<PrintIcon fontSize="inherit" />}
-                          onClick={() => window.print()}
-                          className="margin-left-8"
-                        >
-                          Print
-                        </Button>
-                      </div>
-                    </div>
+                  <Space
+                    direction={screen === "MOBILE" ? "horizontal" : "vertical"}
+                    style={{ width: screen === "MOBILE" ? "100%" : "auto" }}
+                    className="float-right margin-bottom-8"
+                  >
+                    <Button
+                      type="primary"
+                      icon={<DownloadIcon fontSize="inherit" />}
+                      onClick={() => {
+                        handleGeneratePdf(transactionId as string);
+                      }}
+                    >
+                      Download
+                    </Button>
+                    <Button
+                      type="primary"
+                      icon={<PrintIcon fontSize="inherit" />}
+                      onClick={() => window.print()}
+                      className="margin-left-8"
+                    >
+                      Print
+                    </Button>
                   </Space>
                 )}
               </Col>

@@ -5,6 +5,7 @@ import { type UserType } from "./types";
 export const createUserStore = create<UserType>((set) => ({
   user: {},
   isAuthorized: null,
+  isContactToken: null,
   walletTransaction: [],
   isVerificationOpen: false,
   activePlan: undefined,
@@ -16,6 +17,9 @@ export const createUserStore = create<UserType>((set) => ({
   },
   setIsAuthorized: (isAuthorized) => {
     set((state) => ({ isAuthorized }));
+  },
+  setIsContactToken: (isContactToken) => {
+    set((state) => ({ isContactToken }));
   },
   sessions: [],
   setSession: (sessions) => {

@@ -111,6 +111,7 @@ export const contactManagementEndpoint = {
   updateContactDirectory: "/api/v1/app/contact/directory",
   deleteContactDirectory: "/api/v1/app/contact/directory/",
   getContactList: "/api/v1/app/contact/",
+  getGoogleContactList: "/api/v1/app/contact/google/contact",
 };
 
 export const templateManagementEndpoint = {

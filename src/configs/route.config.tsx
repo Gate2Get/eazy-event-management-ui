@@ -28,6 +28,7 @@ import { BuyPlan } from "../pages/buyPlan";
 import { PlanPurchaseHistory } from "../pages/planPurchaseHistory";
 import { PlanInvoice } from "../pages/planInvoice";
 import { App429 } from "../components/429";
+import { ContactAuthComplete } from "../pages/contactAuthComplete";
 
 export const APP_ROUTES = [
   {
@@ -78,6 +79,10 @@ export const APP_ROUTES = [
   {
     path: ROUTES_URL.TOO_MANY_REQUEST,
     element: <App429 />,
+  },
+  {
+    path: ROUTES_URL.CONTACT_AUTH_COMPLETED,
+    element: <ContactAuthComplete />,
   },
   {
     path: "*",

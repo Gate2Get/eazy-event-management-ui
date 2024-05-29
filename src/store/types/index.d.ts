@@ -24,10 +24,12 @@ export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
   isVerificationOpen: boolean;
+  isContactToken: boolean | null | undefined;
   activePlan?: UserPricingPlanType;
   setIsVerificationOpen: (isVerificationOpen: boolean) => void;
   setUser: (user: UserInfoType) => void;
   setIsAuthorized: (isAuthorized: boolean) => void;
+  setIsContactToken: (isContactToken: boolean) => void;
   sessions: SessionType[];
   setSession: (sessions: SessionType[]) => void;
   walletTransaction: WalletType[];

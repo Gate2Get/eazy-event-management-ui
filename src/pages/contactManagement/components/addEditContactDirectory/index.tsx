@@ -357,7 +357,6 @@ export const AddEditContactDirectory = () => {
         console.log({ vcf, data, contactList });
       } else {
         const data = await parseXlsx(file);
-        const contactList: ContactListType[] = [];
         data.forEach((contact: any, index: number) => {
           const _contact = {
             id: (index + 1).toString(),

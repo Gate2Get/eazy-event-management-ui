@@ -1,12 +1,24 @@
 import React, { Dispatch } from "react";
-import { Avatar, Button, Card, Divider, Space, Typography } from "antd";
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Space,
+  Typography,
+} from "antd";
 import {
   TemplatePreviewType,
   TemplateType,
   VoiceMessageTemplateType,
 } from "../../types";
 import { useBearStore } from "../../store";
-import { getFormattedMessage } from "../../utils/common.utils";
+import {
+  convertToTitleCase,
+  getFormattedMessage,
+} from "../../utils/common.utils";
 import { UserOutlined } from "@ant-design/icons";
 import "./styles.scss";
 import { CHANNEL_OPTIONS, EVENT_STATUS } from "../../constants";
@@ -233,12 +245,19 @@ export const PreviewTemplate = (props: TemplatePreviewType) => {
           <Card.Meta
             avatar={<Avatar icon={<UserOutlined />} />}
             title={
-              <div>
-                <Paragraph>{name || ""}</Paragraph>
-                <Paragraph italic style={{ fontWeight: "lighter" }}>
-                  {channelComp?.label as React.ReactNode}
-                </Paragraph>
-              </div>
+              <Row>
+                <Col span={16}>
+                  <Paragraph>{name || ""}</Paragraph>
+                  <Paragraph italic style={{ fontWeight: "lighter" }}>
+                    {channelComp?.label as React.ReactNode}
+                  </Paragraph>
+                </Col>
+                <Col span={8}>
+                  <Text strong className="float-right">
+                    {type ? convertToTitleCase(type as string) : ""}
+                  </Text>
+                </Col>
+              </Row>
             }
           />
           <Divider />

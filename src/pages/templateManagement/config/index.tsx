@@ -10,6 +10,7 @@ import {
   TEMPLATE_STATUS_LABEL_COLOR,
 } from "../../../constants";
 import { TEMPLATE_COLUMN_KEYS, TEMPLATE_COLUMN_NAME } from "../constant";
+import { convertToTitleCase } from "../../../utils/common.utils";
 
 export const templateColumns: DataTableColumnType[] = [
   {
@@ -33,6 +34,14 @@ export const templateColumns: DataTableColumnType[] = [
     ),
     sortable: true,
     filterable: true,
+  },
+  {
+    key: TEMPLATE_COLUMN_KEYS.TYPE,
+    dataIndex: TEMPLATE_COLUMN_KEYS.TYPE,
+    title: TEMPLATE_COLUMN_NAME.TYPE,
+    sortable: true,
+    filterable: true,
+    render: (record) => (record?.type ? convertToTitleCase(record?.type) : ""),
   },
   {
     key: TEMPLATE_COLUMN_KEYS.APPROVAL_STATUS,

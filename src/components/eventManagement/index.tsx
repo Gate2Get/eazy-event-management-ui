@@ -408,7 +408,7 @@ export const EventManagement = (props: EventManagementType) => {
             ))}
 
             <Form.Item
-              label="Select contact directory"
+              label="Select the contact directory to invite the user to this event"
               name="contactDirectory"
               rules={[
                 {
@@ -521,6 +521,18 @@ export const EventManagement = (props: EventManagementType) => {
             </Form.Item>
 
             <Form.Item label="Notification" name="notification">
+              <Alert
+                style={{ padding: "8px", margin: "0px 0px 8px 0px" }}
+                type="info"
+                message={
+                  <Text>
+                    <Text strong>Credit utilization alert: </Text> Your
+                    notification credit will be deducted when the notification
+                    is sent. If you have insufficient credit, the notification
+                    will not be sent.
+                  </Text>
+                }
+              />
               {user.walletIsTrial && notifications?.length && (
                 <Alert
                   style={{ padding: "8px", margin: "0px 0px 8px 0px" }}

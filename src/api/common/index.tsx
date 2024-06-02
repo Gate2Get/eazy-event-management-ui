@@ -1,5 +1,6 @@
 import { commonEndpoint, instance } from "../../configs/axios.config";
 import {
+  ApplicationModuleType,
   ContactUsType,
   FeedbackType,
   PricingPlanType,
@@ -88,7 +89,16 @@ export const commonAPI = {
     return await instance
       .get(commonEndpoint.getPricingPlans)
       .then((response) => {
-        console.log({ response });
+        return response.data.result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
+  getAppModuleAccess: async (): Promise<ApplicationModuleType[]> => {
+    return await instance
+      .get(commonEndpoint.getAppModuleAccess)
+      .then((response) => {
         return response.data.result;
       })
       .catch((error) => {

@@ -83,7 +83,7 @@ export const AddEditContactDirectory = () => {
     setIsListView,
     isListView,
   } = useBearStore.contactStore();
-  const { activePlan, setIsContactToken, isContactToken } =
+  const { activePlan, setIsContactToken, isContactToken, setIsAuthorized } =
     useBearStore.userStore();
 
   const [directoryContactList, setDirectoryContactList]: [
@@ -255,7 +255,7 @@ export const AddEditContactDirectory = () => {
     API.contactManagement
       .getGoogleContactList()
       .then((contacts) => {
-        if (contacts === false) {
+        if (contacts === null) {
           setIsContactToken(false);
           const x = width / 2 - (width * 0.75) / 2;
           const y = height / 2 - (height * 0.75) / 2;
@@ -266,8 +266,8 @@ export const AddEditContactDirectory = () => {
           );
         } else {
           setUploadedContact(contacts);
+          setIsUploadContactPreview(true);
         }
-        setIsUploadContactPreview(true);
         setLoading(false);
       })
       .catch((error: Error) => {
@@ -539,11 +539,11 @@ export const AddEditContactDirectory = () => {
   // Get token expiation from local storage and update it in store
   React.useEffect(() => {
     function checkSessionExpirationData(): void {
-      const item = localStorage.getItem("isContactToken");
+      const item = localStorage.getItem("contactToken");
       console.log({ location: "checkSessionExpirationData", item });
       if (item) {
-        setIsContactToken(item == "true");
-        localStorage.removeItem("isContactToken");
+        verifyAuth();
+        localStorage.removeItem("contactToken");
       }
     }
 
@@ -553,6 +553,22 @@ export const AddEditContactDirectory = () => {
       window.removeEventListener("storage", checkSessionExpirationData);
     };
   }, []);
+
+  const verifyAuth = () => {
+    setLoading(true);
+    API.userManagement
+      .verifyAuth()
+      .then((response) => {
+        setLoading(false);
+        const { isAuthenticated, isContactToken } = response;
+        setIsAuthorized(isAuthenticated);
+        setIsContactToken(isContactToken);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "verifyAuth", error });
+      });
+  };
 
   return (
     <div className="add-edit-contact-Directory__container">

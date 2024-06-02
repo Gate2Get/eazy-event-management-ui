@@ -15,6 +15,7 @@ import {
   SessionType,
   UserPricingPlanType,
   EventTypeType,
+  ApplicationModuleType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -45,6 +46,8 @@ export type AppStoreType = {
   alerts: AlertType[];
   collapsed: boolean;
   snackbar?: MessageInstance;
+  moduleAccess: ApplicationModuleType[];
+  setModuleAccess: (moduleAccess: ApplicationModuleType[]) => void;
   setSnackbar: (snackbar: MessageInstance) => void;
   setCollapsed: (collapsed: boolean) => void;
   setAlerts: (alerts: AlertType[]) => void;

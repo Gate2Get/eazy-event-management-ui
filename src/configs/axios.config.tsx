@@ -177,6 +177,7 @@ export const commonEndpoint = {
   uploadFile: "/api/v1/app/file/upload-single",
   getDataByPinCode: "/api/v1/pincode/",
   getPricingPlans: "/api/v1/app/common/pricing-plans",
+  getAppModuleAccess: "/api/v1/app/module/access",
 };
 
 export const adminEndpoint = {

@@ -43,6 +43,7 @@ export const ROUTES_URL = {
   ADD_CREDIT: "add-credit",
   SERVICE_TRANSACTION_LOGS: "service-transaction-logs",
   BUY_PLAN: "buy-plan",
+  NOT_FOUND: "not-found",
 };
 
 export const ROUTES_MENU = {

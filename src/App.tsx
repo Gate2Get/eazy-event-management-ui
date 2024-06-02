@@ -33,7 +33,6 @@ function App(): React.ReactElement {
     setSnackbar(messageApi);
   }, []);
 
-  console.log("App comp render");
   return (
     <div style={{ width }}>
       {contextHolder}

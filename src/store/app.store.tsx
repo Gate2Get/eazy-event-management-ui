@@ -9,6 +9,10 @@ export const createAppStore = create<AppStoreType>((set) => ({
   alerts: [],
   collapsed: false,
   snackbar: undefined,
+  moduleAccess: [],
+  setModuleAccess: (moduleAccess) => {
+    set((state) => ({ moduleAccess }));
+  },
   setSnackbar: (snackbar) => {
     set((state) => ({ snackbar }));
   },

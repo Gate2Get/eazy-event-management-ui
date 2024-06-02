@@ -28,6 +28,7 @@ export const ROUTES_URL = {
   TERMS_OF_SERVICE: "/terms-of-service",
   FORBIDDEN: "forbidden",
   TOO_MANY_REQUEST: "too-many-request",
+  CONTACT_AUTH_COMPLETED: "contact-auth-completed",
   PRICING: "pricing",
   HOME: "/",
   CONTACT_MANAGEMENT_GOOGLE_DOC: "/guide/contact-management/google-contact",
@@ -42,6 +43,7 @@ export const ROUTES_URL = {
   ADD_CREDIT: "add-credit",
   SERVICE_TRANSACTION_LOGS: "service-transaction-logs",
   BUY_PLAN: "buy-plan",
+  NOT_FOUND: "not-found",
 };
 
 export const ROUTES_MENU = {
@@ -70,6 +72,7 @@ export const ROUTES_MENU = {
   MY_PLAN_TRANSACTION_HISTORY: "My Plan Transaction History",
   MY_PLAN_INVOICE: "My Plan Invoice",
   TOO_MANY_REQUEST: "Too Many Request",
+  CONTACT_AUTH_COMPLETED: "Contact Auth Completed",
   NOT_FOUND: "*",
 };
 
@@ -94,6 +97,7 @@ export const SERVICE_MENU = [
   ROUTES_MENU.NOT_FOUND,
   ROUTES_MENU.MY_PLAN_TRANSACTION_HISTORY,
   ROUTES_MENU.MY_PLAN_INVOICE,
+  ROUTES_MENU.CONTACT_AUTH_COMPLETED,
 ];
 
 export const MENU_OPEN_KEYS = [ROUTES_URL.SERVICE];

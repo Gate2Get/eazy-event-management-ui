@@ -48,6 +48,17 @@ export const contactManagementAPI = {
         throw error;
       });
   },
+  getGoogleContactList: async () => {
+    return await instance
+      .get(contactManagementEndpoint.getGoogleContactList)
+      .then((response) => {
+        const result = response.data.result;
+        return result;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
   getContactList: async (id: string) => {
     return await instance
       .get(`${contactManagementEndpoint.getContactList}${id}`)

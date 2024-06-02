@@ -1,4 +1,4 @@
-import { Menu } from "antd";
+import { Menu, MenuProps } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { getMenuItems } from "../../configs/sidebar.config";
@@ -9,16 +9,22 @@ import {
   ROUTES_URL,
 } from "../../constants";
 import { useBearStore } from "../../store";
+import { filterMenuItems } from "../../utils/common.utils";
 
 type SidebarTabProps = {
   setCurrentPage: (currentPage: string) => void;
+};
+
+type MenuItem = Required<MenuProps>["items"][number] & {
+  type: string;
+  children: any;
 };
 
 const routeUrls = Object.entries(ROUTES_URL);
 const routeMenu: any = ROUTES_MENU;
 
 export const SidebarTab = (props: SidebarTabProps) => {
-  const { screen, setCollapsed } = useBearStore.appStore();
+  const { screen, setCollapsed, moduleAccess } = useBearStore.appStore();
   const { user } = useBearStore.userStore();
   const { setCurrentPage } = props;
   const navigate = useNavigate();
@@ -45,8 +51,19 @@ export const SidebarTab = (props: SidebarTabProps) => {
     }
   };
 
+  const _moduleAccess = React.useMemo(
+    () => moduleAccess.map((item) => item.key),
+    [moduleAccess]
+  );
   const isAdmin = user.roles?.toString().split(",").includes(ROLES.ADMIN);
-  const menuItems = getMenuItems(navigate, onCollapseSider, isAdmin);
+  // const menuItems = getMenuItems(navigate, onCollapseSider, isAdmin)?.filter(
+  //   (item) => _moduleAccess.includes(item?.key as string)
+  // );
+
+  const menuItems = filterMenuItems(
+    getMenuItems(navigate, onCollapseSider, isAdmin) as MenuItem[],
+    _moduleAccess
+  );
 
   return (
     <Menu

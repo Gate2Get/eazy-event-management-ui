@@ -74,7 +74,8 @@ export const userManagementAPI = {
       .get(userManagementEndpoint.verifyAuth)
       .then((response) => {
         const isAuthenticated = response.data.status;
-        return isAuthenticated;
+        const isContactToken = response.data.isContactToken;
+        return { isAuthenticated, isContactToken };
       })
       .catch((error) => {
         throw error;

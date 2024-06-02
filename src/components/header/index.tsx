@@ -19,9 +19,10 @@ type HeaderType = {
 };
 
 export const Header = (props: HeaderType) => {
-  const { setCollapsed, collapsed, currentPage } = props;
+  const { setCollapsed, collapsed } = props;
   const { user, setIsAuthorized, activePlan } = useBearStore.userStore();
-  const { setLoading, setCurrentPage, screen } = useBearStore.appStore();
+  const { setLoading, setCurrentPage, screen, moduleAccess } =
+    useBearStore.appStore();
   const [open, setOpen] = React.useState(false);
 
   const navigate = useNavigate();
@@ -54,25 +55,15 @@ export const Header = (props: HeaderType) => {
       });
   };
 
-  const handleProfileClick = () => {
-    hide();
-    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`);
-  };
+  const _moduleAccess = React.useMemo(
+    () => moduleAccess.map((item) => item.key),
+    [moduleAccess]
+  );
 
-  const handleMyPlanClick = () => {
-    hide();
-    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN}`);
-  };
-
-  const handleMyPlanPurchaseHistoryClick = () => {
-    hide();
-    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.MY_PLAN_TRANSACTION_HISTORY}`);
-  };
-
-  const handleServiceTransactionLogsClick = () => {
-    hide();
-    navigate(`${ROUTES_URL.EE}/${ROUTES_URL.SERVICE_TRANSACTION_LOGS}`);
-  };
+  const _userMenuConfig = React.useMemo(
+    () => userMenuConfig.filter((item) => _moduleAccess.includes(item.key)),
+    [_moduleAccess]
+  );
 
   return (
     <div className="header__container">
@@ -99,7 +90,7 @@ export const Header = (props: HeaderType) => {
             placement="bottomRight"
             content={
               <Space direction="vertical">
-                {userMenuConfig.map((item) => (
+                {_userMenuConfig.map((item) => (
                   <Button
                     type="text"
                     icon={item.icon}

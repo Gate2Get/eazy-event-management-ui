@@ -15,6 +15,7 @@ import {
   SessionType,
   UserPricingPlanType,
   EventTypeType,
+  ApplicationModuleType,
 } from "./../../types";
 import { type UseBoundStore, type StoreApi } from "zustand";
 import { ContactDirectoryType, GenericJsonType } from "../../types";
@@ -24,10 +25,12 @@ export type UserType = {
   user: UserInfoType;
   isAuthorized: boolean | null | undefined;
   isVerificationOpen: boolean;
+  isContactToken: boolean | null | undefined;
   activePlan?: UserPricingPlanType;
   setIsVerificationOpen: (isVerificationOpen: boolean) => void;
   setUser: (user: UserInfoType) => void;
   setIsAuthorized: (isAuthorized: boolean) => void;
+  setIsContactToken: (isContactToken: boolean) => void;
   sessions: SessionType[];
   setSession: (sessions: SessionType[]) => void;
   walletTransaction: WalletType[];
@@ -43,6 +46,8 @@ export type AppStoreType = {
   alerts: AlertType[];
   collapsed: boolean;
   snackbar?: MessageInstance;
+  moduleAccess: ApplicationModuleType[];
+  setModuleAccess: (moduleAccess: ApplicationModuleType[]) => void;
   setSnackbar: (snackbar: MessageInstance) => void;
   setCollapsed: (collapsed: boolean) => void;
   setAlerts: (alerts: AlertType[]) => void;

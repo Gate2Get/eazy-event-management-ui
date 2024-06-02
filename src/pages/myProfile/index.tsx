@@ -58,7 +58,7 @@ export const MyProfile = () => {
   ] = React.useState([]);
 
   React.useEffect(() => {
-    getuser();
+    getUser();
     getUserSession();
   }, []);
 
@@ -85,7 +85,7 @@ export const MyProfile = () => {
     setIsLogout(newOpen);
   };
 
-  const getuser = () => {
+  const getUser = () => {
     setLoading(true);
     API.userManagement
       .getUserInfo()
@@ -150,7 +150,7 @@ export const MyProfile = () => {
       .then((response) => {
         setLoading(false);
         setIsEdit(!isEdit);
-        getuser();
+        getUser();
       })
       .catch((error) => {
         setLoading(false);

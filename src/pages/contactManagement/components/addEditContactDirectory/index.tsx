@@ -71,7 +71,7 @@ export const AddEditContactDirectory = () => {
   const { styles } = useModalStyle();
   const token = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { height } = useWindowSize();
+  const { height, width } = useWindowSize();
   let columns = contactListColumns;
   const { setLoading, screen, isError, setError, snackbar } =
     useBearStore.appStore();
@@ -83,7 +83,8 @@ export const AddEditContactDirectory = () => {
     setIsListView,
     isListView,
   } = useBearStore.contactStore();
-  const { activePlan } = useBearStore.userStore();
+  const { activePlan, setIsContactToken, isContactToken, setIsAuthorized } =
+    useBearStore.userStore();
 
   const [directoryContactList, setDirectoryContactList]: [
     ContactListType[],
@@ -101,6 +102,8 @@ export const AddEditContactDirectory = () => {
     ContactListType[]
   >([]);
   const [isUploadContactPreview, setIsUploadContactPreview] =
+    React.useState(false);
+  const [isImportGoogleContact, setIsImportGoogleContact] =
     React.useState(false);
   let filteredContactGrid: any[] = [];
 
@@ -199,6 +202,10 @@ export const AddEditContactDirectory = () => {
     setIsDeleteConfirmation("");
   };
 
+  const closeGoogleContactImport = () => {
+    setIsImportGoogleContact(false);
+  };
+
   const createContactDirectory = (directory: ContactDirectoryType): any => {
     setLoading(true);
     API.contactManagement
@@ -240,6 +247,32 @@ export const AddEditContactDirectory = () => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "deleteContactDirectory", error });
+      });
+  };
+
+  const getGoogleContactList = () => {
+    setLoading(true);
+    API.contactManagement
+      .getGoogleContactList()
+      .then((contacts) => {
+        if (contacts === null) {
+          setIsContactToken(false);
+          const x = width / 2 - (width * 0.75) / 2;
+          const y = height / 2 - (height * 0.75) / 2;
+          window.open(
+            `/api/v1/app/contact/google/auth?returnTo=/${ROUTES_URL.CONTACT_AUTH_COMPLETED}`,
+            "_blank",
+            `width=${width * 0.6},height=${height * 0.75},left=${x},top=${y}`
+          );
+        } else {
+          setUploadedContact(contacts);
+          setIsUploadContactPreview(true);
+        }
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getGoogleContactList", error });
       });
   };
 
@@ -488,6 +521,55 @@ export const AddEditContactDirectory = () => {
     filteredContactGrid = searchGrid(searchValue, directoryContactList);
   }
 
+  // Renew the session by open the new window and login
+  const onHandleContactAccess = (): void => {
+    if (isContactToken) {
+      getGoogleContactList();
+    } else {
+      const x = width / 2 - (width * 0.75) / 2;
+      const y = height / 2 - (height * 0.75) / 2;
+      window.open(
+        `/api/v1/app/contact/google/auth?returnTo=/${ROUTES_URL.CONTACT_AUTH_COMPLETED}`,
+        "_blank",
+        `width=${width * 0.6},height=${height * 0.75},left=${x},top=${y}`
+      );
+    }
+  };
+
+  // Get token expiation from local storage and update it in store
+  React.useEffect(() => {
+    function checkSessionExpirationData(): void {
+      const item = localStorage.getItem("contactToken");
+      console.log({ location: "checkSessionExpirationData", item });
+      if (item) {
+        verifyAuth();
+        localStorage.removeItem("contactToken");
+      }
+    }
+
+    window.addEventListener("storage", checkSessionExpirationData);
+
+    return () => {
+      window.removeEventListener("storage", checkSessionExpirationData);
+    };
+  }, []);
+
+  const verifyAuth = () => {
+    setLoading(true);
+    API.userManagement
+      .verifyAuth()
+      .then((response) => {
+        setLoading(false);
+        const { isAuthenticated, isContactToken } = response;
+        setIsAuthorized(isAuthenticated);
+        setIsContactToken(isContactToken);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log({ location: "verifyAuth", error });
+      });
+  };
+
   return (
     <div className="add-edit-contact-Directory__container">
       <Modal
@@ -637,7 +719,17 @@ export const AddEditContactDirectory = () => {
             </Form.Item>
             <Space direction="vertical">
               <Text italic>
-                Want to export <GoogleIcon fontSize="inherit" /> google contact?{" "}
+                Want to import contact from <GoogleIcon fontSize="inherit" />{" "}
+                google?{" "}
+                <Link onClick={onHandleContactAccess}>
+                  {isContactToken
+                    ? "Click here to import"
+                    : "Click here to link Google account"}
+                </Link>
+              </Text>
+              <Text italic>
+                Want to upload <GoogleIcon fontSize="inherit" /> google contact
+                manually?{" "}
                 <Link
                   href={ROUTES_URL.CONTACT_MANAGEMENT_GOOGLE_DOC}
                   target="_blank"

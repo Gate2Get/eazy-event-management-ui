@@ -9,7 +9,7 @@ import { SidebarTab } from "../components/sidebarTab";
 import { API } from "../api";
 import { AlertType } from "../types";
 import { ServiceRoutes } from "../routes";
-import { ROUTES_URL } from "../constants";
+import { ROUTES_MENU, ROUTES_URL } from "../constants";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProfileVerification } from "../components/profileVerification";
 import { useSpring, animated } from "react-spring";
@@ -28,8 +28,10 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     setAlerts,
     alerts,
     collapsed,
+    moduleAccess,
     setCollapsed,
     setLoading,
+    setModuleAccess,
   } = useBearStore.appStore();
   const {
     setUser,
@@ -45,6 +47,11 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
 
   const creation = searchParams.get("creation");
 
+  const moduleAccessName = React.useMemo(
+    () => moduleAccess.map((item) => item.name),
+    [moduleAccess]
+  );
+
   let sidebarWidth = width;
   if (screen === "MOBILE") {
     sidebarWidth = width;
@@ -57,9 +64,7 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
     marginLeft: collapsed ? 0 : sidebarWidth,
   });
 
-  console.log({ isAuthorized, lo: "layout" });
   React.useEffect(() => {
-    console.log({ isAuthorized, lo: "useEffect" });
     if (!isAuthorized) {
       let returnTo;
       if (searchParams.get("returnTo")) {
@@ -78,12 +83,23 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       navigate(`${ROUTES_URL.AUTHORIZER}?returnTo=${btoa(returnTo as string)}`);
     }
     getUserInfo();
+    getAppModuleAccess();
     getAlerts();
     getEventTypes();
   }, []);
 
   React.useEffect(() => {
     getActiveUserPricingPlan();
+    console.log({ currentPage });
+    if (
+      moduleAccessName.length &&
+      currentPage &&
+      !moduleAccessName.includes(currentPage) &&
+      currentPage !== ROUTES_MENU.NOT_FOUND
+    ) {
+      console.log({ currentPage, t: "kjnkn", moduleAccessName });
+      navigate(`${ROUTES_URL.EE}/${ROUTES_URL.NOT_FOUND}`);
+    }
   }, [currentPage, creation]);
 
   const getAlerts = (): any => {
@@ -108,6 +124,20 @@ export const AppLayout: React.FC<any> = (props): React.ReactElement => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "getEventTypes", error });
+      });
+  };
+
+  const getAppModuleAccess = (): void => {
+    setLoading(true);
+    API.commonAPI
+      .getAppModuleAccess()
+      .then((moduleAccess) => {
+        setModuleAccess(moduleAccess);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.log({ location: "getAppModuleAccess", error });
       });
   };
 

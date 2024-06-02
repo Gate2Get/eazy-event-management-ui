@@ -463,3 +463,11 @@ export type PlanPaymentTransactionType = {
   plan?: PricingPlanType;
   userInfo?: UserInfoType;
 };
+
+export type ApplicationModuleType = {
+  key: string;
+  name: string;
+  isActive: boolean;
+  roles: string;
+  updatedAt?: Date;
+};

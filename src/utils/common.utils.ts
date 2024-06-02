@@ -2,6 +2,7 @@ import { RcFile } from "antd/es/upload";
 import { PAGE_ACTION, PAGE_QUERY_ACTIONS } from "../constants";
 import { ActionType, VoiceMessageTemplateType } from "../types";
 import dayjs from "dayjs";
+import { MenuProps } from "antd";
 
 //  "+91 77777 77777";
 const mobileRegex = /^\+91\s\d{5}\s\d{5}/;
@@ -203,4 +204,33 @@ export const readFileAsText = (file: any): Promise<string> => {
     // Read file as text
     reader.readAsText(file);
   });
+};
+
+type MenuItem = Required<MenuProps>["items"][number] & {
+  type: string;
+  children: any;
+};
+
+export const filterMenuItems = (
+  items: MenuItem[],
+  access: string[]
+): MenuItem[] => {
+  const _items = items
+    .filter(
+      (item) =>
+        item?.type === "divider" ||
+        (item?.key && access.includes(item.key as string)) ||
+        item?.children
+    )
+    .map((item) => {
+      if (item?.children) {
+        const filteredChildren = filterMenuItems(
+          item.children as MenuItem[],
+          access
+        );
+        return { ...item, children: filteredChildren };
+      }
+      return item;
+    });
+  return _items;
 };

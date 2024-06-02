@@ -11,7 +11,7 @@ const { Text } = Typography;
 
 export const Authorizer = () => {
   const { setLoading, screen } = useBearStore.appStore();
-  const { setIsAuthorized } = useBearStore.userStore();
+  const { setIsAuthorized, setIsContactToken } = useBearStore.userStore();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -25,9 +25,11 @@ export const Authorizer = () => {
     setLoading(true);
     API.userManagement
       .verifyAuth()
-      .then((isAuthenticated) => {
+      .then((response) => {
         setLoading(false);
+        const { isAuthenticated, isContactToken } = response;
         setIsAuthorized(isAuthenticated);
+        setIsContactToken(isContactToken);
         if (isAuthenticated) {
           const url = searchParams.get("returnTo")
             ? atob(searchParams.get("returnTo") as string)

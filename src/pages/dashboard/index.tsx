@@ -27,7 +27,7 @@ const { Title, Text, Paragraph } = Typography;
 const statColSpan = 24 / DASHBOARD_STATS.length;
 
 export const Dashboard = () => {
-  const { screen, setLoading } = useBearStore.appStore();
+  const { screen, setLoading, moduleAccess } = useBearStore.appStore();
   const navigate = useNavigate();
   const {
     selectedEvent,
@@ -154,6 +154,11 @@ export const Dashboard = () => {
     });
   };
 
+  const _moduleAccess = React.useMemo(
+    () => moduleAccess.map((item) => item.key),
+    [moduleAccess]
+  );
+
   return (
     <div className="dashboard__container">
       <br />
@@ -188,24 +193,26 @@ export const Dashboard = () => {
                   )}
                 </Paragraph>
 
-                <Button
-                  type="primary"
-                  onClick={() =>
-                    navigate(
-                      !user.isMobileVerified || !user.isEmailVerified
-                        ? `${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`
-                        : `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?action=ADD`
-                    )
-                  }
-                >
-                  {!user.isMobileVerified || !user.isEmailVerified
-                    ? "Go to Account"
-                    : "Event Creation"}{" "}
-                  <ArrowRightOutlined
-                    style={{ color: "#fff" }}
-                    className="right-arrow-icon"
-                  />
-                </Button>
+                {_moduleAccess?.includes(ROUTES_URL.EVENT_MANAGEMENT) && (
+                  <Button
+                    type="primary"
+                    onClick={() =>
+                      navigate(
+                        !user.isMobileVerified || !user.isEmailVerified
+                          ? `${ROUTES_URL.EE}/${ROUTES_URL.MY_PROFILE}`
+                          : `${ROUTES_URL.EE}/${ROUTES_URL.EVENT_MANAGEMENT}?action=ADD`
+                      )
+                    }
+                  >
+                    {!user.isMobileVerified || !user.isEmailVerified
+                      ? "Go to Account"
+                      : "Event Creation"}{" "}
+                    <ArrowRightOutlined
+                      style={{ color: "#fff" }}
+                      className="right-arrow-icon"
+                    />
+                  </Button>
+                )}
               </Col>
               <Col span={6}>
                 <img

@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import "./styles.scss";
 import { useNavigate } from "react-router-dom";
-import { NON_PROTECTED_ROUTES, ROUTES_URL } from "../../constants";
+import { NON_PROTECTED_ROUTES, ROUTES_MENU, ROUTES_URL } from "../../constants";
 import { useBearStore } from "../../store";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Logo from "../../assets/png/logoEazyEvent.png";
@@ -64,10 +64,10 @@ export const HeaderHome = (props: HeaderHomeType) => {
         <span>
           <div className="get-started__button">
             <Button type="text" onClick={() => navigate(ROUTES_URL.PRICING)}>
-              Pricing
+              {ROUTES_MENU.PRICING}
             </Button>
             <Button type="text" onClick={() => navigate(ROUTES_URL.CONTACT_US)}>
-              Contact us
+              {ROUTES_MENU.CONTACT_US}
             </Button>
             {!NON_PROTECTED_ROUTES.includes(window.location.pathname) && (
               <Button type="primary" onClick={verifyAuth}>

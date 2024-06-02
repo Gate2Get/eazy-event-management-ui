@@ -73,7 +73,11 @@ export const ROUTES_MENU = {
   MY_PLAN_INVOICE: "My Plan Invoice",
   TOO_MANY_REQUEST: "Too Many Request",
   CONTACT_AUTH_COMPLETED: "Contact Auth Completed",
+  PRIVACY_POLICY: "Privacy Policy",
+  TERMS_OF_SERVICE: "Terms of Service",
   NOT_FOUND: "*",
+  CONTACT_US: "Contact Us",
+  PRICING: "Pricing",
 };
 
 export const SERVICE_MENU = [

@@ -101,6 +101,17 @@ export const ContactUs = () => {
             Please, fill out the form and an account manager will be in touch
             shortly.
           </Paragraph>
+          <Paragraph className="font-size-16">Or</Paragraph>
+          <Paragraph className="font-size-16">
+            Call directly to our team for more queries{" "}
+            <Link strong href="tel:6374922068">
+              6374922068
+            </Link>
+            /
+            <Link strong href="tel:9363967378">
+              9363967378
+            </Link>
+          </Paragraph>
         </Space>
       </Col>
       <Col {...colOption(12)}>

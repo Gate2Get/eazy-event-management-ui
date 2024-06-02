@@ -3,7 +3,7 @@ import TemplateManagementImage from "../assets/svg/template-management-home.svg"
 import EventManagementImage from "../assets/svg/event-home.svg";
 import DashboardHomeImage from "../assets/svg/dashboard-home.svg";
 import InvitationHomeImage from "../assets/svg/Invitation-home.svg";
-import { ROUTES_URL } from "../constants";
+import { ROUTES_MENU, ROUTES_URL } from "../constants";
 
 export const howIsItWorksContent = [
   {
@@ -41,11 +41,19 @@ export const howIsItWorksContent = [
 
 export const homeDrawerMenu = [
   {
-    label: "Pricing",
+    label: ROUTES_MENU.PRICING,
     link: ROUTES_URL.PRICING,
   },
   {
-    label: "Contact us",
+    label: ROUTES_MENU.CONTACT_US,
     link: ROUTES_URL.CONTACT_US,
+  },
+  {
+    label: ROUTES_MENU.PRIVACY_POLICY,
+    link: ROUTES_URL.PRIVACY_POLICY,
+  },
+  {
+    label: ROUTES_MENU.TERMS_OF_SERVICE,
+    link: ROUTES_URL.TERMS_OF_SERVICE,
   },
 ];

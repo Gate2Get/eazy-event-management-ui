@@ -99,7 +99,7 @@ export const EventManagement = (props: EventManagementType) => {
 
   const navigate = useNavigate();
   const { screen, setLoading, isLoading } = useBearStore.appStore();
-  const { setIsEdit } = useBearStore.eventStore();
+  const { setIsEdit, selectedEvents } = useBearStore.eventStore();
   const { user, activePlan } = useBearStore.userStore();
   const [selectedNotification, setSelectedNotification] =
     React.useState<EventNotificationType>(defaultEventNotification);
@@ -230,6 +230,23 @@ export const EventManagement = (props: EventManagementType) => {
       .catch((error: Error) => {
         setLoading(false);
         console.log({ location: "getContactDirectory", error });
+      });
+  };
+
+  const exportNotificationContacts = (): void => {
+    setLoading(true);
+    API.eventManagement
+      .exportNotificationContacts(
+        selectedEvents.id as string,
+        selectedNotification.id as string
+      )
+      .then((blob: Blob) => {
+        saveAs(blob, `${selectedNotification.name}.xlsx`);
+        setLoading(false);
+      })
+      .catch((error: Error) => {
+        setLoading(false);
+        console.error("exportNotificationContacts", error);
       });
   };
 
@@ -383,6 +400,7 @@ export const EventManagement = (props: EventManagementType) => {
         previewOpen={notificationAction === "VIEW"}
         notification={selectedNotification}
         setPreviewClose={onCancelEdit}
+        exportNotificationContacts={exportNotificationContacts}
       />
 
       <PreviewEvent

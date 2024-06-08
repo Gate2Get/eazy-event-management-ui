@@ -8,6 +8,7 @@ export type ContactListType = {
   name: string;
   senderId: number | string;
   image?: string;
+  requestId?: string;
   status?: number;
   action?: ActionType;
   createdAt?: string;
@@ -470,4 +471,20 @@ export type ApplicationModuleType = {
   isActive: boolean;
   roles: string;
   updatedAt?: Date;
+};
+
+export type VoiceCallLogsType = {
+  number: string;
+  callerId: string;
+  callUuid: string;
+  callStatus: string;
+  ringTime: number;
+  answerTime: number;
+  endTime: number;
+  endReason: string;
+  direction: string;
+  pulse: number;
+  pulses: number;
+  pricePerPulse: number;
+  cost: string;
 };

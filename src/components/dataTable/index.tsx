@@ -125,7 +125,7 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
   };
 
   const header = renderHeader();
-
+  console.log({ otherProps });
   return (
     <div
       style={{
@@ -158,6 +158,9 @@ export const DataTable = (props: DataTableProps): React.ReactElement => {
             selectionMode="multiple"
             headerStyle={{ width: "3rem" }}
           ></Column>
+        )}
+        {otherProps.rowExpansionTemplate && (
+          <Column expander style={{ width: "5rem" }} />
         )}
         {columns.map((column) => {
           const otherColProps: any = {};

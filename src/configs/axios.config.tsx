@@ -152,6 +152,7 @@ export const eventManagementEndpoint = {
   updateEventContact: "/api/v1/app/event",
   getEventNotificationContact: "/api/v1/app/event",
   getEventNotificationTemplate: "/api/v1/app/event",
+  exportNotificationContacts: "/api/v1/app/event",
   exportContact: "/api/v1/app/contact/export/",
   getMyInvitation: "/api/v1/app/event/my-invitation",
   addEventAlbum: "/api/v1/app/event/media/album",

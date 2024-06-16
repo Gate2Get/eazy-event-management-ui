@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Modal, Tabs, theme } from "antd";
 import { useBearStore } from "../../store";
 import { API } from "../../api";
-import { EventNotificationType, EventType, TemplateType } from "../../types";
 import { PreviewContact } from "../previewContact";
 import { checkIsPdf } from "../../utils/validation.utils";
 

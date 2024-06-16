@@ -10,7 +10,8 @@ import {
 import { PreviewTemplate } from "../previewTemplate";
 import { PreviewContact } from "../previewContact";
 import { checkIsPdf } from "../../utils/validation.utils";
-import { EVENT_STATUS } from "../../constants";
+import { EVENT_STATUS, EVENT_YET_TO_START_STATUS } from "../../constants";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 type PreviewEventType = {
   onSubmit?: () => void;
@@ -18,6 +19,7 @@ type PreviewEventType = {
   notification: EventNotificationType;
   previewOpen?: boolean;
   setPreviewClose?: () => void;
+  exportNotificationContacts?: () => void;
 };
 
 const STEPS_EDITABLE = [
@@ -32,7 +34,12 @@ const STEPS_EDITABLE = [
 ];
 
 export const PreviewEventNotification = (props: PreviewEventType) => {
-  const { notification, previewOpen, setPreviewClose } = props;
+  const {
+    notification,
+    previewOpen,
+    setPreviewClose,
+    exportNotificationContacts,
+  } = props;
   const {
     contactDirectory,
     messageTemplate,
@@ -51,6 +58,7 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
   const [current, setCurrent] = React.useState(1);
   const [previewUrl, setPreviewUrl] = React.useState("");
   const [previewTitle, setPreviewTitle] = React.useState("");
+  const { height } = useWindowSize();
 
   React.useEffect(() => {
     if (previewOpen) {
@@ -90,6 +98,8 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
             onUpdateContact={updateEventNotificationContacts}
             isEdit={isEdit}
             setIsEdit={setIsEdit}
+            showLogs={!EVENT_YET_TO_START_STATUS.includes(status as string)}
+            exportNotificationContacts={exportNotificationContacts}
           />
         );
       }
@@ -182,6 +192,11 @@ export const PreviewEventNotification = (props: PreviewEventType) => {
         title={previewTitle}
         footer={null}
         width="100%"
+        styles={{
+          body: {
+            minHeight: height - height * (20 / 100),
+          },
+        }}
         onCancel={setPreviewClose}
       >
         {/* {selectedEvents?.invitationAttachment?.map((invitation) => (

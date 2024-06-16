@@ -2,6 +2,7 @@ import { IdcardOutlined, MoreOutlined } from "@ant-design/icons";
 import {
   Avatar,
   Badge,
+  Button,
   Card,
   Checkbox,
   Col,
@@ -17,7 +18,10 @@ import {
   EVENT_SEND_STATUS_MAP,
 } from "../../constants";
 import { ContactDirectoryType, EditConfigType } from "../../types";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import "./styles.scss";
+import { cloneDeep } from "lodash";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -33,6 +37,9 @@ type ContactUserCardType = {
   isSelected?: boolean;
   onContactChange?: (id: string, name: string, value: string) => void;
   onSelectCard?: (id: string, checked: boolean) => void;
+  showLogs?: boolean;
+  otherProps?: Record<string, any>;
+  data?: Record<string, any>;
 };
 
 export const ContactUserCard = (props: ContactUserCardType) => {
@@ -48,6 +55,9 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     isSelected,
     onContactChange,
     onSelectCard,
+    showLogs,
+    data = {},
+    otherProps = {},
   } = props;
 
   const avatarClassName = image ? "" : `ee__avatar-color`; //-${name?.toString()?.[0]?.toLowerCase()}`;
@@ -65,7 +75,17 @@ export const ContactUserCard = (props: ContactUserCardType) => {
     </Avatar>
   );
 
-  console.log({ props });
+  const onRowToggle = (key: string) => {
+    const { onRowToggle, expandedRows } = otherProps;
+    const _expandedRows = cloneDeep(expandedRows || {});
+    if (_expandedRows[key]) {
+      delete _expandedRows[key];
+    } else {
+      _expandedRows[key] = true;
+    }
+    onRowToggle?.({ data: _expandedRows });
+  };
+
   return (
     <Badge.Ribbon
       className={!status ? "contact-card__no-status" : ""}
@@ -91,7 +111,7 @@ export const ContactUserCard = (props: ContactUserCardType) => {
             )}
           </Col>
           <Col
-            span={menuItems || editable ? 15 : 17}
+            span={menuItems || editable || showLogs ? 15 : 17}
             className="contact-name-sender__container"
           >
             <div style={editable ? { marginBottom: "5px" } : {}}>
@@ -131,7 +151,27 @@ export const ContactUserCard = (props: ContactUserCardType) => {
               </Dropdown>
             </Col>
           )}
+          {showLogs && (
+            <Col span={2}>
+              <Button
+                type="text"
+                icon={
+                  otherProps?.expandedRows?.[data?.[otherProps?.dataKey]] ? (
+                    <RemoveIcon fontSize="inherit" />
+                  ) : (
+                    <AddIcon fontSize="inherit" />
+                  )
+                }
+                onClick={() => {
+                  onRowToggle(data?.[otherProps?.dataKey]);
+                }}
+              />
+            </Col>
+          )}
         </Row>
+        {showLogs &&
+          otherProps?.expandedRows?.[data?.[otherProps?.dataKey]] &&
+          otherProps?.rowExpansionTemplate(data)}
       </Card>
     </Badge.Ribbon>
   );

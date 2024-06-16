@@ -254,4 +254,22 @@ export const eventManagementAPI = {
         throw error;
       });
   },
+
+  exportNotificationContacts: async (
+    eventId: string,
+    notificationId: string
+  ): Promise<Blob> => {
+    return await instance
+      .get(
+        `${eventManagementEndpoint.exportNotificationContacts}/${eventId}/notification/${notificationId}/export`,
+        { responseType: "blob" }
+      )
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 };

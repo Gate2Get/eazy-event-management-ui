@@ -3,7 +3,7 @@ import { Button, Col, Input, Row, Segmented, Space, Typography } from "antd";
 import React from "react";
 import { LOCAL_STORAGE_VIEW } from "../../constants";
 import { useBearStore } from "../../store";
-import { ContactListType } from "../../types";
+import { ContactListType, VoiceCallLogsType } from "../../types";
 import { ContactUserCard } from "../contactUserCard";
 import { DataTable } from "../dataTable";
 import { contactListColumns } from "./config";
@@ -13,17 +13,23 @@ import { CONTACT_LIST_COLUMN_KEYS } from "../../pages/contactManagement/componen
 import { contactValidator } from "../../utils/validation.utils";
 import { v4 as uuidV4 } from "uuid";
 import { cloneDeep } from "lodash";
+import { VoiceCallLogs } from "../voiceCallLogs";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import DownloadIcon from "@mui/icons-material/Download";
 
 const { Text } = Typography;
 
 type PreviewContactType = {
-  contactList: ContactListType[];
+  contactList: ContactListType[] | (VoiceCallLogsType & ContactListType)[];
   showStatus?: boolean;
   setContactList?: (contactList: ContactListType[]) => void;
   isEditable?: boolean;
   onUpdateContact?: () => void;
   isEdit?: boolean;
   setIsEdit?: (isEdit: boolean) => void;
+  showLogs?: boolean;
+  exportNotificationContacts?: () => void;
 };
 
 export const PreviewContact = (props: PreviewContactType) => {
@@ -35,6 +41,8 @@ export const PreviewContact = (props: PreviewContactType) => {
     onUpdateContact,
     isEdit,
     setIsEdit,
+    showLogs,
+    exportNotificationContacts,
   } = props;
   const { screen, isError, setError } = useBearStore.appStore();
   const { setIsListView, isListView } = useBearStore.contactStore();
@@ -42,6 +50,10 @@ export const PreviewContact = (props: PreviewContactType) => {
     ContactListType[]
   >([]);
   const [selectedKeys, setSelectedKeys] = React.useState<string[]>([]);
+  const [expandedRows, setExpandedRows] = React.useState<Record<
+    string,
+    boolean
+  > | null>(null);
 
   React.useEffect(() => {
     setIsListView(
@@ -128,7 +140,6 @@ export const PreviewContact = (props: PreviewContactType) => {
   };
 
   const onSelectCard = (record: ContactListType, isChecked: boolean) => {
-    console.log({ record, isChecked });
     let _selectedKeys = [...selectedContactList];
     if (isChecked) {
       _selectedKeys.push(record);
@@ -179,6 +190,22 @@ export const PreviewContact = (props: PreviewContactType) => {
     onUpdateContact?.();
   };
 
+  const expandAllRows = React.useMemo(() => {
+    const expandedRows: Record<string, boolean> = {};
+    contactList.forEach((item: any) => {
+      expandedRows[item.requestId] = true;
+    });
+    return expandedRows;
+  }, [contactList]);
+
+  const onExpandAll = () => {
+    setExpandedRows(expandAllRows);
+  };
+
+  const onCollapseAll = () => {
+    setExpandedRows(null);
+  };
+
   let otherProps: any = {};
   if (isEditable && isEdit) {
     otherProps = {
@@ -192,7 +219,34 @@ export const PreviewContact = (props: PreviewContactType) => {
     };
   }
 
-  const _contactList = contactList?.filter((item) => item.action !== "DELETE");
+  const _contactList = React.useMemo(
+    () => contactList?.filter((item) => item.action !== "DELETE"),
+    [contactList]
+  );
+
+  const contactListLength = React.useMemo(
+    () => contactList.length,
+    [contactList]
+  );
+
+  const expandedRowsLength = React.useMemo(
+    () => (expandedRows ? Object.keys(expandedRows)?.length : 0),
+    [expandedRows]
+  );
+
+  if (showLogs) {
+    otherProps = {
+      ...otherProps,
+      onRowToggle: (e: any) => {
+        setExpandedRows(e.data);
+      },
+      rowExpansionTemplate: (data: any) => {
+        return <VoiceCallLogs callData={data} />;
+      },
+      expandedRows,
+      dataKey: "requestId",
+    };
+  }
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
@@ -223,6 +277,16 @@ export const PreviewContact = (props: PreviewContactType) => {
               }}
               style={{ float: "right", marginBottom: ".5rem" }}
             />
+            {!isEditable && exportNotificationContacts && (
+              <Button
+                icon={<DownloadIcon fontSize="inherit" />}
+                type="text"
+                style={{ float: "right" }}
+                onClick={exportNotificationContacts}
+              >
+                Export
+              </Button>
+            )}
 
             {isEditable && (
               <>
@@ -262,6 +326,29 @@ export const PreviewContact = (props: PreviewContactType) => {
                 </Button>
               </>
             )}
+            {showLogs && (
+              <Space size="large" style={{ float: "right" }}>
+                <Button
+                  type="text"
+                  onClick={
+                    expandedRowsLength === contactListLength
+                      ? onCollapseAll
+                      : onExpandAll
+                  }
+                  icon={
+                    expandedRowsLength === contactListLength ? (
+                      <RemoveIcon fontSize="inherit" />
+                    ) : (
+                      <AddIcon fontSize="inherit" />
+                    )
+                  }
+                >
+                  {expandedRowsLength === contactListLength
+                    ? "Collapse all"
+                    : "Expand all"}
+                </Button>
+              </Space>
+            )}
           </div>
         </Col>
       </Row>
@@ -289,6 +376,9 @@ export const PreviewContact = (props: PreviewContactType) => {
                   onSelectCard(contact, isChecked)
                 }
                 onContactChange={onContactChange}
+                otherProps={otherProps}
+                showLogs={showLogs}
+                data={contact}
               />
             </Col>
           ))}

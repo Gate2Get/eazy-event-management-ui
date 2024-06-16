@@ -54,7 +54,7 @@ import { PreviewEvent } from "../previewEvent";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { CaretRightOutlined } from "@ant-design/icons";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
-
+import { saveAs } from "file-saver";
 import {
   modalClassNames,
   modalStyles,

@@ -19,11 +19,11 @@ export const VoiceCallLogs = (
         <Space size="large">
           <div>
             <Text strong>Call Status: </Text>
-            <Text>{callData.callStatus}</Text>
+            <Text className="font-size-12">{callData.callStatus}</Text>
           </div>
           <div>
             <Text strong>Answer Time: </Text>
-            <Text>
+            <Text className="font-size-12">
               {callData.answerTime
                 ? new Date(callData.answerTime * 1000).toLocaleString()
                 : "Not answered"}
@@ -31,11 +31,13 @@ export const VoiceCallLogs = (
           </div>
           <div>
             <Text strong>End Time: </Text>
-            <Text>{new Date(callData.endTime * 1000).toLocaleString()}</Text>
+            <Text className="font-size-12">
+              {new Date(callData.endTime * 1000).toLocaleString()}
+            </Text>
           </div>
           <div>
             <Text strong>End Reason: </Text>
-            <Text>{callData.endReason}</Text>
+            <Text className="font-size-12">{callData.endReason}</Text>
           </div>
         </Space>
       ) : (

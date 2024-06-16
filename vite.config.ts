@@ -1,4 +1,8 @@
-import { CommonServerOptions, defineConfig } from "vite";
+import {
+  CommonServerOptions,
+  defineConfig,
+  splitVendorChunkPlugin,
+} from "vite";
 import react from "@vitejs/plugin-react";
 
 const serverConfig: CommonServerOptions = {};
@@ -77,7 +81,7 @@ if (!process.env.REACT_APP_ENV) {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), splitVendorChunkPlugin()],
   server: {
     port: 3000,
     ...serverConfig,
@@ -87,5 +91,25 @@ export default defineConfig({
       "html2canvas", // Ensure html2canvas is included here if it's a direct import
       "jspdf", // Ensure jspdf is included here if it's a direct import
     ],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          // creating a chunk to @open-ish deps. Reducing the vendor chunk size
+          if (id.includes("@open-ish") || id.includes("tslib")) {
+            return "@open-ish";
+          }
+          // creating a chunk to react routes deps. Reducing the vendor chunk size
+          if (
+            id.includes("react-router-dom") ||
+            id.includes("@remix-run") ||
+            id.includes("react-router")
+          ) {
+            return "@react-router";
+          }
+        },
+      },
+    },
   },
 });

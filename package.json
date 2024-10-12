@@ -1,4 +1,5 @@
 {
+  "homepage": "https://www.eazy-event.com/",
   "name": "eazy-events-ui",
   "private": true,
   "version": "1.0.0",
@@ -8,7 +9,9 @@
     "build": "tsc && vite build",
     "start": "vite preview --port 80 --host",
     "lint": "npx eslint \"**/*.{ts,tsx}\"",
-    "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix"
+    "lint-fix": "npx eslint \"**/*.{ts,tsx}\" --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -33,8 +36,8 @@
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
-    "primereact": "^10.2.1",
     "lamejs": "github:zhuker/lamejs",
+    "primereact": "^10.2.1",
     "rc-texty": "^0.2.0",
     "rc-tween-one": "^3.0.6",
     "react": "^18.2.0",
@@ -73,6 +76,7 @@
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
+    "gh-pages": "^6.2.0",
     "husky": "^8.0.3",
     "lodash": "^4.17.21",
     "postcss": "^8.4.27",
